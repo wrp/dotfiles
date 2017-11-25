@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/Users/williamp/airflow-git/tests'
+let g:netrw_dirhist_2='/Users/williamp/tmp/foo'
+let g:netrw_dirhist_3='/Users/williamp/docker-airflow/cli'
+let g:netrw_dirhist_4='/Users/williamp/airflow-git/airflow/utils'

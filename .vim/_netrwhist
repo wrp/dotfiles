@@ -1,0 +1,5 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =3
+let g:netrw_dirhist_1='/usr/local/google/home/wrp/examples/perl'
+let g:netrw_dirhist_2='/usr/local/google/home/wrp/git5/c1/google3/monitoring/viceroy'
+let g:netrw_dirhist_3='/usr/local/google/home/wrp/git5/yt/google3/monitoring/viceroy/dashboards/youtube_discovery_sre/templates'
