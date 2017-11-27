@@ -18,7 +18,7 @@ setlocal commentstring=//\ %s
 
 setlocal noexpandtab
 
-compiler go
+" compiler go
 
 " Set gocode completion
 setlocal omnifunc=go#complete#Complete
