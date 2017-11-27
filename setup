@@ -23,4 +23,4 @@ files='
 .vimrc
 '
 
-for file in $file; do ln -s $base/$file . || die; done
+for file in $files; do ln -s $base/$file . || die; done
