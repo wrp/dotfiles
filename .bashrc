@@ -17,7 +17,6 @@ PS1='\[$(
 read_file() { for f; do test -f $f && . $f; done; }
 read_file ~/.bash-functions ~/.bash-interactive-functions
 complete -r
-read_file $HOME/.bash-env
 
 prepend PATH $HOME/bin
 append PATH /usr/local/mysql/bin
@@ -32,6 +31,29 @@ cd .
 nl='
 '
 PROMPT_COMMAND='tmux-title'
+unset NO_COLOR
+export EVENT_NOKQUEUE=1
+export EMAIL=williamp@wepay.com
+export LC_TIME=C  #  Get 24 hour times for %X (sar)
+export HISTSIZE=9999999999
+export HISTFILE=$HOME/.bash-history-dir/shell-pid-$$
+# unset HISTFILESIZE
+# Docs say unsetting HISTFILESIZE will prevent truncation.  Rumor is it does not work
+export HISTFILESIZE=9999999999
+# export HISTTIMEFORMAT="%h/%d - %H:%M:%S "
+export HISTTIMEFORMAT='%H:%M:%S ' #%m/%d
+export EDITOR=vim
+export CONFIG_SITE=$HOME/CONFIG_SITE
+export COLUMNS
+export LESS=-FeRX
+export GIT_PAGER=less
+export ACK_PAGER_COLOR=less
+export PAGER=less
+export PYTHONSTARTUP=$HOME/.pystartup
+
+# environments for the local host
+read_file $HOME/.bash-env
+
 
 debug_trap() {
 	if test "${BASH_COMMAND}" = "$PROMPT_COMMAND"; then
@@ -39,8 +61,6 @@ debug_trap() {
 		test -f "$HISTFILE" &&
 		tac $HISTFILE | sed /^#/q | tac >> $HOME/.bash-history
 	fi
-	export build=$(git rev-parse HEAD 2> /dev/null | cut -c 1-7 | tr -d \\n;
-		git diff-index --quiet HEAD 2> /dev/null || echo "dirty")
 }
 trap debug_trap DEBUG
 LS_COLORS=$( cat << EOF | tr \\n :
