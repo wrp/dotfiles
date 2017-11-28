@@ -7,6 +7,9 @@ die() { echo "$@" >&2; exit 1; }
 warn() { test -z "$NOWARN" && echo "$@" >&2; }
 base=$( dirname $(realpath --relative-to=$HOME $0) )
 test "$(pwd)" = "$HOME" || warn "Running from $HOME"
+test "$1" = main && main=1
+
+
 cd $HOME
 
 files='
@@ -25,13 +28,19 @@ files='
 .vimrc
 '
 
+target() {
+	local suffix
+	test -n "$main" && test -e $base/$1.primary && suffix=.primary
+	echo $base/$1$suffix
+}
+
 for file in $files; do
 	if test -e $file; then
-		if test "$(realpath $HOME/$file)" != "$(realpath $base/$file)"; then
+		if test "$(realpath $HOME/$file)" != "$(realpath $(target $file))"; then
 			die "aborting to avoid overwriting $file"
 		fi
 	fi
 done
 
 
-for file in $files; do ln -sf $base/$file . || die; done
+for file in $files; do ln -sf $(target $file) $file || die; done
