@@ -27,7 +27,7 @@ files='
 
 for file in $files; do
 	if test -e $file; then
-		if test "$(realpath $HOME/$file)" = "$(realpath $base/$file)"; then
+		if test "$(realpath $HOME/$file)" != "$(realpath $base/$file)"; then
 			die "aborting to avoid overwriting $file"
 		fi
 	fi
