@@ -18,9 +18,9 @@ read_file() { for f; do test -f $f && . $f; done; }
 read_file ~/.bash-functions ~/.bash-interactive-functions
 complete -r
 
-prepend PATH $HOME/bin
-append PATH /usr/local/mysql/bin
-append PATH /usr/local/sbin
+prepend PATH $HOME/$(uname -m)/bin
+prepend PATH $HOME/dotfiles/bin
+prepend PATH $HOME/all/bin
 
 export COLORS=3456
 color_index=$(expr \( "${color_index:-${#COLORS}}" + 1 \) % ${#COLORS})
