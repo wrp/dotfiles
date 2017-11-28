@@ -5,9 +5,9 @@
 
 die() { echo "$@" >&2; exit 1; }
 warn() { test -z "$NOWARN" && echo "$@" >&2; }
+base=$( dirname $(realpath --relative-to=$HOME $0) )
 test "$(pwd)" = "$HOME" || warn "Running from $HOME"
 cd $HOME
-base=$( dirname $(realpath --relative-to=$HOME $0) )
 
 files='
 .bash-functions
