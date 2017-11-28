@@ -61,9 +61,10 @@ debug_trap() {
 		history -a;
 		test -f "$HISTFILE" &&
 		tac $HISTFILE | sed /^#/q | tac >> $HOME/.bash-history
+		val=$( tmux show-env 2> /dev/null |
+			awk -F= '/^SSH_AUTH_SOCK=/{print $2}' )
+		test -n "$val" && SSH_AUTH_SOCK="$val"
 	fi
-	val=$( tmux show-env | awk -F= '/^SSH_AUTH_SOCK=/{print $2}' )
-	test -n "$val" && SSH_AUTH_SOCK="$val"
 }
 
 trap debug_trap DEBUG
