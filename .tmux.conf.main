@@ -1,0 +1,19 @@
+
+unbind C-b
+set -g prefix C-a
+bind C-a send-prefix
+
+# set -g status-fg red
+# set -g status-bg black
+# set -g pane-active-border-fg blue
+set -g window-status-current-bg blue
+set -g window-status-current-fg red
+set -g window-status-current-format '#I:#W'
+set -g status-left-length 25
+# set buffer-limit $LINES
+set status-right '%H:%M %e-%b'
+
+set history-limit 25000
+
+bind-key -n Left previous-window
+bind-key -n Right next-window
