@@ -1,0 +1,16 @@
+#!/bin/sh
+# Get a list of modified files.  First argument
+# specifies amount of git history to explore.
+
+cd $(git exec pwd)
+depth_set=${1}
+depth=${1-1}
+
+{
+if ! git diff-files --name-only | grep . || test -n "$depth_set"; then
+	while test ${i-0} -lt $depth; do
+		git diff-tree --no-commit-id --name-only -r HEAD~${i-0}
+		: $(( i += 1 ))
+	done
+fi
+} | awk '!a[$0]++{print c, $0}' OFS=/ c=$(pwd)
