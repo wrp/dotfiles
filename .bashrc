@@ -56,12 +56,16 @@ read_file $HOME/.bash-env
 
 
 debug_trap() {
+	local val
 	if test "${BASH_COMMAND}" = "$PROMPT_COMMAND"; then
 		history -a;
 		test -f "$HISTFILE" &&
 		tac $HISTFILE | sed /^#/q | tac >> $HOME/.bash-history
 	fi
+	val=$( tmux show-env | awk -F= '/^SSH_AUTH_SOCK=/{print $2}' )
+	test -n "$val" && SSH_AUTH_SOCK="$val"
 }
+
 trap debug_trap DEBUG
 LS_COLORS=$( cat << EOF | tr \\n :
 rs=0:di=01;33:ln=01;36:mh=00:pi=40;33:so=01;35
