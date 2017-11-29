@@ -19,8 +19,8 @@ read_file ~/.bash-functions ~/.bash-interactive-functions
 complete -r
 
 prepend PATH $HOME/$(uname -m)/bin
-prepend PATH $HOME/dotfiles/bin
 prepend PATH $HOME/all/bin
+prepend PATH $HOME/dotfiles/scripts
 
 export COLORS=3456
 color_index=$(expr \( "${color_index:-${#COLORS}}" + 1 \) % ${#COLORS})
