@@ -23,7 +23,7 @@ prepend PATH $HOME/all/bin
 
 # We expect ~/.bashrc to be a symbolic link to .bashrc in the dotfiles
 # git repo.  Find it, and add dotfiles/scripts to the path
-prepend PATH $(dirname $(realpath readlink $HOME/.dotfiles/scripts)/scripts)
+prepend PATH $(dirname $(realpath $HOME/$(readlink $HOME/.bashrc)))/scripts
 
 export COLORS=3456
 color_index=$(expr \( "${color_index:-${#COLORS}}" + 1 \) % ${#COLORS})
