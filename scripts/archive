@@ -1,6 +1,7 @@
 #!/bin/sh
 
-cd $HOME/.bash-history-dir
+cd $HOME/.bash-history-dir || exit
+mkdir -p .old || exit
 
 for f in shell-pid*; do
 	pid=${f#shell-pid-}
