@@ -35,9 +35,9 @@ target() {
 }
 
 for file in $files; do
-	if test -e $file; then
-		if test "$(realpath $HOME/$file)" != \
-				"$(realpath $(target $file))"; then
+	if test -e $file && ! test -d $file; then
+		if test "$(md5sum < $HOME/$file)" != \
+				"$(md5sum < $(target $file))"; then
 			die "aborting to avoid overwriting $file"
 		fi
 	fi
