@@ -36,11 +36,12 @@ target() {
 
 for file in $files; do
 	if test -e $file; then
-		if test "$(realpath $HOME/$file)" != "$(realpath $(target $file))"; then
+		if test "$(realpath $HOME/$file)" != \
+				"$(realpath $(target $file))"; then
 			die "aborting to avoid overwriting $file"
 		fi
 	fi
 done
 
 
-for file in $files; do ln -sf $(target $file) $file || die; done
+for file in $files; do test -e $file || ln -sf $(target $file) $file || die; done
