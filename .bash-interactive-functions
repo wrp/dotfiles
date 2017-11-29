@@ -136,7 +136,7 @@ j() {
 	local _list=$(
 		cd $HOME &&
 		find $HOME $HOME/packages -maxdepth 2 -mindepth 2 -name .git -exec sh -c 'basename $(dirname {})' \; \
-		| grep -v '^tmp$'
+		| sed -e '/^tmp$/d' -e '/^\./d'
 	)
 	if test "${1-unset}" = unset; then
 		select choice in $_list; do break; done
