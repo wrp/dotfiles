@@ -48,7 +48,6 @@ checkout_previous_branch() {
 	git checkout "$prev_branch"
 	git branch -vv
 }
-dev() { hostname; }
 epoch() { for x; do perl -e "printf \"%10s: %s\n\", $x, scalar localtime $x"; done; }
 execute() { cmd=$1; shift; tmux-title "$cmd";
 	test "$V" = 0 || echo "$cmd" "$@" >&2;
