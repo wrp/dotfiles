@@ -57,6 +57,10 @@ _expand_integer_path() {
   while test "$_n" -gt 0; do _out=${_out}../; : $((_n-=1)); done
   echo $_out
 }
+execute() { cmd=$1; shift; tmux-title "$cmd";
+	test "$V" = 0 || echo "$cmd" "$@" >&2;
+	command "$cmd" "$@";
+	RV=$?; tmux-title; return $RV; }
 g() { git "$@"; }
 ga() { git add "$@"; git ci -nm "Add $*"; }
 gcd() {
@@ -158,7 +162,7 @@ lh() { history -r ~/.bash-history-dir/shell-pid-$$; }
 rh() { history -r $HOME/.bash-history; }
 ru () { tac | awk '!a[$0]++' | tac; } ## reverse-unique
 rsync() { command rsync -e 'ssh -o LogLevel=error' "$@"; }
-ssh() { tmux-title "ssh ${2-$1}"; command ssh -o LogLevel=error -A "$@"; RV=$?; tmux-title; return $RV; }
+ssh() { execute ssh -o LogLevel=error -A "$@"; }
 scp() { [[ ! $* =~ : ]] &&
 	{ echo 'One of the files should be remote' >&2; return 1; }
 	command scp -p -o LogLevel=error "$@"
