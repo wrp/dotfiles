@@ -133,14 +133,6 @@ nb() (
 	git branch william/$1 master; git checkout william/$1;
 )
 
-nodetool() {
-	case ${c:-sc} in
-	sc) : ${host=scac18};;
-	xa) : ${host=xaaa09};;
-	esac
-	echo >&2 running nodetool on $host
-	ssh upadmin@$host nodetool "$@";
-}
 parse_dir() { # manipulate text to get a handy pathname for a dir
 	local _k
 	local _first=''
