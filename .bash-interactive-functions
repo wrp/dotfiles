@@ -41,45 +41,6 @@ cd() {
 }
 cdm() { cd $(get-modified-files | longest-common-prefix -d); }
 
-for cmd in ceph ceph-clsinfo ceph-crush-location ceph-mds ceph-osd ceph-rest-api \
-	ceph_mon_store_converter librados-config rados ceph-authtool ceph-conf \
-	ceph-debugpack ceph-mon ceph-post-file ceph-run cephfs monmaptool rbd \
-	ceph-brag ceph-coverage ceph-dencoder ceph-objectstore-tool ceph-rbdnamer \
-	ceph-syn crushtool osdmaptool
-do
-
-	base="/disk/a/jobs/ceph-mon\${pod-0}/\${version:-0.1-1}"
-	path="$base/$(test $cmd = ceph || echo bin/)$cmd"
-eval "${cmd}() {
-	local host pod
-	local default
-	case \$c in
-	(xa) default=(xaaa10 xaaa01);;
-	(xc) echo 'no hook for xc'; return 1;;
-	(*)  default=(scab11 scay06);;
-	esac
-	if test -z \"\${pod}\"; then
-	    if test \"\$1\" = osd; then
-	        echo 'Do not run osd on multiple pods' >&2; return
-	    fi
-	    for pod in 0 1; do
-	    pod=\$pod ${cmd} \"\$@\" || return; done; return; fi
-	: \${host:=\${default[\$pod]}}
-	echo >&2 running $cmd in pod \$pod on \$host
-	local f=/tmp/run/ceph/ceph-client.admin.asok
-	ssh upadmin@\$host sh -c \"'sudo test -e \$f && sudo rm \$f'\"
-	ssh upadmin@\${host} sudo -u upprod1 LD_LIBRARY_PATH=$base/lib $path \"\$@\" \
-	| if test \"\$*\" = -w && test $cmd = ceph; then ceph-filter \$pod
-	else less; fi
-	return \${PIPESTATUS[0]}
-}"
-
-eval "${cmd}0() { pod=0 ${cmd} \"\$@\"; }"
-eval "${cmd}1() { pod=1 ${cmd} \"\$@\"; }"
-
-done
-
-
 
 checkout_previous_branch() {
 	local prev_branch
