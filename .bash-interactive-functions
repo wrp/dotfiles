@@ -50,13 +50,6 @@ checkout_previous_branch() {
 }
 dev() { hostname; }
 epoch() { for x; do perl -e "printf \"%10s: %s\n\", $x, scalar localtime $x"; done; }
-_expand_integer_path() {
-  local _out _n
-  _out=
-  _n=$1
-  while test "$_n" -gt 0; do _out=${_out}../; : $((_n-=1)); done
-  echo $_out
-}
 execute() { cmd=$1; shift; tmux-title "$cmd";
 	test "$V" = 0 || echo "$cmd" "$@" >&2;
 	command "$cmd" "$@";
