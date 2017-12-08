@@ -1,13 +1,20 @@
 #!/bin/sh
 
-# Run this script from a location to which links should be added.
-# (eg, run it from $HOME)
+# Create symbolic links in $HOME
 
 die() { echo "$@" >&2; exit 1; }
 warn() { test -z "$NOWARN" && echo "$@" >&2; }
 base=$( dirname $(realpath --relative-to=$HOME $0) )
 test "$(pwd)" = "$HOME" || warn "Running from $HOME"
-test "$1" = main && main=1
+unset main force abort
+while test $# -gt 0; do
+       case $1 in
+       main) main=1;;
+       -f)  force=1;;
+       *)   die unexpected argument: $1;;
+       esac
+       shift
+done
 
 
 cd $HOME
@@ -38,10 +45,21 @@ for file in $files; do
 	if test -e $file && ! test -d $file; then
 		if test "$(md5sum < $HOME/$file)" != \
 				"$(md5sum < $(target $file))"; then
-			die "aborting to avoid overwriting $file"
+			warn "different $file"
+			abort=1
 		fi
 	fi
 done
 
 
-for file in $files; do test -e $file || ln -sf $(target $file) $file || die; done
+if test -n "$abort" && test -z "$force"; then
+       warn "-f to force overwrite"
+       exit 1;
+fi
+
+test -n "$abort" && warn overwriting
+
+mkdir -p $HOME/.bash-history-dir
+for file in $files; do
+	test -d $(target $file) || ln -sf $(target $file) $file || die
+done
