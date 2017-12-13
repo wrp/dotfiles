@@ -1,0 +1,18 @@
+#!/bin/sh
+
+list=$(git branch -vv)
+choice=${1-0}
+
+if ! test ${choice} -gt 0; then
+	echo "$list" | nl
+	count=$(echo "$list" | wc -l)
+	printf "Select branch: " 
+	read choice
+	while test "$choice" -gt "$count" || test "$choice" -lt 1; do
+		printf "Invalid.  Give an integer from 1 to $count: "
+		read choice
+	done
+fi
+
+branch=$(echo "$list" | cut -b 3- | awk "NR == $choice{print \$1}") 
+git checkout "$branch"
