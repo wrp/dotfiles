@@ -25,7 +25,7 @@ prepend PATH $HOME/all/bin
 # git repo.  Find it, and add dotfiles/scripts to the path
 prepend PATH $(dirname $(realpath $HOME/$(readlink $HOME/.bashrc)))/scripts
 
-export COLORS=3456
+export COLORS=356
 color_index=$(expr \( "${color_index:-${#COLORS}}" + 1 \) % ${#COLORS})
 export color_index
 cd .
@@ -71,7 +71,7 @@ debug_trap() {
 }
 
 trap debug_trap DEBUG
-LSCOLORS=fxfxcxdxbxegedabagacad
+export LSCOLORS=fxfxcxdxbxegedabagacad
 
 # a = black, b = red, c = green, d = brown, e = blue, f = magenta, g = cyan,
 # h = light grey, A = bold black, B = bold red, C = bold green, D = bold brown,
