@@ -43,7 +43,6 @@
 	ll = log --stat
 	lg = log
 	lp = log -p
-
 [core]
 	excludesfile = /Users/williamp/.gitignore_global
 	whitespace = no-tab-in-indent
@@ -69,3 +68,7 @@
 	smtpServer = smtp.gmail.com
 	smtpUser = william.r.pursell
 	smtpServerPort = 587
+[color "branch"]
+	meta = red green bold
+[color]
+	branch = true
