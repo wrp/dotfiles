@@ -85,8 +85,8 @@ j() {
 	test "$1" = p && { checkout_previous_branch; return; }
 	local _dir _dirlist
 	local _list=$(
-		cd $HOME &&
-		find $HOME $HOME/packages -maxdepth 2 -mindepth 2 -name .git -exec sh -c 'basename $(dirname {})' \; \
+		find $HOME/dev $HOME/packages -maxdepth 3 -mindepth 2 -name .git \
+		| sed -E -e 's@/.git$@@' -e 's@.*/([^/]+/[^/]+)$@\1@' \
 		| sed -e '/^tmp$/d' -e '/^\./d'
 	)
 	if test "${1-unset}" = unset; then
@@ -95,10 +95,11 @@ j() {
 		j $REPLY
 		return
 	fi
+
 	_dir=$(echo "$_list" | { if test "$1" -gt 0 2> /dev/null; then
 		filter="${1}"; else filter="/$1/"; fi;
 		sed -n -e ${filter}p; } )
-	test -d $HOME/$_dir || _dir=/packages/$_dir
+
 	command cd $HOME/$_dir
 	gcd
 }
