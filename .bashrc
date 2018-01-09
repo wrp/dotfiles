@@ -1,7 +1,7 @@
 
 export HISTCONTROL=ignoredups
 set -o vi
-set +H      # disable history expansion
+# set +H      # disable history expansion
 shopt -s histappend
 shopt -s cmdhist
 shopt -s checkwinsize
