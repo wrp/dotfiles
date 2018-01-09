@@ -41,6 +41,7 @@ checkout_previous_branch() {
 	git checkout "$prev_branch"
 	git branch -vv
 }
+docker() { execute docker "$@"; }
 epoch() { for x; do perl -e "printf \"%10s: %s\n\", $x, scalar localtime $x"; done; }
 execute() { cmd=$1; shift; tmux-title "$cmd";
 	test "$V" = 0 || echo "$cmd" "$@" >&2;
@@ -155,6 +156,7 @@ scp() { [[ ! $* =~ : ]] &&
 	{ echo 'One of the files should be remote' >&2; return 1; }
 	command scp -p -o LogLevel=error "$@"
 }
+sh() { grep -i "$*" ~/.bash-history | ru; }
 sort() { LC_ALL=C command sort "$@"; }
 test -x /usr/bin/tac || tac() { gtac "$@"; }
 # tac() awk '{a[NR] = $0 } END {for(c=NR; c>0; c--) print a[c]}'; }
