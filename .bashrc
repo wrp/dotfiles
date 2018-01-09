@@ -1,10 +1,11 @@
 
 export HISTCONTROL=ignoredups
 set -o vi
-# set +H      # disable history expansion
 shopt -s histappend
 shopt -s cmdhist
 shopt -s checkwinsize
+shopt -s histverify
+# set +H      # disable history expansion
 
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
