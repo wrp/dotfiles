@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# Search for commands in .bash-history and provide an interface
+# to store one in the tmux buffer
+tac=$(which tac || which gtac)
+
+test $# = 0 && set '^ssh'
+
+trap 'rm -f $tmpfile' 0
+tmpfile=$(mktemp)
+
+grep -i "$*" ~/.bash-history \
+| $tac \
+| awk '!a[$0]++' \
+> $tmpfile
+
+< $tmpfile nl -ba | $tac
+
+printf 'Select command to store in tmux buffer: '
+read n
+sed -n "${n}p" $tmpfile | tmux loadb -
