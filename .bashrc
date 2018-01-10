@@ -20,6 +20,7 @@ read_file() { for f; do test -f $f && . $f; done; }
 read_file ~/.bash-functions ~/.bash-interactive-functions
 complete -r
 
+prepend PATH $HOME/we-tools-cli/bin
 prepend PATH $HOME/$(uname -m)/bin
 prepend PATH $HOME/all/bin
 

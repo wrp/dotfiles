@@ -156,7 +156,6 @@ scp() { [[ ! $* =~ : ]] &&
 	{ echo 'One of the files should be remote' >&2; return 1; }
 	command scp -p -o LogLevel=error "$@"
 }
-sh() { grep -i "$*" ~/.bash-history | ru; }
 sort() { LC_ALL=C command sort "$@"; }
 test -x /usr/bin/tac || tac() { gtac "$@"; }
 # tac() awk '{a[NR] = $0 } END {for(c=NR; c>0; c--) print a[c]}'; }
