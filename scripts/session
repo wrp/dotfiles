@@ -1,0 +1,3 @@
+#!/bin/sh
+
+tmux set-option -s @dir "$(pwd)"
