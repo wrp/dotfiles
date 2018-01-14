@@ -16,7 +16,6 @@ while test $# -gt 0; do
        shift
 done
 
-
 cd $HOME
 
 files='
@@ -50,7 +49,6 @@ for file in $files; do
 		fi
 	fi
 done
-
 
 if test -n "$abort" && test -z "$force"; then
        warn "-f to force overwrite"
