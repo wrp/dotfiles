@@ -9,7 +9,7 @@ if ! test ${choice} -gt 0; then
 	printf "Select branch: " 
 	read choice
 	while test "$choice" -gt "$count" || test "$choice" -lt 1; do
-		printf "Invalid.  Give an integer from 1 to $count: "
+		printf "Invalid.  Give an integer from 1 to $count: " >&2
 		read choice
 	done
 fi
