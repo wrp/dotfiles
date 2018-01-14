@@ -23,10 +23,7 @@ complete -r
 prepend PATH $HOME/we-tools-cli/bin
 prepend PATH $HOME/$(uname -m)/bin
 prepend PATH $HOME/all/bin
-
-# We expect ~/.bashrc to be a symbolic link to .bashrc in the dotfiles
-# git repo.  Find it, and add dotfiles/scripts to the path
-prepend PATH $(dirname $(realpath $HOME/$(readlink $HOME/.bashrc)))/scripts
+prepend PATH $HOME/scripts
 
 export COLORS=356
 color_index=$(expr \( "${color_index:-${#COLORS}}" + 1 \) % ${#COLORS})
