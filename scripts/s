@@ -14,9 +14,8 @@ grep -i "$*" ~/.bash-history \
 | awk '!a[$0]++' \
 > $tmpfile
 
-< $tmpfile nl -ba | $tac
+< $tmpfile nl -ba | $tac | perl -nE 'chop; say substr $_, 0, 80'
 
 printf 'Select command to store in tmux buffer: '
 read n
-sed -n "${n}p" $tmpfile
-sed -n "${n}p" $tmpfile | tr -d \\n | tmux loadb -
+sed -n "${n}p" $tmpfile | tee /dev/tty | tr -d \\n | tmux loadb -
