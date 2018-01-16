@@ -11,7 +11,7 @@ shopt -s histverify
 
 PS1='\[$(
         { test $? != 0 && tput setaf 1 || tput setaf 2; } 2> /dev/null
-	)\]$(test $COLUMNS -gt 20 &&
+	)\]$(test "${COLUMNS:-0}" -gt 20 &&
 	    printf "%s:%d " "$(uname -n | cut -d. -f1)" "$$")\[$(
 	tput setaf ${COLORS:$color_index:1} 2> /dev/null )\]$(
 	set-prompt 2> /dev/null)'"\[$(tput setaf 2 2> /dev/null)\]\$ "
