@@ -2,6 +2,7 @@
 
 # Create symbolic links in $HOME
 
+IFS=' '
 die() { echo "$@" >&2; exit 1; }
 warn() { test -z "$NOWARN" && echo "$@" >&2; }
 base=$( dirname $(realpath --relative-to=$HOME $0) )
@@ -59,5 +60,5 @@ test -n "$abort" && warn overwriting
 
 mkdir -p $HOME/.bash-history-dir
 for file in $files; do
-	test "$file" -eq .git ||  ln -sf $(target $file) $file || die
+	test "$file" = .git ||  ln -sf $(target $file) $file || die
 done
