@@ -11,7 +11,7 @@ tmpfile=$(mktemp)
 
 grep -i "$*" ~/.bash-history \
 | $tac \
-| awk '!a[$0]++' \
+| awk '!/^s / && !a[$0]++' \
 > $tmpfile
 
 < $tmpfile nl -ba | $tac | perl -nE 'chop; say substr $_, 0, 80'
