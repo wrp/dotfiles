@@ -18,4 +18,6 @@ grep -i "$*" ~/.bash-history \
 
 printf 'Select command to store in tmux buffer: '
 read n
-sed -n "${n}p" $tmpfile | tee /dev/tty | tr -d \\n | tmux loadb -
+sed -n "${n}p" $tmpfile | tr -d \\n | tmux loadb -
+# Let interactive prompt print
+{ sleep .2; tmux paste-buffer; } &
