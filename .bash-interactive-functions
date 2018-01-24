@@ -80,6 +80,14 @@ gi() {
 		&& git ci -n -m "Initial unpack: $sha $(basename $x)"
 	done
 }
+git() {
+	case "$1" in
+	clone) long="${2#*//}"; short="${long%%/*}";
+		if test -n "$long"; then shift; set -- clone --origin="$short" "$@"; fi
+	;;
+	esac
+	execute git "$@";
+}
 grep() { command grep --color=auto "$@"; }
 
 irssi() { dtach -A /tmp/irssi.dtach irssi; }
