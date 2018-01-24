@@ -46,7 +46,7 @@ docker() { execute docker "$@" | tee /dev/tty | sed -nE -e 's/.*([0-9a-f]{12}).*
 }
 epoch() { for x; do perl -e "printf \"%10s: %s\n\", $x, scalar localtime $x"; done; }
 execute() { cmd=$1; shift; tmux-title "$cmd";
-	test "$V" = 0 || echo "$cmd" "$@" >&2;
+	test "$V" = 0 || echo Executing: "$cmd" "$@" >&2;
 	command "$cmd" "$@";
 	RV=$?; tmux-title; return $RV; }
 g() { git "$@"; }
