@@ -41,7 +41,9 @@ checkout_previous_branch() {
 	git checkout "$prev_branch"
 	git branch -vv
 }
-docker() { execute docker "$@"; }
+docker() { execute docker "$@" | tee /dev/tty | sed -nE -e 's/.*([0-9a-f]{12}).*/\1/p' \
+	| while read id; do printf "$id" | tmux loadb -; done
+}
 epoch() { for x; do perl -e "printf \"%10s: %s\n\", $x, scalar localtime $x"; done; }
 execute() { cmd=$1; shift; tmux-title "$cmd";
 	test "$V" = 0 || echo "$cmd" "$@" >&2;
