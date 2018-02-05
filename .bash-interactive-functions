@@ -112,7 +112,7 @@ j() {
 		sed -n -e ${filter}p; } )
 
 	command cd $HOME/$_dir
-	gcd
+	select-git-branch
 }
 jh() {
 	case $1 in
