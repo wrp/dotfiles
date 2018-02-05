@@ -14,10 +14,12 @@ grep -i "$*" ~/.bash-history \
 | awk '!/^s / && !a[$0]++' \
 > $tmpfile
 
-< $tmpfile nl -ba | $tac | perl -nE 'chop; say substr $_, 0, 80'
+< $tmpfile nl -ba | $tac | perl -nE 'chop; say substr $_, 0, '"${COLUMNS-80}"
 
 printf 'Select command to store in tmux buffer: '
 read n
-sed -n "${n}p" $tmpfile | tr -d \\n | tmux loadb -
-# Let interactive prompt print
-{ sleep .2; tmux paste-buffer; } &
+if test "$n" -gt 0 2> /dev/null; then
+	sed -n "${n}p" $tmpfile | tr -d \\n | tmux loadb -
+	# Let interactive prompt print
+	{ sleep .2; tmux paste-buffer; } &
+fi
