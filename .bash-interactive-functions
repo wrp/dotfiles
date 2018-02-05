@@ -193,6 +193,8 @@ up() {
 }
 vi() { test $# = 0 && set $(get-modified-files ${h});
 	vim "$@"; }  # .vimrc handles tmux titles
-for name in man miso; do
+y() { select-git-branch "$@"; }
+
+for name in man; do
 	eval "$name"'() { tmux-title "'"$name"' $1"; command '$name' "$@"; tmux-title; }'
 done
