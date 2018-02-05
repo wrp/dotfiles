@@ -1,4 +1,0 @@
-#!/bin/sh
-
-tr \\n \  \
-| tmux loadb -
