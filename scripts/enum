@@ -1,32 +1,4 @@
 #!/bin/sh
 
-# Enumerate the rows of a tmux window
 
-count=$( tmux list-panes | wc -l)
-
-create_enum_pane() {
-	tmux split-window ${1+-t$1.0} -h 'yes |
-		nl -ba | sed -e 1d -e 50q | cut -b 5,6 | tac
-		read'
-}
-
-if ! test "$1" = this; then
-	tmux list-windows | sed 's/\([^:]*\):[^(]*(\([0-9]*\).*/\1 \2/' |
-	while read window pane_count; do
-		case "$pane_count" in
-		1)
-			create_enum_pane $window
-			tmux swap-pane -U -t$window.0 -s $window.1
-			tmux resize-pane -t$window.0 -x 2
-			;;
-		2) tmux resize-pane -t$window.0 -x 2;;
-		*) : ;;
-		esac
-	done
-else
-	create_enum_pane
-	tmux last-pane
-	tmux resize-pane -x 2
-	tmux swap-pane -U
-fi
-
+tmux split-window -d -h -l 3 'for ((i=$(tput lines); i>0; i--)); do echo $i; done; sleep 50'
