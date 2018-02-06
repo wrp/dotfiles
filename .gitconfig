@@ -51,8 +51,8 @@
 	whitespace = no-tab-in-indent
 	editor = vim
 [push]
-#	default = matching
-	default = simple
+	default = matching
+	#default = simple
 [pager]
 	status = true
 # [init]
