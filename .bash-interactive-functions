@@ -157,14 +157,20 @@ rh() { history -r $HOME/.bash-history; }
 ru () { tac | awk '!a[$0]++' | tac; } ## reverse-unique
 rsync() { command rsync -e 'ssh -o LogLevel=error' "$@"; }
 s() { search-bash-history "$@"; }
-ssh() { execute ssh -o LogLevel=error -A "$@"; }
+ssh() { test "$1" = "-A" && shift; execute ssh -o LogLevel=error -A "$@"; }
 scp() { [[ ! $* =~ : ]] &&
 	{ echo 'One of the files should be remote' >&2; return 1; }
 	command scp -p -o LogLevel=error "$@"
 }
 sort() { LC_ALL=C command sort "$@"; }
-test -x /usr/bin/tac || tac() { gtac "$@"; }
-# tac() awk '{a[NR] = $0 } END {for(c=NR; c>0; c--) print a[c]}'; }
+if ! which -s tac; then
+	if which -s gtac; then
+		tac() { gtac "$@"; }
+	else
+		tac() { for x; do awk '{a[NR] = $0 }
+			END {for(c=NR; c>0; c--) print a[c]}' "$x"; done; }
+	fi
+fi
 ta() { EVENT_NOKQUEUE=1 tmux attach; }
 tmux-title() { test -t 1 && rename-tmux-pane "$@" 2> /dev/null; }
 tn() { tmux switch-client -n; }
