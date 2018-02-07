@@ -1,4 +1,49 @@
 #!/bin/sh
 
+usage() {
+	cat <<- EOF
+		usage: $(basename $0) [-r] sleep_time
 
-tmux split-window -d -h -l 3 'for ((i=$(tput lines); i>0; i--)); do echo $i; done; sleep 50'
+		Create a small tmux window and print a number on each line.
+		Window closes after sleep_time seconds. (default 50.  use
+		0 so stay open forever)
+
+		-r   Print in reverse order (top down)
+	EOF
+}
+
+parse_args() {
+	while getopts ":rh" opt; do
+		case $opt in
+		r) reverse=1;;
+		h) usage; exit 0;;
+		*) die "illegal option -$OPTARG (-h for usage)"
+		esac
+	done
+}
+
+main() {
+	unset reverse
+	parse_args "$@"
+	shift $(($OPTIND-1))
+	echo args: "$@"
+	sleep_time=${1-50}
+
+	cmd='for '
+	if test "$reverse"; then
+		cmd+='((i=1; i<$(tput lines); i++))'
+	else
+		cmd+='((i=$(tput lines); i>0; i--))'
+	fi
+	cmd+='; do echo $i; done;'
+	if test "$sleep_time" = 0; then
+		cmd+='read'
+	else
+		cmd+="sleep $sleep_time"
+	fi
+
+	tmux split-window -bdh -l 3 "$cmd"
+
+}
+
+main "$@"
