@@ -11,8 +11,8 @@ set listchars=extends:%,precedes:%,eol:$,tab:>-,trail:$
 set matchpairs+=<:>
 set nowrap
 set nowrapscan
-"set smartindent  # dont' do this: it puts # in column 1
-set cindent
+set smartindent
+" set cindent
 set tildeop
 set t_ti= t_te=  " Disable clear screen on exit
 set wildmenu
