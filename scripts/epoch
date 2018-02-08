@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if test -n "$*"; then
+	for x; do echo "$x"; done
+else
+	cat;
+fi \
+| perl -ne 'printf "%10s: %s\n", $_, scalar localtime $_'
