@@ -92,7 +92,7 @@ grep() { command grep --color=auto "$@"; }
 
 irssi() { dtach -A /tmp/irssi.dtach irssi; }
 j() {
-	test "$1" = . && { gcd; return; }
+	test "$1" = . && { select-git-branch; return; }
 	test "$1" = p && { checkout_previous_branch; return; }
 	local _dir _dirlist
 	local _list=$(
