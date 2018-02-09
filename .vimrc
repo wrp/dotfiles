@@ -11,7 +11,7 @@ set listchars=extends:%,precedes:%,eol:$,tab:>-,trail:$
 set matchpairs+=<:>
 set nowrap
 set nowrapscan
-set smartindent
+" set smartindent
 " set cindent
 set tildeop
 set t_ti= t_te=  " Disable clear screen on exit
@@ -50,3 +50,4 @@ highlight Comment ctermfg=darkcyan
 set cinkeys="0{,0},0),!^F,o,O,e"
 
 set formatoptions=cq
+set comments=
