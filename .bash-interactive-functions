@@ -114,7 +114,7 @@ j() {
 	command cd $HOME/$_dir
 	select-git-branch
 }
-jh() { local target=${1-prd-adm}; ssh -A ${target}-jh.devops.wepay-inc.com; }
+jh() { V=1 execute ssh -A ${1-prd-adm}-jh.devops.wepay-inc.com; }
 debug() { test -n "$VERBOSE" && echo "$@" >&2; }
 lb() { tr \\n \ | tmux loadb - ; }
 lba() { { if test $# -gt 1; then "$@"; else cat; fi; } | tmux loadb -; }
