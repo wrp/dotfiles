@@ -45,9 +45,9 @@ docker() { execute docker "$@" | { while read line; do echo "$line" >&3; echo "$
 	| sed -nE -e 's/.*([0-9a-f]{12}).*/\1/p' | sed -n -e 1p -n -e '$p' \
 	| while read id; do printf "$id" | tmux loadb -; done; } 3>&1
 }
-execute() { cmd=$1; shift; tmux-title "$cmd";
-	test "$V" -gt 0 2> /dev/null && echo Executing: "$cmd" "$@" >&2;
-	command "$cmd" "$@";
+execute() { cmd=$1; tmux-title "$cmd";
+	test "$V" -gt 0 2> /dev/null && echo Executing: "$@" >&2;
+	command "$@";
 	RV=$?; tmux-title; return $RV; }
 g() { git "$@"; }
 ga() { git add "$@"; git ci -nm "Add $*"; }
