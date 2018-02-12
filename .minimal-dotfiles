@@ -1,0 +1,36 @@
+# vi .bashrc .vimrc .inputrc .tmux.conf
+#
+# .bashrc
+unalias -a
+export EVENT_NOKQUEUE=1
+export HISTTIMEFORMAT='%H:%M:%S '
+export LSCOLORS=fxfxcxdxbxegedabagacad
+unset PROMPT_COMMAND
+set -o vi
+PS1='\[$( { test $? != 0 && tput setaf 1 || tput setaf 2;} 2> /dev/null
+ )\][$(date "+%H:%M:%S") \u@\h]\[$( tput setaf 2 2> /dev/null )\]\$ '
+
+" .vimrc
+nore v V
+nore V v
+nore ; :
+nore , ;
+set nowrapscan
+
+# .inputrc
+set editing-mode vi
+set keymap vi
+
+# .tmux.conf
+unbind C-b
+set -g prefix C-k
+bind C-k send-prefix
+set -g window-status-current-bg yellow
+set -g window-status-current-fg red
+set -g window-status-current-format '#I:#W'
+set -g status-left-length 25
+set status-right '%H:%M %e-%b'
+set-option -g update-environment "SSH_AUTH_SOCK"
+set history-limit 25000
+bind-key -n Up previous-window
+bind-key -n Down next-window
