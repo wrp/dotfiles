@@ -30,6 +30,7 @@ files='
 .ctags
 .editrc
 .gitconfig
+.gitignore_global
 .inputrc
 .pystartup
 .tmux.conf
