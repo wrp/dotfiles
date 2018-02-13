@@ -46,7 +46,7 @@ docker() { execute docker "$@" | { while read line; do echo "$line" >&3; echo "$
 	| while read id; do printf "$id" | tmux loadb -; done; } 3>&1
 }
 execute() { cmd=$1; tmux-title "$cmd";
-	test "$V" -gt 0 2> /dev/null && echo Executing: "$@" >&2;
+	test "$V" -gt 0 2> /dev/null && echo \$ "$@" >&2;
 	command "$@";
 	RV=$?; tmux-title; return $RV; }
 g() { git "$@"; }
