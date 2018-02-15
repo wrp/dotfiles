@@ -14,5 +14,7 @@ if { test "$choice" -le "$count" && test "$choice" -gt 0; } 2> /dev/null; then
 	branch=$(echo "$list" | cut -b 3- | awk "NR == $choice{print \$1}")
 	git checkout "$branch"
 else
-	eval "$choice"
+	printf '%s' "$choice" | tmux loadb -
+	# Let interactive prompt print
+	{ sleep .2; tmux paste-buffer; } &
 fi
