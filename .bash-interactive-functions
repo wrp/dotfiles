@@ -163,14 +163,14 @@ scp() { [[ ! $* =~ : ]] &&
 	command scp -p -o LogLevel=error "$@"
 }
 sort() { LC_ALL=C command sort "$@"; }
-if ! which -s tac; then
-	if which -s gtac; then
+if ! which tac; then
+	if which gtac; then
 		tac() { gtac "$@"; }
 	else
 		tac() { for x; do awk '{a[NR] = $0 }
 			END {for(c=NR; c>0; c--) print a[c]}' "$x"; done; }
 	fi
-fi
+fi > /dev/null 2>&1
 ta() { EVENT_NOKQUEUE=1 tmux attach; }
 tmux-title() { test -t 1 && rename-tmux-pane "$@" 2> /dev/null; }
 tn() { tmux switch-client -n; }
