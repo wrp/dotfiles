@@ -2,7 +2,9 @@
 
 list=$(git branch -vv)
 choice=${1-0}
-count=$(echo "$list" | wc -l)
+count=$(echo "$list" | wc -l | tr -d '[:space:]')
+
+test "$count" = 1 && exit
 
 if ! test ${choice} -gt 0; then
 	git branch -vv --color=always | nl
