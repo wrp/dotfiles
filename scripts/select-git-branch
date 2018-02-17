@@ -7,9 +7,10 @@ count=$(echo "$list" | wc -l | tr -d '[:space:]')
 test "$count" = 1 && exit
 
 if ! test ${choice} -gt 0; then
-	git branch -vv --color=always | nl
+	git branch -vv --color=always | nl \
+		| perl -nE "chop; say substr(\$_,0,${COLUMNS-80})"
 	printf "Select branch: " 
-	read choice
+	read -r choice
 fi
 
 if { test "$choice" -le "$count" && test "$choice" -gt 0; } 2> /dev/null; then
