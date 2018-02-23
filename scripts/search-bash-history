@@ -20,6 +20,11 @@ printf 'Select command to store in tmux buffer: '
 read n
 if test "$n" -gt 0 2> /dev/null; then
 	sed -n "${n}p" $tmpfile | tr -d \\n | tmux loadb -
-	# Let interactive prompt print
-	{ sleep .2; tmux paste-buffer; } &
+elif test -n "$n"; then
+	printf "%s" "$n" | tmux loadb -
+else
+	exit 0
 fi
+
+# Let interactive prompt print
+{ sleep .2; tmux paste-buffer; } &
