@@ -1,8 +1,8 @@
 autocmd BufWritePre !*.test :%s/\s\+$//e
-nore v V
-nore V v
-nore ; :
-nore , ;
+noremap v V
+noremap V v
+noremap ; :
+noremap , ;
 inoremap jk <esc>
 let loaded_matchparen=1
 set iskeyword=@,48-57,_,192-255,-
