@@ -97,7 +97,7 @@ j() {
 	local _dir _dirlist
 	local _list=$(
 		{ find $HOME/{dev,packages,ops} -maxdepth 3 -mindepth 2 -name .git
-		find $HOME -maxdepth 4 -path '*.git/.wrp-whitelist'; } \
+		ls $HOME/3rd-party/*/.git/.wrp-whitelist; } \
 		| sed -E -e 's@/.git/?.*$@@' -e 's@.*/([^/]+/[^/]+)$@\1@'
 	)
 	if test "${1-unset}" = unset; then
