@@ -96,8 +96,7 @@ j() {
 	test "$1" = p && { checkout_previous_branch; return; }
 	local _dir _dirlist
 	local _list=$(
-		{ find $HOME/{dev,packages,ops} -maxdepth 3 -mindepth 2 -name .git
-		ls $HOME/3rd-party/*/.git/.wrp-whitelist; } \
+		find $HOME/{dev,packages,ops} -maxdepth 3 -mindepth 2 -name .git \
 		| sed -E -e 's@/.git/?.*$@@' -e 's@.*/([^/]+/[^/]+)$@\1@'
 	)
 	if test "${1-unset}" = unset; then
