@@ -3,6 +3,7 @@
 # Search for commands in .bash-history and provide an interface
 # to store one in the tmux buffer
 tac=$(which tac || which gtac)
+buffer_name=history_search
 
 test $# = 0 && set '^ssh'
 
@@ -19,12 +20,12 @@ grep -i "$*" ~/.bash-history \
 printf 'Select command to store in tmux buffer: '
 read n
 if test "$n" -gt 0 2> /dev/null; then
-	sed -n "${n}p" $tmpfile | tr -d \\n | tmux loadb -
+	sed -n "${n}p" $tmpfile | tr -d \\n | tmux loadb -b ${buffer_name?} -
 elif test -n "$n"; then
-	printf "%s" "$n" | tmux loadb -
+	printf "%s" "$n" | tmux loadb -b ${buffer_name?} -
 else
 	exit 0
 fi
 
 # Let interactive prompt print
-{ sleep .2; tmux paste-buffer; } &
+{ sleep .2; tmux paste-buffer -b ${buffer_name?} ; } &
