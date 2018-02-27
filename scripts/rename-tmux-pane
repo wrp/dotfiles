@@ -1,0 +1,20 @@
+#!/bin/sh
+unset title
+
+test -z "$*" && {
+  title=
+  set "${title:-$(basename $PWD)}"
+}
+if test -z "$left_justify"; then
+	patt='.*\(.\{19\}\)'
+	repl='<\1'
+else
+	patt='\(.\{19\}\).*'
+	repl='\1>'
+fi
+
+title=$( echo "$*" | sed '/.\{20\}/s/^'$patt'$/'$repl/)
+
+tmux rename-window -- "$title"
+exit
+printf '\033k%s\033\\' "$title";
