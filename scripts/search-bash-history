@@ -15,6 +15,8 @@ grep -i "$*" ~/.bash-history \
 | awk '!/^s / && !a[$0]++' \
 > $tmpfile
 
+test -s $tmpfile || exit 0
+
 < $tmpfile nl -ba | $tac | perl -nE 'chop; say substr $_, 0, '"${COLUMNS-80}"
 
 printf 'Select command to store in tmux buffer: '
