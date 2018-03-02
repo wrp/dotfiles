@@ -82,8 +82,11 @@ gi() {
 }
 git() {
 	case "$1" in
-	clone) long="${2#*//}"; short="${long%%/*}";
-		if test -n "$long"; then shift; set -- clone --origin="$short" "$@"; fi
+	clone)
+		local origin
+		# Parse the url to specify a name for origin
+		origin=$(echo $2 | awk '{print $3}' FS=[/.])
+		if test -n "$origin"; then shift; set -- clone --origin="$origin" "$@"; fi
 	;;
 	esac
 	execute git "$@";
