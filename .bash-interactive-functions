@@ -91,7 +91,7 @@ git() {
 	esac
 	execute git "$@";
 }
-grep() { command grep ${1:+-R} --color=auto "$@"; }
+grep() { command grep --color=auto "$@" 2> /dev/null; }
 
 irssi() { dtach -A /tmp/irssi.dtach irssi; }
 j() {
