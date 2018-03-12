@@ -1,8 +1,8 @@
 #!/bin/sh
 
 # Output some text intended for use in PS1
-: ${WIDTH=25}
-
+width=${1-25}
+wide=${2-100}
 
 path=$(/bin/pwd 2>/dev/null) || path='[nodir]' 2> /dev/null
 
@@ -12,15 +12,15 @@ branch="$(git rev-parse --abbrev-ref HEAD 2> /dev/null |
 	sed -e 's/-[0-9]*$//')"
 
 
-date +%H:%M:%S | tr -d \\n
+date +" %H:%M:%S" | tr -d \\n
 
-if test "$COLUMNS" -gt 100; then
+if test "${COLUMNS-0}" -gt ${wide} then
 {
 printf "@"
 test -n "$branch" && printf '[%s]' "$branch"
-printf "%${WIDTH}s" "$(echo $path |
+printf "%${width}s" "$(echo $path |
 	sed -e "s@$HOME@~@" |
-	perl -pe '1 while length $_ > '${WIDTH}' + 1 &&
+	perl -pe '1 while length $_ > '${width}' + 1 &&
 		( int(s/\$HOME/~/g) || int(s@([^/]+)[^/]/@$1/@))')"
 } | tr \  .
 fi
