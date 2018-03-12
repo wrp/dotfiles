@@ -12,7 +12,7 @@ branch="$(git rev-parse --abbrev-ref HEAD 2> /dev/null |
 	sed -e 's/-[0-9]*$//')"
 
 
-date +" %H:%M:%S" | tr -d \\n
+date +%H:%M:%S | tr -d \\n
 
 if test "${COLUMNS-0}" -gt ${wide} then
 {
