@@ -1,6 +1,5 @@
 #!/bin/sh
 
-test "$COLUMNS" -lt 20 && exit
 # Output some text intended for use in PS1
 : ${WIDTH=25}
 

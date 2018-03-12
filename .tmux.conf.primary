@@ -11,3 +11,4 @@ set -g history-limit 25000
 set-option -g update-environment "SSH_AUTH_SOCK"
 bind-key -n Left previous-window
 bind-key -n Right next-window
+bind-key C-i rotate-window -D
