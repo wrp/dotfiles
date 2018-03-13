@@ -7,22 +7,29 @@ buffer_name=history_search
 
 test $# = 0 && set '^ssh'
 
-trap 'rm -f $tmpfile' 0
-tmpfile=$(mktemp)
+trap 'rm -f $tmp1 $tmp2' 0
+tmp1=$(mktemp)
+tmp2=$(mktemp)
+cat ~/.bash-history > $tmp1
 
-grep -i "$*" ~/.bash-history \
-| $tac \
+for pattern in "$@"; do
+	grep -i "$pattern" $tmp1 > $tmp2
+	mv $tmp2 $tmp1
+done
+
+< $tmp1 $tac \
 | awk '!/^s / && !a[$0]++' \
-> $tmpfile
+> $tmp2
+mv $tmp2 $tmp1
 
-test -s $tmpfile || exit 0
+test -s $tmp1 || exit 0
 
-< $tmpfile nl -ba | $tac | perl -nE 'chop; say substr $_, 0, '"${COLUMNS-80}"
+< $tmp1 nl -ba | $tac | perl -nE 'chop; say substr $_, 0, '"${COLUMNS-80}"
 
 printf 'Select command to store in tmux buffer: '
 read n
 if test "$n" -gt 0 2> /dev/null; then
-	sed -n "${n}p" $tmpfile | tr -d \\n | tmux loadb -b ${buffer_name?} -
+	sed -n "${n}p" $tmp1 | tr -d \\n | tmux loadb -b ${buffer_name?} -
 elif test -n "$n"; then
 	printf "%s" "$n" | tmux loadb -b ${buffer_name?} -
 else
