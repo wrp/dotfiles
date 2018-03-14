@@ -17,8 +17,8 @@ PS1='\[$(
 	tput setaf ${COLORS:$color_index:1} 2> /dev/null
 	)\]$(
 	date +%H:%M:%S
-	)$(
-	test "${COLUMNS:-0}" -gt 40 && printf " %s:" $(set-prompt 2> /dev/null)
+	):$(
+	test "${COLUMNS:-0}" -gt 140 && printf "%s:" $(set-prompt 2> /dev/null)
 	)'"\[$(tput setaf 2 2> /dev/null)\]$$\$ "
 
 read_file() { for f; do test -f $f && . $f; done; }

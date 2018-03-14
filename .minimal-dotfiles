@@ -9,7 +9,7 @@ export LESS=-FeRX
 unset PROMPT_COMMAND
 set -o vi
 PS1='\[$( { test $? != 0 && tput setaf 1 || tput setaf 2;} 2> /dev/null
- )\][$(date "+%H:%M:%S") $$ \u@\h]\[$( tput setaf 2 2> /dev/null )\]\$ '
+	)\][$(date "+%H:%M:%S") $$ \u@\h]\[$( tput setaf 2 2> /dev/null )\]\$ '
 
 trap 'history -a' DEBUG
 
