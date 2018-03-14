@@ -19,7 +19,7 @@ PS1='\[$(
 	tput setaf ${COLORS:$color_index:1} 2> /dev/null
 	)\]$(
 	# hostname
-	test "${COLUMNS:-0}" -gt 140 && printf "%s" "$(uname -n | cut -d. -f1 | cut -b 1-20)"
+	test "${COLUMNS:-0}" -gt 140 && printf ":%s" "$(uname -n | cut -d. -f1 | cut -b 1-20)"
 	)$(
 	# git branch
 	test "${COLUMNS:-0}" -gt 40 && printf "[%s]" "$( {
