@@ -12,14 +12,14 @@ shopt -s histverify
 PS1='\[$(
         { test $? != 0 && tput setaf 1 || tput setaf 2; } 2> /dev/null
 	)\]$(
-	test "${COLUMNS:-0}" -gt 40 && printf "%s:" "$(uname -n | cut -d. -f1)"
+	test "${COLUMNS:-0}" -gt 140 && printf "%-20s" "$(uname -n | cut -d. -f1 | cut -b 1-20)"
+	)$(
+	test "${COLUMNS:-0}" -gt 40 && printf "[%10s]" "$(git rev-parse --abbrev-ref HEAD 2> /dev/null | cut -b 1-10 )"
 	)\[$(
 	tput setaf ${COLORS:$color_index:1} 2> /dev/null
 	)\]$(
 	date +%H:%M:%S
-	):$(
-	test "${COLUMNS:-0}" -gt 140 && printf "%s:" $(set-prompt 2> /dev/null)
-	)'"\[$(tput setaf 2 2> /dev/null)\]$$\$ "
+	):'"\[$(tput setaf 2 2> /dev/null)\]$$\$ "
 
 read_file() { for f; do test -f $f && . $f; done; }
 read_file ~/.bash-functions ~/.bash-interactive-functions
