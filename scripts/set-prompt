@@ -11,10 +11,7 @@ dirname=$( pwd )
 branch="$(git rev-parse --abbrev-ref HEAD 2> /dev/null |
 	sed -e 's/-[0-9]*$//')"
 
-
-date +%H:%M:%S | tr -d \\n
-
-if test "${COLUMNS-0}" -gt ${wide} then
+if test "${COLUMNS-0}" -gt ${wide}; then
 {
 printf "@"
 test -n "$branch" && printf '[%s]' "$branch"
