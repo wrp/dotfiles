@@ -38,7 +38,6 @@ prepend PATH $HOME/scripts
 export COLORS=356
 color_index=$(expr \( "${color_index:-${#COLORS}}" + 1 \) % ${#COLORS})
 export color_index
-cd .
 
 # trap ". $HOME/.ssh/agent.$(hostname)" SIGUSR2
 nl='
