@@ -13,7 +13,7 @@ ack() {
 	shift
 	find "${@-.}" -name .git -prune -o -type f -exec grep $_dash_i -H "$_regex" {} \;
 }
-c() { tput sc; clear; tput rc; }
+c() { tput sc; clear; tput rc; } # save cursor/restore cursor  man terminfo
 cd() {
 	local _SESSION_DIR
 	local _rv
