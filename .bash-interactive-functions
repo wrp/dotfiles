@@ -55,9 +55,12 @@ gcd() {
 	local _dir
 	_dir=$(get-modified-files $1 | get-most-used-dir)
 	test -d "$_dir" || _dir=$(dirname "$_dir")
-	test -d "$_dir" && cd "$_dir"
-	git branch -vv
-	pwd
+	if test -d "$_dir"; then
+		cd "$_dir"
+		pwd
+	else
+		echo "$_dir is not a directory" >&2
+	fi
 }
 gdb() { command gdb -tui "$@"; }
 
