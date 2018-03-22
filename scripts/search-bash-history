@@ -33,6 +33,7 @@ if test "$n" -gt 0 2> /dev/null; then
 elif test -n "$n"; then
 	printf "%s" "$n" | tmux loadb -b ${buffer_name?} -
 else
+	echo
 	exit 0
 fi
 
