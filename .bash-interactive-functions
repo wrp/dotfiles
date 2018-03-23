@@ -94,6 +94,7 @@ git() {
 	esac
 	execute git "$@";
 }
+gpu() { git push -u ${1-william} HEAD:$(git rev-parse --abbrev-ref HEAD); }
 grep() { command grep --color=auto "$@" 2> /dev/null; }
 
 irssi() { dtach -A /tmp/irssi.dtach irssi; }
