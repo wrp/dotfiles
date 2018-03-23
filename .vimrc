@@ -3,7 +3,7 @@ noremap v V
 noremap V v
 noremap ; :
 noremap , ;
-inoremap jk <esc>
+" inoremap jk <esc>
 let loaded_matchparen=1
 set iskeyword=@,48-57,_,192-255,-
 set ai

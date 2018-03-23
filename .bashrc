@@ -102,7 +102,7 @@ export LSCOLORS=fxfxcxdxbxegedabagacad
 
 # Use bind -p to see a list of usefull stuff
 # bind -m vi-insert '"\C-b": complete-into-braces'
-bind -m vi-insert '"jk": vi-movement-mode'
+# bind -m vi-insert '"jk": vi-movement-mode'
 
 # LSCOLORS is for OSX, LS_COLORS for linux
 LS_COLORS=$( cat << EOF | tr \\n :
