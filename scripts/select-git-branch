@@ -3,14 +3,17 @@
 # Display git branches and prompt for one to checkout.  Honor
 # environment variable TIMEOUT
 
-list=$(git branch -vv)
+format='%(align:14)%(HEAD) %(refname:short)%(end) %(contents:subject)'
+
+list=$(git branch --color --format="$format")
 choice=${1}
 count=$(echo "$list" | wc -l | tr -d '[:space:]')
 
 test "$count" = 1 && exit
 
 if ! test "$choice" -gt 0 2> /dev/null; then
-	git branch -vv --color=always | nl \
+	git branch --color=always --format="$format" \
+		| nl \
 		| perl -nE "chop; say substr(\$_,0,${COLUMNS-80})"
 	printf "Select branch: " 
 	read -r choice || echo
