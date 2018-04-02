@@ -1,9 +1,14 @@
 #!/bin/sh
 
 # Search for commands in .bash-history and provide an interface
-# to store one in the tmux buffer
+# to store one in a tmux buffer
 tac=$(which tac || which gtac)
 buffer_name=history_search
+
+if test "$1" -ge 0 2> /dev/null; then
+	line_count=$1
+	shift
+fi
 
 test $# = 0 && set '^ssh'
 
@@ -24,10 +29,15 @@ mv $tmp2 $tmp1
 
 test -s $tmp1 || exit 0
 
-< $tmp1 nl -ba | $tac | perl -nE 'chop; say substr $_, 0, '"${COLUMNS-80}"
+if test -z "$line_count"; then
+	< $tmp1 nl -ba | $tac | perl -nE 'chop; say substr $_, 0, '"${COLUMNS-80}"
 
-printf 'Select command to store in tmux buffer: '
-read n
+	printf 'Select command to store in tmux buffer: '
+	read n
+else
+	n=$line_count
+fi
+
 if test "$n" -gt 0 2> /dev/null; then
 	sed -n "${n}p" $tmp1 | tr -d \\n | tmux loadb -b ${buffer_name?} -
 elif test -n "$n"; then
