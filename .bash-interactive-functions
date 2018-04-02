@@ -94,7 +94,11 @@ git() {
 	esac
 	execute git "$@";
 }
-gpu() { git push -u ${1-william} HEAD:$(git rev-parse --abbrev-ref HEAD); }
+gpu() {
+	default=${1:-$(g remote | sed -n -e '/^w/{p; q; }' | grep .)} || {
+		echo "No remote to use as default. Specify remote as 1st arg" >&2; return 1; }
+	git push -u "$default" HEAD:$(git rev-parse --abbrev-ref HEAD);
+}
 grep() { command grep --color=auto "$@" 2> /dev/null; }
 
 irssi() { dtach -A /tmp/irssi.dtach irssi; }
