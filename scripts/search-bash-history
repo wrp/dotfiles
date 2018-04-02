@@ -30,7 +30,7 @@ mv $tmp2 $tmp1
 test -s $tmp1 || exit 0
 
 if test -z "$line_count"; then
-	< $tmp1 nl -ba | $tac | perl -nE 'chop; say substr $_, 0, '"${COLUMNS-80}"
+	< $tmp1 nl -ba | expand | $tac | perl -nE 'chop; say substr $_, 0, '"${COLUMNS-80} - 1"
 
 	printf 'Select command to store in tmux buffer: '
 	read n
