@@ -1,5 +1,3 @@
-#!/bin/sh
-
 # tmux gets SSH_AUTH_SOCK reset, and
 # set-option -g update-environment "SSH_AUTH_SOCK" is not working.
 # Source this to reset within a shell
@@ -16,6 +14,4 @@ value=$(tr < /proc/$pid/environ '\000' \\n \
 
 test "$value" != "$SSH_AUTH_SOCK" && {
 	SSH_AUTH_SOCK=$value
-	exit 0
 }
-exit 1
