@@ -23,9 +23,10 @@ PS1='\[$(
 		| cut -b 1-20 | sed -e 's/williamp-02URFVH4/laptop/' )"
 	)$(
 	# directory and git branch
-	test "${COLUMNS:-0}" -gt 40 && printf "[%s/%s]" "$(basename "$(pwd)" \
-		| cut -b 1-10 )" "$( {
-		git rev-parse --abbrev-ref HEAD 2> /dev/null || echo no-git; } | cut -b 1-10 )"
+	test "${COLUMNS:-0}" -gt 40 && printf "[%s/%s]" \
+		"$(basename "$(git rev-parse --show-toplevel)" | cut -b 1-10 )" \
+		"$({ git rev-parse --abbrev-ref HEAD 2> /dev/null \
+			|| echo no-git; } | cut -b 1-10 )"
 	):'"\[$(tput setaf 2 2> /dev/null)\]$$\$ "
 
 read_file() { for f; do test -f $f && . $f; done; }
