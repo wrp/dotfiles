@@ -122,7 +122,6 @@ j() {
 		sed -n -e ${filter}p; } )
 
 	command cd $HOME/$_dir
-	TMOUT=4 select-git-branch
 }
 jh() { case $1 in poc) ssh -A poc-ansible01;;
 	*) V=1 execute ssh -A ${1-prd-adm}-jh.devops.wepay-inc.com; esac; }
