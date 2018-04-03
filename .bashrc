@@ -19,7 +19,8 @@ PS1='\[$(
 	tput setaf ${COLORS:$color_index:1} 2> /dev/null
 	)\]$(
 	# hostname
-	test "${COLUMNS:-0}" -gt 140 && printf ":%s" "$(uname -n | cut -d. -f1 | cut -b 1-20)"
+	test "${COLUMNS:-0}" -gt 140 && printf ":%s" "$(uname -n | cut -d. -f1 \
+		| cut -b 1-20 | sed -e 's/williamp-02URFVH4/laptop/' )"
 	)$(
 	# directory and git branch
 	test "${COLUMNS:-0}" -gt 40 && printf "[%s/%s]" "$(basename "$(pwd)" \
