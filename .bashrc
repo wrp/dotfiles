@@ -33,10 +33,10 @@ read_file() { for f; do test -f $f && . $f; done; }
 read_file ~/.bash-functions ~/.bash-interactive-functions
 complete -r
 
-prepend PATH $HOME/we-tools-cli/bin
-prepend PATH $HOME/$(uname -m)/bin
-prepend PATH $HOME/all/bin
-prepend PATH $HOME/scripts
+append PATH $HOME/scripts
+append PATH $HOME/all/bin
+append PATH $HOME/$(uname -m)/bin
+append PATH $HOME/we-tools-cli/bin
 
 export COLORS=356
 color_index=$(expr \( "${color_index:-${#COLORS}}" + 1 \) % ${#COLORS})
