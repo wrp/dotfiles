@@ -4,4 +4,18 @@
 # set-option -g update-environment "SSH_AUTH_SOCK" is not working.
 # Source this to reset within a shell
 
-. $(ssh-agent)
+pid=$(ps -o pid=,ppid=,cmd= $(pgrep -u williamp bash) \
+        | awk '$3 ~ /bash/ && $2 != mypid{k[$2]++; a[$2]=$1}
+                END {for(i in k) if(k[i] == 1) print a[i]}
+        ' mypid=$$
+)
+
+
+value=$(tr < /proc/$pid/environ '\000' \\n \
+        | awk '$1 == "SSH_AUTH_SOCK" { print $2 }' FS==)
+
+test "$value" != "$SSH_AUTH_SOCK" && {
+	SSH_AUTH_SOCK=$value
+	exit 0
+}
+exit 1
