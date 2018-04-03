@@ -24,7 +24,8 @@ PS1='\[$(
 	)$(
 	# directory and git branch
 	test "${COLUMNS:-0}" -gt 40 && printf "[%s/%s]" \
-		"$(basename "$(git rev-parse --show-toplevel)" | cut -b 1-10 )" \
+		"$(basename "$(git rev-parse --show-toplevel 2> /dev/null )" \
+			| cut -b 1-10 )" \
 		"$({ git rev-parse --abbrev-ref HEAD 2> /dev/null | grep . \
 			|| echo no-git; } | cut -b 1-10 )"
 	):'"\[$(tput setaf 2 2> /dev/null)\]$$\$ "
