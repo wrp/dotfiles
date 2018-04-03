@@ -21,8 +21,9 @@ PS1='\[$(
 	# hostname
 	test "${COLUMNS:-0}" -gt 140 && printf ":%s" "$(uname -n | cut -d. -f1 | cut -b 1-20)"
 	)$(
-	# git branch
-	test "${COLUMNS:-0}" -gt 40 && printf "[%s]" "$( {
+	# directory and git branch
+	test "${COLUMNS:-0}" -gt 40 && printf "[%s/%s]" "$(basename "$(pwd)" \
+		| cut -b 1-10 )" "$( {
 		git rev-parse --abbrev-ref HEAD 2> /dev/null || echo no-git; } | cut -b 1-10 )"
 	):'"\[$(tput setaf 2 2> /dev/null)\]$$\$ "
 
