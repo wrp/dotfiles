@@ -4,9 +4,10 @@
 
 pid=$(ps -o pid=,ppid=,cmd= $(pgrep -u williamp bash) \
         | awk '$3 ~ /bash/ && $2 != mypid{k[$2]++; a[$2]=$1}
-                END {for(i in k) if(k[i] == 1) print a[i]}
+                END {for(i in k) if(k[i] == 1) {print a[i]; exit 0}
+		exit 1}
         ' mypid=$$
-)
+) || { echo 'Cannot find pid' >&2; exit 1; }
 
 
 value=$(tr < /proc/$pid/environ '\000' \\n \
