@@ -1,0 +1,5 @@
+#!/bin/sh
+
+cols=$( tput cols 2> /dev/null )
+
+perl -nE 'chop; say substr $_, 0, '"${cols:-${COLUMNS-80}} - 1"
