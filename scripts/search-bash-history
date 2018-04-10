@@ -18,7 +18,12 @@ tmp2=$(mktemp)
 cat ~/.bash-history > $tmp1
 
 for pattern in "$@"; do
-	grep -i "$pattern" $tmp1 > $tmp2
+	unset negate
+	if test "${pattern:0:1}" = '~'; then
+		negate=-v
+		pattern="${pattern:1}"
+	fi
+	grep -i ${negate} "${pattern}" $tmp1 > $tmp2
 	mv $tmp2 $tmp1
 done
 
