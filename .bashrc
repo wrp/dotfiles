@@ -23,12 +23,14 @@ PS1='\[$(
 		| cut -b 1-20 | sed -e 's/williamp-02URFVH4/laptop/' )"
 	)$(
 	# directory and git branch
-	test "${COLUMNS:-0}" -gt 40 && printf "[%s/%s]" \
+	if test "${COLUMNS:-0}" -gt 40; then printf "[%s:%s]" \
 		"$(basename "$(git rev-parse --show-toplevel 2> /dev/null )" \
 			| cut -b 1-10 )" \
 		"$({ git rev-parse --abbrev-ref HEAD 2> /dev/null | grep . \
 			|| echo no-git; } | cut -b 1-10 )"
-	):'"\[$(tput setaf 2 2> /dev/null)\]$$\$ "
+	else printf :
+	fi
+	)'"\[$(tput setaf 2 2> /dev/null)\]$$\$ "
 
 read_file() { for f; do test -f $f && . $f; done; }
 read_file ~/.bash-functions ~/.bash-interactive-functions
@@ -62,7 +64,7 @@ export HISTTIMEFORMAT='%H:%M:%S ' #%m/%d
 export EDITOR=vim
 export CONFIG_SITE=$HOME/CONFIG_SITE
 export COLUMNS
-export LESS=-FeRX
+export LESS=-FeRXS
 export GIT_PAGER=less
 export ACK_PAGER_COLOR=less
 export PAGER=less
