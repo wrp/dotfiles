@@ -14,8 +14,8 @@ test "$count" = 1 && exit
 
 if ! test "$choice" -gt 0 2> /dev/null; then
 	git branch --color=always --format="$format" \
-		| nl \
-		| perl -nE "chop; say substr(\$_,0,${cols:-${COLUMNS-80}} - 1)"
+		| nl -ba -s ' ' \
+		| perl -nE "chop; say substr(\$_,0,${cols:-${COLUMNS-80}})"
 	printf "Select branch: " 
 	read -r choice || echo
 fi
