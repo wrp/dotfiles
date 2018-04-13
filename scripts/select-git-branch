@@ -1,11 +1,12 @@
 #!/bin/bash
 
-# Display git branches and prompt for one to checkout.  Honor
-# environment variable TIMEOUT
+# Display git branches and prompt for one to checkout.
+# Store result in a tmux paste buffer, and paste it after next prompt.
 
-format='%(align:14)%(HEAD) %(refname:short)%(end) %(contents:subject)'
 : ${COLUMNS:=$( tput cols 2> /dev/null )}
-
+width=$(git for-each-ref --format='%(refname:short)' refs/heads \
+| awk 'length > max {max = length} END {print max + 2}')
+format="%(align:$width)%(HEAD) %(refname:short)%(end) %(contents:subject)"
 list=$(git branch --color --format="$format")
 choice=${1}
 count=$(echo "$list" | wc -l | tr -d '[:space:]')
