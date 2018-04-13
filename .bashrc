@@ -79,7 +79,10 @@ debug_trap() {
 	if test "${BASH_COMMAND}" = "$PROMPT_COMMAND"; then
 		history -a;
 		test -f "$HISTFILE" &&
-		tac $HISTFILE | sed /^#/q | tac >> $HOME/.bash-history
+		tac $HISTFILE | perl -pe ' if( /^#/ ) {
+			s/([0-9]{9,10})/sprintf "%s (%s GMT)", $1, scalar gmtime $1/ge;
+			print; exit 0;
+		}' | tac >> $HOME/.bash-history
 		val=$( tmux show-env 2> /dev/null |
 			awk -F= '/^SSH_AUTH_SOCK=/{print $2}' )
 		test -n "$val" && SSH_AUTH_SOCK="$val"
