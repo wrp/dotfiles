@@ -1,18 +1,18 @@
-#!/bin/sh
+#!/usr/bin/env perl
 
-func=gmtime
-desc=GMT
-test "$1" = -l && {
-	func=localtime
-	desc=local
-	shift
+use strict;
+use warnings;
+use Getopt::Std;
+
+my %args;
+getopts('t', \%args);
+
+
+while(<>) {
+	if ($args{t}) {
+		s/([0-9]{9,10})/sprintf "%s (%s local)", $1, scalar localtime $1/ge;
+	} else {
+		s/([0-9]{9,10})/sprintf "%s (%s GMT)", $1, scalar gmtime $1/ge;
+	}
+	print;
 }
-
-if test -n "$*"; then
-	for x; do echo "$x"; done
-else
-	cat;
-fi \
-| perl -pe 's/([0-9]{9,10})/sprintf "%s (%s '$desc')", $1, scalar '$func' $1/ge'
-
-#| perl -pe 'ntf "%10s: %s\n", $_, scalar localtime $_'
