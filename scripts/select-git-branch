@@ -4,6 +4,7 @@
 # environment variable TIMEOUT
 
 format='%(align:14)%(HEAD) %(refname:short)%(end) %(contents:subject)'
+: ${COLUMNS:=$( tput cols 2> /dev/null )}
 
 list=$(git branch --color --format="$format")
 choice=${1}
@@ -14,7 +15,7 @@ test "$count" = 1 && exit
 if ! test "$choice" -gt 0 2> /dev/null; then
 	git branch --color=always --format="$format" \
 		| nl \
-		| perl -nE "chop; say substr(\$_,0,${COLUMNS-80})"
+		| perl -nE "chop; say substr(\$_,0,${cols:-${COLUMNS-80}} - 1)"
 	printf "Select branch: " 
 	read -r choice || echo
 fi
