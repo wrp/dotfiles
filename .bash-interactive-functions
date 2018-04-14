@@ -106,6 +106,10 @@ gpu() {
 }
 grep() { command grep --color=auto "$@" 2> /dev/null; }
 
+myselect() {
+	for x; do echo "$x"; done | nl -ba >&2
+	read -p "#? " REPLY
+}
 irssi() { dtach -A /tmp/irssi.dtach irssi; }
 j() {
 	test "$1" = . && { select-git-branch; return; }
@@ -116,7 +120,7 @@ j() {
 		| sed -E -e 's@/.git/?.*$@@' -e 's@.*/([^/]+/[^/]+)$@\1@'
 	)
 	if test "${1-unset}" = unset; then
-		select choice in $_list; do break; done
+		myselect $_list
 		test -z "$REPLY" && return
 		j $REPLY
 		return
@@ -124,9 +128,9 @@ j() {
 
 	_dir=$(echo "$_list" | { if test "$1" -gt 0 2> /dev/null; then
 		filter="${1}"; else filter="/$1/"; fi;
-		sed -n -e ${filter}p; } )
+		sed -n -e "${filter}p"; } )
 
-	command cd $HOME/$_dir
+	test -d $HOME/$_dir && command cd $HOME/$_dir
 }
 jh() { case $1 in poc) ssh -A poc-ansible01;;
 	*) V=1 execute ssh -A ${1-prd-adm}-jh.devops.wepay-inc.com; esac; }
