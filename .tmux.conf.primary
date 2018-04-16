@@ -13,4 +13,7 @@ bind-key -n Left previous-window
 bind-key -n Right next-window
 bind-key C-i rotate-window -D
 
+bind-key , command-prompt "rename-window"
+bind-key $ command-prompt "rename-session '%%'"
+
 set display-panes-time 2000

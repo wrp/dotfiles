@@ -39,3 +39,5 @@ set-option -g update-environment "SSH_AUTH_SOCK"
 set history-limit 25000
 bind-key -n Up previous-window
 bind-key -n Down next-window
+bind-key , command-prompt "rename-window '%%'"
+bind-key $ command-prompt "rename-session '%%'"
