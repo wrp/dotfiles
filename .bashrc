@@ -80,7 +80,8 @@ debug_trap() {
 		history -a;
 		test -f "$HISTFILE" &&
 		tac $HISTFILE | perl -pe ' if( /^#/ ) {
-			s/([0-9]{9,10})/sprintf "%s (%s GMT)", $1, scalar gmtime $1/ge;
+			s/([0-9]{9,10})/sprintf "%s (%d %s GMT)", $1, '$$',
+			scalar gmtime $1/ge;
 			print; exit 0;
 		}' | tac >> $HOME/.bash-history
 		val=$( tmux show-env 2> /dev/null |
