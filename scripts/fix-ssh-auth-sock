@@ -6,5 +6,6 @@ value=$( tmux show-env 2> /dev/null |
         | awk '$1 == "SSH_AUTH_SOCK" { print $2 }' FS==)
 
 test "$value" != "$SSH_AUTH_SOCK" && {
+	test -n "$V" && echo new value: $SSH_AUTH_SOCK
 	SSH_AUTH_SOCK=$value
 }
