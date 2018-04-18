@@ -117,15 +117,15 @@ j() {
 	.) select-git-branch; return;;
 	p) checkout_previous_branch; return;;
 	esac
-	local _dir _dirlist _arg
+	local _dir _dirlist _cmd
 	if stat -c %N . > /dev/null 2>&1; then
-		_arg=-c
+		_cmd="stat -c '%Y %n' \$1"
 	else
-		_arg=-f
+		_cmd="stat -f '%m %N' \$1"
 	fi
 	local _list=$(
 		find -H $HOME -maxdepth 3 -mindepth 2 -name .${USER}-usage \
-			-exec stat $_arg '%m %N' {} \; \
+			-exec sh -c "$_cmd" _ {} \; \
 		| sort -rn \
 		| sed -E \
 			-e 10q \
