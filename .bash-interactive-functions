@@ -113,8 +113,10 @@ myselect() {
 irssi() { dtach -A /tmp/irssi.dtach irssi; }
 use() { touch .${USER}-usage; }
 j() {
-	test "$1" = . && { select-git-branch; return; }
-	test "$1" = p && { checkout_previous_branch; return; }
+	case "$1" in
+	.) select-git-branch; return;;
+	p) checkout_previous_branch; return;;
+	esac
 	local _dir _dirlist _arg
 	if stat -c %N . > /dev/null 2>&1; then
 		_arg=-c
