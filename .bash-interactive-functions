@@ -113,12 +113,18 @@ myselect() {
 irssi() { dtach -A /tmp/irssi.dtach irssi; }
 use() { touch .${USER}-usage; }
 j() {
+	local arg
 	test "$1" = . && { select-git-branch; return; }
 	test "$1" = p && { checkout_previous_branch; return; }
 	local _dir _dirlist
+	case $(uname -s) in
+	Linux) arg=-c;;
+	Darwin) arg=-f;;
+	*) arg=-f;;
+	esac
 	local _list=$(
 		find -H $HOME -maxdepth 3 -mindepth 2 -name .${USER}-usage \
-			-exec stat -f '%m %N' {} \; \
+			-exec stat $arg '%m %N' {} \; \
 		| sort -rn \
 		| sed -E \
 			-e 10q \
