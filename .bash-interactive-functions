@@ -106,7 +106,7 @@ gpu() {
 grep() { command grep --color=auto "$@" 2> /dev/null; }
 
 myselect() {
-	for x; do echo "$x"; done | nl -ba >&2
+	for x; do echo "$x"; done | nl -ba | expand -t 8 | column >&2
 	read -p "#? " REPLY
 }
 irssi() { dtach -A /tmp/irssi.dtach irssi; }
@@ -128,7 +128,7 @@ j() {
 			-exec sh -c "$_cmd" _ {} \; \
 		| sort -rn \
 		| sed -E \
-			-e 10q \
+			-e 18q \
 			-e "s@/.${USER}-usage\$@@" \
 			-e 's@.*/([^/]+/[^/]+)$@\1@'
 	)
