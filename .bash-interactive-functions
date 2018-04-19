@@ -25,12 +25,11 @@ cd() {
 	elif test -f "$1" && echo $1 | grep -q /; then
 		_dir=$( dirname "$1")
 	fi
-	command cd "${_dir:-${_SESSION_DIR:-$HOME}}";
-	_rv=$?
+	command cd "${_dir:-${_SESSION_DIR:-$HOME}}" || return 1;
 	test "$PWD" != "$OLDPWD" && : $(( color_index = (color_index + 1) % ${#COLORS}))
 	tmux-title;
 	# echo "$PS1" | grep -q '@' || { test -t 1 && { printf 'PWD: '; pwd; } }
-	return $_rv
+	return 0
 }
 cdm() { cd $(get-modified-files | longest-common-prefix -d); }
 
