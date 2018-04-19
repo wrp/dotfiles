@@ -110,7 +110,8 @@ myselect() {
 	read -p "#? " REPLY
 }
 irssi() { dtach -A /tmp/irssi.dtach irssi; }
-use() { touch .${USER}-usage; }
+use() { local d; d=$(git rev-parse --show-toplevel) || return;
+	touch $d/.${USER}-usage; }
 j() {
 	case "$1" in
 	.) select-git-branch; return;;
