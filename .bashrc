@@ -76,9 +76,11 @@ read_file $HOME/.bash-env
 
 debug_trap() {
 	local val
-	if test "${BASH_COMMAND}" = "$PROMPT_COMMAND"; then
-		history -a;
-		test -f "$HISTFILE" &&
+	if test "${BASH_COMMAND}" != "$PROMPT_COMMAND"; then
+		return
+	fi
+	history -a;
+	if test -f "$HISTFILE"; then
 		tac $HISTFILE | perl -pe ' if( /^#/ ) {
 			s@([0-9]{9,10})@sprintf "%s (%s GMT by %d in %s)", $1,
 			scalar gmtime $1,
@@ -86,10 +88,12 @@ debug_trap() {
 			@ge;
 			print; exit 0;
 		}' | tac >> $HOME/.bash-history
-		val=$( tmux show-env 2> /dev/null |
-			awk -F= '/^SSH_AUTH_SOCK=/{print $2}' )
-		test -n "$val" && SSH_AUTH_SOCK="$val"
+	else
+		echo "WARNING: $HISTFILE has been deleted!!" >&2
 	fi
+	val=$( tmux show-env 2> /dev/null |
+		awk -F= '/^SSH_AUTH_SOCK=/{print $2}' )
+	test -n "$val" && SSH_AUTH_SOCK="$val"
 }
 
 trap debug_trap DEBUG
