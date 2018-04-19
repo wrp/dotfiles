@@ -89,7 +89,7 @@ debug_trap() {
 			print; exit 0;
 		}' | tac >> $HOME/.bash-history
 	else
-		echo "WARNING: $HISTFILE has been deleted!!" >&2
+		echo "WARNING: $HISTFILE does not exist!!" >&2
 	fi
 	val=$( tmux show-env 2> /dev/null |
 		awk -F= '/^SSH_AUTH_SOCK=/{print $2}' )
