@@ -89,7 +89,11 @@ debug_trap() {
 			print; exit 0;
 		}' | tac >> $HOME/.bash-history
 	else
-		echo "WARNING: $HISTFILE does not exist!!" >&2
+		exec >&2
+		printf "WARNING: $HISTFILE does not exist!!  "
+		printf "exec-ing a new shell\n"
+		touch $HISTFILE
+		exec bash
 	fi
 	val=$( tmux show-env 2> /dev/null |
 		awk -F= '/^SSH_AUTH_SOCK=/{print $2}' )
