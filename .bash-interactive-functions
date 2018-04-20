@@ -106,7 +106,7 @@ gpu() {
 grep() { command grep --color=auto "$@" 2> /dev/null; }
 
 myselect() {
-	for x; do echo "$x"; done | nl -ba | expand -t 8 | column >&2
+	for x; do echo "$x"; done | expand -t 8 | nl -ba -s ') ' -w 2 | column >&2
 	read -p "#? " REPLY
 }
 irssi() { dtach -A /tmp/irssi.dtach irssi; }
