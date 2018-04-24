@@ -4,8 +4,8 @@
 	email = williamp@wepay.com
 [alias]
 	ap = add --patch
-	# b = branch -vv
-	b = branch --color --format='"%(align:14)%(HEAD) %(refname:short)%(end)%(color:red)%(push:short) %(push:track)%(color:reset)%(contents:subject)"'
+	b = branch -vv
+	# b = branch --color --format='"%(align:14)%(HEAD) %(refname:short)%(end)%(color:red)%(push:short) %(push:track)%(color:reset)%(contents:subject)"'
 	cd = commit -m Documentation
 	cda = commit -a -m Documentation
 	cf = commit -m 'Trivial reformat'
