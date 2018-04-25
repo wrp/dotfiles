@@ -117,7 +117,7 @@ get_dir_list() {
 		-exec sh -c "$_cmd" _ {} \; \
 	| sort -rn \
 	| sed -E \
-		-e 18q \
+		-e $((${COLUMNS-80} / 5))q \
 		-e "s@/.${USER}-usage\$@@" \
 		-e 's@.*/([^/]+/[^/]+)$@\1@'
 }
