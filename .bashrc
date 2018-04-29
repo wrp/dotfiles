@@ -80,21 +80,27 @@ debug_trap() {
 		return
 	fi
 	history -a;
-	if test -f "$HISTFILE"; then
-		tac $HISTFILE | perl -pe ' if( /^#/ ) {
-			s@([0-9]{9,10})@sprintf "%s (%s GMT by %d in %s)", $1,
-			scalar gmtime $1,
-			'"$$, \"$(pwd)\""'
-			@ge;
-			print; exit 0;
-		}' | tac >> $HOME/.bash-history
-	else
+	if ! test -f "$HISTFILE"; then
 		exec >&2
 		printf "WARNING: $HISTFILE does not exist!!  "
 		printf "exec-ing a new shell\n"
 		touch $HISTFILE
 		exec bash
 	fi
+	# Clean up the command and append it to global .bash-history.
+	tac $HISTFILE | perl -pe '
+		exit 0 if /^[a-z]( |\n)/; # Ignore single letter commands
+		exit 0 if /^[a-z]{2}$/;   # Ignore 2 letter commands if no args
+		exit 0 if /^pwd$/;   # Ignore pwd
+		if( /^#[0-9]{10}$/ ) { # abort after adding a timestamp.
+			s@([0-9]{10})@sprintf "%s (%s GMT by %d in %s)", $1,
+				scalar gmtime $1,
+				'"$$, \"$(pwd)\""'
+				@ge;
+			print;  # Since about to skip auto print with -p
+			exit 0; # Exit so we only process most recent command
+		}
+	' | tac >> $HOME/.bash-history
 	val=$( tmux show-env 2> /dev/null |
 		awk -F= '/^SSH_AUTH_SOCK=/{print $2}' )
 	test -n "$val" && SSH_AUTH_SOCK="$val"
