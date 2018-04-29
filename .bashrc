@@ -89,9 +89,6 @@ debug_trap() {
 	fi
 	# Clean up the command and append it to global .bash-history.
 	tac $HISTFILE | perl -pe '
-		exit 0 if /^[a-z]( |\n)/; # Ignore single letter commands
-		exit 0 if /^[a-z]{2}$/;   # Ignore 2 letter commands if no args
-		exit 0 if /^pwd$/;   # Ignore pwd
 		if( /^#[0-9]{10}$/ ) { # abort after adding a timestamp.
 			s@([0-9]{10})@sprintf "%s (%s GMT by %d in %s)", $1,
 				scalar gmtime $1,
@@ -100,7 +97,16 @@ debug_trap() {
 			print;  # Since about to skip auto print with -p
 			exit 0; # Exit so we only process most recent command
 		}
-	' | tac >> $HOME/.bash-history
+	' | tac | perl -ne '
+		$ts = $_ if $. == 1;
+		if( $. == 2 ) {
+			exit 0 if /^[a-z]( |\n)/; # single letter cmds
+			exit 0 if /^[a-z]{2}$/;   # 2 letter cmds w/no args
+			exit 0 if /^pwd$/;        # Ignore pwd
+			print $ts
+		}
+		print unless $. == 1 # Delay printing of timestamp
+	' >> $HOME/.bash-history
 	val=$( tmux show-env 2> /dev/null |
 		awk -F= '/^SSH_AUTH_SOCK=/{print $2}' )
 	test -n "$val" && SSH_AUTH_SOCK="$val"
