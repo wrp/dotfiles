@@ -4,9 +4,10 @@
 # to store one in a tmux buffer
 tac=$(which tac || which gtac)
 buffer_name=history_search
+: ${max_lines=15}
 
 if test "$1" -ge 0 2> /dev/null; then
-	line_count=$1
+	choice=$1
 	shift
 fi
 
@@ -15,7 +16,7 @@ test $# = 0 && set '^ssh'
 trap 'rm -f $tmp1 $tmp2' 0
 tmp1=$(mktemp)
 tmp2=$(mktemp)
-cat ~/.bash-history > $tmp1
+grep -v '^#' ~/.bash-history > $tmp1
 
 for pattern in "$@"; do
 	unset negate
@@ -34,13 +35,16 @@ mv $tmp2 $tmp1
 
 test -s $tmp1 || exit 0
 
-if test -z "$line_count"; then
-	< $tmp1 nl -ba | expand | $tac | perl -nE 'chop; say substr $_, 0, '"${COLUMNS-80} - 1"
+if test -z "$choice"; then
+	< $tmp1 \
+	sed "${max_lines}q" \
+		| nl -ba | expand | $tac \
+		| perl -nE 'chop; say substr $_, 0, '"${COLUMNS-80} - 1"
 
 	printf 'Select command to store in tmux buffer: '
 	read n
 else
-	n=$line_count
+	n=$choice
 fi
 
 if test "$n" -gt 0 2> /dev/null; then
