@@ -108,6 +108,9 @@ grep() { command grep --color=auto "$@" 2> /dev/null; }
 myselect() {
 	for x; do echo "$x"; done | expand -t 8 | nl -ba -s ') ' -w 2 | column >&2
 	read -p "#? " REPLY
+	if test "$REPLY" -ge 0 2> /dev/null; then
+		eval SELECTION=\$${REPLY}
+	fi
 }
 irssi() { dtach -A /tmp/irssi.dtach irssi; }
 use() { local d; d=$(git rev-parse --show-toplevel) || return;
@@ -166,6 +169,10 @@ nb() (
 	git branch william/$1 master; git checkout william/$1;
 )
 
+p() { test -f $HOME/project-list || gcloud projects list > $HOME/project-list;
+	myselect $(awk 'NR>1{print $1}' $HOME/project-list);
+	gcloud config set project $SELECTION
+}
 parse_dir() { # manipulate text to get a handy pathname for a dir
 	local _k
 	local _first=''
