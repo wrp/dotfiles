@@ -105,6 +105,8 @@ debug_trap() {
 			exit 0 if /^[a-z]{2}$/;   # 2 letter cmds w/no args
 			exit 0 if /^pwd$/;        # Ignore pwd
 			exit 0 if /^echo /;
+			exit 0 if /^exec bash$/;
+			exit 0 if /^pwd$/;
 			print $ts
 		}
 		print unless $. == 1 # Delay printing of timestamp
