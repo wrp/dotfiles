@@ -168,9 +168,10 @@ nb() (
 	esac
 	git branch william/$1 master; git checkout william/$1;
 )
-
-p() { test -f $HOME/project-list || gcloud projects list > $HOME/project-list;
-	myselect $(awk 'NR>1{print $1}' $HOME/project-list);
+p() {
+	local cfg_file=$HOME/.config/$USER/gcloud-project-list
+	test -f $cfg_file || gcloud projects list > $cfg_file
+	myselect $(awk 'NR>1{print $1}' $cfg_file);
 	gcloud config set project $SELECTION
 }
 parse_dir() { # manipulate text to get a handy pathname for a dir
