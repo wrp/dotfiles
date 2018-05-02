@@ -170,11 +170,12 @@ nb() (
 )
 p() {
 	local cfg_file=$HOME/.config/$USER/gcloud-project-list
-	test -f $cfg_file || gcloud projects list > $cfg_file
-	cat $cfg_file
-	myselect $(awk 'NR>1{print $1}' $cfg_file);
-	if test -n "$SELECTION"; then
-		PROJECT="$SELECTION"
+	test -f $cfg_file || gcloud projects list | sed 1d > $cfg_file
+	nl -s ') ' < $cfg_file
+	read -p "#? " REPLY
+	if test "$REPLY" -ge 0 2> /dev/null; then
+		SELECTION=$(awk 'NR==c{print $1}' c=$REPLY $cfg_file);
+		export PROJECT="$SELECTION"
 		gcloud config set project "$SELECTION"
 	fi
 }
