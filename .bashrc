@@ -103,10 +103,10 @@ debug_trap() {
 		if( $. == 2 && ! /;/ && ! /\\$/ && ! /\$\(/ ) {
 			exit 0 if /^[a-z]( |\n)/; # single letter cmds
 			exit 0 if /^[a-z]{2}$/;   # 2 letter cmds w/no args
-			exit 0 if /^pwd$/;        # Ignore pwd
+			exit 0 if /^pwd$/;
 			exit 0 if /^echo /;
 			exit 0 if /^exec bash$/;
-			exit 0 if /^pwd$/;
+			exit 0 if /^cd /;
 			print $ts
 		}
 		print unless $. == 1 # Delay printing of timestamp
