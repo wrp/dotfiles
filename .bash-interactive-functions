@@ -116,10 +116,11 @@ irssi() { dtach -A /tmp/irssi.dtach irssi; }
 use() {
 	# Put the top level git dir of the cwd at the top
 	# of the usage file list
-	local d; d=$(git rev-parse --show-toplevel) || return;
+	local d; d=$(git rev-parse --show-toplevel) || return
 	d="${d#$HOME/}"
-	local file=$HOME/.config/$USER/usage-list
-	mkdir -p $(dirname $file)
+	test -n "$d" || return
+	local file="$HOME/.config/$USER/usage-list"
+	mkdir -p "$(dirname $file)"
 	{ echo "$d"
 	grep -v "$d" "$file"; } > "$file".tmp
 	mv "$file".tmp "$file"
