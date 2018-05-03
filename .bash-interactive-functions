@@ -113,35 +113,38 @@ myselect() {
 	fi
 }
 irssi() { dtach -A /tmp/irssi.dtach irssi; }
-use() { local d; d=$(git rev-parse --show-toplevel) || return;
-	touch $d/.${USER}-usage; }
+use() {
+	# Put the top level git dir of the cwd at the top
+	# of the usage file list
+	local d; d=$(git rev-parse --show-toplevel) || return;
+	d="${d#$HOME/}"
+	local file=$HOME/.config/$USER/usage-list
+	mkdir -p $(dirname $file)
+	{ echo "$d"
+	grep -v "$d" "$file"; } > "$file".tmp
+	mv "$file".tmp "$file"
+}
+
 get_dir_list() {
-	find -H $HOME -maxdepth ${3-3} -mindepth ${2-2} -name ${1?} \
-		-exec sh -c "$_cmd" _ {} \; \
-	| sort -rn \
-	| sed -E \
+	< $HOME/.config/$USER/usage-list \
+	sed -E \
 		-e $((${COLUMNS-80} / 5))q \
 		-e "s@/.${USER}-usage\$@@" \
 		-e 's@.*/([^/]+/[^/]+)$@\1@'
 }
 j() {
-	local _list _dir _dirlist _cmd
-	if stat -c %N . > /dev/null 2>&1; then
-		_cmd="stat -c '%Y %n' \$1"
-	else
-		_cmd="stat -f '%m %N' \$1"
-	fi
+	local _list _dir _dirlist
 	while :; do
 	case "$1" in
 	.) select-git-branch; return;;
 	p) checkout_previous_branch; return;;
 	'')
-		test -z "$_list" && _list=$(get_dir_list .${USER}-usage)
+		test -z "$_list" && _list=$(get_dir_list)
 		myselect $_list
 		test -z "$REPLY" && return
 		set -- $REPLY;;
 	*)
-		test -z "$_list" && _list=$(get_dir_list .${USER}-usage)
+		test -z "$_list" && _list=$(get_dir_list)
 		_dir=$(echo "$_list" | { if test "$1" -gt 0 2> /dev/null; then
 			filter="${1}"; else filter="/$1/"; fi;
 			sed -n -e "${filter}p"; } )
