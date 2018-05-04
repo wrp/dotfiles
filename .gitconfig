@@ -48,7 +48,7 @@
 	lg = log
 	lp = log -p
 [core]
-	excludesfile = /Users/williamp/.gitignore_global
+	excludesfile = ~/.gitignore_global
 	whitespace = no-tab-in-indent
 	editor = vim
 [push]
