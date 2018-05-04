@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Search for commands in .bash-history and provide an interface
 # to store one in a tmux buffer
