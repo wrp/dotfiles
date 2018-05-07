@@ -54,3 +54,5 @@ set cinkeys="0{,0},0),!^F,o,O,e"
 
 set formatoptions=cq
 set comments=
+
+" vim: fen:sw=2 fdm=indent fdl=1
