@@ -11,25 +11,30 @@ shopt -s histverify
 
 PS1='\[$(
 	# Colorize based on previous command status
-        { test $? != 0 && tput setaf 1 || tput setaf 2; } 2> /dev/null
-	)\]$(
+		{ test $? != 0 && tput setaf 1 || tput setaf 2; } 2> /dev/null
+		)\]$(
+	# Marker if running in a docker image
+		test -n "$DOCKER" && printf "D ";
 	# Wall clock
-	date +%H:%M:%S
-	)\[$(
-	tput setaf ${COLORS:$color_index:1} 2> /dev/null
-	)\]$(
+		date +%H:%M:%S
+		)\[$(
+		tput setaf ${COLORS:$color_index:1} 2> /dev/null
+		)\]$(
 	# hostname
-	test "${COLUMNS:-0}" -gt 140 && printf ":%s" "$(uname -n | cut -d. -f1 \
-		| cut -b 1-20 | sed -e 's/williamp-02URFVH4/laptop/' )"
-	)$(
+		test "${COLUMNS:-0}" -gt 140 && printf ":%s" "$(uname -n \
+			| cut -d. -f1 \
+			| cut -b 1-20 | sed -e 's/williamp-02URFVH4/laptop/' )"
+		)$(
 	# directory and git branch
-	if test "${COLUMNS:-0}" -gt 40; then printf "[%s:%s]" \
-		"$(basename "$(git rev-parse --show-toplevel 2> /dev/null )" \
-			| cut -b 1-10 )" \
-		"$({ git rev-parse --abbrev-ref HEAD 2> /dev/null | grep . \
-			|| echo no-git; } | cut -b 1-10 )"
-	else printf :
-	fi
+		if test "${COLUMNS:-0}" -gt 40; then printf "[%s:%s]" \
+			"$(basename "$(git rev-parse --show-toplevel \
+				2> /dev/null )" \
+				| cut -b 1-10 )" \
+			"$({ git rev-parse --abbrev-ref HEAD 2> /dev/null \
+				| grep . \
+				|| echo no-git; } | cut -b 1-10 )"
+		else printf :
+		fi
 	)'"\[$(tput setaf 2 2> /dev/null)\]$$\$ "
 
 read_file() { for f; do test -f $f && . $f; done; }
