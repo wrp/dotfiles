@@ -80,6 +80,7 @@ read_file $HOME/.bash-env
 
 
 debug_trap() {
+	_status=$?
 	local val
 	if test "${BASH_COMMAND}" != "$PROMPT_COMMAND"; then
 		return
@@ -93,11 +94,14 @@ debug_trap() {
 		exec bash
 	fi
 	# Clean up the command and append it to global .bash-history.
-	tac $HISTFILE | perl -pe '
+	tac $HISTFILE | STATUS=$_status perl -pe '
 		if( /^#[0-9]{10}$/ ) { # abort after adding a timestamp.
-			s@([0-9]{10})@sprintf "%s (%s GMT by %d in %s)", $1,
+			s@([0-9]{10})@sprintf "%s (%s GMT by %d in %s)%s",
+				$1,
 				scalar gmtime $1,
-				'"$$, \"$(pwd)\""'
+				'"$$,
+				\"$(pwd)\""',
+				$ENV{STATUS} > 0 ? " FAILED" : ""
 				@ge;
 			print;  # Since about to skip auto print with -p
 			exit 0; # Exit so we only process most recent command
