@@ -80,7 +80,7 @@ read_file $HOME/.bash-env
 
 
 debug_trap() {
-	_status=$?
+	local _status=$?
 	local val
 	if test "${BASH_COMMAND}" != "$PROMPT_COMMAND"; then
 		return
