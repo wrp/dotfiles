@@ -112,17 +112,9 @@ debug_trap() {
 		if( $. == 2 && ! /;/ && ! /\\$/ && ! /\$\(/ ) {
 			exit 0 if /^[a-z]( |\n)/; # single letter cmds
 			exit 0 if /^[a-z]{2}$/;   # 2 letter cmds w/no args
-			exit 0 if /^cal /;
-			exit 0 if /^cat /;
-			exit 0 if /^cd /;
-			exit 0 if /^date /;
-			exit 0 if /^echo /;
-			exit 0 if /^exec bash$/;
-			exit 0 if /^head /;
-			exit 0 if /^less /;
-			exit 0 if /^more /;
-			exit 0 if /^pwd /;
-			exit 0 if /^tail /;
+			foreach $cmd ("cal", "cat", "cd", "date", "echo", "exec bash",
+					"head", "less", "more", "pwd", "tail") {
+				exit 0 if /^$cmd( |$)/ }
 			print $ts
 		}
 		print unless $. == 1 # Delay printing of timestamp
