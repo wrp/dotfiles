@@ -183,7 +183,8 @@ p() {
 	if test "$REPLY" -ge 0 2> /dev/null; then
 		SELECTION=$(awk 'NR==c{print $1}' c=$REPLY $cfg_file);
 		export PROJECT="$SELECTION"
-		gcloud config set project "$SELECTION"
+		gcloud config set project "$SELECTION" \
+		&& echo "set to $PROJECT"
 	fi
 }
 parse_dir() { # manipulate text to get a handy pathname for a dir
