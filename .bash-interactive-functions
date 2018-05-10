@@ -178,8 +178,13 @@ p() {
 
 	local cfg_file=$HOME/.config/$USER/gcloud-project-list
 	test -f $cfg_file || gcloud projects list | sed 1d > $cfg_file
-	nl -s ') ' < $cfg_file | sed "/$CONFIGGED_PROJECT/s/^    / ***/"
-	read -p "#? " REPLY
+	if test -n "$1"; then
+		REPLY="$1"
+	else
+		nl -s ') ' < $cfg_file | sed "/$CONFIGGED_PROJECT/s/^    / ***/"
+		read -p "#? " REPLY
+	fi
+
 	if test "$REPLY" -ge 0 2> /dev/null; then
 		SELECTION=$(awk 'NR==c{print $1}' c=$REPLY $cfg_file);
 		export PROJECT="$SELECTION"
