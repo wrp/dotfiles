@@ -110,7 +110,7 @@ debug_trap() {
 		$ts = $_ if $. == 1;
 		# Ignore simple commands
 		if( $. == 2 && ! /;/ && ! /\\$/ && ! /\$\(/ ) {
-			exit 0 if /^[a-z]( |\n)/; # single letter cmds
+			exit 0 if /^[a-f,h-z]( |\n)/; # single letter cmds, keep g
 			exit 0 if /^[a-z]{2}$/;   # 2 letter cmds w/no args
 			foreach $cmd ("cal", "cat", "cd", "date", "echo", "exec bash",
 					"head", "less", "more", "pwd", "tail") {
