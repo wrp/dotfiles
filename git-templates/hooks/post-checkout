@@ -1,0 +1,13 @@
+#!/bin/sh
+
+die() { test -n "$*" && echo "$@" >&2; exit 1; }
+if test "$1" = 0000000000000000000000000000000000000000; then
+        url=$(git ls-remote 2>&1 > /dev/null | awk '{print $2; exit}')
+        test -n "$url" || die Cannot find url of remote
+        case $url in
+        *wrp*)
+                git config user.email william.r.pursell@gmail.com
+                git config user.name William Pursell
+                ;;
+        esac
+fi
