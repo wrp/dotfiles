@@ -42,7 +42,7 @@ read_file ~/.bash-functions ~/.bash-interactive-functions
 complete -r
 
 append PATH /usr/local/bin
-append PATH $HOME/scripts
+append PATH $HOME/.scripts
 append PATH $HOME/all/bin
 append PATH $HOME/$(uname -m)/$(uname -s)/bin
 append PATH $HOME/we-tools-cli/bin
