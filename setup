@@ -38,6 +38,7 @@ files='
 .vim
 .vimrc
 scripts
+git-templates
 '
 
 target() {
@@ -65,5 +66,7 @@ test -n "$abort" && warn overwriting
 
 mkdir -p $HOME/.bash-history-dir
 for file in $files; do
-	test "$file" = .git ||  ln -sf $(target $file) $file || die
+	test "$file" = .git \
+	|| ln -sf $(target $file) .${file#.} \
+	|| die
 done

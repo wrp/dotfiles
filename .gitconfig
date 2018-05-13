@@ -56,8 +56,8 @@
 	#default = simple
 [pager]
 	status = true
-# [init]
-# 	templatedir = /disk/a/home/william/git-templates
+[init]
+	templatedir = ~/.git-templates
 [versionsort]
 	prereleaseSuffix = .rc
 [difftool "sourcetree"]
