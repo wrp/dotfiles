@@ -189,7 +189,9 @@ p() {
 		SELECTION=$(awk 'NR==c{print $1}' c=$REPLY $cfg_file);
 		export PROJECT="$SELECTION"
 		gcloud config set project "$SELECTION" \
-		&& echo "set to $PROJECT"
+		&& echo "set to $PROJECT" \
+		&& export KUBECONFIG="$HOME"/.config/k8s/"$PROJECT" \
+		&& echo KUBECONFIG updated
 	fi
 }
 parse_dir() { # manipulate text to get a handy pathname for a dir
