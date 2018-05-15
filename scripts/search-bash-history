@@ -28,7 +28,10 @@ fi
 trap 'rm -f $tmp1 $tmp2' 0
 tmp1=$(mktemp)
 tmp2=$(mktemp)
-grep -v '^#' ~/.bash-history > $tmp1
+
+< ~/.bash-history \
+awk '/^#.*FAILED/,/^#.*\)$/{next}1'  | grep -v '^#' \
+> $tmp1
 
 for pattern; do
 	unset negate
