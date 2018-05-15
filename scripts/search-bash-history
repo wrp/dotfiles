@@ -2,6 +2,10 @@
 
 # Search for commands in .bash-history and provide an interface
 # to store one in a tmux buffer
+
+die() { test -n "*" && echo "$@"; exit 1; }
+HIST=$HOME/.config/$USER/bash-search-history
+
 tac=$(which tac || which gtac)
 buffer_name=history_search
 : ${max_lines=15}
@@ -11,7 +15,15 @@ if test "$1" -ge 0 2> /dev/null; then
 	shift
 fi
 
-test $# = 0 && set '^ssh'
+if test $# = 0; then
+	read cmds < $HIST
+	set -- $cmds
+	test $# = 0 && die 'no search terms given and no history'
+else
+	echo "$@" > $HIST.tmp
+	test -r $HIST && cat $HIST >> $HIST.tmp
+	mv $HIST.tmp $HIST
+fi
 
 trap 'rm -f $tmp1 $tmp2' 0
 tmp1=$(mktemp)
