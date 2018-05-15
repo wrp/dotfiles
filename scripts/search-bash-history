@@ -29,6 +29,7 @@ trap 'rm -f $tmp1 $tmp2' 0
 tmp1=$(mktemp)
 tmp2=$(mktemp)
 
+# This relies on the formatting given in the debug_trap in .bashrc
 < ~/.bash-history \
 awk '/^#.*FAILED/,/^#.*\)$/{next}1'  | grep -v '^#' \
 > $tmp1

@@ -94,6 +94,7 @@ debug_trap() {
 		exec bash
 	fi
 	# Clean up the command and append it to global .bash-history.
+	# Note that the FAILED string is used in scripts/search-bash-history
 	tac $HISTFILE | STATUS=$_status perl -pe '
 		if( /^#[0-9]{10}$/ ) { # abort after adding a timestamp.
 			s@([0-9]{10})@sprintf "%s (%s GMT by %d in %s)%s",
