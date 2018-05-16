@@ -173,8 +173,14 @@ nb() (
 	git branch william/$1 master; git checkout william/$1;
 )
 p() {
-	local CONFIGGED_PROJECT=$(awk '/^project =/ {print $3}' \
-                 ${HOME}/.config/gcloud/configurations/config_default)
+	local file
+	local base
+	base=${HOME}/.config/gcloud/configurations/config
+	file=${base}_${CLOUDSDK_ACTIVE_CONFIG_NAME-default}
+	if ! test -f "$file"; then
+		file=${base}_default
+	fi
+	local CONFIGGED_PROJECT=$(awk '/^project =/ {print $3}' $file)
 
 	local cfg_file=$HOME/.config/$USER/gcloud-project-list
 	test -f $cfg_file || gcloud projects list | sed 1d > $cfg_file
@@ -195,6 +201,11 @@ p() {
 		&& CLOUDSDK_ACTIVE_CONFIG_NAME=airflow-config-${PROJECT} \
 		&& echo gcloud config updated
 		export PROJECT KUBECONFIG CLOUDSDK_ACTIVE_CONFIG_NAME
+		file=${base}_${CLOUDSDK_ACTIVE_CONFIG_NAME}
+		if ! test -f "$file"; then
+			gcloud config configurations create $CLOUDSDK_ACTIVE_CONFIG_NAME
+			gcloud config set project $PROJECT
+		fi
 	fi
 }
 parse_dir() { # manipulate text to get a handy pathname for a dir
