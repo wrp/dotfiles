@@ -198,7 +198,7 @@ p() {
 		PROJECT=$(awk 'NR==c{print $1}' c=$REPLY $cfg_file);
 		test -n "$PROJECT" || return 1
 
-		CLOUDSDK_ACTIVE_CONFIG_NAME=config-${PROJECT}
+		CLOUDSDK_ACTIVE_CONFIG_NAME="$PROJECT"
 		KUBECONFIG="$HOME"/.config/k8s/"$PROJECT"
 		export PROJECT KUBECONFIG CLOUDSDK_ACTIVE_CONFIG_NAME
 
@@ -208,6 +208,7 @@ p() {
 		fi
 		gcloud config set project "$PROJECT" || return 1
 	fi
+	echo PROJECT=$PROJECT
 }
 parse_dir() { # manipulate text to get a handy pathname for a dir
 	local _k
