@@ -175,15 +175,16 @@ nb() (
 p() {
 	local file
 	local base
+	local CONFIGGED_PROJECT
 	base=${HOME}/.config/gcloud/configurations/config
 	file=${base}_${CLOUDSDK_ACTIVE_CONFIG_NAME-default}
-	if ! test -f "$file"; then
-		echo $file does not exist >&2
-		return 1
+	if test -f "$file"; then
+		# This is faster than calling gcloud config get-value project,
+		# but very fragile
+		CONFIGGED_PROJECT=$(awk '/^project =/ {print $3}' $file)
+	else
+		CONFIGGED_PROJECT='highly unlikely to match'
 	fi
-	# This is faster than calling gcloud config get-value project,
-	# but very fragile
-	local CONFIGGED_PROJECT=$(awk '/^project =/ {print $3}' $file)
 
 	local cfg_file=$HOME/.config/$USER/gcloud-project-list
 	test -f $cfg_file || gcloud projects list | sed 1d > $cfg_file
