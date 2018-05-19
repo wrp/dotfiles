@@ -192,20 +192,18 @@ p() {
 	fi
 
 	if test "$REPLY" -ge 0 2> /dev/null; then
-		SELECTION=$(awk 'NR==c{print $1}' c=$REPLY $cfg_file);
-		PROJECT="$SELECTION"
-		gcloud config set project "$SELECTION" \
-		&& echo "set to $PROJECT" \
-		&& KUBECONFIG="$HOME"/.config/k8s/"$PROJECT" \
-		&& echo KUBECONFIG updated \
-		&& CLOUDSDK_ACTIVE_CONFIG_NAME=airflow-config-${PROJECT} \
-		&& echo gcloud config updated
+		PROJECT=$(awk 'NR==c{print $1}' c=$REPLY $cfg_file);
+		test -n "$PROJECT" || return 1
+
+		CLOUDSDK_ACTIVE_CONFIG_NAME=config-${PROJECT}
+		KUBECONFIG="$HOME"/.config/k8s/"$PROJECT"
 		export PROJECT KUBECONFIG CLOUDSDK_ACTIVE_CONFIG_NAME
+
 		file=${base}_${CLOUDSDK_ACTIVE_CONFIG_NAME}
 		if ! test -f "$file"; then
 			gcloud config configurations create $CLOUDSDK_ACTIVE_CONFIG_NAME
-			gcloud config set project $PROJECT
 		fi
+		gcloud config set project "$PROJECT" || return 1
 	fi
 }
 parse_dir() { # manipulate text to get a handy pathname for a dir
