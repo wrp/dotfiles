@@ -178,8 +178,11 @@ p() {
 	base=${HOME}/.config/gcloud/configurations/config
 	file=${base}_${CLOUDSDK_ACTIVE_CONFIG_NAME-default}
 	if ! test -f "$file"; then
-		file=${base}_default
+		echo $file does not exist >&2
+		return 1
 	fi
+	# This is faster than calling gcloud config get-value project,
+	# but very fragile
 	local CONFIGGED_PROJECT=$(awk '/^project =/ {print $3}' $file)
 
 	local cfg_file=$HOME/.config/$USER/gcloud-project-list
