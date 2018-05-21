@@ -40,7 +40,7 @@ for pattern; do
 		negate=-v
 		pattern="${pattern:1}"
 	fi
-	grep -i ${negate} "${pattern}" $tmp1 > $tmp2
+	grep -E -i ${negate} "${pattern}" $tmp1 > $tmp2
 	mv $tmp2 $tmp1
 done
 
