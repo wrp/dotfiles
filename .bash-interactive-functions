@@ -191,7 +191,7 @@ p() {
 	if test -n "$1"; then
 		REPLY="$1"
 	else
-		nl -s ') ' < $cfg_file | sed "/$CONFIGGED_PROJECT/s/^    / ***/"
+		nl -s ') ' < $cfg_file | sed "/$CONFIGGED_PROJECT/s/^  / */"
 		read -p "#? " REPLY
 	fi
 
