@@ -20,8 +20,8 @@ if test $# = 0; then
 	set -- $cmds
 	test $# = 0 && die 'no search terms given and no history'
 else
-	echo "$@" > $HIST.tmp
-	test -r $HIST && cat $HIST >> $HIST.tmp
+	echo "$*" > $HIST.tmp
+	test -r $HIST && sed -e "\@^$*\$@d" $HIST >> $HIST.tmp
 	mv $HIST.tmp $HIST
 fi
 
