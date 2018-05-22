@@ -10,47 +10,51 @@ perl -wne '
 
 	# Ignore simple commands
 	if( $state eq "cmd" ) {
-		$state = "skip" if /^[a-z]( |\n)/;
-		$state = "skip" if /^[a-z]{2}$/;   # 2 letter cmds w/no args
-		foreach $cmd ( qw(
-			airflow
-			cal
-			cat
-			cd
-			cd
-			date
-			echo
-			env
-			exec bash
-			git
-			gitk
-			grep
-			head
-			history
-			kill
-			less
-			ls
-			man
-			mkdir
-			more
-			mv
-			pip
-			pwd
-			rm
-			ssh
-			tail
-			tmux
-			touch
-			type
-			unset
-			unzip
-			vi
-			vim
-			virtualenv
-			which
-			)
-		){
-			$state = "skip" if /^$cmd( |$)/;
+		if( /^[a-z]( |\n)/ ) {
+			$state = "skip"
+		} elsif( /^[a-z]{2}$/ ) {
+			$state = "skip"
+		} else {
+			foreach $cmd ( qw(
+				airflow
+				cal
+				cat
+				cd
+				date
+				echo
+				env
+				exec bash
+				git
+				gitk
+				grep
+				head
+				history
+				kill
+				less
+				ls
+				man
+				mkdir
+				more
+				mv
+				pip
+				pwd
+				rm
+				ssh
+				tail
+				tmux
+				touch
+				type
+				unset
+				unzip
+				vi
+				vim
+				virtualenv
+				which
+				)
+			){
+				$state = "skip" if /^$cmd( |$)/;
+				last
+			}
 		}
 	}
 	next if( $state eq "skip");
