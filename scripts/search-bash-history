@@ -65,7 +65,8 @@ else
 fi
 
 if test "$n" -gt 0 2> /dev/null; then
-	sed -n "${n}s/^??: //p" $tmp1 | tr -d \\n | tmux loadb -b ${buffer_name?} -
+	sed -n -e "${n}s/^??: //" -e "$n"p $tmp1 \
+	| tr -d \\n | tmux loadb -b ${buffer_name?} -
 elif test -n "$n"; then
 	printf "%s" "$n" | tmux loadb -b ${buffer_name?} -
 else
