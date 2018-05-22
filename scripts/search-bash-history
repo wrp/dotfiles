@@ -31,7 +31,8 @@ tmp2=$(mktemp)
 
 # This relies on the formatting given in the debug_trap in .bashrc
 < ~/.bash-history \
-awk '/^#.*FAILED/,/^#.*\)$/{next}1'  | grep -v '^#' \
+awk '/^#.*FAILED/,/^#.*\)$/{a=1; next} !a && ! /^#/ {printf "??: "}1' \
+	| grep -v '^#' \
 > $tmp1
 
 for pattern; do
@@ -64,7 +65,7 @@ else
 fi
 
 if test "$n" -gt 0 2> /dev/null; then
-	sed -n "${n}p" $tmp1 | tr -d \\n | tmux loadb -b ${buffer_name?} -
+	sed -n "${n}s/^??: //p" $tmp1 | tr -d \\n | tmux loadb -b ${buffer_name?} -
 elif test -n "$n"; then
 	printf "%s" "$n" | tmux loadb -b ${buffer_name?} -
 else
