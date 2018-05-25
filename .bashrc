@@ -27,7 +27,7 @@ PS1='\[$(
 	# hostname
 		test "${COLUMNS:-0}" -gt 140 && printf "%s" "$(uname -n \
 			| cut -d. -f1 \
-			| cut -b 1-20 | sed -e 's/williamp-02URFVH4/laptop/' )"
+			| cut -b 1-20 | sed -E -e "/${USER}-[0-9A-Z]{7}./d" )"
 		)$(
 	# directory and git branch
 		if test "${COLUMNS:-0}" -gt 40; then printf "[%s:%s]" \
