@@ -9,6 +9,7 @@ set -g status-left-length 25
 set -g status-right '%H:%M %e-%b'
 set -g history-limit 25000
 set-option -g update-environment "SSH_AUTH_SOCK"
+set-option -g mouse off
 
 bind-key -n Left previous-window
 bind-key -n Right next-window
