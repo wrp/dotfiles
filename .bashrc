@@ -14,7 +14,7 @@ PS1='\[$(
 		{ test $? != 0 && tput setaf 1 || tput setaf 2; } 2> /dev/null
 		)\]$(
 	# Marker if running in a docker image
-		test -n "$DOCKER" && printf "D ";
+		test -n "$DOCKER" && printf "Docker ";
 	# Wall clock
 		date +%H:%M:%S
 		)\[$(
