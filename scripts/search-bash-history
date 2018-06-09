@@ -38,10 +38,10 @@ else
 	useall=0
 fi
 < ~/.bash-history \
-	awk '/^#/ { if(/^#.*FAILED$/) status=1
-		else if (status != "??") status = 0 }
+	awk '/^#/ { if(/^#.*FAILED$/) status="!"
+		else if (status != "??") status = "" }
 		!/^#/ {printf "%2s: ", status}
-		useall || status == 0
+		useall || status != "!"
 	' status='??' useall=$useall \
 > $tmp1
 
