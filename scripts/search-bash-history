@@ -29,10 +29,20 @@ trap 'rm -f $tmp1 $tmp2' 0
 tmp1=$(mktemp)
 tmp2=$(mktemp)
 
+# Prepend "??:" to every command that is in the history before
+# we started recording status. Also, ignore FAILED commands conditionally.
 # This relies on the formatting given in the debug_trap in .bashrc
+if test -n "$USE_FAILED"; then
+	useall=1
+else
+	useall=0
+fi
 < ~/.bash-history \
-awk '/^#.*FAILED/,/^#.*\)$/{a=1; next} !a && ! /^#/ {printf "??: "}1' \
-	| grep -v '^#' \
+	awk '/^#/ { if(/^#.*FAILED$/) status=1
+		else if (status != "??") status = 0 }
+		!/^#/ {printf "%2s: ", status}
+		useall || status == 0
+	' status='??' useall=$useall \
 > $tmp1
 
 for pattern; do
@@ -45,6 +55,7 @@ for pattern; do
 	mv $tmp2 $tmp1
 done
 
+# Unique the entries and ignore 's' command.
 < $tmp1 $tac \
 | awk '!/^s / && !a[$0]++' \
 > $tmp2
@@ -65,7 +76,7 @@ else
 fi
 
 if test "$n" -gt 0 2> /dev/null; then
-	sed -n -e "${n}s/^??: //" -e "$n"p $tmp1 \
+	sed -n -e "${n}s/^..: //" -e "$n"p $tmp1 \
 	| tr -d \\n | tmux loadb -b ${buffer_name?} -
 elif test -n "$n"; then
 	printf "%s" "$n" | tmux loadb -b ${buffer_name?} -
