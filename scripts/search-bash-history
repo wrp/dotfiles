@@ -62,7 +62,7 @@ test -s $tmp1 || exit 0
 if test -z "$choice"; then
 	< $tmp1 \
 	sed "${max_lines}q" \
-		| nl -ba | expand | $tac \
+		| nl -s '' -w 2 -ba | expand | $tac \
 		| perl -nE 'chop; say substr $_, 0, '"${COLUMNS-80} - 1"
 
 	printf 'Select command to store in tmux buffer: '
