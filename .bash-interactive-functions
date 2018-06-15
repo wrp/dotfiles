@@ -117,16 +117,14 @@ myselect() {
 }
 irssi() { dtach -A /tmp/irssi.dtach irssi; }
 use() {
-	# Put the top level git dir of the cwd at the top
-	# of the usage file list
+	# Put the top level git dir of the cwd in the usage file list
 	local d; d=$(git rev-parse --show-toplevel) || return
 	d="${d#$HOME/}"
 	test -n "$d" || return
 	local file="$HOME/.config/$USER/usage-list"
 	mkdir -p "$(dirname $file)"
-	{ echo "$d"
-	grep -v "$d" "$file"; } > "$file".tmp
-	mv "$file".tmp "$file"
+	grep -q "^$d$" "$file" && return
+	echo "$d" >> "$file"
 }
 
 get_dir_list() {
