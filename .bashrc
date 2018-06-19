@@ -131,6 +131,7 @@ debug_trap() {
 	test -n "$val" && SSH_AUTH_SOCK="$val"
 }
 
+trap archive 0
 trap debug_trap DEBUG
 export LSCOLORS=fxfxcxdxbxegedabagacad
 
