@@ -82,13 +82,8 @@ export PYTHONSTARTUP=$HOME/.pystartup
 read_file $HOME/.bash-env
 
 debug_trap() {
+	# Runs before a command in an interactive shell
 	history -a;
-	tmux-title
-}
-
-old_debug_trap() {
-	local _status=$?
-	local val
 	if ! test -f "$HISTFILE"; then
 		exec >&2
 		printf "WARNING: $HISTFILE does not exist!!  "
@@ -96,6 +91,13 @@ old_debug_trap() {
 		touch $HISTFILE
 		exec bash
 	fi
+	tmux-title
+}
+
+after_cmd() {
+	# Run after a command, and before a prompt is displayed
+	local _status=$?
+	local val
 	# Clean up the command and append it to global .bash-history.
 	# Note that the FAILED string is used in scripts/search-bash-history
 	tac $HISTFILE | STATUS=$_status perl -pe '
@@ -132,7 +134,7 @@ old_debug_trap() {
 
 trap archive 0
 trap debug_trap DEBUG
-PROMPT_COMMAND='old_debug_trap'
+PROMPT_COMMAND='after_cmd'
 export LSCOLORS=fxfxcxdxbxegedabagacad
 
 # a = black, b = red, c = green, d = brown, e = blue, f = magenta, g = cyan,
