@@ -58,7 +58,6 @@ export color_index
 # trap ". $HOME/.ssh/agent.$(hostname)" SIGUSR2
 nl='
 '
-PROMPT_COMMAND='tmux-title'
 unset NO_COLOR
 export EVENT_NOKQUEUE=1
 export EMAIL=williamp@wepay.com
@@ -82,14 +81,14 @@ export PYTHONSTARTUP=$HOME/.pystartup
 # environments for the local host
 read_file $HOME/.bash-env
 
-
 debug_trap() {
+	history -a;
+	tmux-title
+}
+
+old_debug_trap() {
 	local _status=$?
 	local val
-	if test -n "${PROMPT_COMMAND}" && test "${BASH_COMMAND}" != "$PROMPT_COMMAND"; then
-		return
-	fi
-	history -a;
 	if ! test -f "$HISTFILE"; then
 		exec >&2
 		printf "WARNING: $HISTFILE does not exist!!  "
@@ -133,6 +132,7 @@ debug_trap() {
 
 trap archive 0
 trap debug_trap DEBUG
+PROMPT_COMMAND='old_debug_trap'
 export LSCOLORS=fxfxcxdxbxegedabagacad
 
 # a = black, b = red, c = green, d = brown, e = blue, f = magenta, g = cyan,
