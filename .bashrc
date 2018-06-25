@@ -22,7 +22,7 @@ PS1='\[$(
 		)\]$(
 	# project
 		if test -n "$PROJECT"; then echo "(${PROJECT%-[0-9]*})";
-		else printf %s :; fi
+		fi
 		)$(
 	# hostname
 		test "${COLUMNS:-0}" -gt 140 && printf "%s" "$(uname -n \
