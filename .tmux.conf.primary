@@ -8,8 +8,8 @@ set -g window-status-current-format '#I:#W'
 set -g status-left-length 25
 set -g status-right '%H:%M %e-%b'
 set -g history-limit 25000
-set-option -g update-environment "SSH_AUTH_SOCK"
-set-option -g mouse off
+set -g update-environment "SSH_AUTH_SOCK"
+set -g mouse off
 
 bind-key -T root Left previous-window
 bind-key -T root Right next-window
