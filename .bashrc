@@ -99,11 +99,12 @@ after_cmd() {
 	# Note that the FAILED string is used in scripts/search-bash-history
 	tac $HISTFILE | STATUS=$_status perl -pe '
 		if( /^#[0-9]{10}$/ ) { # abort after adding the timestamp.
-			s@([0-9]{10})@sprintf "%s (%s GMT by %d in %s)%s",
+			s@([0-9]{10})@sprintf "%s (%s GMT pid %d in %s%s)%s",
 				$1,
 				scalar gmtime $1,
 				'"$$,
 				\"$(pwd)\""',
+				defined $ENV{PROJECT} ? ": " . $ENV{PROJECT} : "",
 				$ENV{STATUS} > 0 ? " FAILED" : ""
 				@ge;
 			print;  # Since about to skip auto print with -p
