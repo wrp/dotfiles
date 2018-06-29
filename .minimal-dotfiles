@@ -37,7 +37,7 @@ set -g status-left-length 25
 set status-right '%H:%M %e-%b'
 set-option -g update-environment "SSH_AUTH_SOCK"
 set history-limit 25000
-bind-key -n Up previous-window
-bind-key -n Down next-window
+bind-key -n Left previous-window
+bind-key -n Right next-window
 bind-key , command-prompt "rename-window"
 bind-key '$' command-prompt "rename-session"
