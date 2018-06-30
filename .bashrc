@@ -49,7 +49,6 @@ append PATH /usr/local/bin
 append PATH $HOME/.scripts
 append PATH $HOME/all/bin
 append PATH $HOME/$(uname -m)/$(uname -s)/bin
-append PATH $HOME/we-tools-cli/bin
 
 export COLORS=356
 color_index=$(expr \( "${color_index:-${#COLORS}}" + 1 \) % ${#COLORS})
