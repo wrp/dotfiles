@@ -84,8 +84,7 @@ debug_trap() {
 	# Runs before a command in an interactive shell
 	history -a;
 	if ! test -f "$HISTFILE"; then
-		touch $HISTFILE
-		exec bash
+		touch $HISTFILE && exec bash
 	fi
 	tmux-title
 }
