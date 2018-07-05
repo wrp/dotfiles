@@ -29,15 +29,16 @@ trap 'rm -f $tmp1 $tmp2' 0
 tmp1=$(mktemp)
 tmp2=$(mktemp)
 
-# Prepend "??:" to every command that is in the history before
+# Prepend "?:" to every command that is in the history before
 # we started recording status. Also, ignore FAILED commands conditionally.
 # This relies on the formatting given in the debug_trap in .bashrc
 < ~/.bash-history \
 	awk '
 		/^#.*FAILED$/{seen=1}
 		/^#/ && seen { status = match($0,"^#.*FAILED$") ? "!" : "" }
-		!/^#/ {printf "%2s: ", status}
-		printfailed || status != "!"
+		!/^#/ && ( printfailed || status != "!") {
+			printf "%2s: %s\n", status, $0
+		}
 	' status='?' printfailed=${USE_FAILED+1} \
 > $tmp1
 
