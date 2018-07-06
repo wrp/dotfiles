@@ -86,7 +86,6 @@ debug_trap() {
 	if ! test -f "$HISTFILE"; then
 		touch $HISTFILE && exec bash
 	fi
-	tmux-title
 }
 
 after_cmd() {
@@ -126,6 +125,7 @@ after_cmd() {
 	val=$( tmux show-env 2> /dev/null |
 		awk -F= '/^SSH_AUTH_SOCK=/{print $2}' )
 	test -n "$val" && SSH_AUTH_SOCK="$val"
+	tmux-title
 }
 
 trap archive 0
