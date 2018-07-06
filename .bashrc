@@ -94,11 +94,11 @@ after_cmd() {
 	local val
 	# Clean up the command and append it to global .bash-history.
 	# Note that the FAILED string is used in scripts/search-bash-history
-	tac $HISTFILE | STATUS=$_status perl -pe '
+	tac $HISTFILE | STATUS=$_status perl -MPOSIX -pe '
 		if( /^#[0-9]{10}$/ ) { # abort after adding the timestamp.
 			s@([0-9]{10})@sprintf "%s (%s GMT pid %d in %s%s)%s",
 				$1,
-				scalar gmtime $1,
+				POSIX::strftime("%H:%M:%S %m/%d/%Y", gmtime $1),
 				'"$$,
 				\"$(pwd)\""',
 				defined $ENV{PROJECT} ? ": " . $ENV{PROJECT} : "",
