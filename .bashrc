@@ -96,9 +96,9 @@ after_cmd() {
 	# Note that the FAILED string is used in scripts/search-bash-history
 	tac $HISTFILE | STATUS=$_status perl -MPOSIX -pe '
 		if( /^#[0-9]{10}$/ ) { # abort after adding the timestamp.
-			s@([0-9]{10})@sprintf "%s (%s GMT pid %d in %s%s)%s",
+			s@([0-9]{10})@sprintf "%s (%s pid %d in %s%s)%s",
 				$1,
-				POSIX::strftime("%H:%M:%S %a", gmtime $1),
+				POSIX::strftime("%a %H:%M:%S GMT", gmtime $1),
 				'"$$,
 				\"$(pwd)\""',
 				defined $ENV{PROJECT} ? ": " . $ENV{PROJECT} : "",
