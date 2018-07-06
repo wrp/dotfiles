@@ -98,7 +98,7 @@ after_cmd() {
 		if( /^#[0-9]{10}$/ ) { # abort after adding the timestamp.
 			s@([0-9]{10})@sprintf "%s (%s GMT pid %d in %s%s)%s",
 				$1,
-				POSIX::strftime("%H:%M:%S %m/%d/%Y", gmtime $1),
+				POSIX::strftime("%H:%M:%S %a", gmtime $1),
 				'"$$,
 				\"$(pwd)\""',
 				defined $ENV{PROJECT} ? ": " . $ENV{PROJECT} : "",
