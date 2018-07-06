@@ -31,11 +31,11 @@ tmp2=$(mktemp)
 
 # Prepend "?:" to every command that is in the history before
 # we started recording status. Also, ignore FAILED commands conditionally.
-# This relies on the formatting given in the debug_trap in .bashrc
+# This relies on the formatting given in the PROMPT_COMMAND in .bashrc
 < ~/.bash-history \
 	awk '
-		/^#.*FAILED$/{seen=1}
-		/^#/ && seen { status = match($0,"^#.*FAILED$") ? "!" : "" }
+		/^#.*FAILED/{ seen = 1 }
+		/^#/ && seen { status = match($0,"^#.*FAILED") ? "!" : "" }
 		!/^#/ && ( printfailed || status != "!") {
 			printf "%2s: %s\n", status, $0
 		}

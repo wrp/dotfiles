@@ -96,13 +96,13 @@ after_cmd() {
 	# Note that the FAILED string is used in scripts/search-bash-history
 	tac $HISTFILE | STATUS=$_status perl -MPOSIX -pe '
 		if( /^#[0-9]{10}$/ ) { # abort after adding the timestamp.
-			s@([0-9]{10})@sprintf "%s (%s pid %d in %s%s)%s",
+			s@([0-9]{10})@sprintf "%s %s(%s by pid:%d in %s%s)",
 				$1,
+				$ENV{STATUS} > 0 ? "FAILED " : "",
 				POSIX::strftime("%a %H:%M:%S GMT", gmtime $1),
 				'"$$,
 				\"$(pwd)\""',
-				defined $ENV{PROJECT} ? ": " . $ENV{PROJECT} : "",
-				$ENV{STATUS} > 0 ? " FAILED" : ""
+				defined $ENV{PROJECT} ? ": " . $ENV{PROJECT} : ""
 				@ge;
 			print;  # Since about to skip auto print with -p
 			exit 0; # Exit so we only process most recent command
