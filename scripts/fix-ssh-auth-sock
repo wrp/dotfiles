@@ -2,7 +2,7 @@
 # set-option -g update-environment "SSH_AUTH_SOCK" is not working.
 # Source this to reset within a shell
 
-value=$( tmux show-env 2> /dev/null |
+value=$( tmux show-env 2> /dev/null \
         | awk '$1 == "SSH_AUTH_SOCK" { print $2 }' FS==)
 
 test "$value" != "$SSH_AUTH_SOCK" && {
