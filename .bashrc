@@ -77,8 +77,8 @@ export ACK_PAGER_COLOR=less
 export PAGER=less
 export PYTHONSTARTUP=$HOME/.pystartup
 
-# environments for the local host
-read_file $HOME/.bash-env
+# local stuff
+read_file $HOME/.bash-local
 
 debug_trap() {
 	# Runs before a command in an interactive shell
