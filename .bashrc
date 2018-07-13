@@ -41,7 +41,7 @@ PS1='\[$(
 		fi
 	)'"\[$(tput setaf 2 2> /dev/null)\]$$\$ "
 
-read_file() { for f; do test -f $f && . $f; done; }
+read_file() { for f; do test -f "$f" && . "$f"; done; }
 read_file ~/.bash-functions ~/.bash-interactive-functions
 complete -r
 
@@ -59,14 +59,12 @@ nl='
 '
 unset NO_COLOR
 export EVENT_NOKQUEUE=1
-export EMAIL=williamp@wepay.com
 export LC_TIME=C  #  Get 24 hour times for %X (sar)
 export HISTSIZE=1000
 export HISTFILE=$HOME/.bash-history-dir/shell-pid-$$
 # unset HISTFILESIZE
 # Docs say unsetting HISTFILESIZE will prevent truncation.  Rumor is it does not work
 export HISTFILESIZE=9999999999
-# export HISTTIMEFORMAT="%h/%d - %H:%M:%S "
 export HISTTIMEFORMAT='%H:%M:%S ' #%m/%d
 export EDITOR=vim
 export CONFIG_SITE=$HOME/CONFIG_SITE
@@ -180,7 +178,8 @@ EOF
 )
 
 if test -f $HOME/.ssh/agent_sock && 
-		test ! -z "$SSH_AUTH_SOCK" -a "$SSH_AUTH_SOCK" != "$HOME/.ssh/agent_sock"; then
+	test ! -z "$SSH_AUTH_SOCK" -a "$SSH_AUTH_SOCK" != "$HOME/.ssh/agent_sock"
+then
 	rm -f "$HOME/.ssh/agent_sock" 2>/dev/null
 	ln -fs "$SSH_AUTH_SOCK" "$HOME/.ssh/agent_sock"
 	export SSH_AUTH_SOCK="$HOME/.ssh/agent_sock"
