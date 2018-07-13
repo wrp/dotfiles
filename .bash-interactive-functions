@@ -28,7 +28,6 @@ cd() {
 	command cd "${_dir:-${_SESSION_DIR:-$HOME}}" || return 1;
 	test "$PWD" != "$OLDPWD" && : $(( color_index = (color_index + 1) % ${#COLORS}))
 	tmux-title;
-	# echo "$PS1" | grep -q '@' || { test -t 1 && { printf 'PWD: '; pwd; } }
 	return 0
 }
 cdm() { cd $(get-modified-files | longest-common-prefix -d); }
@@ -123,8 +122,7 @@ use() {
 	test -n "$d" || return
 	local file="$HOME/.config/$USER/usage-list"
 	mkdir -p "$(dirname $file)"
-	grep -q "^$d$" "$file" && return
-	echo "$d" >> "$file"
+	grep -q "^$d$" "$file" || echo "$d" >> "$file"
 }
 
 get_dir_list() {
@@ -161,16 +159,7 @@ lb() { tr \\n \ | perl -pe 's/ *$//' | tmux loadb - ; }
 lba() { { if test $# -gt 1; then "$@"; else cat; fi; } | tmux loadb -; }
 less() { if test -t 1; then command less "$@"; else cat "$@"; fi; }
 ls() { command ls -GF "$@"; }
-makepkg() { command makepkg --skippgpcheck "$@"; }
 mon() { inotifywait -qmr "${@-.}" --exclude '^\./\.git'; }
-nb() (
-	cd $(git rev-parse --show-toplevel) || exit 1
-	case $(basename $(pwd)) in
-	uplinux*|upcode*) : ;;
-	*) echo 'Make new branches in uplinux or upcode only' >&2; exit 1;;
-	esac
-	git branch william/$1 master; git checkout william/$1;
-)
 p() {
 	local file
 	local base
@@ -210,27 +199,7 @@ p() {
 	fi
 	echo PROJECT=$PROJECT
 }
-parse_dir() { # manipulate text to get a handy pathname for a dir
-	local _k
-	local _first=''
-	local _b
-	for arg; do
-		unset _b
-		test -n "$_first" && printf " "  # Emit space on all but first entry
-		_first=1
-		_k=${arg%%/*}  # Get first path component
-		case $arg in
-			//*)               _b="${arg#//}";;
-		esac
-
-		if test -n "$FILE_TO_DIR" && test -f "$arg"; then
-			echo -n ${arg%/*} # If path is a file, return the basename
-		fi
-	done
-	echo
-}
 ps() { COLUMNS=${CO:-15000} command ps "$@"; }
-python() { python2.7 "$@"; }
 lh() { history -r ~/.bash-history-dir/shell-pid-$$; }
 rh() { history -r $HOME/.bash-history; }
 ru () { tac | awk '!a[$0]++' | tac; } ## reverse-unique
@@ -259,15 +228,7 @@ ts() {
   # stdbuf -oL "$@" | perl -pe '$|=1; print localtime . ": "' | ${PAGER-more}
   $@ | perl -pe '$|=1; print localtime . ": "' | ${PAGER-more}
 }
-typeof() { for e; do which $e && file $( which $e ); done }
-um() {
-	local _t _b
-	_b=$(pwd)
-	_t=$(git rev-parse --show-toplevel) || return
-	cd $_t
-	~/bin/update-master
-	cd $_b
-}
+typeof() { for e; do which "$e" && file $( which $e ); done }
 up() {
 	local _dir=$(git rev-parse --show-toplevel)
 	test -d "$_dir" && cd "$_dir"
