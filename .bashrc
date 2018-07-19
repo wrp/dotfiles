@@ -1,3 +1,4 @@
+# Startup file for interactive non-login shells
 
 export HISTCONTROL=ignoredups
 set -o vi
