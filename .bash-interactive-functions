@@ -148,7 +148,7 @@ j() {
 		_dir=$(echo "$_list" | { if test "$1" -gt 0 2> /dev/null; then
 			filter="${1}"; else filter="/$1/"; fi;
 			sed -n -e "${filter}p"; } )
-		test -d "$HOME/$_dir" && command cd "$HOME/$_dir" && use
+		test -n "$_dir" && test -d "$HOME/$_dir" && command cd "$HOME/$_dir" && use
 		return
 	;;
 	esac
