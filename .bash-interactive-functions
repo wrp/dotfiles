@@ -123,6 +123,7 @@ use() {
 	local file="$HOME/.config/$USER/usage-list"
 	mkdir -p "$(dirname $file)"
 	grep -q "^$d$" "$file" || echo "$d" >> "$file"
+	content=$(sort "$file") && echo "$content" > $file
 }
 
 get_dir_list() {
