@@ -24,6 +24,7 @@ nore V v
 nore ; :
 nore , ;
 set nowrapscan
+let loaded_matchparen = 1
 
 # .inputrc
 set editing-mode vi
