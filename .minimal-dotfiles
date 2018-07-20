@@ -12,7 +12,7 @@ LC_TIME=C  #  Get 24 hour times for %X (sar)
 set -o vi
 PS1='\[$( { test $? != 0 && tput setaf 1 || tput setaf 2;} 2> /dev/null
 	)\][$(date "+%H:%M:%S") $$ \u@\h]\[$( tput setaf 2 2> /dev/null )\]\$ '
-printf "\033k%s\033\\" "${HOSTNAME%%.*}"
+PROMPT_COMMAND='printf "\033k%s\033\\" "${HOSTNAME##*-}"'
 
 # .bash_profile
 [[ "$-" =~ i ]] && test -f $HOME/.bashrc && . $HOME/.bashrc
