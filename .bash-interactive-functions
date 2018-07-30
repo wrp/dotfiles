@@ -201,7 +201,7 @@ p() {
 	echo PROJECT=$PROJECT
 }
 ps() { COLUMNS=${CO:-15000} command ps "$@"; }
-lh() { history -r ~/.bash-history-dir/shell-pid-$$; }
+push() { kill -s SIGUSR1 $(ls $HOME/.bash-history-di | sed 's/shell-pid-//g'); }
 rh() { history -r $HOME/.bash-history; }
 ru () { tac | awk '!a[$0]++' | tac; } ## reverse-unique
 rsync() { command rsync -e 'ssh -o LogLevel=error' "$@"; }
