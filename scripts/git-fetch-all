@@ -1,6 +1,10 @@
 #!/bin/sh
 
-cd "${1?}"
+test -n "$1" || set -- .
+
+for top; do
+cd $top
+pwd >&2
 for dir in *; do (
 	test -d "$dir" \
 	&& if echo "$dir" | tr -dc ' \n\t/' | grep -q . ; then
@@ -10,6 +14,7 @@ for dir in *; do (
 
 	cd "$dir" \
 	&& {
-		git fetch 2>&1 1>&3 | sed "s/^/[ERROR-$dir] /" >&2
+		git fetch 2>&1 1>&3 | sed "s/^/[$dir] /" >&2
 	} 3>&1 | sed "s/^/[$dir] /"
-); done 2>&1
+); done
+done
