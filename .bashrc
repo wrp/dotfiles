@@ -62,7 +62,7 @@ unset NO_COLOR
 export EVENT_NOKQUEUE=1
 export LC_TIME=C  #  Get 24 hour times for %X (sar)
 export HISTSIZE=1000
-export HISTFILE=$HOME/.bash-history-dir/shell-pid-$$
+export HISTFILE=$HOME/.bash-history-dir/$$
 # unset HISTFILESIZE
 # Docs say unsetting HISTFILESIZE will prevent truncation.  Rumor is it does not work
 export HISTFILESIZE=9999999999

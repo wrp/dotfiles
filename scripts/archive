@@ -1,9 +1,11 @@
 #!/bin/sh
 
+test -n "$V" && set -x
+
 cd $HOME/.bash-history-dir || exit
 mkdir -p .old || exit
 
-for f in shell-pid*; do
+for f in *; do
 	pid=${f#shell-pid-}
 	kill -0 $pid 2> /dev/null && continue  # Skip still running shells
 	cat $f >> .old/$f \
