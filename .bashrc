@@ -55,7 +55,6 @@ export COLORS=356
 color_index=$(expr \( "${color_index:-${#COLORS}}" + 1 \) % ${#COLORS})
 export color_index
 
-# trap ". $HOME/.ssh/agent.$(hostname)" SIGUSR2
 nl='
 '
 unset NO_COLOR
@@ -129,6 +128,8 @@ after_cmd() {
 
 trap archive 0
 trap debug_trap DEBUG
+trap 'exec bash' SIGUSR1
+
 PROMPT_COMMAND='after_cmd'
 export LSCOLORS=fxfxcxdxbxegedabagacad
 
