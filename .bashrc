@@ -128,7 +128,7 @@ after_cmd() {
 
 trap archive 0
 trap debug_trap DEBUG
-trap 'exec bash' SIGUSR1
+trap '. $HOME/.bashrc' SIGUSR1
 
 PROMPT_COMMAND='after_cmd'
 export LSCOLORS=fxfxcxdxbxegedabagacad
