@@ -22,8 +22,7 @@ PS1='\[$(
 		tput setaf ${COLORS:$color_index:1} 2> /dev/null
 		)\]$(
 	# project
-		if test -n "$PROJECT"; then echo "(${PROJECT%-[0-9]*})";
-		fi
+		echo "(${PROJECT%-[0-9]*})";
 		)$(
 	# hostname
 		test "${COLUMNS:-0}" -gt 140 && printf "%s" "$(uname -n \
