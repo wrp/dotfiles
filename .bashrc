@@ -98,7 +98,7 @@ after_cmd() {
 				$ENV{STATUS} > 0 ? "FAILED " : "",
 				POSIX::strftime("%a %H:%M:%S GMT", gmtime $1),
 				'"$$,
-				\"${OLDPWD}\""',
+				\"${PWD}\""',
 				defined $ENV{PROJECT} ? ": " . $ENV{PROJECT} : ""
 				@ge;
 			print;  # Since about to skip auto print with -p
