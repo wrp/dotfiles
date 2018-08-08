@@ -1,6 +1,7 @@
-# vi .bashrc .vimrc .inputrc .tmux.conf
+# vi .bashrc .bash_profile .vimrc .inputrc .tmux.conf
 #
 # .bashrc
+test -f /etc/bashrc && . /etc/bashrc
 unalias -a
 trap 'history -a' DEBUG
 EVENT_NOKQUEUE=1
