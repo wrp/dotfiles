@@ -21,6 +21,10 @@ bind-key -T root Right next-window
 
 bind-key -T arrows Left previous-window
 bind-key -T arrows Right next-window
+
+bind-key -T noarrows S-Left previous-window
+bind-key -T noarrows S-Right next-window
+
 bind-key -T arrows C-p set key-table noarrows \; \
         set -g window-status-current-format '#W' \; \
 	set -g status-style bg=black\; \
