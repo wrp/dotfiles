@@ -64,7 +64,7 @@ after_cmd() {
 	# Run after a command, and before a prompt is displayed
 	local _status=$?
 	local val
-	add_cmd_to_bash_history
+	report_cmd_status $HISTFILE $_status >> $HOME/.bash-history
 
 	val=$( tmux show-env 2> /dev/null |
 		awk -F= '/^SSH_AUTH_SOCK=/{print $2}' )
@@ -72,10 +72,10 @@ after_cmd() {
 	tmux-title
 }
 
-add_cmd_to_bash_history() {
+report_cmd_status() {
 	# Clean up the most recent command in HISTFILE and append it to global .bash-history.
 	# Note that the FAILED string is used in scripts/search-bash-history
-	tac $HISTFILE | STATUS=$_status perl -MPOSIX -pe '
+	tac $1 | STATUS=$2 perl -MPOSIX -pe '
 		if( /^#[0-9]{10}$/ ) { # abort after adding the timestamp.
 			s@([0-9]{10})@sprintf "%s %s(%s by pid:%d in %s%s)",
 				$1,
@@ -101,7 +101,7 @@ add_cmd_to_bash_history() {
 			print $ts
 		}
 		print unless $. == 1 # Delay printing of timestamp
-	' >> $HOME/.bash-history
+	'
 }
 
 trap archive 0
