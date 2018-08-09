@@ -1,0 +1,8 @@
+.
+..
+.git
+.gitignore
+.minimal-dotfiles
+.tmux.conf.primary
+setup
+blacklist
