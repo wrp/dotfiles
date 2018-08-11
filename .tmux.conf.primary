@@ -15,12 +15,16 @@ bind-key -T arrows C-h select-pane -L
 bind-key -T arrows C-j select-pane -D
 bind-key -T arrows C-k select-pane -U
 bind-key -T arrows C-\ select-pane -l
-
-bind-key -T root Left previous-window
-bind-key -T root Right next-window
-
 bind-key -T arrows Left previous-window
 bind-key -T arrows Right next-window
+bind-key -T arrows S-Left previous-window
+bind-key -T arrows S-Right next-window
+
+bind-key -T root C-p set key-table arrows
+bind-key -T root Left previous-window
+bind-key -T root Right next-window
+bind-key -T root S-Left previous-window
+bind-key -T root S-Right next-window
 
 bind-key -T noarrows S-Left previous-window
 bind-key -T noarrows S-Right next-window
@@ -34,7 +38,6 @@ bind-key -T noarrows C-p set key-table arrows \; \
 	set -g status-style bg=green\; \
         set -g window-status-current-format '#I:#W' \; \
 	set -ga window-status-current-style bg=blue
-bind-key -T root C-p set key-table arrows
 set -g key-table arrows
 
 bind-key C-i rotate-window -D
