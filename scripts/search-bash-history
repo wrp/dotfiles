@@ -4,8 +4,9 @@
 # to store one in a tmux buffer
 
 die() { test -n "*" && echo "$@"; exit 1; }
-HIST=$HOME/.config/$USER/bash-search-history
 
+HIST=$HOME/.config/$USER/bash-search-history-args
+RESULTS=$HOME/.config/$USER/bash-search-history-results
 tac=$(which tac || which gtac)
 buffer_name=history_search
 : ${max_lines=15}
@@ -15,19 +16,17 @@ if test "$1" -ge 0 2> /dev/null; then
 	shift
 fi
 
+trap 'rm -f $tmp1 $tmp2' 0
+tmp1=$(mktemp)
+tmp2=$(mktemp)
+
 if test $# = 0; then
-	read cmds < $HIST
-	set -- $cmds
-	test $# = 0 && die 'no search terms given and no history'
+	test -s $RESULTS || die No previous results saved
 else
 	echo "$*" > $HIST.tmp
 	test -r $HIST && sed -e "\@^$*\$@d" $HIST >> $HIST.tmp
 	mv $HIST.tmp $HIST
-fi
 
-trap 'rm -f $tmp1 $tmp2' 0
-tmp1=$(mktemp)
-tmp2=$(mktemp)
 
 # Prepend "?:" to every command that is in the history before
 # we started recording status. Also, ignore FAILED commands conditionally.
@@ -57,11 +56,13 @@ done
 | awk '!/^s / && !a[$0]++' \
 > $tmp2
 mv $tmp2 $tmp1
-
 test -s $tmp1 || exit 0
+cat $tmp1 > $RESULTS
+fi
+
 
 if test -z "$choice"; then
-	< $tmp1 \
+	< $RESULTS \
 	sed "${max_lines}q" \
 		| nl -s '' -w 2 -ba | expand | $tac \
 		| perl -nE 'chop; say substr $_, 0, '"${COLUMNS-80} - 1"
@@ -73,7 +74,7 @@ else
 fi
 
 if test "$n" -gt 0 2> /dev/null; then
-	sed -n -e "${n}s/^..: //" -e "$n"p $tmp1 \
+	sed -n -e "${n}s/^..: //" -e "$n"p $RESULTS \
 	| tr -d \\n | tmux loadb -b ${buffer_name?} -
 elif test -n "$n"; then
 	printf "%s" "$n" | tmux loadb -b ${buffer_name?} -
