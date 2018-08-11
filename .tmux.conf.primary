@@ -1,3 +1,7 @@
+# Todo: figure out how to auto swap key-bindings when
+# entering a window running ssh. (eg, disable the
+# left/right-arrow key bindings)
+
 unbind C-b
 set -g prefix C-l
 bind C-l send-prefix
