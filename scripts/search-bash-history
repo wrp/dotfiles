@@ -16,9 +16,44 @@ if test "$1" -ge 0 2> /dev/null; then
 	shift
 fi
 
-trap 'rm -f $tmp1 $tmp2' 0
-tmp1=$(mktemp)
-tmp2=$(mktemp)
+
+do_search() {
+	# Prepend "?:" to every command that is in the history before
+	# we started recording status. Also, ignore FAILED commands conditionally.
+	# This relies on the formatting given in the PROMPT_COMMAND in .bashrc
+
+	trap 'rm -f $tmp1 $tmp2' RETURN
+	tmp1=$(mktemp)
+	tmp2=$(mktemp)
+
+	< ~/.bash-history \
+		awk '
+			/^#.*FAILED/{ seen = 1 }
+			/^#/ && seen { status = match($0,"^#.*FAILED") ? "!" : "" }
+			!/^#/ && ( printfailed || status != "!") {
+				printf "%2s: %s\n", status, $0
+			}
+		' status='?' printfailed=${USE_FAILED+1} \
+	> $tmp1
+
+	for pattern; do
+		unset negate
+		if test "${pattern:0:1}" = '~'; then
+			negate=-v
+			pattern="${pattern:1}"
+		fi
+		grep -E -i ${negate} "${pattern}" $tmp1 > $tmp2
+		mv $tmp2 $tmp1
+	done
+
+	# Unique the entries and ignore 's' command.
+	< $tmp1 $tac \
+	| awk '!/^s / && !a[$0]++' \
+	> $tmp2
+	mv $tmp2 $tmp1
+	test -s $tmp1 || exit 0
+	cat $tmp1 > $RESULTS
+}
 
 if test $# = 0; then
 	test -s $RESULTS || die No previous results saved
@@ -26,38 +61,7 @@ else
 	echo "$*" > $HIST.tmp
 	test -r $HIST && sed -e "\@^$*\$@d" $HIST >> $HIST.tmp
 	mv $HIST.tmp $HIST
-
-
-# Prepend "?:" to every command that is in the history before
-# we started recording status. Also, ignore FAILED commands conditionally.
-# This relies on the formatting given in the PROMPT_COMMAND in .bashrc
-< ~/.bash-history \
-	awk '
-		/^#.*FAILED/{ seen = 1 }
-		/^#/ && seen { status = match($0,"^#.*FAILED") ? "!" : "" }
-		!/^#/ && ( printfailed || status != "!") {
-			printf "%2s: %s\n", status, $0
-		}
-	' status='?' printfailed=${USE_FAILED+1} \
-> $tmp1
-
-for pattern; do
-	unset negate
-	if test "${pattern:0:1}" = '~'; then
-		negate=-v
-		pattern="${pattern:1}"
-	fi
-	grep -E -i ${negate} "${pattern}" $tmp1 > $tmp2
-	mv $tmp2 $tmp1
-done
-
-# Unique the entries and ignore 's' command.
-< $tmp1 $tac \
-| awk '!/^s / && !a[$0]++' \
-> $tmp2
-mv $tmp2 $tmp1
-test -s $tmp1 || exit 0
-cat $tmp1 > $RESULTS
+	do_search "$@"
 fi
 
 
