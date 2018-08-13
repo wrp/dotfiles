@@ -1,9 +1,7 @@
 #!/bin/sh
-unset title
 
 test -z "$*" && {
-  title=
-  set "${title:-$(basename $PWD)}"
+  set "$(basename ${PWD}/)"
 }
 if test -z "$left_justify"; then
 	patt='.*\(.\{19\}\)'
