@@ -6,6 +6,11 @@ unbind C-b
 set -g prefix C-l
 bind C-l send-prefix
 
+arrows_disabled="tmux show-window-options @disable_arrows 2> /dev/null \
+	| grep -q '@disable_arrows \"yes\"'"
+bind-key -T arrows Left if-shell "$arrows_disabled" "send-keys Left" "previous-window"
+bind-key -T arrows Right if-shell "$arrows_disabled" "send-keys Right" "next"
+
 set -g window-status-current-style bg=blue
 set -g -a window-status-current-style fg=white,bold
 set -g window-status-current-format '#I:#W'
@@ -17,10 +22,8 @@ set -g mouse off
 
 bind-key -T arrows C-h select-pane -L
 bind-key -T arrows C-j select-pane -D
-bind-key -T arrows C-k select-pane -U
+bind-key -T arrows C-k if-shell "$arrows_disabled" "send-keys C-k" "select-pane -U"
 bind-key -T arrows C-\ select-pane -l
-bind-key -T arrows Left previous-window
-bind-key -T arrows Right next-window
 bind-key -T arrows S-Left previous-window
 bind-key -T arrows S-Right next-window
 
