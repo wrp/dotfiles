@@ -37,14 +37,9 @@ bind-key -T noarrows S-Left previous-window
 bind-key -T noarrows S-Right next-window
 
 bind-key -T arrows C-p set key-table noarrows \; \
-        set -g window-status-current-format '#W' \; \
-	set -g status-style bg=black\; \
-	set -ag status-style fg=black\; \
-	set -ag window-status-current-style bg=black
+	send-keys tmux_one C-m
 bind-key -T noarrows C-p set key-table arrows \; \
-	set -g status-style bg=green\; \
-        set -g window-status-current-format '#I:#W' \; \
-	set -ga window-status-current-style bg=blue
+	send-keys tmux_all C-m
 set -g key-table arrows
 
 bind-key C-i rotate-window -D

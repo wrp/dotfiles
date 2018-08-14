@@ -33,3 +33,14 @@ prepend() {
 	done
 	clean $_var
 }
+tmux_one() {
+	tmux set -g window-status-current-format '#W'
+	tmux set -g status-style bg=black
+	tmux set -ag status-style fg=black
+	tmux set -ag window-status-current-style bg=black
+}
+tmux_all() {
+	tmux set -g status-style bg=green
+	tmux set -g window-status-current-format '#I:#W'
+	tmux set -ga window-status-current-style bg=blue
+}
