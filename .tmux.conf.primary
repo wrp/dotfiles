@@ -17,30 +17,29 @@ set -g mouse off
 
 arrows_disabled="tmux show-window-options @disable_arrows 2> /dev/null \
 	| grep -q '@disable_arrows \"yes\"'"
-bind-key -T arrows Left if-shell "$arrows_disabled" "send-keys Left" "previous-window"
-bind-key -T arrows Right if-shell "$arrows_disabled" "send-keys Right" "next"
+bind-key -T root Left if-shell "$arrows_disabled" "send-keys Left" "previous-window"
+bind-key -T root Right if-shell "$arrows_disabled" "send-keys Right" "next"
 
-bind-key -T arrows   S-Left previous-window
+bind-key -T root   S-Left previous-window
 bind-key -T noarrows S-Left previous-window
 
-bind-key -T arrows   S-Right next-window
+bind-key -T root   S-Right next-window
 bind-key -T noarrows S-Right next-window
 
-bind-key -T arrows C-h select-pane -L
-bind-key -T arrows C-j select-pane -D
-bind-key -T arrows C-k if-shell "$arrows_disabled" "send-keys C-k" "select-pane -U"
-bind-key -T arrows C-\ select-pane -l
+bind-key -T root C-h select-pane -L
+bind-key -T root C-j select-pane -D
+bind-key -T root C-k if-shell "$arrows_disabled" "send-keys C-k" "select-pane -U"
+bind-key -T root C-\ select-pane -l
 
-bind-key -T arrows C-p set key-table noarrows \; \
+bind-key -T root C-p set key-table noarrows \; \
         set -g window-status-current-format '#W' \; \
 	set -g status-style bg=black\; \
 	set -ag status-style fg=black\; \
 	set -ag window-status-current-style bg=black
-bind-key -T noarrows C-p set key-table arrows \; \
+bind-key -T noarrows C-p set key-table root \; \
 	set -g status-style bg=green\; \
         set -g window-status-current-format '#I:#W' \; \
 	set -ga window-status-current-style bg=blue
-set -g key-table arrows
 
 bind-key C-i rotate-window -D
 bind-key ',' command-prompt "rename-window '%%'"
