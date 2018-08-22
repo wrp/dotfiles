@@ -1,6 +1,4 @@
-# vi .bashrc .bash_profile .vimrc .inputrc .tmux.conf
-#
-# .bashrc
+cat << 'EOF' >> .bashrc
 test -f /etc/bashrc && . /etc/bashrc
 unalias -a
 trap 'history -a' DEBUG
@@ -9,29 +7,32 @@ HISTTIMEFORMAT='%H:%M:%S '
 HISTFILESIZE=9999999999
 LSCOLORS=fxfxcxdxbxegedabagacad
 LESS=-FeRXSQ
-LC_TIME=C  #  Get 24 hour times for %X (sar)
+LC_TIME=C
 set -o vi
 PS1='\[$( { test $? != 0 && tput setaf 1 || tput setaf 2;} 2> /dev/null
 	)\][$(date "+%H:%M:%S") $$ \u@\h]\[$( tput setaf 2 2> /dev/null )\]\$ '
 PROMPT_COMMAND='printf "\033k%s\033\\" "${HOSTNAME##*-}"'
+EOF
 
-# .bash_profile
+cat << 'EOF' >> .bash_profile
 [[ "$-" =~ i ]] && test -f $HOME/.bashrc && . $HOME/.bashrc
+EOF
 
-
-" .vimrc
+cat << 'EOF' > .vimrc
 nore v V
 nore V v
 nore ; :
 nore , ;
 set nowrapscan
 let loaded_matchparen = 1
+EOF
 
-# .inputrc
+cat << 'EOF' > .inputrc
 set editing-mode vi
 set keymap vi
+EOF
 
-# .tmux.conf
+cat << 'EOF' > .tmux.conf
 unbind C-b
 set -g prefix C-k
 bind C-k send-prefix
@@ -46,3 +47,8 @@ bind-key -n Left previous-window
 bind-key -n Right next-window
 bind-key , command-prompt "rename-window"
 bind-key '$' command-prompt "rename-session"
+EOF
+
+cat << 'EOF' > .editrc
+bind -v
+EOF
