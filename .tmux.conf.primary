@@ -19,8 +19,8 @@ arrows_disabled="tmux show-window-options @disable_arrows 2> /dev/null \
 	| grep -q '@disable_arrows \"yes\"'"
 bind-key -T root Left if-shell "$arrows_disabled" "send-keys Left" "previous-window"
 bind-key -T root Right if-shell "$arrows_disabled" "send-keys Right" "next"
-bind-key -T root   S-Left previous-window
-bind-key -T root   S-Right next-window
+bind-key -T root S-Left previous-window
+bind-key -T root S-Right next-window
 bind-key -T root C-h select-pane -L
 bind-key -T root C-j select-pane -D
 bind-key -T root C-k if-shell "$arrows_disabled" "send-keys C-k" "select-pane -U"
