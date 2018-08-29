@@ -39,6 +39,7 @@ checkout_previous_branch() {
 	git checkout "$prev_branch"
 	git branch -vv
 }
+curl() { command curl -Ss "$@"; }
 docker() { execute docker "$@" | { while read line; do echo "$line" >&3; echo "$line"; done \
 	| sed -nE -e 's/.*([0-9a-f]{12}).*/\1/p' | sed -n -e 1p -n -e '$p' \
 	| while read id; do printf "$id" | tmux loadb -; done; } 3>&1
