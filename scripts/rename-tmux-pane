@@ -1,7 +1,7 @@
 #!/bin/sh
 
 test -z "$*" && {
-  set "$(basename ${PWD})/"
+	set "$(basename $(git rev-parse --show-toplevel 2> /dev/null || pwd))/"
 }
 if test -z "$left_justify"; then
 	patt='.*\(.\{19\}\)'
