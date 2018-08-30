@@ -25,6 +25,9 @@ nore ; :
 nore , ;
 set nowrapscan
 let loaded_matchparen = 1
+set path+=/usr/local/confluent-3.2.0
+set path+=/usr/local/confluent-4.2.0
+set includeexpr=substitute(v:fname,'$DAEMON_PATH/','','g')
 EOF
 
 cat << 'EOF' > .inputrc
