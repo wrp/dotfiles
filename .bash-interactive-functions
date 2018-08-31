@@ -64,6 +64,12 @@ gcd() {
 	fi
 }
 gdb() { command gdb -tui "$@"; }
+GET() {
+	# ACCESS_TOKEN will need be refreshed periodically.  Just unset it.
+	test -z "$ACCESS_TOKEN" \
+		&& ACCESS_TOKEN="$(gcloud auth application-default print-access-token)"
+	curl -H "Authorization: Bearer $ACCESS_TOKEN" "$@"
+}
 
 gi() {
 	local dir sha
