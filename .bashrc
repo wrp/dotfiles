@@ -31,9 +31,7 @@ PS1='\[$(
 		)$(
 	# directory and git branch
 		if test "${COLUMNS:-0}" -gt 40; then printf "[%s:%s]" \
-			"$(basename "$(git rev-parse --show-toplevel \
-				2> /dev/null )" \
-				| cut -b 1-10 )" \
+			"$(pwd | sed -E -e "s/.*(..........)/\1/" )" \
 			"$({ git rev-parse --abbrev-ref HEAD 2> /dev/null \
 				| grep . \
 				|| echo no-git; } | cut -b 1-10 )"
