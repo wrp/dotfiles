@@ -170,6 +170,7 @@ less() { if test -t 1; then command less "$@"; else cat "$@"; fi; }
 ls() { command ls -GF "$@"; }
 mon() { inotifywait -qmr "${@-.}" --exclude '^\./\.git'; }
 p() {
+	local line
 	local file
 	local base
 	local CONFIGGED_PROJECT
@@ -193,7 +194,8 @@ p() {
 	fi
 
 	if test "$REPLY" -ge 0 2> /dev/null; then
-		PROJECT=$(awk 'NR==c{print $1}' c=$REPLY $cfg_file);
+		line=$(awk 'NR==c{print $0}' c=$REPLY $cfg_file);
+		read PROJECT PROJECT_NAME _ <<< $line
 		test -n "$PROJECT" || return 1
 
 		CLOUDSDK_ACTIVE_CONFIG_NAME="$PROJECT"
