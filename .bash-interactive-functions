@@ -210,6 +210,18 @@ p() {
 }
 ps() { COLUMNS=${CO:-15000} command ps "$@"; }
 push() { kill -s SIGUSR1 $(ls $HOME/.bash-history-dir | sed 's/shell-pid-//g'); }
+POST() {
+	# ACCESS_TOKEN will need be refreshed periodically.  Just unset it.
+	test -z "$ACCESS_TOKEN" \
+		&& ACCESS_TOKEN="$(gcloud auth application-default print-access-token)"
+	curl -X POST -H "Authorization: Bearer $ACCESS_TOKEN" "$@"
+}
+PUT() {
+	# ACCESS_TOKEN will need be refreshed periodically.  Just unset it.
+	test -z "$ACCESS_TOKEN" \
+		&& ACCESS_TOKEN="$(gcloud auth application-default print-access-token)"
+	curl -X PUT -H "Authorization: Bearer $ACCESS_TOKEN" "$@"
+}
 rh() { history -r $HOME/.bash-history; }
 ru () { tac | awk '!a[$0]++' | tac; } ## reverse-unique
 rsync() { command rsync -e 'ssh -o LogLevel=error' "$@"; }
