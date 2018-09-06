@@ -52,7 +52,7 @@ read_file $HOME/.bash-local
 
 debug_trap() {
 	# Runs before a command in an interactive shell
-	history -a;
+	history -a
 	if ! test -f "$HISTFILE"; then
 		touch $HISTFILE && exec bash
 	fi
@@ -75,13 +75,13 @@ report_cmd_status() {
 	# Note that the FAILED string is used in scripts/search-bash-history
 	tac $1 | STATUS=$2 perl -MPOSIX -pe '
 		if( /^#[0-9]{10}$/ ) { # abort after adding the timestamp.
-			s@([0-9]{10})@sprintf "%s %s(%s by pid:%d in %s%s)",
+			s@([0-9]{10})@sprintf "%s (%s by pid:%d in %s%s) %s",
 				$1,
-				$ENV{STATUS} > 0 ? "FAILED " : "",
 				POSIX::strftime("%a %H:%M:%S GMT", gmtime $1),
 				'"$$,
 				\"${PWD}\""',
-				defined $ENV{PROJECT} ? ": " . $ENV{PROJECT} : ""
+				defined $ENV{PROJECT} ? ": " . $ENV{PROJECT} : "",
+				$ENV{STATUS} > 0 ? "FAILED" : "ok",
 				@ge;
 			print;  # Since about to skip auto print with -p
 			exit 0; # Exit so we only process most recent command

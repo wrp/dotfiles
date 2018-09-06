@@ -18,8 +18,7 @@ fi
 
 
 do_search() {
-	# Prepend "?:" to every command that is in the history before
-	# we started recording status. Also, ignore FAILED commands conditionally.
+	# Prepend "?:" to every command with unknown status
 	# This relies on the formatting given in the PROMPT_COMMAND in .bashrc
 
 	trap 'rm -f $tmp1 $tmp2' RETURN
@@ -28,12 +27,11 @@ do_search() {
 
 	< ~/.bash-history \
 		awk '
-			/^#.*FAILED/{ seen = 1 }
-			/^#/ && seen { status = match($0,"^#.*FAILED") ? "!" : "" }
+			/^#/ { status = match($0,"FAILED$") ? "!" : match($0,"ok$") ? "" : "?" }
 			!/^#/ && ( printfailed || status != "!") {
 				printf "%2s: %s\n", status, $0
 			}
-		' status='?' printfailed=${USE_FAILED+1} \
+		' status='?' printfailed=${V+1} \
 	> $tmp1
 
 	for pattern; do
