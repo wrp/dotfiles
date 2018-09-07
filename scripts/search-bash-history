@@ -27,9 +27,12 @@ do_search() {
 
 	< ~/.bash-history \
 		awk '
-			/^#/ { status = match($0,"FAILED$") ? "!" : match($0,"ok$") ? "" : "?" }
+			/^#/ {
+				time = substr($1, 2, 100)
+				status = match($0,"FAILED$") ? "!" : match($0,"ok$") ? "" : "?"
+			}
 			!/^#/ && ( printfailed || status != "!") {
-				printf "%2s: %s\n", status, $0
+				printf "%s %2s| %s\n", time, status, $0
 			}
 		' status='?' printfailed=${V+1} \
 	> $tmp1
@@ -66,8 +69,10 @@ fi
 if test -z "$choice"; then
 	< $RESULTS \
 	sed "${max_lines}q" \
-		| nl -s '' -w 2 -ba | expand | $tac \
-		| perl -nE 'chop; say substr $_, 0, '"${COLUMNS-80} - 1"
+	| nl -s ')' -w 2 -ba | expand | $tac \
+	| perl -nE '
+		s/([0-9]{9,10})/sprintf "%s", scalar localtime $1/ge;
+		chop; say substr $_, 0, '"${COLUMNS-80} - 1"
 
 	printf 'Select command to store in tmux buffer: '
 	read n
@@ -76,7 +81,7 @@ else
 fi
 
 if test "$n" -gt 0 2> /dev/null; then
-	sed -n -e "${n}s/^..: //" -e "$n"p $RESULTS \
+	< $RESULTS sed -n -e "${n}s/.*| //" -e "$n"p \
 	| tr -d \\n | tmux loadb -b ${buffer_name?} -
 elif test -n "$n"; then
 	printf "%s" "$n" | tmux loadb -b ${buffer_name?} -
