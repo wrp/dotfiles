@@ -81,7 +81,7 @@ else
 fi
 
 if test "$n" -gt 0 2> /dev/null; then
-	< $RESULTS sed -n -e "${n}s/.*| //" -e "$n"p \
+	< $RESULTS sed -n -e "${n}s/[^|]*| //" -e "$n"p \
 	| tr -d \\n | tmux loadb -b ${buffer_name?} -
 elif test -n "$n"; then
 	printf "%s" "$n" | tmux loadb -b ${buffer_name?} -
