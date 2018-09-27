@@ -28,6 +28,7 @@ let loaded_matchparen = 1
 set path+=/usr/local/confluent-3.2.0
 set path+=/usr/local/confluent-4.2.0
 set includeexpr=substitute(v:fname,'$DAEMON_PATH/','','g')
+set t_ti= t_te=  " Disable clear screen on exit
 EOF
 
 cat << 'EOF' > .inputrc
