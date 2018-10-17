@@ -124,11 +124,23 @@ gpu() {
 grep() { command grep --color=auto "$@"; }
 
 myselect() {
-	for x; do echo "$x"; done | expand -t 8 | nl -ba -s ') ' -w 2 | column >&2
-	read -p "#? " REPLY
-	if test "$REPLY" -ge 0 2> /dev/null; then
-		eval SELECTION=\${${REPLY}}
-	fi
+	unset REPLY
+	unset SELECTION
+	REPLY=$#
+	case $# in
+	1)
+		SELECTION=$1
+		;;
+	0)
+		;;
+	*)
+		for x; do echo "$x"; done | expand -t 8 | nl -ba -s ') ' -w 2 | column >&2
+		read -p "#? " REPLY
+		if test "$REPLY" -ge 0 2> /dev/null; then
+			eval SELECTION=\${${REPLY}}
+		fi
+		;;
+	esac
 }
 irssi() { dtach -A /tmp/irssi.dtach irssi; }
 use() {
