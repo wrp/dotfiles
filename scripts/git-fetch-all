@@ -1,15 +1,10 @@
 #!/bin/sh
 
-cmd=fetch
+cmd='fetch --all --no-tags'
 
 test -n "$1" || set -- .
 
 for top; do
-	case "$top" in
-	-p) cmd=pull; continue;;
-	-f) cmd=fetch; continue;;
-	esac
-
 	(
 	cd $top
 	pwd >&2
