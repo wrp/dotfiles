@@ -127,7 +127,7 @@ myselect() {
 	for x; do echo "$x"; done | expand -t 8 | nl -ba -s ') ' -w 2 | column >&2
 	read -p "#? " REPLY
 	if test "$REPLY" -ge 0 2> /dev/null; then
-		eval SELECTION=\$${REPLY}
+		eval SELECTION=\${${REPLY}}
 	fi
 }
 irssi() { dtach -A /tmp/irssi.dtach irssi; }
@@ -135,41 +135,36 @@ use() {
 	# Put the top level git dir of the cwd in the usage file list
 	local d; d=$(git rev-parse --show-toplevel) || return
 	d="${d#$HOME/}"
-	test -n "$d" || return
+	test -n "$d" || { echo "Don't try to use $HOME" >&2; return; }
 	local file="$HOME/.config/$USER/usage-list"
 	mkdir -p "$(dirname $file)"
-	grep -q "^$d$" "$file" || echo "$d" >> "$file"
-	content=$(sort "$file") && echo "$content" > $file
+	if ! grep -q "^$d$" "$file"; then
+		content=$( { cat "$file"; echo "$d"; } | sort ) \
+		&& echo "$content" > $file
+	fi
 }
 
 get_dir_list() {
-	< $HOME/.config/$USER/usage-list \
-	sed -E \
-		-e $((${COLUMNS-80} / 5))q \
-		-e "s@/.${USER}-usage\$@@" \
-		-e 's@.*/([^/]+/[^/]+)$@\1@'
+	if test "$1" -gt 0 2> /dev/null; then
+		sed -n -e "${1}p"
+	else
+		sed -n -e "/${1:-.}/p"
+	fi < $HOME/.config/$USER/usage-list
+
+	# | sed -e $((${COLUMNS-80} / 5))q
 }
 j() {
-	local _list _dir _dirlist
-	while :; do
+	local _dir
 	case "$1" in
 	.) select-git-branch; return;;
 	p) checkout_previous_branch; return;;
-	'')
-		test -z "$_list" && _list=$(get_dir_list)
-		myselect $_list
-		test -z "$REPLY" && return
-		set -- $REPLY;;
 	*)
-		test -z "$_list" && _list=$(get_dir_list)
-		_dir=$(echo "$_list" | { if test "$1" -gt 0 2> /dev/null; then
-			filter="${1}"; else filter="/$1/"; fi;
-			sed -n -e "${filter}p"; } )
+		myselect $(get_dir_list "$1")
+		_dir=$SELECTION
 		test -n "$_dir" && test -d "$HOME/$_dir" && command cd "$HOME/$_dir" && use
 		return
 	;;
 	esac
-	done
 }
 debug() { test -n "$VERBOSE" && echo "$@" >&2; }
 lb() { tr \\n \ | perl -pe 's/ *$//' | tmux loadb - ; }
