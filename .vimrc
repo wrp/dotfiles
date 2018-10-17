@@ -15,6 +15,7 @@ set hlsearch
 set listchars=extends:%,precedes:%,eol:$,tab:>-,trail:$
 set matchpairs+=<:>
 set nowrap
+" set sidescroll=1
 set nowrapscan
 " set smartindent
 " set cindent
