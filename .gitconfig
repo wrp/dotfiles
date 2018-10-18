@@ -52,7 +52,7 @@
 	whitespace = no-tab-in-indent
 	editor = vim
 [push]
-	default = upstream
+	default = current
 [pager]
 	status = true
 [init]
