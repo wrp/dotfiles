@@ -168,13 +168,15 @@ get_dir_list() {
 j() {
 	local _dir
 	case "$1" in
-	.) select-git-branch; return;;
-	p) checkout_previous_branch; return;;
+	.) select-git-branch;;
+	p) checkout_previous_branch;;
 	*)
 		myselect $(get_dir_list "$1")
 		_dir=$SELECTION
-		test -n "$_dir" && test -d "$HOME/$_dir" && command cd "$HOME/$_dir" && use
-		return
+		test -n "$_dir" \
+		&& test -d "$HOME/$_dir" \
+		&& command cd "$HOME/$_dir" \
+		&& use
 	;;
 	esac
 }
