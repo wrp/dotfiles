@@ -123,7 +123,7 @@ gpu() {
 }
 grep() { command grep --color=auto "$@"; }
 
-myselect() {
+wrpselect() {
 	unset REPLY
 	unset SELECTION
 	REPLY=$#
@@ -171,7 +171,7 @@ j() {
 	.) select-git-branch;;
 	p) checkout_previous_branch;;
 	*)
-		myselect $(get_dir_list "$1")
+		wrpselect $(get_dir_list "$1")
 		_dir=$SELECTION
 		test -n "$_dir" \
 		&& test -d "$HOME/$_dir" \
