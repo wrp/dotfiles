@@ -43,7 +43,6 @@ read_file() { for f; do test -f "$f" && . "$f"; done; }
 read_file $HOME/.bash-functions $HOME/.bash-interactive-functions
 complete -r
 
-append PATH /usr/local/bin
 append PATH $HOME/.scripts
 append PATH $HOME/all/bin
 append PATH $HOME/$(uname -m)/$(uname -s)/bin
