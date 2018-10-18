@@ -3,6 +3,8 @@ noremap v V
 noremap V v
 noremap ; :
 noremap , ;
+noremap ' `
+noremap ` '
 
 " inoremap jk <esc>
 let loaded_matchparen=1
