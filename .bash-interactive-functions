@@ -13,6 +13,9 @@ ack() {
 	shift
 	find "${@-.}" -name .git -prune -o -type f -exec grep $_dash_i -H "$_regex" {} \;
 }
+bundle() {
+	git bundle create $(basename $(git rev-parse --show-toplevel))-$(git rev-parse --short HEAD ).bundle HEAD
+}
 c() { tput sc; clear; tput rc; } # save cursor/restore cursor  man terminfo
 cd() {
 	local _SESSION_DIR
