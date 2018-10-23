@@ -14,7 +14,13 @@ ack() {
 	find "${@-.}" -name .git -prune -o -type f -exec grep $_dash_i -H "$_regex" {} \;
 }
 bundle() {
-	git bundle create $(basename $(git rev-parse --show-toplevel))-$(git rev-parse --short HEAD ).bundle HEAD
+	local file
+	test -d "$(git rev-parse --show-toplevel)" || return
+	file=$(basename $(git rev-parse --show-toplevel)
+		)-$(git rev-parse --short HEAD ).bundle
+	test -e "$file" && { echo "$file already exists" >&2; return 1; }
+	git bundle create "$file" HEAD \
+	&& echo Created "$file"
 }
 c() { tput sc; clear; tput rc; } # save cursor/restore cursor  man terminfo
 cd() {
