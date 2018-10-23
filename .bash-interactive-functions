@@ -141,6 +141,8 @@ wrpselect() {
 		read -p "#? " REPLY
 		if test "$REPLY" -ge 0 2> /dev/null; then
 			eval SELECTION=\${${REPLY}}
+		else
+			wrpselect $(for x; do echo "$x" | grep "$REPLY"; done)
 		fi
 		;;
 	esac
