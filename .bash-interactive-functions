@@ -14,9 +14,10 @@ ack() {
 	find "${@-.}" -name .git -prune -o -type f -exec grep $_dash_i -H "$_regex" {} \;
 }
 bundle() {
-	local file
-	test -d "$(git rev-parse --show-toplevel)" || return
-	file=$(basename $(git rev-parse --show-toplevel)
+	local file base
+	base=$(git rev-parse --show-toplevel) || return
+	test -d "$base" || return
+	file="$base"/$(basename "$base"
 		)-$(git rev-parse --short HEAD ).bundle
 	test -e "$file" && { echo "$file already exists" >&2; return 1; }
 	git bundle create "$file" HEAD \
