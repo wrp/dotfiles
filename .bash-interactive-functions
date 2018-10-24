@@ -20,7 +20,7 @@ bundle() {
 	file="$base"/$(basename "$base"
 		)-$(git rev-parse --short HEAD ).bundle
 	test -e "$file" && { echo "$file already exists" >&2; return 1; }
-	git bundle create "$file" HEAD \
+	git bundle create "$file" ${@-HEAD} \
 	&& echo Created "$file"
 }
 c() { tput sc; clear; tput rc; } # save cursor/restore cursor  man terminfo
