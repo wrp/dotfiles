@@ -46,9 +46,12 @@ cdm() { cd $(get-modified-files | longest-common-prefix -d); }
 
 checkout_previous_branch() {
 	local prev_branch
-	prev_branch=$(git reflog | awk '$3 == "checkout:"{print $6; exit}') &&
-	git checkout "$prev_branch"
-	git branch -vv
+	if prev_branch=$(git reflog | awk '$3 == "checkout:"{print $6; exit}' | grep .); then
+		git checkout "$prev_branch"
+	else
+		echo "Couldn't determine previous branch from reflog" >&2
+		return 1
+	fi
 }
 curl() { command curl -Ss "$@"; }
 docker() { execute docker "$@" | { while read line; do echo "$line" >&3; echo "$line"; done \
