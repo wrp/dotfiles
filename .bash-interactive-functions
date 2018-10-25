@@ -187,7 +187,7 @@ j() {
 		_dir=$SELECTION
 		test -n "$_dir" \
 		&& test -d "$HOME/$_dir" \
-		&& command cd "$HOME/$_dir" \
+		&& command cd "$HOME/$_dir"
 		pwd
 	;;
 	esac
