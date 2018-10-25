@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Display git branches and prompt for one to checkout.
-# Store result in a tmux paste buffer, and paste it after next prompt.
 
 : ${COLUMNS:=$( tput cols 2> /dev/null )}
 width=$(git for-each-ref --format='%(refname:short)' refs/heads \
@@ -21,11 +20,12 @@ if ! test "$choice" -gt 0 2> /dev/null; then
 	read -r choice || echo
 fi
 
-if { test "$choice" -le "$count" && test "$choice" -gt 0; } 2> /dev/null; then
-	branch=$(echo "$list" | cut -b 3- | awk "NR == $choice{print \$1}")
-	git checkout "$branch"
-elif test -n "$choice"; then
-	printf '%s' "$choice" | tmux loadb -
-	# Let interactive prompt print
-	{ sleep .2; tmux paste-buffer; } &
-fi
+branch=$( echo "$list" | cut -b 3- | awk '{print $1}' |
+	if { test "$choice" -le "$count" && test "$choice" -gt 0; } 2> /dev/null; then
+		awk "NR == $choice{print \$1}"
+	elif test -n "$choice"; then
+		awk "/$choice/{print \$1; exit}"
+	fi
+)
+
+test -n "$branch" && git checkout "$branch"
