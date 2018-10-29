@@ -1,0 +1,15 @@
+#!/bin/sh
+
+echo $$
+while sleep 15; do
+	for pid in $(ps ax | awk '/[D]ruva.*inSync/{print $1}')
+	do
+		test "$pid" -gt 0 || continue
+		ps -o command= $pid | grep -q '[D]ruva.*inSync' || continue
+		sudo kill $pid
+		sleep 2
+		ps -o command= $pid | grep -q '[D]ruva.*inSync' || continue
+		echo "$pid not terminated. Killing" >&2
+		sudo kill -9 $pid
+	done
+done
