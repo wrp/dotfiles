@@ -2,7 +2,7 @@
 # Get a list of modified files.  First argument
 # specifies amount of git history to explore.
 
-cd $(git exec pwd)
+test -n "$TOP" && cd $(git exec pwd)
 depth_set=${1}
 depth=${1-1}
 
