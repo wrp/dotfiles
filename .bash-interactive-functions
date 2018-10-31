@@ -160,10 +160,12 @@ wrpselect() {
 irssi() { dtach -A /tmp/irssi.dtach irssi; }
 use() {
 	# Put the top level git dir of the cwd in the usage file list
-	local d; d=$(git rev-parse --show-toplevel) || return
-	d="${d#$HOME/}"
-	test -n "$d" || { echo "Don't try to use $HOME" >&2; return; }
-	local file="$HOME/.config/$USER/usage-list"
+	local d root
+	root="${USE_HOME:-$HOME}"
+	d=$(git rev-parse --show-toplevel) || return
+	d="${d#$root/}"
+	test -n "$d" || { echo "Don't try to use $root" >&2; return; }
+	local file="$root/.config/$USER/usage-list"
 	mkdir -p "$(dirname $file)"
 	touch "$file"
 	if ! grep -q "^$d$" "$file"; then
@@ -173,16 +175,18 @@ use() {
 }
 
 get_dir_list() {
+	local root="${USE_HOME:-$HOME}"
 	if test "$1" -gt 0 2> /dev/null; then
 		sed -n -e "${1}p"
 	else
 		sed -n -e "/${1:-.}/p"
-	fi < $HOME/.config/$USER/usage-list
+	fi < $root/.config/$USER/usage-list
 
 	# | sed -e $((${COLUMNS-80} / 5))q
 }
 j() {
 	local _dir
+	local root="${USE_HOME:-$HOME}"
 	case "$1" in
 	.) select-git-branch;;
 	p) checkout_previous_branch;;
@@ -190,8 +194,8 @@ j() {
 		wrpselect $(get_dir_list "$1")
 		_dir=$SELECTION
 		test -n "$_dir" \
-		&& test -d "$HOME/$_dir" \
-		&& command cd "$HOME/$_dir"
+		&& test -d "$root/$_dir" \
+		&& command cd "$root/$_dir"
 		pwd
 	;;
 	esac
