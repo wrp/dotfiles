@@ -165,6 +165,7 @@ use() {
 	test -n "$d" || { echo "Don't try to use $HOME" >&2; return; }
 	local file="$HOME/.config/$USER/usage-list"
 	mkdir -p "$(dirname $file)"
+	touch "$file"
 	if ! grep -q "^$d$" "$file"; then
 		content=$( { cat "$file"; echo "$d"; } | sort ) \
 		&& echo "$content" > $file
