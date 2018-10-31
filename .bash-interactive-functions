@@ -162,7 +162,7 @@ use() {
 	# Put the top level git dir of the cwd in the usage file list
 	local d root
 	root="${USE_HOME:-$HOME}"
-	d=$(git rev-parse --show-toplevel) || return
+	d=$(cd "${1-.}"; git rev-parse --show-toplevel) || return
 	d="${d#$root/}"
 	test -n "$d" || { echo "Don't try to use $root" >&2; return; }
 	local file="$root/.config/$USER/usage-list"
@@ -193,10 +193,13 @@ j() {
 	*)
 		wrpselect $(get_dir_list "$1")
 		_dir=$SELECTION
-		test -n "$_dir" \
-		&& test -d "$root/$_dir" \
-		&& command cd "$root/$_dir"
-		pwd
+		test -n "$_dir" || return
+		if ! test -d "$root/$_dir"; then
+			echo "$root/$_dir does not exist!" >&2
+		else
+			command cd "$root/$_dir"
+			pwd
+		fi
 	;;
 	esac
 }
