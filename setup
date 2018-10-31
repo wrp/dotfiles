@@ -8,7 +8,15 @@ IFS=" $nl"
 
 die() { echo "$@" >&2; exit 1; }
 warn() { test -z "$NOWARN" && echo "$@" >&2; }
-base=$( dirname $(realpath --relative-to=$HOME $0) )
+
+if echo foo | md5sum > /dev/null 2>&1; then
+	MD5=md5sum
+else
+	MD5=md5
+fi
+
+
+base=$( dirname $(realpath --relative-to=$HOME "$0" 2> /dev/null || echo "$0") )
 test "$(pwd)" = "$HOME" || warn "Running from $HOME"
 unset main force abort
 while test $# -gt 0; do
@@ -33,8 +41,8 @@ target() {
 
 for file in $files; do
 	if test -e $file && ! test -d $file; then
-		if test "$(md5sum < $HOME/$file)" != \
-				"$(md5sum < $(target $file))"; then
+		if test "$($MD5 < $HOME/$file)" != \
+				"$($MD5 < $(target $file))"; then
 			warn "different $file"
 			abort=1
 		fi
