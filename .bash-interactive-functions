@@ -220,9 +220,15 @@ p() {
 	# but very fragile
 	CONFIGGED_PROJECT=$(if test -f "$file"; then
 		awk '/^project =/ {print $3}' $file
-	else
-		echo 'highly unlikely to match'
 	fi )
+	if test -z "$CONFIGGED_PROJECT"; then
+		CONFIGGED_PROJECT=$( gcloud config get-value project 2> /dev/null )
+	fi
+	if test -z "$CONFIGGED_PROJECT"; then
+		echo "No currently configured project.  Please run 'gcloud config set project \$PROJECT'" >&2
+		echo "You can get list of possible options from 'gcloud projects list'" >&2
+		return 1
+	fi
 
 	local cfg_file=$HOME/.config/$USER/gcloud-project-list
 	test -f $cfg_file || gcloud projects list | sed 1d > $cfg_file
