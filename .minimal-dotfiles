@@ -1,4 +1,6 @@
-cat << 'EOF' > .bashrc
+# Load this file with 'tmux loadb $0', then paste it into the new host
+
+cat << 'EOF' > $HOME/.bashrc
 test -f /etc/bashrc && . /etc/bashrc
 unalias -a
 trap 'history -a' DEBUG
@@ -15,7 +17,7 @@ PROMPT_COMMAND='printf "\033k%s\033\\" "${HOSTNAME#*-}"'
 ta() { tmux attach; }
 EOF
 
-cat << 'EOF' >> .bash_profile
+cat << 'EOF' > $HOME/.bash_profile
 [[ "$-" =~ i ]] && test -f $HOME/.bashrc && . $HOME/.bashrc
 EOF
 
@@ -26,36 +28,96 @@ nore ; :
 nore , ;
 set nowrapscan
 let loaded_matchparen = 1
-set path+=/usr/local/confluent-3.2.0
-set path+=/usr/local/confluent-4.2.0
+set path+=~
 set includeexpr=substitute(v:fname,'$DAEMON_PATH/','','g')
 set t_ti= t_te=  " Disable clear screen on exit
 highlight Comment ctermfg=darkcyan
 highlight String ctermfg=darkcyan
 EOF
 
-cat << 'EOF' > .inputrc
+cat << 'EOF' > $HOME/.inputrc
 set editing-mode vi
 set keymap vi
 EOF
 
-cat << 'EOF' > .tmux.conf
-unbind C-b
-set -g prefix C-k
-bind C-k send-prefix
-set -g window-status-current-bg yellow
-set -g window-status-current-fg red
-set -g window-status-current-format '#I:#W'
-set -g status-left-length 25
-set status-right '%H:%M %e-%b'
-set-option -g update-environment "SSH_AUTH_SOCK"
-set history-limit 25000
-bind-key -n Left previous-window
-bind-key -n Right next-window
-bind-key ',' command-prompt "rename-window '%%'"
-bind-key '$' command-prompt "rename-session '%%'"
+cat <<- 'EOF' > $HOME/.tmux.conf
+	unbind C-b
+	set -g prefix C-k
+	bind C-k send-prefix
+	set -g window-status-current-bg yellow
+	set -g window-status-current-fg red
+	set -g window-status-current-format '#I:#W'
+	set -g status-left-length 25
+	set status-right '%H:%M %e-%b'
+	set-option -g update-environment "SSH_AUTH_SOCK"
+	set history-limit 25000
+	bind-key -n Left previous-window
+	bind-key -n Right next-window
+	bind-key ',' command-prompt "rename-window '%%'"
+	bind-key '$' command-prompt "rename-session '%%'"
 EOF
 
-cat << 'EOF' > .editrc
-bind -v
+
+cat <<- 'EOF' > $HOME/.editrc
+	bind -v
+	EOF
+
+
+cat << 'EOF' > $HOME/.gitconfig
+[user]
+	name = William Pursell
+	email = williamp@wepay.com
+[alias]
+	ap = add --patch
+	b = branch -vv
+	cda = commit -a -m Documentation
+	cfa = commit -a -m 'Trivial reformat'
+	cp = cherry-pick -x
+	cra = commit -a -m 'Trivial refactor'
+	csa = commit -a -m'Sanity Check'
+	cwa = commit -a -m 'Whitespace'
+	ciam = commit -a -m
+	ci = commit
+	caa = !bash -c '"git commit --amend -a -m \"$(git log --format=format:%B -n 1)\" --cleanup=strip"'
+	caan = !bash -c '"git commit --amend -an -m \"$(git log --format=format:%B -n 1)\" --cleanup=strip"'
+	co = checkout
+	dc = diff --cached
+	d = diff
+	dn = diff --numstat
+	dw = diff --word-diff
+	l = log --oneline --decorate --format=format:'%Cgreen%h%Cred %<(10,trunc)%an%Cblue%D%Creset %<(80,trunc)%s'
+	l1 = log --format=format:'%Cgreen%h%Cred %<(10,trunc)%an%Creset %<(60,trunc)%s %Cblue%D%Creset'
+	ld = log --format=format:'%Cgreen%h%C(yellow) %cr %Cred %<(10,trunc)%an%Creset %<(60,trunc)%s %Cblue%D%Creset'
+	lt  = log --format=format:'%<(40,trunc)%s %Cblue%D%Creset'
+	l1a = log --format=format:'%Cgreen%h%Cred %<(10,trunc)%an%Creset %<(40,trunc)%s %Cblue%d%Creset' --graph
+	l1ah = log -n 10 --format=format:'%Cgreen%h%Cblue%d%Creset %<(80,trunc)%s' --graph
+	la = log --oneline --graph --decorate --format=format:'%Cgreen%h%Cblue%d%Creset %<(80,trunc)%s'
+	lh  = log -n 10 --decorate --format=format:'%Cgreen%h%Cred %<(10,trunc)%an%Creset %<(40,trunc)%s %Cblue%D%Creset' --graph
+	l1h = log -n 10 --decorate --format=format:'%Cgreen%h%Cred %<(10,trunc)%an%Creset %<(40,trunc)%s %Cblue%D%Creset' --graph
+	s = status -uno
+	sp = stash pop
+	ss = stash save
+	exec = "!exec "
+	ll = log --stat
+[core]
+	excludesfile = ~/.gitignore_global
+	whitespace = no-tab-in-indent
+	editor = vim
+[push]
+	default = current
+[pager]
+	status = true
+[versionsort]
+	prereleaseSuffix = .rc
+
+[sendemail]
+	smtpEncryption = tls
+	smtpServer = smtp.gmail.com
+	smtpUser = william.r.pursell
+	smtpServerPort = 587
+[color "branch"]
+	meta = red green bold
+[color]
+	branch = true
+
 EOF
