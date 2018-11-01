@@ -30,6 +30,7 @@ set path+=/usr/local/confluent-4.2.0
 set includeexpr=substitute(v:fname,'$DAEMON_PATH/','','g')
 set t_ti= t_te=  " Disable clear screen on exit
 highlight Comment ctermfg=darkcyan
+highlight String ctermfg=darkcyan
 EOF
 
 cat << 'EOF' > .inputrc
