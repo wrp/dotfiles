@@ -62,10 +62,6 @@ after_cmd() {
 	local _status=$?
 	local val
 	report_cmd_status $HISTFILE $_status >> $HOME/.bash-history
-
-	val=$( tmux show-env 2> /dev/null |
-		awk -F= '/^SSH_AUTH_SOCK=/{print $2}' )
-	test -n "$val" && SSH_AUTH_SOCK="$val"
 	tmux-title
 }
 
