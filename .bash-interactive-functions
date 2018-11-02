@@ -119,7 +119,7 @@ git() {
 	clone)
 		local origin
 		# Parse the url to specify a name for origin
-		origin=$(echo $2 | awk '{print $3}' FS=[/.])
+		origin=$( echo $2 | awk '/^git@github/ {print "github"; exit} {print $3}' FS=[/.])
 		if test -n "$origin"; then shift; set -- clone --origin="$origin" "$@"; fi
 	;;
 	esac
