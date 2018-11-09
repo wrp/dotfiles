@@ -123,7 +123,6 @@ git() {
 		http://.*) echo "Use ssh!!" >&2; return 1;;
 		ssh://git@github.*) origin=github;;
 		ssh://git@bitbucket.devops.wepay-inc.*) origin=wepay;;
-		*) origin=$( echo $2 | awk '{print $3}' FS=[/.]);;
 		esac
 		shift;
 		test -n "$origin" && echo "Setting origin=$origin"
