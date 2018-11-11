@@ -281,7 +281,7 @@ ru () { tac | awk '!a[$0]++' | tac; } ## reverse-unique
 rsync() { command rsync -e 'ssh -o LogLevel=error' "$@"; }
 s() { search-bash-history "$@"; }
 sf() { USE_FAILED=1 search-bash-history "$@"; }
-ssh() { test "$1" = "-A" && shift; execute ssh -o LogLevel=error -A "$@"; }
+ssh() { execute ssh -o LogLevel=error "$@"; }
 scp() { [[ ! $* =~ : ]] &&
 	{ echo 'One of the files should be remote' >&2; return 1; }
 	command scp -p -o LogLevel=error "$@"

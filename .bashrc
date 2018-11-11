@@ -102,10 +102,3 @@ trap debug_trap DEBUG
 trap '. $HOME/.bashrc' SIGUSR1
 
 PROMPT_COMMAND='after_cmd'
-if test -f $HOME/.ssh/agent_sock && 
-	test ! -z "$SSH_AUTH_SOCK" -a "$SSH_AUTH_SOCK" != "$HOME/.ssh/agent_sock"
-then
-	rm -f "$HOME/.ssh/agent_sock" 2>/dev/null
-	ln -fs "$SSH_AUTH_SOCK" "$HOME/.ssh/agent_sock"
-	export SSH_AUTH_SOCK="$HOME/.ssh/agent_sock"
-fi
