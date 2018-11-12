@@ -8,7 +8,7 @@ EVENT_NOKQUEUE=1
 HISTTIMEFORMAT='%H:%M:%S '
 HISTFILESIZE=9999999999
 LSCOLORS=fxfxcxdxbxegedabagacad
-LESS=-FeRXSQ
+LESS=FeRXSQ
 LC_TIME=C
 set -o vi
 PS1='\[$(tput setaf $(( $(expr $? == 0) + 1))
