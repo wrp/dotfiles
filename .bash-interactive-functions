@@ -281,7 +281,7 @@ ru () { tac | awk '!a[$0]++' | tac; } ## reverse-unique
 rsync() { command rsync -e 'ssh -o LogLevel=error' "$@"; }
 s() { search-bash-history "$@"; }
 sf() { USE_FAILED=1 search-bash-history "$@"; }
-ssh() { execute ssh -o LogLevel=error "$@"; }
+ssh() { tmux-title "$@"; command ssh -o LogLevel=error "$@"; tmux-title; }
 scp() { [[ ! $* =~ : ]] &&
 	{ echo 'One of the files should be remote' >&2; return 1; }
 	command scp -p -o LogLevel=error "$@"
@@ -296,7 +296,9 @@ if ! which tac; then
 	fi
 fi > /dev/null 2>&1
 ta() { EVENT_NOKQUEUE=1 tmux attach; }
-tmux-title() { test -t 1 && rename-tmux-pane "$@" 2> /dev/null; }
+tmux-title() { test -t 1 || return
+	while test "${1#-}" != "$1"; do shift; done
+	rename-tmux-window "$@" 2> /dev/null; }
 tn() { tmux switch-client -n; }
 tp() { tmux switch-client -p; }
 ts() {
