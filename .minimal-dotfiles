@@ -21,7 +21,7 @@ cat << 'EOF' > $HOME/.bash_profile
 [[ "$-" =~ i ]] && test -f $HOME/.bashrc && . $HOME/.bashrc
 EOF
 
-cat << 'EOF' > .vimrc
+cat << 'EOF' > $HOME/.vimrc
 nore v V
 nore V v
 nore ; :
@@ -63,10 +63,7 @@ cat <<- 'EOF' > $HOME/.editrc
 	EOF
 
 
-cat << 'EOF' > $HOME/.gitconfig
-[user]
-	name = William Pursell
-	email = williamp@wepay.com
+cat << 'EOF' >> $HOME/.gitconfig
 [alias]
 	ap = add --patch
 	b = branch -vv
@@ -101,7 +98,6 @@ cat << 'EOF' > $HOME/.gitconfig
 	ll = log --stat
 [core]
 	excludesfile = ~/.gitignore_global
-	whitespace = no-tab-in-indent
 	editor = vim
 [push]
 	default = current
@@ -110,14 +106,8 @@ cat << 'EOF' > $HOME/.gitconfig
 [versionsort]
 	prereleaseSuffix = .rc
 
-[sendemail]
-	smtpEncryption = tls
-	smtpServer = smtp.gmail.com
-	smtpUser = william.r.pursell
-	smtpServerPort = 587
 [color "branch"]
 	meta = red green bold
 [color]
 	branch = true
-
 EOF
