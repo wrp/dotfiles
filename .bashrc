@@ -30,11 +30,10 @@ PS1='\[$(
 			| cut -b 1-20 | sed -E -e "/${USER}-[0-9A-Z]{7}./d" )"
 		)$(
 	# directory and git branch
-		if test "${COLUMNS:-0}" -gt 40; then printf "[%s:%s]" \
+		if test "${COLUMNS:-0}" -gt 40; then printf "[%s%s]" \
 			"$(pwd | sed -E -e "s/.*(..........)/\1/" )" \
-			"$({ git rev-parse --abbrev-ref HEAD 2> /dev/null \
-				| grep . \
-				|| echo no-git; } | cut -b 1-10 )"
+			"$( git rev-parse --abbrev-ref HEAD 2> /dev/null \
+				| sed -E -e "s/^/:/" -e "s/(...........).*/\1/" )"
 		else printf :
 		fi
 	)'"\[$(tput setaf 2 2> /dev/null)\]$$\$ "
