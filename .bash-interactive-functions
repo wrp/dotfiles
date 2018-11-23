@@ -65,8 +65,9 @@ execute() { cmd=$1; tmux-title "$cmd";
 	RV=$?; tmux-title; return $RV; }
 g() { git "$@"; }
 ga() {
-	if ! git diff-index --quiet HEAD; then
-		echo repo is dirty >&2
+	if git rev-parse HEAD > /dev/null 2>&1 \
+			&& ! git diff-index --quiet HEAD; then
+		echo Repo is dirty >&2
 		return 1
 	fi
 	git add "$@";
