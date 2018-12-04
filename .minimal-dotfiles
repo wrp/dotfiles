@@ -19,8 +19,9 @@ ta() { tmux attach; }
 complete -r gsutil
 complete -r gcloud
 complete -r bq
-
 EOF
+
+ln -s .bash_history $HOME/.bash-history
 
 cat << 'EOF' > $HOME/.bash_profile
 [[ "$-" =~ i ]] && test -f $HOME/.bashrc && . $HOME/.bashrc
@@ -36,6 +37,8 @@ let loaded_matchparen = 1
 set path+=~
 set includeexpr=substitute(v:fname,'$DAEMON_PATH/','','g')
 set t_ti= t_te=  " Disable clear screen on exit
+set wildmenu
+set wildmode=longest,list,full
 highlight Comment ctermfg=darkcyan
 highlight String ctermfg=darkcyan
 EOF
@@ -65,7 +68,7 @@ EOF
 
 cat <<- 'EOF' > $HOME/.editrc
 	bind -v
-	EOF
+EOF
 
 
 cat << 'EOF' >> $HOME/.gitconfig
