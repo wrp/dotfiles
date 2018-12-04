@@ -121,7 +121,8 @@ git() {
 		local origin
 		# Parse the url to specify a name for origin
 		case $2 in
-		http*) echo "Use ssh!!" >&2; return 1;;
+		http*) test -n "$HTTP_OK" ||
+			{ echo "Use ssh or set HTTP_OK!!" >&2; return 1; } ;;
 		ssh://git@github.*) origin=github;;
 		ssh://git@bitbucket.devops.wepay-inc.*) origin=wepay;;
 		esac
