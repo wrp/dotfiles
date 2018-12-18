@@ -72,9 +72,9 @@ report_cmd_status() {
 			s@([0-9]{10})@sprintf "%s (%s by pid:%d in %s%s%s) %s",
 				$1,
 				POSIX::strftime("%a %H:%M:%S GMT", gmtime $1),
-				'"$$,
-				\"${PWD}\""',
-				defined $ENV{PROJECT} ? ":" . $ENV{PROJECT} : "",
+				'"$$"',
+				"'"${PWD}"'",
+				"'"${PROJECT:+:}${PROJECT}"'",
 				"'"${HOSTNAME:+ on }${HOSTNAME}"'",
 				$ENV{STATUS} > 0 ? "FAILED" : "ok",
 				@ge;
