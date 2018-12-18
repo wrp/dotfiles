@@ -75,7 +75,7 @@ report_cmd_status() {
 				'"$$,
 				\"${PWD}\""',
 				defined $ENV{PROJECT} ? ":" . $ENV{PROJECT} : "",
-				defined $ENV{HOSTNAME} ? " on " . $ENV{HOSTNAME} : "",
+				"'"${HOSTNAME:+ on }${HOSTNAME}"'",
 				$ENV{STATUS} > 0 ? "FAILED" : "ok",
 				@ge;
 			print;  # Since about to skip auto print with -p
