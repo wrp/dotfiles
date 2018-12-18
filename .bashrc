@@ -69,12 +69,13 @@ report_cmd_status() {
 	# Note that the FAILED string is used in scripts/search-bash-history
 	tac $1 | STATUS=$2 perl -MPOSIX -pe '
 		if( /^#[0-9]{10}$/ ) { # abort after adding the timestamp.
-			s@([0-9]{10})@sprintf "%s (%s by pid:%d in %s%s) %s",
+			s@([0-9]{10})@sprintf "%s (%s by pid:%d in %s%s%s) %s",
 				$1,
 				POSIX::strftime("%a %H:%M:%S GMT", gmtime $1),
 				'"$$,
 				\"${PWD}\""',
-				defined $ENV{PROJECT} ? ": " . $ENV{PROJECT} : "",
+				defined $ENV{PROJECT} ? ":" . $ENV{PROJECT} : "",
+				defined $ENV{HOSTNAME} ? " on " . $ENV{HOSTNAME} : "",
 				$ENV{STATUS} > 0 ? "FAILED" : "ok",
 				@ge;
 			print;  # Since about to skip auto print with -p
