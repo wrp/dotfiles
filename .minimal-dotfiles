@@ -15,6 +15,8 @@ PS1='\[$(tput setaf $(( $(expr $? == 0) + 1))
 	)\]$(date "+%H:%M:%S") $$ \h\[$( tput setaf 2 2> /dev/null )\]\$ '
 PROMPT_COMMAND='printf "\033k%s\033\\" "${HOSTNAME#*-}"'
 ta() { tmux attach; }
+curl() { command curl -Ss "$@"; }
+vi() { vim "$@"; }
 
 complete -r gsutil
 complete -r gcloud
