@@ -22,9 +22,9 @@ fi
 
 branch=$( echo "$list" | cut -b 3- | awk '{print $1}' |
 	if { test "$choice" -le "$count" && test "$choice" -gt 0; } 2> /dev/null; then
-		awk "NR == $choice{print \$1}"
+		awk 'NR == c{print $1}' c="$choice"
 	elif test -n "$choice"; then
-		awk "/$choice/{print \$1; exit}"
+		awk 'match($0,c) {print $1; exit}' c="$choice"
 	fi
 )
 
