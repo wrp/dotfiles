@@ -10,7 +10,11 @@ list=$(git branch --color --format="$format")
 choice=${1}
 count=$(echo "$list" | wc -l | tr -d '[:space:]')
 
-test "$count" = 1 && exit
+if test "$count" = 1; then
+	printf 'Already on only branch: '
+	git rev-parse --abbrev-ref HEAD
+	exit 0
+fi
 
 if ! test "$choice" -gt 0 2> /dev/null; then
 	git branch --color=always --format="$format" \
