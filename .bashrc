@@ -50,11 +50,15 @@ read_file $HOME/.bash-local
 
 debug_trap() {
 	# Runs before a command in an interactive shell
-	history -a || echo 'WARNING: history -a failed' >&2
 	if ! test -f "$HISTFILE"; then
-		echo "WARNING: $HISTFILE (bash history file) does not exist" >&2
+		history -w ||
+			echo 'WARNING: history -w failed'
 	fi
-}
+	if ! test -f "$HISTFILE"; then
+		echo "WARNING: $HISTFILE (bash history file) does not exist"
+	fi
+	history -a || echo 'WARNING: history -a failed'
+} >&2
 
 after_cmd() {
 	# Run after a command, and before a prompt is displayed
