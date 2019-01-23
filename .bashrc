@@ -50,9 +50,9 @@ read_file $HOME/.bash-local
 
 debug_trap() {
 	# Runs before a command in an interactive shell
-	history -a
+	history -a || echo 'WARNING: history -a failed' >&2
 	if ! test -f "$HISTFILE"; then
-		touch $HISTFILE && exec bash
+		echo "WARNING: $HISTFILE (bash history file) does not exist" >&2
 	fi
 }
 
@@ -67,7 +67,7 @@ after_cmd() {
 report_cmd_status() {
 	# Clean up the most recent command in HISTFILE and append it to global .bash-history.
 	# Note that the FAILED string is used in scripts/search-bash-history
-	tac $1 | STATUS=$2 perl -MPOSIX -pe '
+	test -f "$1" && tac "$1" | STATUS="$2" perl -MPOSIX -pe '
 		if( /^#[0-9]{10}$/ ) { # abort after adding the timestamp.
 			s@([0-9]{10})@sprintf "%s (%s by pid:%d in %s%s%s) %s",
 				$1,
