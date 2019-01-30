@@ -6,20 +6,19 @@ use Getopt::Std;
 
 my %args;
 getopts('tla', \%args);
+# Use -t or -l to display local time.  -a to display local and UTC
 
 my $now = time();
-my @lt = localtime($now);
-my @gt = gmtime($now);
-my $tz = $lt[2] - $gt[2];
+my $tz = (localtime($now))[2] - (gmtime($now))[2];
 
 while(<>) {
 	if ($args{t} || $args{l} || $args{a}) {
 		s/([0-9]{9,10})/sprintf "%s (%sT%d)", $1, scalar localtime $1, $tz/ge;
 		if( $args{a}) {
-			s/([0-9]{9,10})/sprintf "%s (%sT-0)", $1, scalar gmtime $1/ge;
+			s/([0-9]{9,10})/sprintf "%s (%sUTC)", $1, scalar gmtime $1/ge;
 		}
 	} else {
-		s/([0-9]{9,10})/sprintf "%s (%sT-0)", $1, scalar gmtime $1/ge;
+		s/([0-9]{9,10})/sprintf "%s (%sUTC)", $1, scalar gmtime $1/ge;
 	}
 	print;
 }
