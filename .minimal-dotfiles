@@ -1,7 +1,14 @@
 #!/bin/sh
-# load this file with 'expand $0 | tmux loadb -', then paste it into the new host
-# tmux doesn't handle tabs well (something is happening to them, need to track down)
-# so don't forget to expand
+# Execute this file to load up the tmux paste buffer
+# unset TMUX if you really want to just execute it
+
+if test -n "$TMUX"; then
+	sed -e '1,/UNI[Q]UE_STRING/d' $0 |
+		expand | # tmux doesn't handle tabs well
+		tmux loadb -;
+		exit
+fi
+# UNIQUE_STRING
 
 cat << '-------------- EOF ----------------' > $HOME/.bashrc
 test -f /etc/bashrc && . /etc/bashrc
