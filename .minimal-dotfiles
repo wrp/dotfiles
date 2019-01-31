@@ -27,6 +27,9 @@ PROMPT_COMMAND='printf "\033k%s\033\\" "${HOSTNAME#*-}"'
 ta() { tmux attach; }
 curl() { command curl -Ss "$@"; }
 epoch() { perl -pe 's/([0-9]{9,10})/sprintf "%s (%sUTC)", $1, scalar gmtime $1/ge' "$@"; }
+test -z "$COLUMNS" && COLUMNS=$( tput cols 2> /dev/null )
+trim() { perl -nE "chomp; say substr \$_, 0, ${COLUMNS-80} - 1"; }
+
 vi() { vim "$@"; }
 
 complete -r gsutil
