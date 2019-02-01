@@ -50,6 +50,10 @@ read_file $HOME/.bash-local
 
 debug_trap() {
 	# Runs before a command in an interactive shell
+	if test -f "$HISTFILE" && ! test -s "$HISTFILE"; then
+		echo "WARNING: $HISTFILE (bash history file) is empty!  Removing." >&2
+		rm "$HISTFILE"
+	fi
 	if ! test -f "$HISTFILE"; then
 		history -w ||
 			echo 'WARNING: history -w failed'
