@@ -46,6 +46,10 @@ append PATH $HOME/.scripts
 append PATH $HOME/all/bin
 append PATH $HOME/$(uname -m)/$(uname -s)/bin
 read_file $HOME/.bash-env
+test -z "$HISTFILE" && HISTFILE=$HOME/.bash-history-$$
+export HISTFILE
+{ printf '#'; date +%s; echo ": Shell $$ begins"; } >> $HISTFILE
+
 read_file $HOME/.bash-local
 
 debug_trap() {
