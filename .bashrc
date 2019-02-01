@@ -48,7 +48,9 @@ append PATH $HOME/$(uname -m)/$(uname -s)/bin
 read_file $HOME/.bash-env
 test -z "$HISTFILE" && HISTFILE=$HOME/.bash-history-$$
 export HISTFILE
-{ printf '#'; date +%s; echo ": Shell $$ begins"; } >> $HISTFILE
+if ! test -s "$HISTFILE"; then
+	{ printf '#'; date +%s; echo ": Shell $$ begins"; } >> $HISTFILE
+fi
 
 read_file $HOME/.bash-local
 
