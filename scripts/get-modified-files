@@ -1,6 +1,6 @@
 #!/bin/sh
 # Get a list of modified files.  First argument
-# specifies amount of git history to explore.
+# specifies amount of git history to explore, defaulting to 1
 
 test -n "$TOP" && cd $(git exec pwd)
 depth_set=${1}
