@@ -33,7 +33,8 @@ PS1='\[$(
 		if test "${COLUMNS:-0}" -gt 40; then printf "[%s%s]" \
 			"$(pwd | sed -E -e "s/.*(..........)/\1/" )" \
 			"$( git rev-parse --abbrev-ref HEAD 2> /dev/null \
-				| sed -E -e "s/^/:/" -e "s/(...........).*/\1/" )"
+				| sed -E -e "s@^heads/@@" \
+				-e "s/^/:/" -e "s/(...........).*/\1/" )"
 		else printf :
 		fi
 	)'"\[$(tput setaf 2 2> /dev/null)\]$$\$ "
