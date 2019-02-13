@@ -7,7 +7,7 @@ test -n "$TOP" && cd $(git exec pwd)
 arg_set=${1}
 branch=${1-master}
 
-if test "$branch" -gt 0 2> /dev/null; then
+if test "$branch" -gt 0 2> /dev/null || ! git diff --name-only "${branch}" | grep .; then
 	depth=$branch
 	if ! git diff-files --name-only | grep . || test -n "$arg_set"; then
 		while test ${i-0} -lt $depth; do
@@ -15,7 +15,5 @@ if test "$branch" -gt 0 2> /dev/null; then
 			: $(( i += 1 ))
 		done
 	fi
-else
-	git diff --name-only "${branch}"
 fi \
 | awk '!a[$0]++{print c, $0}' OFS=/ c=$(git exec pwd)
