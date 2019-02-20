@@ -3,10 +3,15 @@
 # unset TMUX if you really want to just execute it
 
 if test -n "$TMUX"; then
-	sed -e '1,/UNI[Q]UE_STRING/d' $0 |
-		expand | # tmux doesn't handle tabs well
-		tmux loadb -;
-		exit
+	sed -e '1,/UNI[Q]UE_STRING/d' $0 \
+	| if test "$1"; then
+		sed -n -E "/^# [.]?$1/,/^-------------- EOF --------------/p"
+	else
+		cat
+	fi \
+	| expand \
+	| tmux loadb -
+	exit
 fi
 # UNIQUE_STRING
 
