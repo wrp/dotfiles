@@ -10,7 +10,8 @@ if test -n "$TMUX"; then
 fi
 # UNIQUE_STRING
 
-cat << '-------------- EOF ----------------' > $HOME/.bashrc
+# .bashrc
+cat << '-------------- EOF --------------' > $HOME/.bashrc
 test -f /etc/bashrc && . /etc/bashrc
 unalias -a
 trap 'history -a' DEBUG
@@ -35,17 +36,19 @@ vi() { vim "$@"; }
 complete -r gsutil
 complete -r gcloud
 complete -r bq
--------------- EOF ----------------
-
+-------------- EOF --------------
 
 ln -s .bash_history $HOME/.bash-history
 
 
-cat << 'EOF' > $HOME/.bash_profile
+# .bash_profile
+cat << '-------------- EOF --------------' > $HOME/.bash_profile
 [[ "$-" =~ i ]] && test -f $HOME/.bashrc && . $HOME/.bashrc
-EOF
+-------------- EOF --------------
 
-cat << '-------------- EOF ----------------' > $HOME/.vimrc
+
+# .vimrc
+cat << '-------------- EOF --------------' > $HOME/.vimrc
 nore v V
 nore V v
 nore ; :
@@ -61,13 +64,16 @@ set wildmenu
 set wildmode=longest,list,full
 highlight Comment ctermfg=darkcyan
 highlight String ctermfg=darkcyan
--------------- EOF ----------------
+-------------- EOF --------------
 
-cat << '-------------- EOF ----------------' > $HOME/.inputrc
+
+# .inputrc
+cat << '-------------- EOF --------------' > $HOME/.inputrc
 set editing-mode vi
 set keymap vi
--------------- EOF ----------------
+-------------- EOF --------------
 
+# .tmux.conf
 cat << 'EOF' > $HOME/.tmux.conf
 unbind C-b
 set -g prefix C-k
@@ -86,12 +92,14 @@ bind-key '$' command-prompt "rename-session '%%'"
 EOF
 
 
-cat << 'EOF' > $HOME/.editrc
+# .editrc
+cat << '-------------- EOF --------------' > $HOME/.editrc
 bind -v
-EOF
+-------------- EOF --------------
 
 
-cat << 'EOF' > $HOME/.gitconfig
+# .gitconfig
+cat << '-------------- EOF --------------' > $HOME/.gitconfig
 [alias]
 	ap = add --patch
 	b = branch -vv
@@ -138,4 +146,4 @@ cat << 'EOF' > $HOME/.gitconfig
 	meta = red green bold
 [color]
 	branch = true
-EOF
+-------------- EOF --------------
