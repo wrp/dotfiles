@@ -301,7 +301,11 @@ if ! which tac; then
 			END {for(c=NR; c>0; c--) print a[c]}' "$x"; done; }
 	fi
 fi > /dev/null 2>&1
-ta() { EVENT_NOKQUEUE=1 tmux attach; }
+if test -z "$TMUX"; then
+	ta() { EVENT_NOKQUEUE=1 tmux attach; }
+else
+	ta() { echo 'Already in a tmux session' >&2; }
+fi
 tmux-title() { test -t 1 || return
 	while test "${1#-}" != "$1"; do shift; done
 	rename-tmux-window "$@" 2> /dev/null; }
