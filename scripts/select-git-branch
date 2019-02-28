@@ -8,31 +8,23 @@
 : ${COLUMNS:=$( tput cols 2> /dev/null )}
 width=$(git for-each-ref --format='%(refname:short)' refs/heads \
 	| awk 'length > max {max = length} END {print max + 2}')
-format="%(align:$width)%(HEAD) %(refname:short)%(end) %(contents:subject)"
+format="%(align:$width)%(HEAD) %(refname:short)%(end)"
 list=$(git branch --color --format="$format")
 choice=${1}
-count=$(echo "$list" | wc -l | tr -d '[:space:]')
-
-if test "$count" = 1; then
-	printf 'Already on only branch: '
-	git rev-parse --abbrev-ref HEAD
-	exit 0
-fi
-
-if ! test "$choice" -gt 0 2> /dev/null; then
-	git branch --color=always --format="$format" \
-		| nl -ba -s ' ' \
-		| perl -nE "chop; say substr(\$_,0,${cols:-${COLUMNS-80}}) if m/${choice-.}/"
+trim() {
+	if test "$choice" -gt 0 2> /dev/null; then
+		list=$(echo "$list" | perl -nE "chop; say substr(\$_,0,${cols:-${COLUMNS-80}}) if \$. == ${choice}")
+	else
+		list=$(echo "$list" | perl -nE "chop; say substr(\$_,0,${cols:-${COLUMNS-80}}) if m/${choice-.}/")
+	fi
+}
+while count=$(echo "$list" | wc -l | tr -d '[:space:]'); test "$count" -gt 1 2> /dev/null; do
+	echo "$list" | nl -ba -s ' '
 	printf "Select branch: " 
 	read -r choice || echo
-fi
+	trim
+done
 
-branch=$( echo "$list" | cut -b 3- | awk '{print $1}' |
-	if { test "$choice" -le "$count" && test "$choice" -gt 0; } 2> /dev/null; then
-		awk 'NR == c{print $1}' c="$choice"
-	elif test -n "$choice"; then
-		awk 'match($0,c) {print $1; exit}' c="$choice"
-	fi
-)
+branch=$( echo "$list" | cut -b 3- | awk '{print $1}' )
 
 test -n "$branch" && git checkout "$branch"
