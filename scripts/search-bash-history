@@ -37,14 +37,15 @@ do_search() {
 		' status='?' printfailed=${V+1} \
 	> $tmp1
 
+	# Find length of timestamp and status in above output
+	prelen=$(awk '{print match($0, "\\|"); exit}' $tmp1)
 	for pattern; do
 		unset not
 		if test "${pattern:0:1}" = '~'; then
 			not='!'
 			pattern="${pattern:1}"
 		fi
-		# "14" below is the length of timestamp and status from above output
-		awk "$not match(substr(\$0, 14), \"$pattern\")" $tmp1 > $tmp2
+		awk "$not match(substr(\$0, ${prelen-14}), \"$pattern\")" $tmp1 > $tmp2
 		mv $tmp2 $tmp1
 	done
 
