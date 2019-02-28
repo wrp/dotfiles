@@ -2,12 +2,12 @@
 
 # Display git branches and prompt for one to checkout.
 
-# TODO: fix the work flow.  When given a non-integer first argument,
-# this should filter the branches that match it as a regex
+# When given a non-integer first argument, filter the branches that match it as a regex.
+# When given an integer, select it.
 
 : ${COLUMNS:=$( tput cols 2> /dev/null )}
 width=$(git for-each-ref --format='%(refname:short)' refs/heads \
-| awk 'length > max {max = length} END {print max + 2}')
+	| awk 'length > max {max = length} END {print max + 2}')
 format="%(align:$width)%(HEAD) %(refname:short)%(end) %(contents:subject)"
 list=$(git branch --color --format="$format")
 choice=${1}
@@ -22,7 +22,7 @@ fi
 if ! test "$choice" -gt 0 2> /dev/null; then
 	git branch --color=always --format="$format" \
 		| nl -ba -s ' ' \
-		| perl -nE "chop; say substr(\$_,0,${cols:-${COLUMNS-80}})"
+		| perl -nE "chop; say substr(\$_,0,${cols:-${COLUMNS-80}}) if m/${choice-.}/"
 	printf "Select branch: " 
 	read -r choice || echo
 fi
