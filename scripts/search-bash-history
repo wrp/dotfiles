@@ -38,12 +38,13 @@ do_search() {
 	> $tmp1
 
 	for pattern; do
-		unset negate
+		unset not
 		if test "${pattern:0:1}" = '~'; then
-			negate=-v
+			not='!'
 			pattern="${pattern:1}"
 		fi
-		grep -E -i ${negate} "${pattern}" $tmp1 > $tmp2
+		# "14" below is the length of timestamp and status from above output
+		awk "$not match(substr(\$0, 14), \"$pattern\")" $tmp1 > $tmp2
 		mv $tmp2 $tmp1
 	done
 
