@@ -18,11 +18,14 @@ trim() {
 		list=$(echo "$list" | perl -nE "chop; say substr(\$_,0,${cols:-${COLUMNS-80}}) if m/${choice-.}/")
 	fi
 }
-while count=$(echo "$list" | wc -l | tr -d '[:space:]'); test "$count" -gt 1 2> /dev/null; do
+while
+	trim
+	count=$(echo "$list" | wc -l | tr -d '[:space:]')
+	test "$count" -gt 1 2> /dev/null
+do
 	echo "$list" | nl -ba -s ' '
 	printf "Select branch: " 
 	read -r choice || echo
-	trim
 done
 
 branch=$( echo "$list" | cut -b 3- | awk '{print $1}' )
