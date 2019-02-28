@@ -28,7 +28,7 @@ do_search() {
 	< ~/.bash-history \
 		awk '
 			/^#/ {
-				time = substr($1, 2, 100)
+				time = substr($1, 2)
 				status = match($0,"FAILED$") ? "!" : match($0,"ok$") ? "" : "?"
 			}
 			!/^#/ && ( printfailed || status != "!") {
