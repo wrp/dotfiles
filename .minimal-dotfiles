@@ -31,7 +31,7 @@ PS1="\[$(tput rev)"'$( tput setaf $(( $(expr $? == 0) + 1))
         )\]$(date "+%H:%M:%S") $$ \h\$\['"$( tput setaf 2)$(tput sgr0)\] "
 PROMPT_COMMAND='printf "\033k%s\033\\" "${HOSTNAME#*-}"'
 ta() { tmux attach; }
-curl() { command curl -Ss "$@"; }
+curl() { command curl -Ssf "$@"; }
 epoch() { perl -pe 's/([0-9]{9,10})/sprintf "%s (%sUTC)", $1,
         scalar gmtime $1/ge' "$@"; }
 test -z "$COLUMNS" && COLUMNS=$( tput cols 2> /dev/null )
