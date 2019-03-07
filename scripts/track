@@ -1,0 +1,14 @@
+#!/bin/sh
+# Setup local branch to track branch on remote
+# $1: remote (required)
+# $2: remote-branch (optional, defaults to current local branch)
+
+die() { echo "$*" >&2; exit 1; }
+remote=${1}
+local_branch=$(git rev-parse --abbrev-ref HEAD) || die
+remote_branch=${2:-$local_branch}
+
+test -z "$remote" && die "Must specify remote"
+test -z "$local_branch" && die "couldn't get local branch name"
+
+git branch -u "$remote/$remote_branch" "$local_branch"
