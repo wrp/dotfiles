@@ -8,7 +8,7 @@ shopt -s checkwinsize
 shopt -s histverify
 # set +H      # disable history expansion
 
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+test -x /usr/bin/lesspipe && eval "$(SHELL=/bin/sh lesspipe)"
 
 PS1='\[$(
 	# Colorize based on previous command status
