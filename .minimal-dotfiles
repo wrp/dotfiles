@@ -32,6 +32,7 @@ PS1="\[$(tput rev)"'$( r=$(( $? != 0 )); tput setaf $((2 - r));
         )\]$(date "+%H:%M:%S") $$ \h\$\['"$( tput setaf 2)$(tput sgr0)\] "
 
 PROMPT_COMMAND='printf "\033k%s\033\\" "${HOSTNAME#*-}"'
+g() { git "$@"; }
 ta() { tmux attach; }
 curl() { command curl -Ssf "$@"; }
 epoch() { perl -pe 's/([0-9]{9,10})/sprintf "%s (%sUTC)", $1,
