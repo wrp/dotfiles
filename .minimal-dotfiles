@@ -27,8 +27,10 @@ export LSCOLORS=fxfxcxdxbxegedabagacad
 export LESS=FeRXSQ
 export LC_TIME=C
 set -o vi
-PS1="\[$(tput rev)"'$( tput setaf $(( $(expr $? == 0) + 1))
+PS1="\[$(tput rev)"'$( r=$(( $? != 0 )); tput setaf $((2 - r));
+        tput setab $(( r * 7 ));
         )\]$(date "+%H:%M:%S") $$ \h\$\['"$( tput setaf 2)$(tput sgr0)\] "
+
 PROMPT_COMMAND='printf "\033k%s\033\\" "${HOSTNAME#*-}"'
 ta() { tmux attach; }
 curl() { command curl -Ssf "$@"; }
