@@ -1,0 +1,6 @@
+#!/bin/sh
+
+tmux set -g status-style bg=green
+tmux set -g window-status-current-format '#I:#W'
+tmux set -ag window-status-current-style bg=blue
+tmux set-window-option @disable_arrows no
