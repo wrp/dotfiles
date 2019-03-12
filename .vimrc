@@ -41,7 +41,7 @@ syntax on
 "map ]] ][][%
 
 autocmd BufEnter,BufReadPost,FileReadPost,BufNewFile *
-	\ call system("test -z \"$NORENAMEVIM\" && rename-tmux-window " .
+	\ call system("test -z \"$NORENAMEVIM\" && rename-tmux-pane " .
 	\ expand("%"))
 
 if &diff
