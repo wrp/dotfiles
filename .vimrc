@@ -29,6 +29,8 @@ set wildmode=longest,list,full
 "set colorcolumn+=+1
 highlight ColorColumn ctermbg=green
 highlight Folded ctermbg=black
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
 syntax on
 
 " Attempt to deal with a brain-dead coding style that

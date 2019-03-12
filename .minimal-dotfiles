@@ -97,6 +97,8 @@ set wildmenu
 set wildmode=longest,list,full
 highlight Comment ctermfg=darkcyan
 highlight String ctermfg=darkcyan
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
 -------------- EOF --------------
 
 
