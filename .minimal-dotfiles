@@ -17,7 +17,8 @@ fi
 
 # .bashrc
 cat << '-------------- EOF --------------' > $HOME/.bashrc
-test -f /etc/bashrc && . /etc/bashrc
+read_file() { for f; do test -f "$f" && . "$f"; done; }
+read_file /etc/bashrc
 unalias -a
 trap 'history -a' DEBUG
 export EVENT_NOKQUEUE=1
@@ -69,6 +70,7 @@ ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31
 *.ra=00;36:*.wav=00;36:*.axa=00;36:*.oga=00;36:*.spx=00;36:*.xspf=00;36
 EOF
 )
+read_file "$HOME"/.bash-local
 -------------- EOF --------------
 
 ln -s .bash_history $HOME/.bash-history
