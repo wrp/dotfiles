@@ -28,18 +28,18 @@ bind-key -T root C-\ select-pane -l
 bind-key -T root C-a swap-window -t -1
 bind-key -T root C-s swap-window -t +1
 
-bind-key -T root C-p if-shell "$arrows_disabled" "\
+set-hook after-pane-focus-in "if-shell \"$arrows_disabled\" \"\
 	set-window-option @disable_arrows no \; \
 	set -g status-style bg=green\; \
 	set -g window-status-current-format '#I:#W' \; \
 	set -ga window-status-current-style bg=blue \; \
-	" \
-	"set-window-option @disable_arrows yes\; \
+	\" \
+	\"set-window-option @disable_arrows yes\; \
 	set -g window-status-current-format '#W' \; \
 	set -g status-style bg=black\; \
 	set -ag status-style fg=red\; \
 	set -ag window-status-current-style bg=black \; \
-	"
+	\""
 
 bind-key C-i rotate-window -D
 bind-key ',' command-prompt "rename-window '%%'"
