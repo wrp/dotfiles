@@ -314,7 +314,7 @@ else
 fi
 tmux-title() { test -t 1 || return
 	while test "${1#-}" != "$1"; do shift; done
-	rename-tmux-pane "$@" 2> /dev/null; }
+	rename-tmux-window "$@" 2> /dev/null; }
 tn() { tmux switch-client -n; }
 tp() { tmux switch-client -p; }
 ts() {
