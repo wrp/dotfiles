@@ -45,6 +45,8 @@ cdm() { cd $(get-modified-files | longest-common-prefix -d); }
 
 
 checkout_previous_branch() {
+	echo "Don't use ${FUNCNAME[0]} anymore!  Just do 'git checkout -' or 'git checkout @{-1}'" >&2
+	return
 	local prev_branch
 	if prev_branch=$(git reflog | awk '$3 == "checkout:"{print $6; exit}' | grep .); then
 		git checkout "$prev_branch"
@@ -203,7 +205,7 @@ j() {
 	local root="${USE_HOME:-$HOME}"
 	case "$1" in
 	.) select-git-branch;;
-	p) checkout_previous_branch;;
+	p) git checkout @{-1};;
 	*)
 		wrpselect $(get_dir_list "$1")
 		_dir=$SELECTION
