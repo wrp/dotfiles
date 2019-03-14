@@ -13,6 +13,8 @@ fi
 
 title=$( echo "$*" | sed '/.\{20\}/s/^'$patt'$/'$repl/)
 
-tmux rename-window -- "$title"
-exit
-printf '\033k%s\033\\' "$title";
+if test -n "$TMUX"; then
+	tmux rename-window -- "$title"
+else
+	printf '\033k%s\033\\' "$title";
+fi
