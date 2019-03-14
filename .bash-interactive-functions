@@ -314,7 +314,7 @@ if test -z "$TMUX"; then
 else
 	ta() { echo 'Already in a tmux session' >&2; }
 fi
-tmux-title() { test -t 1 || return;
+tmux-title() { test -t 1 && test -n "$TMUX" || return;
 	while test "${1#-}" != "$1"; do shift; done;
 	rename-tmux-window "$@"; }
 tn() { tmux switch-client -n; }
