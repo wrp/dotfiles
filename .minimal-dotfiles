@@ -137,7 +137,12 @@ bind -v
 
 
 # .gitconfig
-cat << '-------------- EOF --------------' > $HOME/.gitconfig
+cat << EOF > $HOME/.gitconfig
+[user]
+        email = ${EMAIL}
+        name = ${USER}
+EOF
+cat << '-------------- EOF --------------' >> $HOME/.gitconfig
 [alias]
 	ap = add --patch
 	b = branch -vv
