@@ -88,6 +88,7 @@ nore v V
 nore V v
 nore ; :
 nore , ;
+syntax on
 set nowrapscan
 let loaded_matchparen = 1
 set path+=~
