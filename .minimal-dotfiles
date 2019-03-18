@@ -84,10 +84,10 @@ cat << '-------------- EOF --------------' > $HOME/.bash_profile
 
 # .vimrc
 cat << '-------------- EOF --------------' > $HOME/.vimrc
-nore v V
-nore V v
-nore ; :
-nore , ;
+noremap v V
+noremap V v
+noremap ; :
+noremap , ;
 syntax on
 set nowrapscan
 let loaded_matchparen = 1
