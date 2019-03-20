@@ -30,7 +30,7 @@ export LC_TIME=C
 set -o vi
 PS1="\[$(tput rev)"'$( r=$(( $? != 0 )); tput setaf $((2 - r));
         tput setab $(( r * 7 ));
-        )\]$(date "+%H:%M:%S") $$ \h\$\['"$( tput setaf 2)$(tput sgr0)\] "
+        )\]$(date "+%H:%M:%S")'"\[$( tput setaf 2)$(tput sgr0)\]"' $$ \h\$ '
 
 PROMPT_COMMAND='printf "\033k%s\033\\" "${HOSTNAME#*-}"'
 c() { clear; }
