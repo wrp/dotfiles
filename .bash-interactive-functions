@@ -319,6 +319,7 @@ tmux-title() { test -t 1 || return;
 	rename-tmux-window "$@"; }
 tn() { tmux switch-client -n; }
 tp() { tmux switch-client -p; }
+trim() { perl -nE "chomp; say substr \$_, 0, ${COLUMNS-80} - 1" "$@"; }
 ts() {
   # stdbuf -oL "$@" | perl -pe '$|=1; print localtime . ": "' | ${PAGER-more}
   $@ | perl -pe '$|=1; print localtime . ": "' | ${PAGER-more}
