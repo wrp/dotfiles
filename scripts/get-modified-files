@@ -1,11 +1,11 @@
 #!/bin/sh
 # Get a list of modified files.  First argument specifies a branch to
-# compare to, defaulting to master.  If it is an integer, it is the
+# compare to, defaulting to current.  If it is an integer, it is the
 # amount of git history to explore.
 
 test -n "$TOP" && cd $(git exec pwd)
 arg_set=${1}
-branch=${1-master}
+branch=${1-$(git rev-parse --abbrev-ref HEAD)}
 depth=${1-1}
 test "$depth" -gt 0 2> /dev/null || depth=1
 
