@@ -67,6 +67,12 @@ else
 	do_search "$@"
 fi
 
+check_tmux() {
+	if test -z "$TMUX"; then
+		printf "Not running tmux.  Aborting\n" >&2
+		exit 1
+	fi
+}
 
 if test -z "$choice"; then
 	< $RESULTS \
@@ -76,11 +82,13 @@ if test -z "$choice"; then
 		s/([0-9]{9,10})/sprintf "%s", scalar localtime $1/e;
 		chop; say substr $_, 0, '"${COLUMNS-80} - 1"
 
+	check_tmux
 	printf 'Select command to store in tmux buffer: '
 	read n
 else
 	n=$choice
 fi
+check_tmux
 
 if test "$n" -gt 0 2> /dev/null; then
 	< $RESULTS sed -n -e "${n}s/[^|]*| //" -e "$n"p \
