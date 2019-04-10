@@ -108,7 +108,8 @@ report_cmd_status() {
 				exit 0 if /^$cmd( |$)/ }
 			print $ts
 		}
-		print unless $. == 1 # Delay printing of timestamp
+		s/[ \t]+$//;
+		print unless $. == 1; # Delay printing of timestamp
 	'
 }
 
