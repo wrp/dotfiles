@@ -8,6 +8,7 @@ die() { test -n "*" && echo "$@"; exit 1; }
 HIST=$HOME/.config/$USER/bash-search-history-args
 RESULTS=$HOME/.config/$USER/bash-search-history-results
 tac=$(which tac || which gtac)
+test -n "$tac" || die 'No valid tac in path'
 buffer_name=history_search
 : ${max_lines=15}
 
