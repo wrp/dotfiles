@@ -66,7 +66,12 @@ execute() { cmd=$1; tmux-title "$cmd";
 	command "$@";
 	RV=$?; tmux-title; return $RV; }
 g() {
-	git "$@";
+	# Basically, this is a wrapper around git.  Plus we do some post-processing.
+	# Passing . as first arg allows us to just do the post-processing.
+	if ! test "$1" = . ; then
+		git "$@";
+	fi
+	# Assign some variables for the shell
 	local b=$(git rev-parse --abbrev-ref HEAD);
 	if test "$branch" != "$b"; then
 		branch=$b
@@ -219,8 +224,8 @@ j() {
 	local _dir
 	local root="${USE_HOME:-$HOME}"
 	case "$1" in
-	.) select-git-branch;;
-	p) git checkout @{-1};;
+	.)
+		select-git-branch;;
 	*)
 		wrpselect $(get_dir_list "$1")
 		_dir=$SELECTION
@@ -233,6 +238,7 @@ j() {
 		fi
 	;;
 	esac
+	g .
 }
 debug() { test -n "$VERBOSE" && echo "$@" >&2; }
 lb() { tr \\n \ | perl -pe 's/ *$//' | tmux loadb - ; }
