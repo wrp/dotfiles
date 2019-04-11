@@ -72,18 +72,29 @@ g() {
 		git "$@";
 	fi
 	# Assign some variables for the shell
-	local b=$(git rev-parse --abbrev-ref HEAD);
-	if test "$branch" != "$b"; then
-		branch=$b
-		echo "Setting branch=$branch"
+	local b
+	if b=$(V=0 git rev-parse --abbrev-ref HEAD 2> /dev/null ); then
+		if test "$branch" != "$b"; then
+			branch=$b
+			echo "Setting branch=$branch"
+		else
+			test "$V" = 1 && echo "Variable branch unchanged: $branch"
+		fi
 	else
-		echo "Variable branch unchanged: $branch"
+		unset branch
+		test "$V" = 1 && echo 'Unsetting branch'
 	fi
-	if remote=$(git config branch.$(git name-rev --name-only HEAD).remote); then
-		echo "Setting remote=$remote"
+	local r
+	if r=$(V=0 git config branch.$(V=0 git name-rev --name-only HEAD).remote 2> /dev/null); then
+		if test "$remote" != "$r"; then
+			remote=$r
+			echo "Setting remote=$remote"
+		else
+			test "$V" = 1 && echo "Variable remote unchanged: $remote"
+		fi
 	else
-		echo "Unsetting remote"
 		unset remote
+		test "$V" = 1 && echo 'Unsetting remote'
 	fi
 }
 ga() {
