@@ -65,7 +65,22 @@ execute() { cmd=$1; tmux-title "$cmd";
 	test "$V" -gt 0 2> /dev/null && echo \$ "$@" >&2;
 	command "$@";
 	RV=$?; tmux-title; return $RV; }
-g() { git "$@"; }
+g() {
+	git "$@";
+	local b=$(git rev-parse --abbrev-ref HEAD);
+	if test "$branch" != "$b"; then
+		branch=$b
+		echo "Setting branch=$branch"
+	else
+		echo "Variable branch unchanged: $branch"
+	fi
+	if remote=$(git config branch.$(git name-rev --name-only HEAD).remote); then
+		echo "Setting remote=$remote"
+	else
+		echo "Unsetting remote"
+		unset remote
+	fi
+}
 ga() {
 	if git rev-parse HEAD > /dev/null 2>&1 \
 			&& ! git diff-index --quiet HEAD; then
