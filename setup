@@ -43,7 +43,8 @@ for file in $files; do
 	if test -e $file && ! test -d $file; then
 		if test "$($MD5 < $HOME/$file)" != \
 				"$($MD5 < $(target $file))"; then
-			warn "different $file"
+			warn "$file is different, set V=1 to see diff"
+			test -n "$V" && diff -u $HOME/$file $(target $file)
 			abort=1
 		fi
 	fi
