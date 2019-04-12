@@ -12,19 +12,21 @@ format="%(align:$width)%(HEAD) %(refname:short)%(end)"
 list=$(git branch --color --format="$format")
 choice=${1}
 trim() {
+	local match
 	if test "$choice" -gt 0 2> /dev/null; then
-		list=$(echo "$list" | perl -nE "chop; say substr(\$_,0,${cols:-${COLUMNS-80}}) if \$. == ${choice}")
+		match="\$. == ${choice}"
 	else
-		list=$(echo "$list" | perl -nE "chop; say substr(\$_,0,${cols:-${COLUMNS-80}}) if m/${choice-.}/")
+		match="m/${choice-.}/"
 	fi
+	list=$(echo "$list" | perl -nE "chop; say substr(\$_,0,${cols:-${COLUMNS-80}}) if $match")
 }
 while
 	trim
 	count=$(echo "$list" | wc -l | tr -d '[:space:]')
 	test "$count" -gt 1 2> /dev/null
 do
-	echo "$list" | nl -ba -s ' '
-	printf "Select branch: " 
+	echo "$list" | nl -ba -s ' ' | column -c "$COLUMNS"
+	printf "Select branch: "
 	read -r choice || echo
 done
 
