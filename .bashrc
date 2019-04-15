@@ -1,5 +1,27 @@
 # Startup file for interactive non-login shells
 
+# This is getting read for non-interactive shells via ssh
+# From bash(1):
+#     Bash  attempts  to  determine  when it is being run with its standard
+#     input connected to a network connection, as when executed by the
+#     remote shell daemon, usually rshd, or the secure shell daemon sshd.
+#     If bash determines it is being run in this fashion, it reads  and
+#     executes  commands  from ~/.bashrc  and  ~/.bashrc,  if these files
+#     exist and are readable.  It will not do this if invoked as sh.  The
+#     --norc option may be used to inhibit this behavior, and the --rcfile
+#     option may be used to force another file to be read, but neither
+#     rshd nor sshd  generally  invoke  the  shell  with those options
+#     or allow them to be specified.
+
+case "$-" in
+*i*) # interactive shell
+        ;;
+*)
+	return 0
+        ;;
+esac
+
+
 export HISTCONTROL=ignoredups
 set -o vi
 shopt -s histappend
