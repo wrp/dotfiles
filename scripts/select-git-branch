@@ -28,6 +28,7 @@ do
 	echo "$list" | nl -ba -s ' ' | column -c "$COLUMNS"
 	printf "Select branch: "
 	read -r choice || echo
+	test -z "$choice" && exit 0
 done
 
 branch=$( echo "$list" | cut -b 3- | awk '{print $1}' )
