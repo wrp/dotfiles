@@ -25,7 +25,7 @@ while
 	count=$(echo "$list" | wc -l | tr -d '[:space:]')
 	test "$count" -gt 1 2> /dev/null
 do
-	echo "$list" | nl -ba -s ' ' | column -c "$COLUMNS"
+	echo "$list" | nl -ba -s ') ' | column -c "$COLUMNS"
 	printf "Select branch: "
 	read -r choice || echo
 	test -z "$choice" && exit 0
