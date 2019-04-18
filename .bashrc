@@ -85,12 +85,12 @@ debug_trap() {
 	fi
 	if ! test -f "$HISTFILE"; then
 		history -w ||
-			echo 'WARNING: history -w failed'
+			echo 'WARNING: history -w failed' >&2
 	fi
 	if ! test -f "$HISTFILE"; then
-		echo "WARNING: $HISTFILE (bash history file) does not exist"
+		echo "WARNING: $HISTFILE (bash history file) does not exist" >&2
 	fi
-	history -a || echo 'WARNING: history -a failed'
+	history -a || echo 'WARNING: history -a failed' >&2
 } >&2
 
 after_cmd() {
