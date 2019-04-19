@@ -11,6 +11,9 @@ width=$(git for-each-ref --format='%(refname:short)' refs/heads \
 format="%(align:$width)%(HEAD) %(refname:short)%(end)"
 list=$(git branch --color --format="$format")
 choice=${1}
+
+if test "$choice" = -; then git checkout @{-1}; exit; fi
+
 trim() {
 	# filter list based on $choice
 	local match
