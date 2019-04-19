@@ -12,16 +12,17 @@ format="%(align:$width)%(HEAD) %(refname:short)%(end)"
 list=$(git branch --color --format="$format")
 choice=${1}
 trim() {
+	# filter list based on $choice
 	local match
 	if test "$choice" -gt 0 2> /dev/null; then
 		match="\$. == ${choice}"
 	else
 		match="m/${choice-.}/"
 	fi
-	list=$(echo "$list" | perl -nE "chop; say substr(\$_,0,${cols:-${COLUMNS-80}}) if $match")
+	echo "$list" | perl -nE "chop; say substr(\$_,0,${cols:-${COLUMNS-80}}) if $match"
 }
 while
-	trim
+	list=$(trim)
 	count=$(echo "$list" | wc -l | tr -d '[:space:]')
 	test "$count" -gt 1 2> /dev/null
 do
