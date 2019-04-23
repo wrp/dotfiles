@@ -138,7 +138,7 @@ gi() {
 			echo "$dir"
 			return 1
 		fi >&2
-		
+
 		test -e "$dir" && { echo $dir exists; return 1; }
 		sha=$(md5sum "$x" | cut -d\  -f 1)
 		tar -${zip}xf "$x" \
@@ -343,9 +343,9 @@ if ! which tac; then
 			END {for(c=NR; c>0; c--) print a[c]}' "$x"; done; }
 	fi
 fi > /dev/null 2>&1
-if test -z "$TMUX"; then
-	ta() { EVENT_NOKQUEUE=1 tmux attach; }
-else
+
+ta() { EVENT_NOKQUEUE=1 tmux attach; }
+if test -n "$TMUX"; then
 	ta() { echo 'Already in a tmux session' >&2; }
 fi
 tmux-title() { test -t 1 || return;
