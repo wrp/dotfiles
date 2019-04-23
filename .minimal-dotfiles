@@ -1,6 +1,15 @@
 #!/bin/sh
 # Execute this file to load up the tmux paste buffer
 # unset TMUX if you really want to just execute it
+# Pass an arg such as bashrc or bash_profile to load just one file.
+
+# Use -h for help and a list of available files.
+
+for x; do if test "$x" = -h; then
+	sed -e 1d -e '/^#/!q' -e 's/# //' $0
+	echo "Available files:"
+	sed -e '1,/UNI[Q]UE_STRING/d' -e '/^#[^#]/!d' -e 's/^# /    /' $0
+fi; done
 
 if test -n "$TMUX"; then
 	sed -e '1,/UNI[Q]UE_STRING/d' $0 \
@@ -13,7 +22,7 @@ if test -n "$TMUX"; then
 	| tmux loadb -
 	exit
 fi
-# UNIQUE_STRING
+## UNIQUE_STRING
 
 # .bashrc
 cat << '-------------- EOF --------------' > $HOME/.bashrc
@@ -43,11 +52,11 @@ test -z "$COLUMNS" && export COLUMNS=$( tput cols 2> /dev/null )
 trim() { perl -nE "chomp; say substr \$_, 0, ${COLUMNS-80} - 1" "$@"; }
 vi() { vim "$@"; }
 
-# complete -r gsutil
-# complete -r gcloud
-# complete -r bq
+## complete -r gsutil
+## complete -r gcloud
+## complete -r bq
 
-# LSCOLORS is for OSX, LS_COLORS for linux
+## LSCOLORS is for OSX, LS_COLORS for linux
 LS_COLORS=$( cat << EOF | tr \\n :
 rs=0:di=02;33:ln=01;36:mh=00:pi=40;33:so=01;35
 do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43
@@ -184,7 +193,6 @@ cat << '-------------- EOF --------------' >> $HOME/.gitconfig
 	status = true
 [versionsort]
 	prereleaseSuffix = .rc
-
 [color "branch"]
 	meta = red green bold
 [color]
