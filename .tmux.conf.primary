@@ -25,7 +25,6 @@ bind-key -T root Left if-shell "$arrows_disabled" "send-keys Left" "previous-win
 bind-key -T root Right if-shell "$arrows_disabled" "send-keys Right" "next"
 bind-key -T root C-h if-shell "$arrows_disabled" "send-keys C-h" "select-pane -L"
 bind-key -T root C-j if-shell "$arrows_disabled" "send-keys C-j" "select-pane -D"
-bind-key -T root C-k if-shell "$arrows_disabled" "send-keys C-k" "select-pane -U"
 bind-key -T root C-\ select-pane -l
 bind-key -T root C-a swap-window -t -1
 bind-key -T root C-s swap-window -t +1
