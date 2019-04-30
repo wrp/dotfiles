@@ -25,7 +25,8 @@ fi
 ## UNIQUE_STRING
 
 # .bashrc
-cat << '-------------- EOF --------------' > $HOME/.bashrc
+cat << '-------------- EOF --------------' >> $HOME/.bashrc
+################################################################################
 read_file() { for f; do test -f "$f" && . "$f"; done; }
 read_file /etc/bashrc
 unalias -a
