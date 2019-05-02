@@ -48,10 +48,7 @@ ta() { tmux attach; }
 curl() { command curl -Ssf "$@"; }
 epoch() { perl -pe 's/([0-9]{9,10})/sprintf "%s (%sUTC)", $1,
         scalar gmtime $1/ge' "$@"; }
-set_col() { test -z "$COLUMNS" && export COLUMNS=$( tput cols 2> /dev/null ); }
-trap set_col SIGWINCH
-set_col
-trim() { perl -nE "chomp; say substr \$_, 0, ${COLUMNS-80} - 1" "$@"; }
+trim() { perl -nE "chomp; say substr \$_, 0, ${COLUMNS-$(tput cols)} - 1" "$@"; }
 vi() { vim "$@"; }
 
 ## complete -r gsutil
