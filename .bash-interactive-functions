@@ -94,7 +94,7 @@ g() {
 		fi
 	else
 		unset remote
-		test "$V" = 1 && echo 'Unsetting remote'
+		if test "$V" = 1; then echo 'Unsetting remote'; fi
 	fi
 }
 ga() {
