@@ -14,7 +14,8 @@ fi; done
 if test -n "$TMUX"; then
 	sed -e '1,/UNI[Q]UE_STRING/d' $0 \
 	| if test "$1"; then
-		sed -n -E "/^# [.]?$1/,/^-------------- EOF --------------/p"
+		sed -n -E "/^# [.]?$1/,/^-------------- EOF --------------/p" \
+		| { grep . || echo "No text copied to clipboard!" >&2; }
 	else
 		cat
 	fi \
