@@ -39,6 +39,12 @@ cd() {
 	command cd "${_dir:-${_SESSION_DIR:-$HOME}}" || return 1;
 	test "$PWD" != "$OLDPWD" && : $(( color_index = (color_index + 1) % ${#COLORS}))
 	tmux-title;
+
+	# Force pwd to report realpath with this terrible hack
+	test "$(pwd)" != "$(realpath .)" && command cd $(realpath .)
+
+	# If actual cd fails, we returned 1 above.
+	# Don't care about failures now.
 	return 0
 }
 cdm() { cd $(get-modified-files | longest-common-prefix -d); }
