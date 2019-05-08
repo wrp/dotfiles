@@ -75,10 +75,13 @@ execute() { cmd=$1; tmux-title "$cmd";
 g() {
 	# Basically, this is a wrapper around git.  Plus we do some post-processing.
 	# Passing . as first arg allows us to just do the post-processing.
+	local rv=0
 	if ! test "$1" = . ; then
-		git "$@";
+		git "$@"
+		rv=$?
 	fi
 	setup_vars
+	return $rv
 }
 ga() {
 	if git rev-parse HEAD > /dev/null 2>&1 \
