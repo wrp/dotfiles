@@ -23,6 +23,9 @@ set nowrapscan
 " set cindent
 set tildeop
 set t_ti= t_te=  " Disable clear screen on exit
+set novisualbell
+set noerrorbells
+set virtualedit=all
 set wildmenu
 set wildmode=longest,list,full
 "set textwidth=80
