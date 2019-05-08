@@ -39,6 +39,7 @@ cd() {
 	command cd "${_dir:-${_SESSION_DIR:-$HOME}}" || return 1;
 	test "$PWD" != "$OLDPWD" && : $(( color_index = (color_index + 1) % ${#COLORS}))
 	tmux-title;
+	setup_vars
 
 	# Force pwd to report realpath with this terrible hack
 	test "$(pwd)" != "$(realpath .)" && command cd $(realpath .)
@@ -77,31 +78,7 @@ g() {
 	if ! test "$1" = . ; then
 		git "$@";
 	fi
-	# Assign some variables for the shell
-	local b
-	if b=$(V=0 git rev-parse --abbrev-ref HEAD 2> /dev/null ); then
-		if test "$branch" != "$b"; then
-			branch=$b
-			echo "Setting branch=$branch"
-		else
-			test "$V" = 1 && echo "Variable branch unchanged: $branch"
-		fi
-	else
-		unset branch
-		test "$V" = 1 && echo 'Unsetting branch'
-	fi
-	local r
-	if r=$(V=0 git config branch.$(V=0 git name-rev --name-only HEAD).remote 2> /dev/null); then
-		if test "$remote" != "$r"; then
-			remote=$r
-			echo "Setting remote=$remote"
-		else
-			test "$V" = 1 && echo "Variable remote unchanged: $remote"
-		fi
-	else
-		unset remote
-		if test "$V" = 1; then echo 'Unsetting remote'; fi
-	fi
+	setup_vars
 }
 ga() {
 	if git rev-parse HEAD > /dev/null 2>&1 \
@@ -334,6 +311,33 @@ rh() { history -r $HOME/.bash-history; }
 ru () { tac | awk '!a[$0]++' | tac; } ## reverse-unique
 rsync() { command rsync -e 'ssh -o LogLevel=error' "$@"; }
 s() { search-bash-history "$@"; }
+setup_vars() {
+	# Assign some variables for the shell
+	local b
+	if b=$(V=0 git rev-parse --abbrev-ref HEAD 2> /dev/null ); then
+		if test "$branch" != "$b"; then
+			branch=$b
+			if test -n "$V"; then echo "Setting branch=$branch"; fi
+		else
+			if test -n "$V"; then echo "Variable branch unchanged: $branch"; fi
+		fi
+	else
+		unset branch
+		if test -n "$V"; then echo 'Unsetting branch'; fi
+	fi
+	local r
+	if r=$(V=0 git config branch.$(V=0 git name-rev --name-only HEAD).remote 2> /dev/null); then
+		if test "$remote" != "$r"; then
+			remote=$r
+			if test -n "$V"; then echo "Setting remote=$remote"; fi
+		else
+			if test -n "$V"; then echo "Variable remote unchanged: $remote"; fi
+		fi
+	else
+		unset remote
+		if test "$V" = 1; then echo 'Unsetting remote'; fi
+	fi
+}
 sf() { USE_FAILED=1 search-bash-history "$@"; }
 ssh() { tmux-title "$@"; command ssh -o LogLevel=error "$@"; tmux-title; }
 scp() { [[ ! $* =~ : ]] &&
