@@ -1,5 +1,5 @@
 
-delete() {
+delete_var() {
 	local _var=$1
 	local _v
 	shift
@@ -8,28 +8,28 @@ delete() {
 			tr : \\n | sed -e "\@^$_v\$@d" | tr \\n : | sed 's/:$//' )\""
 	done
 }
-clean() {
+clean_var() {
 	local _var=$1;
 	eval "$_var=\"$( eval echo \"\$$_var\" |
 		sed -e 's/::*/:/g' -e 's/^:*//' -e 's/:*$//' )\"";
 }
-append() {
+append_var() {
 	local _var=$1
 	local _v
 	shift
 	for _v; do
-		delete $_var $_v
+		delete_var $_var $_v
 		eval "$_var=\"\$$_var:$_v\""
 	done
-	clean $_var
+	clean_var $_var
 }
-prepend() {
+prepend_var() {
 	local _var=$1
 	local _v
 	shift
 	for _v; do
-		delete $_var $_v
+		delete_var $_var $_v
 		eval "$_var=\"$_v:\$$_var\""
 	done
-	clean $_var
+	clean_var $_var
 }

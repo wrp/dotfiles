@@ -65,9 +65,9 @@ read_file() { for f; do test -f "$f" && . "$f"; done; }
 read_file $HOME/.bash-functions $HOME/.bash-interactive-functions
 complete -r
 
-append PATH $HOME/.scripts
-append PATH $HOME/all/bin
-append PATH $HOME/$(uname -m)/$(uname -s)/bin
+append_var PATH $HOME/.scripts
+append_var PATH $HOME/all/bin
+append_var PATH $HOME/$(uname -m)/$(uname -s)/bin
 read_file $HOME/.bash-env
 test -z "$HISTFILE" && HISTFILE=$HOME/.bash-history-$$
 export HISTFILE
