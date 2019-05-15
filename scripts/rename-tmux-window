@@ -1,7 +1,11 @@
 #!/bin/sh
 
 test -z "$*" && {
-	set "$(basename $(git rev-parse --show-toplevel 2> /dev/null || pwd))/"
+	if git_dir=$(git rev-parse --absolute-git-dir 2> /dev/null); then
+		set "$(basename $(dirname "$git_dir"))"
+	else
+		set "$(pwd)"
+	fi
 }
 if test -z "$left_justify"; then
 	patt='.*\(.\{19\}\)'
