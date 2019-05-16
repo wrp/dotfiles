@@ -14,7 +14,7 @@ export HISTTIMEFORMAT='%H:%M:%S ' #%m/%d
 export EDITOR=vim
 export CONFIG_SITE=$HOME/CONFIG_SITE
 export COLUMNS
-export LESS=FeRXSQ
+export LESS=FERXSQ
 export GIT_PAGER=less
 export ACK_PAGER_COLOR=less
 export PAGER=less
