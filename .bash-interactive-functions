@@ -329,7 +329,7 @@ setup_vars() {
 		if test -n "$V"; then echo 'Unsetting branch'; fi
 	fi
 	local r
-	if r=$(V=0 git config branch.$(V=0 git name-rev --name-only HEAD).remote 2> /dev/null); then
+	if { r=$(V=0 git config branch.$(V=0 git name-rev --name-only HEAD).remote); } 2> /dev/null; then
 		if test "$remote" != "$r"; then
 			remote=$r
 			if test -n "$V"; then echo "Setting remote=$remote"; fi
