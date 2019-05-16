@@ -84,6 +84,11 @@ g() {
 	return $rv
 }
 ga() {
+	# When running on both docker and outside, the repos seem to get corrupt
+	# in such a way that `git status` cleans it up.  (That is, git diff-index
+	# will fail until `git status` is run in that environment.)  So run
+	# git status to "uncorrupt" the repo.  Terrible hack.
+	git status > /dev/null
 	if git rev-parse HEAD > /dev/null 2>&1 \
 			&& ! git diff-index --quiet HEAD; then
 		echo Repo is dirty >&2
