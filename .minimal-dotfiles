@@ -1,15 +1,18 @@
 #!/bin/sh
-# Execute this file to load up the tmux paste buffer
+# usage: @@name@@ [arg ...]
+#
+# Execute this file to load up the tmux paste buffer.
 # unset TMUX if you really want to just execute it
-# Pass an arg such as bashrc or bash_profile to load just one file.
+# Pass args such as bashrc or bash_profile to load just one file.
 
 # Use -h for help and a list of available files.
 
-for x; do if test "$x" = -h; then
-	sed -e 1d -e '/^#/!q' -e 's/# //' $0
+if test "$1" = -h; then
+	sed -e 1d -e "s|@@name@@|$(basename $0)|" -e '/^#/!q' -e 's/# *//' $0
 	echo "Available files:"
 	sed -e '1,/UNI[Q]UE_STRING/d' -e '/^#[^#]/!d' -e 's/^# /    /' $0
-fi; done
+	exit
+fi
 
 if test -n "$TMUX"; then
 	if test "$#" -gt 0; then for x; do
