@@ -12,12 +12,12 @@ for x; do if test "$x" = -h; then
 fi; done
 
 if test -n "$TMUX"; then
-	sed -e '1,/UNI[Q]UE_STRING/d' $0 \
-	| if test "$1"; then
-		sed -n -E "/^# [.]?$1/,/^-------------- EOF --------------/p" \
-		| { grep . || echo "No text copied to clipboard!" >&2; }
+	if test "$#" -gt 0; then for x; do
+		sed -n -E "/^# [.]?$x/,/^-------------- EOF --------------/p" $0 \
+		| { grep . || echo "No text copied to clipboard for $x!" >&2; }
+		done
 	else
-		cat
+		sed -e '1,/UNI[Q]UE_STRING/d' $0
 	fi \
 	| expand \
 	| tmux loadb -
