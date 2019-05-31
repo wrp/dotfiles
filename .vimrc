@@ -5,6 +5,7 @@ noremap ; :
 noremap , ;
 noremap ' `
 noremap ` '
+noremap gw :windo set wrap!
 
 " inoremap jk <esc>
 let loaded_matchparen=1
