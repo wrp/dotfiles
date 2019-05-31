@@ -169,6 +169,7 @@ gpu() {
 grep() {
 	if test -t 1; then
 		command grep --color=always "$@" | ${PAGER-more}
+		return ${PIPESTATUS[0]}
 	else
 		command grep --color=auto "$@"
 	fi
