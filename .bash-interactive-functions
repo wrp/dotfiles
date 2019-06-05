@@ -63,10 +63,6 @@ checkout_previous_branch() {
 	fi
 }
 curl() { command curl -Ss "$@"; }
-docker() { execute docker "$@" | { while read line; do echo "$line" >&3; echo "$line"; done \
-	| sed -nE -e 's/.*([0-9a-f]{12}).*/\1/p' | sed -n -e 1p -n -e '$p' \
-	| while read id; do printf "$id" | tmux loadb -; done; } 3>&1
-}
 du() { ncdu "$@"; }
 execute() { cmd=$1; tmux-title "$cmd";
 	test "$V" -gt 0 2> /dev/null && echo \$ "$@" >&2;
