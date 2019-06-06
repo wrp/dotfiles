@@ -1,7 +1,0 @@
-#!/bin/sh
-
-tmux set -g status-style bg=black
-tmux set -ag status-style fg=black
-tmux set -g window-status-current-format '#W'
-tmux set -ag window-status-current-style bg=black
-tmux set-window-option @disable_arrows yes
