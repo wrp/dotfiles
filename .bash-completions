@@ -1,0 +1,29 @@
+
+_g_complete() {
+	cur_word="${COMP_WORDS[ COMP_CWORD ]}"
+	prev_word="${COMP_WORDS[ COMP_CWORD - 1 ]}"
+
+	if ! git rev-parse --git-dir > /dev/null 2>&1; then
+		echo "not in a git dir" >&2
+		COMPREPLY=()
+		return 1
+	fi
+
+	case $prev_word in
+	( b | branch | co | checkout )
+		list=$( git for-each-ref refs/heads --format '%(refname:short)' )
+		;;
+	( pull | push )
+		list=$( git remote )
+		;;
+	(*)
+		list=$( ls -a )
+	;;
+	esac
+
+	COMPREPLY=( $(compgen -W "${list}" -- ${cur_word}) )
+	return 0
+}
+
+
+complete -F _g_complete g git
