@@ -29,8 +29,7 @@
 	l = log --oneline --decorate --format=format:'%Cgreen%h%Cred %<(10,trunc)%an%Cblue%D%Creset %<(80,trunc)%s'
 	l1 = log --format=format:'%Cgreen%h%Cred %<(10,trunc)%an%Creset %<(60,trunc)%s %Cblue%D%Creset'
 	lr = log --format=format:'%Cgreen%h%C(yellow) %cr %Cred %<(10,trunc)%an%Creset %<(60,trunc)%s %Cblue%D%Creset'
-	ld = log --format=format:'%Cgreen%h%C(yellow) %aD %Cred %<(10,trunc)%an%Creset %<(60,trunc)%s %Cblue%D%Creset'
-#	ld = log --format=format:'%Cgreen%h%C(yellow) %ci %C(green)%<(40,trunc)%f%Cred%D%Creset'
+	ld = log --date=format:'%H:%M:%S %d%b%y' --format=format:'%Cgreen%h%C(yellow) %Cred %<(10,trunc)%an%Creset %<(60,trunc)%s %ad %Cblue%D%Creset'
 
 
 	lt  = log --format=format:'%<(40,trunc)%s %Cblue%D%Creset'
@@ -62,7 +61,7 @@
 	prereleaseSuffix = .rc
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
+	path =
 [mergetool "sourcetree"]
 	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
