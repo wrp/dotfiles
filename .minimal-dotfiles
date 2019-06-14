@@ -33,6 +33,7 @@ cat << '-------------- EOF --------------' >> $HOME/.bashrc
 ################################################################################
 read_file() { for f; do test -f "$f" && . "$f"; done; }
 read_file /etc/bashrc
+unset PROMPT_COMMAND
 unalias -a
 trap 'history -a' DEBUG
 export EVENT_NOKQUEUE=1
