@@ -62,8 +62,8 @@ PS1='\[$(
 	)'"\[$(tput setaf 2 2> /dev/null)\]$$\$ "
 
 read_file() { for f; do test -f "$f" && . "$f"; done; }
-read_file $HOME/.bash-functions $HOME/.bash-interactive-functions $HOME/.bash-completions
 complete -r
+read_file $HOME/.bash-functions $HOME/.bash-interactive-functions $HOME/.bash-completions
 
 append_var PATH $HOME/.scripts
 append_var PATH $HOME/all/bin
