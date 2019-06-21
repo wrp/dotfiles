@@ -39,8 +39,7 @@ PS1='\[$(
 	# Marker if running in a docker image
 		printf "%s" "${DOCKER+ ** Docker ** }";
 	# Wall clock
-		date +%H:%M:%S
-		)\[$(
+		)\D{%T}\[$(
 		tput setaf ${COLORS:$color_index:1} 2> /dev/null
 		)\]$(
 	# project

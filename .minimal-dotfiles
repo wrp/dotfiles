@@ -45,7 +45,7 @@ export LC_TIME=C
 set -o vi
 PS1="\[$(tput rev)"'$( r=$(( $? != 0 )); tput setaf $((2 - r));
         tput setab $(( r * 7 ));
-        )\]$(date "+%H:%M:%S")'"\[$( tput setaf 2)$(tput sgr0)\]"' $$ \h\$ '
+        )\]\D{%T}'"\[$( tput setaf 2)$(tput sgr0)\]"' $$ \h\$ '
 
 c() { clear; }
 g() { git "$@"; }
