@@ -64,7 +64,7 @@ checkout_previous_branch() {
 }
 curl() { command curl -Ss "$@"; }
 du() { ncdu "$@"; }
-execute() { cmd=$1; tmux-title "$cmd";
+execute() { local cmd=$1; tmux-title "$cmd";
 	test "$V" -gt 0 2> /dev/null && echo \$ "$@" >&2;
 	command "$@";
 	RV=$?; tmux-title; return $RV; }
