@@ -17,14 +17,15 @@ _g_complete() {
 	( pull | push )
 		list=$( git remote )
 		;;
-	(*)
-		list=$( ls -a )
-	;;
 	esac
 
-	COMPREPLY=( $(compgen -W "${list}" -- ${cur_word}) )
+	if test -n "$list"; then
+		COMPREPLY=( $(compgen -W "${list}" -- ${cur_word}) )
+	else
+		COMPREPLY=($(compgen -f -- "${COMP_WORDS[$COMP_CWORD]}"))
+	fi
 	return 0
 }
 
 
-complete -F _g_complete g git
+complete -o nospace -o filenames -F _g_complete g git
