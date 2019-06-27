@@ -55,7 +55,7 @@ do_search() {
 	| awk '!/^s / && !a[$2]++' FS=\| \
 	> $tmp2
 	mv $tmp2 $tmp1
-	test -s $tmp1 || exit 0
+	test -s $tmp1 || return 1
 	cat $tmp1 > $RESULTS
 }
 
@@ -76,6 +76,14 @@ check_tmux() {
 }
 
 if test -z "$choice"; then
+	if test -z "$V"; then
+		printf "Only commands which did not fail are shown (set V to see all).  " >&2
+	fi
+	if ! test -s $RESULTS; then
+		printf 'No results found.  ' >&2
+		exit 1
+	fi
+	echo
 	< $RESULTS \
 	sed "${max_lines}q" \
 	| nl -s ') ' -w 2 -ba | expand | $tac \
