@@ -29,6 +29,10 @@ cd() {
 	local _rv
 	local _dir
 	_dir=$1
+	if test $# -gt 1; then
+		echo 'cd takes at most one argument' >&2
+		return 1
+	fi
 	if test "$#" = 0; then
 		_SESSION_DIR=$(tmux show-options -s @dir 2> /dev/null |
 			awk -F\" '{print $2}')
