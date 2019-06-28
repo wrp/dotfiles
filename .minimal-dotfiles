@@ -15,9 +15,14 @@ if test "$1" = -h; then
 fi
 
 if test -n "$TMUX"; then
-	if test "$#" -gt 0; then for x; do
-		sed -n -E "/^# [.]?$x/,/^-------------- EOF --------------/p" $0 \
-		| { grep . || echo "No text copied to clipboard for $x!" >&2; }
+	if test "$#" -gt 0; then
+		for x; do
+			sed -n -E "/^# [.]?$x/,/^-* EOF -*/p" $0 \
+			| if grep .; then
+				echo "copied $x to clipboard" >&2
+			else
+				echo "No text copied to clipboard for $x!" >&2
+			fi
 		done
 	else
 		sed -e '1,/UNI[Q]UE_STRING/d' $0
