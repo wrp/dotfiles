@@ -15,7 +15,7 @@ ack() {
 }
 bundle() {
 	local file base
-	base=$(git rev-parse --show-toplevel) || return
+	base=$(g root) || return
 	test -d "$base" || return
 	file="$base"/$(basename "$base"
 		)-$(git rev-parse --short HEAD ).bundle
@@ -71,11 +71,16 @@ execute() { local cmd=$1; tmux-title "$cmd";
 g() {
 	# Basically, this is a wrapper around git.  Plus we do some post-processing.
 	# Passing . as first arg allows us to just do the post-processing.
-	local rv=0
-	if ! test "$1" = . ; then
-		git "$@"
-		rv=$?
-	fi
+	local rv=0 root
+	case $1 in
+	( .    ) : ;;
+	( root )
+		root=$(git rev-parse --git-dir) \
+		&& root=$(cd "$root" && pwd)/ \
+		&& echo "${root%%/.git/*}";;
+	( *    ) git "$@";;
+	esac
+	rv=$?
 	setup_vars
 	return $rv
 }
@@ -199,7 +204,7 @@ use() {
 	# Put the top level git dir of the cwd in the usage file list
 	local d root
 	root="${USE_HOME:-$HOME}"
-	d=$(cd "${1-.}"; git rev-parse --show-toplevel) || return
+	d=$(cd "${1-.}"; g root) || return
 	d="${d#$root/}"
 	test -n "$d" || { echo "Don't try to use $root" >&2; return; }
 	local file="$root/.config/$USER/usage-list"
@@ -375,7 +380,7 @@ ts() {
 }
 typeof() { for e; do which "$e" && file $( which $e ); done }
 up() {
-	local _dir=$(git rev-parse --show-toplevel)
+	local _dir=$(g root)
 	test -d "$_dir" && cd "$_dir"
 }
 update() {
