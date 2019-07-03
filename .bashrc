@@ -137,5 +137,9 @@ report_cmd_status() {
 trap archive 0
 trap debug_trap DEBUG
 trap '. $HOME/.bashrc' SIGUSR1
+complete -r gsutil 2> /dev/null
+complete -r gcloud 2> /dev/null
+complete -r bq 2> /dev/null
+
 
 PROMPT_COMMAND='after_cmd'
