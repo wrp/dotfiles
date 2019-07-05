@@ -115,7 +115,7 @@ set keymap vi
 -------------- EOF --------------
 
 # .tmux.conf
-cat << 'EOF' > $HOME/.tmux.conf
+cat << '-------------- EOF --------------' > $HOME/.tmux.conf
 unbind C-b
 set -g prefix C-k
 bind C-k send-prefix
@@ -131,7 +131,7 @@ bind-key -n Right next-window
 bind-key ',' command-prompt "rename-window '%%'"
 bind-key '$' command-prompt "rename-session '%%'"
 set-hook -g client-attached 'run-shell "kill -s WINCH $(ps -ax | grep [b]ash)"'
-EOF
+-------------- EOF --------------
 
 
 # .editrc
