@@ -61,12 +61,8 @@ epoch() { perl -pe 's/([0-9]{9,10})/sprintf "%s (%sUTC)", $1,
 trim() { perl -nE "chomp; say substr \$_, 0, ${COLUMNS-$(tput cols)} - 1" "$@"; }
 vi() { vim "$@"; }
 reset_auth_sock() {
-	local c=$( tmux show-env SSH_AUTH_SOCK 2> /dev/null )
-	if test -z "$c" || echo "$c" | grep -q '^SSH_AUTH_SOCK=[/a-zA-Z.0-9]*$'; then
-		eval $c
-	else
-		echo "WARNING: invalid value in SSH_AUTH_SOCK" >&2
-	fi
+	local c=$( tmux show-env SSH_AUTH_SOCK 2> /dev/null | cut -d= -f2 )
+	test -n "$c" && SSH_AUTH_SOCK="$c"
 }
 trap reset_auth_sock SIGWINCH
 complete -r gsutil 2> /dev/null
