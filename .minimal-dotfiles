@@ -119,17 +119,18 @@ cat << 'EOF' > $HOME/.tmux.conf
 unbind C-b
 set -g prefix C-k
 bind C-k send-prefix
-set -g window-status-current-bg yellow
-set -g window-status-current-fg red
+set -g window-status-current-style bg=yellow
+set -g -a window-status-current-style fg=red
 set -g window-status-current-format '#I:#W'
 set -g status-left-length 25
-set status-right '%H:%M %e-%b'
+set -g status-right '%H:%M %e-%b'
 set-option -g update-environment "SSH_AUTH_SOCK"
-set history-limit 25000
+set -g history-limit 25000
 bind-key -n Left previous-window
 bind-key -n Right next-window
 bind-key ',' command-prompt "rename-window '%%'"
 bind-key '$' command-prompt "rename-session '%%'"
+set-hook -g client-attached 'run-shell "kill -s WINCH $(ps -ax | grep [b]ash)"'
 EOF
 
 
