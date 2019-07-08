@@ -19,13 +19,8 @@ _g_complete() {
 		;;
 	esac
 
-	if test -n "$list"; then
-		COMPREPLY=( $(compgen -W "${list}" -- ${cur_word}) )
-	else
-		COMPREPLY=($(compgen -f -- "${COMP_WORDS[$COMP_CWORD]}"))
-	fi
-	return 0
+	COMPREPLY=( $(compgen -W "${list}" -- ${cur_word}) )
 }
 
 
-complete -o nospace -o filenames -F _g_complete g git
+complete -o default -F _g_complete g git
