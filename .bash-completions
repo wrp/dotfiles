@@ -22,5 +22,18 @@ _g_complete() {
 	COMPREPLY=( $(compgen -W "${list}" -- ${cur_word}) )
 }
 
+_gcloud_complete() {
+	group_list='access-context-manager ai-platform app asset auth
+		bigtable builds components composer compute config
+		container dataflow dataproc datastore debug deployment-manager
+		dns domains endpoints filestore firebase functions iam
+		iot kms logging ml ml-engine organizations projects
+		pubsub redis resource-manager scheduler services source
+		spanner sql tasks topic'
+	project_list=$(awk '{print $1}' $HOME/.config/$USER/gcloud-project-list)
+
+	COMPREPLY=($(compgen -W "$group_list $project_list" -- "${COMP_WORDS[$COMP_CWORD]}"))
+}
 
 complete -o default -F _g_complete g git
+complete -o default -F _gcloud_complete gcloud

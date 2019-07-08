@@ -62,6 +62,9 @@ PS1='\[$(
 
 read_file() { for f; do test -f "$f" && . "$f"; done; }
 complete -r
+complete -r gsutil 2> /dev/null
+complete -r gcloud 2> /dev/null
+complete -r bq 2> /dev/null
 read_file $HOME/.bash-functions $HOME/.bash-interactive-functions $HOME/.bash-completions
 
 append_var PATH $HOME/.scripts
@@ -137,9 +140,6 @@ report_cmd_status() {
 trap archive 0
 trap debug_trap DEBUG
 trap '. $HOME/.bashrc' SIGUSR1
-complete -r gsutil 2> /dev/null
-complete -r gcloud 2> /dev/null
-complete -r bq 2> /dev/null
 
 
 PROMPT_COMMAND='after_cmd'
