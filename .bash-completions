@@ -12,7 +12,7 @@ _g_complete() {
 
 	case $cmd in
 	( b | branch | co | checkout | diff )
-		list=$( git for-each-ref refs/heads --format '%(refname:short)' )
+		list=$( git for-each-ref refs --format '%(refname:short)' )
 		;;
 	( pull | push )
 		list=$( git remote )
