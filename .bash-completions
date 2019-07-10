@@ -10,14 +10,17 @@ _g_complete() {
 		return 1
 	fi
 
-	case $cmd in
-	( b | branch | co | checkout | diff )
-		list=$( git for-each-ref refs --format '%(refname:short)' )
-		;;
+	if test "$COMP_CWORD" = 1; then
+		list=$(git help -a | awk '/^   /{print $1}')
+	else case $cmd in
 	( pull | push )
 		list=$( git remote )
 		;;
+	( * )
+		list=$( git for-each-ref refs --format '%(refname:short)' )
+		;;
 	esac
+	fi
 
 	COMPREPLY=( $(compgen -W "${list}" -- ${cur_word}) )
 }
