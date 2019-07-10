@@ -82,17 +82,14 @@ read_file $HOME/.bash-local
 debug_trap() {
 	# Runs before a command in an interactive shell
 	if test -f "$HISTFILE" && ! test -s "$HISTFILE"; then
-		echo "WARNING: $HISTFILE (bash history file) is empty!  Removing." >&2
+		echo "WARNING: $HISTFILE (bash history file) is empty!  Removing."
 		rm "$HISTFILE"
 	fi
+	test -f "$HISTFILE" || history -w
 	if ! test -f "$HISTFILE"; then
-		history -w ||
-			echo 'WARNING: history -w failed' >&2
+		echo "WARNING: $HISTFILE (bash history file) does not exist"
 	fi
-	if ! test -f "$HISTFILE"; then
-		echo "WARNING: $HISTFILE (bash history file) does not exist" >&2
-	fi
-	history -a || echo 'WARNING: history -a failed' >&2
+	history -a || echo 'WARNING: history -a failed'
 } >&2
 
 after_cmd() {
