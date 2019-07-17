@@ -1,7 +1,6 @@
 
 _g_complete() {
 	cur_word="${COMP_WORDS[ COMP_CWORD ]}"
-	prev_word="${COMP_WORDS[ COMP_CWORD - 1 ]}"
 	cmd="${COMP_WORDS[ 1 ]}"
 
 	if ! git rev-parse --git-dir > /dev/null 2>&1; then
@@ -19,6 +18,12 @@ _g_complete() {
 	COMPREPLY=( $(compgen -W "${list}" -- ${cur_word}) )
 }
 
+_y_complete() {
+	cur_word="${COMP_WORDS[ COMP_CWORD ]}"
+	list=$( git for-each-ref refs --format '%(refname:short)' 2> /dev/null )
+	COMPREPLY=( $(compgen -W "${list}" -- ${cur_word}) )
+}
+
 _gcloud_complete() {
 	group_list='access-context-manager ai-platform app asset auth
 		bigtable builds components composer compute config
@@ -33,4 +38,5 @@ _gcloud_complete() {
 }
 
 complete -o default -F _g_complete g git
+complete -o default -F _y_complete y
 complete -o default -F _gcloud_complete gcloud
