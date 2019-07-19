@@ -74,4 +74,14 @@ set cinkeys="0{,0},0),!^F,o,O,e"
 set formatoptions=cq
 set comments=
 
+set swapfile
+set directory^=~/.vim/swap//
+set writebackup
+set backupcopy=auto
+if has("patch-8.1.0251")
+        set backupdir^=~/.vim/backup//
+end
+set undofile
+set undodir^=~/.vim/undo//
+
 " vim: fen:sw=4 fdm=indent fdl=1
