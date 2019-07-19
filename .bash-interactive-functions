@@ -279,12 +279,13 @@ p() {
 		printf "%s..." "Unable to determine project. Querying"
 		CONFIGGED_PROJECT=$( gcloud config get-value project 2> /dev/null )
 		if test -z "$CONFIGGED_PROJECT"; then
+		        printf "\n" >&3
 			printf "\nNo currently configured project.  Please run"
 			printf " 'gcloud config set project \$PROJECT'\n"
 			printf "You can get list of possible options from "
 			printf "'gcloud projects list'\n"
 			return 1
-		fi >&2
+		fi >&2 3>&1
 		printf "ok.  Using $CONFIGGED_PROJECT\n"
 	fi
 
