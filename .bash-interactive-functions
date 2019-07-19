@@ -274,9 +274,7 @@ p() {
 	file=${base}_${CLOUDSDK_ACTIVE_CONFIG_NAME-default}
 	# This is faster than calling gcloud config get-value project,
 	# but very fragile
-	CONFIGGED_PROJECT=$(if test -f "$file"; then
-		awk '/^project =/ {print $3}' $file
-	fi )
+	CONFIGGED_PROJECT=$(awk '/^project =/ {print $3}' "$file" 2> /dev/null)
 	if test -z "$CONFIGGED_PROJECT"; then
 		printf "%s..." "Unable to determine project. Querying"
 		CONFIGGED_PROJECT=$( gcloud config get-value project 2> /dev/null )
