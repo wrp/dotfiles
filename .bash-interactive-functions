@@ -398,13 +398,15 @@ up() {
 update() {
 	local cmd=update
 	local pfx=.
+	# -ef tests if the two paths refer to the same file.  This
+	# seems to work on both macos and linux, but is non-standard.
 	until test -x $pfx/$cmd || test $pfx -ef ../$pfx; do
 		pfx=../$pfx
 	done
 	if test -x $pfx/$cmd; then
 		$pfx/$cmd "$@"
 	else
-		echo Unable to find update command looking up in filesystem
+		echo Unable to find update command looking up in filesystem >&2
 	fi
 }
 vi() { test $# = 0 && set $(get-modified-files ${h});
