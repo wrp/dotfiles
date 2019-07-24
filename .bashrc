@@ -85,6 +85,9 @@ debug_trap() {
 		echo "WARNING: $HISTFILE (bash history file) is empty!  Removing."
 		rm "$HISTFILE"
 	fi
+	if test "$IFS" != $' \t\n'; then
+		echo "WARNING: IFS contains unexpected characters" >&2
+	fi
 	test -f "$HISTFILE" || history -w
 	if ! test -f "$HISTFILE"; then
 		echo "WARNING: $HISTFILE (bash history file) does not exist"
