@@ -77,13 +77,12 @@ check_tmux() {
 
 if test -z "$choice"; then
 	if test -z "$V"; then
-		printf "Only commands which did not fail are shown (set V to see all).  " >&2
+		printf "Only commands which did not fail are shown (set V to see all).\n" >&2
 	fi
-	if ! test -s $RESULTS; then
-		printf 'No results found.  ' >&2
+	if ! test -s $tmp1; then
+		printf "No results found for search terms: %s\n" "$*">&2
 		exit 1
 	fi
-	echo
 	< $RESULTS \
 	sed "${max_lines}q" \
 	| nl -s ') ' -w 2 -ba | expand | $tac \
