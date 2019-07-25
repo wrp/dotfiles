@@ -66,6 +66,7 @@ else
 	test -r $HIST && sed -e "\@^$*\$@d" $HIST >> $HIST.tmp
 	mv $HIST.tmp $HIST
 	do_search "$@"
+	status=$?
 fi
 
 check_tmux() {
@@ -79,7 +80,7 @@ if test -z "$choice"; then
 	if test -z "$V"; then
 		printf "Only commands which did not fail are shown (set V to see all).\n" >&2
 	fi
-	if ! test -s $tmp1; then
+	if test "$status" != 0; then
 		printf "No results found for search terms: %s\n" "$*">&2
 		exit 1
 	fi
