@@ -66,8 +66,8 @@ else
 	test -r $HIST && sed -e "\@^$*\$@d" $HIST >> $HIST.tmp
 	mv $HIST.tmp $HIST
 	do_search "$@"
-	status=$?
 fi
+status=$?
 
 check_tmux() {
 	if test -z "$TMUX"; then
