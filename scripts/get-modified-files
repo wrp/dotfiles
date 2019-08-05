@@ -9,7 +9,7 @@ branch=${1-$(git rev-parse --abbrev-ref HEAD)}
 depth=${1-1}
 test "$depth" -gt 0 2> /dev/null || depth=1
 
-if test "$branch" -gt 0 2> /dev/null || ! git diff --name-only "${branch}" | grep .; then
+if test "$branch" -gt 0 2> /dev/null || ! git diff --name-only "${branch}" -- | grep .; then
 	if ! git diff-files --name-only | grep . || test -n "$arg_set"; then
 		while test ${i-0} -lt $depth; do
 			git diff-tree --no-commit-id --name-only -r HEAD~${i-0}
