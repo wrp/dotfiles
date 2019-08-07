@@ -181,6 +181,7 @@ grep() {
 }
 
 wrpselect() {
+	local -a args
 	unset REPLY
 	unset SELECTION
 	REPLY=$#
@@ -198,7 +199,12 @@ wrpselect() {
 		elif test -z "$REPLY"; then
 			return;
 		else
-			wrpselect $(for x; do echo "$x" | grep "$REPLY"; done)
+			for x; do
+				if echo "$x" | grep -q "$REPLY"; then
+					args+=("$x")
+				fi
+			done
+			wrpselect "${args[@]}"
 		fi
 		;;
 	esac
