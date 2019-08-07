@@ -306,19 +306,23 @@ p() {
 
 	if test "$REPLY" -ge 0 2> /dev/null; then
 		line=$(awk 'NR==c{print $0}' c=$REPLY $cfg_file);
-		read PROJECT PROJECT_NAME _ <<< $line
-		test -n "$PROJECT" || return 1
-
-		CLOUDSDK_ACTIVE_CONFIG_NAME="$PROJECT"
-		KUBECONFIG="$HOME"/.config/k8s/"$PROJECT"
-		export PROJECT PROJECT_NAME KUBECONFIG CLOUDSDK_ACTIVE_CONFIG_NAME
-
-		file=${base}_${CLOUDSDK_ACTIVE_CONFIG_NAME}
-		if ! test -f "$file"; then
-			gcloud config configurations create $CLOUDSDK_ACTIVE_CONFIG_NAME
-		fi
-		gcloud config set project "$PROJECT" || return 1
+	else
+		line=$(awk '$1~c{print $0}' c=$REPLY $cfg_file);
 	fi
+
+	test -z "$line" && return 1
+	read PROJECT PROJECT_NAME _ <<< $line
+	test -n "$PROJECT" || return 1
+
+	CLOUDSDK_ACTIVE_CONFIG_NAME="$PROJECT"
+	KUBECONFIG="$HOME"/.config/k8s/"$PROJECT"
+	export PROJECT PROJECT_NAME KUBECONFIG CLOUDSDK_ACTIVE_CONFIG_NAME
+
+	file=${base}_${CLOUDSDK_ACTIVE_CONFIG_NAME}
+	if ! test -f "$file"; then
+		gcloud config configurations create $CLOUDSDK_ACTIVE_CONFIG_NAME
+	fi
+	gcloud config set project "$PROJECT" || return 1
 	echo PROJECT=$PROJECT
 }
 ps() { COLUMNS=${CO:-15000} command ps "$@"; }
