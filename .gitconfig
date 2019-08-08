@@ -40,6 +40,7 @@
 	l1h = log -n 10 --decorate --format=format:'%Cgreen%h%Cred %<(10,trunc)%an%Creset %<(40,trunc)%s %Cblue%D%Creset' --graph
 	lm = log --pretty=oneline --author=wrp
 	s = status -uno
+	sa = status -uall --ignored
 	sl = stash list
 	sp = stash pop
 	ss = stash save
