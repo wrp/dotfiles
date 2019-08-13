@@ -48,6 +48,7 @@
 	ll = log --stat
 	lg = log
 	lp = log -p
+	w = rev-parse --abbrev-ref HEAD
 [core]
 	excludesfile = ~/.gitignore_global
 	whitespace = no-tab-in-indent
