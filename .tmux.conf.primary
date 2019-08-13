@@ -25,4 +25,4 @@ bind-key ',' command-prompt "rename-window '%%'"
 bind-key '$' command-prompt "rename-session '%%'"
 
 set -g display-panes-time 2000
-set-hook -g client-attached 'run-shell "kill -s WINCH $(pgrep bash)"'
+set-hook -g client-attached 'run-shell "kill -s WINCH $(ps -ax | grep [b]ash)"'
