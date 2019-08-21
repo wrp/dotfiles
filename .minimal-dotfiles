@@ -14,19 +14,17 @@ if test "$1" = -h; then
 	exit
 fi
 
+if test $# = 0; then set -- .bashrc .bash_profile .vimrc .inputrc .tmux.conf .editrc .gitconfig; fi
+
 if test -n "$TMUX"; then
-	if test "$#" -gt 0; then
-		for x; do
-			sed -n -E "/^# [.]?${x}$/,/^-* EOF -*/p" $0 \
-			| if grep .; then
-				echo "copied $x to clipboard" >&2
-			else
-				echo "No text copied to clipboard for $x!" >&2
-			fi
-		done
-	else
-		sed -e '1,/UNI[Q]UE_STRING/d' $0
-	fi \
+	for x; do
+		sed -n -E "/^# [.]?${x}$/,/^-* EOF -*/p" $0 \
+		| if grep .; then
+			echo "copied command to populate $x to clipboard" >&2
+		else
+			echo "No text copied to clipboard for $x!" >&2
+		fi
+	done \
 	| expand \
 	| tmux loadb -
 	exit
