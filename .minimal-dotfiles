@@ -7,6 +7,7 @@
 
 # Use -h for help and a list of available files.
 
+unset text_only
 case "$1" in
 -h)
 	sed -e 1d -e "s|@@name@@|$(basename $0)|" -e '/^#/!q' -e 's/# *//' $0
@@ -14,6 +15,9 @@ case "$1" in
 	sed -e '1,/UNI[Q]UE_STRING/d' -e '/^#[^#]/!d' -e 's/^# /    /' $0
 	exit
 	;;
+-c)
+	shift
+	text_only=1;;
 '')
 	set -- .bashrc .bash_profile .vimrc .inputrc .tmux.conf .editrc .gitconfig
 	;;
@@ -23,8 +27,17 @@ esac
 if test -n "$TMUX"; then
 	for x; do
 		sed -n -E "/^# [.]?${x}$/,/^-* EOF -*/p" $0 \
+		| if test -n "$text_only"; then
+			sed -e 2d -e '$d'
+		else
+			cat;
+		fi \
 		| if grep .; then
-			echo "copied command to populate $x to clipboard" >&2
+			if test -n "$text_only"; then
+				echo "copied text of $x to clipboard" >&2
+			else
+				echo "copied command to populate $x to clipboard" >&2
+			fi
 		else
 			echo "No text copied to clipboard for $x!" >&2
 		fi
