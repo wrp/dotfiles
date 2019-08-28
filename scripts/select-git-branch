@@ -11,6 +11,7 @@ width=$(git for-each-ref --format='%(refname:short)' refs/heads \
 format="%(align:$width)%(HEAD) %(refname:short)%(end)"
 list=$(git branch --color --format="$format")
 choice=${1}
+die() { test -n "$*" && echo "$*" >&2; exit 1; }
 
 if test "$choice" = -; then git checkout @{-1}; exit; fi
 
@@ -37,4 +38,12 @@ done
 
 branch=$( echo "$list" | cut -b 3- | awk '{print $1}' )
 
-test -n "$branch" && git checkout "$branch"
+if test -n "$branch"; then
+	# Check if the current working directory exists in the new branch
+	if ! git show "$branch":./ > /dev/null 2>&1; then
+		die Current working dir does not exist in target branch
+	fi
+	git checkout "$branch"
+else
+	exit 1
+fi
