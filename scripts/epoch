@@ -11,7 +11,8 @@ getopts('tla', \%args);
 my $now = time();
 my $tz = (localtime($now))[2] - (gmtime($now))[2];
 
-while(<>) {
+sub handle_line($) {
+	$_ = shift(@_);
 	if ($args{t} || $args{l} || $args{a}) {
 		s/([0-9]{9,10})/sprintf "%s (%sT%d)", $1, scalar localtime $1, $tz/ge;
 		if( $args{a}) {
@@ -21,4 +22,14 @@ while(<>) {
 		s/([0-9]{9,10})/sprintf "%s (%sUTC)", $1, scalar gmtime $1/ge;
 	}
 	print;
+}
+
+foreach my $arg (@ARGV) {
+	if(open(my $fh, $arg)) {
+		while( <$fh> ) {
+			handle_line($_)
+		}
+	} else {
+		handle_line($arg . "\n")
+	}
 }
