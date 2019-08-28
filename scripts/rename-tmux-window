@@ -4,7 +4,7 @@ test -z "$*" && {
 	if git_dir=$(git rev-parse --absolute-git-dir 2> /dev/null); then
 		set "$(basename $(dirname "$git_dir"))"
 	else
-		set "$(pwd)"
+		set "$(pwd 2> /dev/null)"
 	fi
 }
 if test -z "$left_justify"; then

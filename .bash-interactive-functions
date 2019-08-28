@@ -45,7 +45,7 @@ cd() {
 	setup_vars
 
 	# Force pwd to report realpath with this terrible hack
-	test "$(pwd)" != "$(realpath .)" && command cd $(realpath .)
+	test "$(pwd 2> /dev/null)" != "$(realpath .)" && command cd $(realpath .)
 
 	# If actual cd fails, we returned 1 above.
 	# Don't care about failures now.
@@ -79,7 +79,7 @@ g() {
 	( .    ) : ;;
 	( root )
 		root=$(git rev-parse --git-dir) \
-		&& root=$(cd "$root" && pwd)/ \
+		&& root=$(cd "$root" && pwd 2> /dev/null)/ \
 		&& echo "${root%%/.git/*}";;
 	( *    ) git "$@";;
 	esac

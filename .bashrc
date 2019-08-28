@@ -52,7 +52,7 @@ PS1='\[$(
 		)$(
 	# directory and git branch
 		if test "${COLUMNS:-0}" -gt 40; then printf "[%s%s]" \
-			"$(pwd | sed -E -e "s/.*(..........)/\1/" )" \
+			"$(pwd 2> /dev/null | sed -E -e "s/.*(..........)/\1/" )" \
 			"$( git rev-parse --abbrev-ref HEAD 2> /dev/null \
 				| sed -E -e "s@^heads/@@" \
 				-e "s/^/:/" -e "s/(...........).*/\1/" )"
