@@ -12,7 +12,7 @@ _git_complete() {
 	if test "$COMP_CWORD" = 1; then
 		list=$( git help -a | awk '/^   /{print $1}' )
 	else
-		list=$( git for-each-ref refs --format '%(refname:short)'; command ls -1 )
+		list=$( git for-each-ref refs --format '%(refname:short)'; command ls -F -1 )
 	fi
 
 	COMPREPLY=( $(compgen -W "${list}" -- ${cur_word}) )
