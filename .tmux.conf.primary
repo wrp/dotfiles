@@ -17,7 +17,7 @@ bind-key -T root S-Left previous-window
 bind-key -T root S-Right next-window
 bind-key -T root C-h select-pane -L
 bind-key -T root C-j select-pane -D
-bind-key -T root C-\ select-pane -l
+bind-key -T root C-\\ select-pane -l
 bind-key -T root C-b swap-window -s -1
 bind-key -T root C-n swap-window -s +1
 bind-key C-i rotate-window -D
