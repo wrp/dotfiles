@@ -1,5 +1,5 @@
 
-_g_complete() {
+_git_complete() {
 	cur_word="${COMP_WORDS[ COMP_CWORD ]}"
 	cmd="${COMP_WORDS[ 1 ]}"
 
@@ -12,7 +12,7 @@ _g_complete() {
 	if test "$COMP_CWORD" = 1; then
 		list=$( git help -a | awk '/^   /{print $1}' )
 	else
-		list=$( git for-each-ref refs --format '%(refname:short)' )
+		list=$( git for-each-ref refs --format '%(refname:short)'; command ls -1 )
 	fi
 
 	COMPREPLY=( $(compgen -W "${list}" -- ${cur_word}) )
@@ -66,6 +66,6 @@ _gcloud_complete() {
 	COMPREPLY=($(compgen -W "$list" -- "${COMP_WORDS[$COMP_CWORD]}"))
 }
 
-complete -o default -F _g_complete g git
+complete -o default -F _git_complete g git
 complete -o default -F _y_complete y
 complete -o default -F _gcloud_complete gcloud
