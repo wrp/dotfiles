@@ -1,13 +1,6 @@
 #!/bin/sh
 
 
-if test -z "$TMUX"; then
-	if test -n "$V"; then
-		printf 'Not currently in a tmux session session\n' >&2
-	fi
-	exit 1
-fi
-
 test -z "$*" && {
 	if git_dir=$(git rev-parse --absolute-git-dir 2> /dev/null); then
 		set "$(basename $(dirname "$git_dir"))"
@@ -24,6 +17,10 @@ else
 	repl='\1>'
 fi
 
-title=$( echo "$*" | sed '/.\{20\}/s/^'$patt'$/'$repl/)
+title="${DOCKER+$DOCKER:}$( echo "$*" | sed '/.\{20\}/s/^'$patt'$/'$repl/)"
 
-tmux rename-window -- "${DOCKER+$DOCKER:}$title"
+if test -n "$TMUX"; then
+	tmux rename-window -- "$title"
+else
+	printf '\033k%s\033\' "$title"
+fi
