@@ -345,6 +345,8 @@ PUT() {
 		&& ACCESS_TOKEN="$(gcloud auth application-default print-access-token)"
 	curl -X PUT -H "Authorization: Bearer $ACCESS_TOKEN" "$@"
 }
+rg() { find . -type d -name .git -exec sh -c 'cd ${0%.git}; git "$@" |
+	sed -e "s@^@${0%.git}@"' {} "$@" \; ;}
 rh() { history -r $HOME/.bash-history; }
 ru () { tac | awk '!a[$0]++' | tac; } ## reverse-unique
 rsync() { command rsync -e 'ssh -o LogLevel=error' "$@"; }
