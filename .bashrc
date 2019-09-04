@@ -37,7 +37,7 @@ PS1='\[$(
 		{ test $? != 0 && tput setaf 1 || tput setaf 2; } 2> /dev/null
 		)\]$(
 	# Marker if running in a docker image
-		printf "%s" "${DOCKER+ ** Docker ** }";
+		printf "%s" "${DOCKER+ ** $DOCKER ** }";
 	# Wall clock
 		)\D{%T}\[$(
 		tput setaf ${COLORS:$color_index:1} 2> /dev/null
