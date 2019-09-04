@@ -273,7 +273,10 @@ lb() { tr \\n \ | perl -pe 's/ *$//' | tmux loadb - ; }
 lba() { { if test $# -gt 1; then "$@"; else cat; fi; } | tmux loadb -; }
 less() { if test -t 1; then command less "$@"; else cat "$@"; fi; }
 ls() { command ls -GF "$@"; }
+
+which md5sum > /dev/null 2>&1 || md5sum() { md5 "$@"; }
 mon() { inotifywait -qmr "${@-.}" --exclude '^\./\.git'; }
+
 p() {
 	local line
 	local file
