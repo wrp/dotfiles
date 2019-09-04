@@ -1,5 +1,13 @@
 #!/bin/sh
 
+# The expectation is that we're running in TMUX.  For the moment,
+# we can use terminal escape sequences from docker images I often
+# run.  Cannot use escape sequences from Apple terminal directly,
+# but I don't really care about that.  Abort early and call it a success
+# if we aren't in one of the expected environments.
+if test -z "$TMUX$DOCKER"; then
+	exit 0
+fi
 
 test -z "$*" && {
 	if git_dir=$(git rev-parse --absolute-git-dir 2> /dev/null); then
@@ -21,6 +29,6 @@ title="${DOCKER+$DOCKER:}$( echo "$*" | sed '/.\{20\}/s/^'$patt'$/'$repl/)"
 
 if test -n "$TMUX"; then
 	tmux rename-window -- "$title"
-else
+elif test -n "$DOCKER"; then
 	printf '\033k%s\033\' "$title"
 fi
