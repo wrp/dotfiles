@@ -244,6 +244,7 @@ get_dir_list() {
 }
 j() {
 	local _dir
+	test -n "$DOCKER" && { echo "Running in DOCKER" >&2; return 1; }
 	local root="${USE_HOME:-$HOME}"
 	case "$1" in
 	.)
