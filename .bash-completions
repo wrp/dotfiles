@@ -9,10 +9,14 @@ _git_complete() {
 		return 1
 	fi
 
+	dir=$(dirname $cur_word 2> /dev/null)
 	if test "$COMP_CWORD" = 1; then
 		list=$( git help -a | awk '/^   /{print $1}' )
 	else
-		list=$( git for-each-ref refs --format '%(refname:short)'; command ls -F -1 )
+		list=$( git for-each-ref refs --format '%(refname:short)'
+			command ls -F -1 "$(dirname $cur_word 2> /dev/null)" \
+			| if test "$dir" != .; then sed -e "s@^@$dir/@"; else cat; fi
+		)
 	fi
 
 	COMPREPLY=( $(compgen -W "${list}" -- ${cur_word}) )
