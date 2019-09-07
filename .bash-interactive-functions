@@ -76,12 +76,15 @@ g() {
 	# Passing . as first arg allows us to just do the post-processing.
 	local rv=0 root
 	case $1 in
-	( .    ) : ;;
-	( root )
+	(.)
+		printf 'In %s on branch %s\n' "$(pwd)" \
+			"$(git rev-parse --abbrev-ref HEAD)"
+	;; (root)
 		root=$(git rev-parse --git-dir) \
 		&& root=$(cd "$root" && pwd 2> /dev/null)/ \
-		&& echo "${root%%/.git/*}";;
-	( *    ) git "$@";;
+		&& echo "${root%%/.git/*}"
+	;; (*)
+		git "$@";;
 	esac
 	rv=$?
 	setup_vars
@@ -257,8 +260,6 @@ j() {
 			echo "$root/$_dir does not exist!" >&2
 		else
 			command cd "$root/$_dir"
-			printf 'Moved to %s on branch %s\n' "$(pwd)" \
-				"$(git rev-parse --abbrev-ref HEAD)"
 		fi
 	;;
 	esac
