@@ -11,7 +11,7 @@ _git_complete() {
 		list=$( git for-each-ref refs --format '%(refname:short)'
 			command ls -F -1 "$dir" 2> /dev/null  \
 			| sed -e "s@^@$repl@"
-			git rev-list HEAD | sed 50q
+			git rev-list --all | sed 150q
 		)
 	fi
 
