@@ -257,7 +257,8 @@ j() {
 			echo "$root/$_dir does not exist!" >&2
 		else
 			command cd "$root/$_dir"
-			pwd
+			printf 'Moved to %s on branch %s\n' "$(pwd)" \
+				"$(git rev-parse --abbrev-ref HEAD)"
 		fi
 	;;
 	esac
