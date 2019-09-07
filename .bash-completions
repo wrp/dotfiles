@@ -1,7 +1,6 @@
 
 _git_complete() {
 	cur_word="${COMP_WORDS[ COMP_CWORD ]}"
-	cmd="${COMP_WORDS[ 1 ]}"
 
 
 	dir=$(dirname $cur_word 2> /dev/null)
