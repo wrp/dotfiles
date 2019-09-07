@@ -1,15 +1,17 @@
 
 _git_complete() {
-	cur_word="${COMP_WORDS[ COMP_CWORD ]}"
+	local cur_word="${COMP_WORDS[ COMP_CWORD ]}"
+	local dir=$(dirname $cur_word 2> /dev/null)
+	local repl
+	if test "$dir" != .; then repl="${dir}/"; fi
 
-
-	dir=$(dirname $cur_word 2> /dev/null)
 	if test "$COMP_CWORD" = 1; then
 		list=$( git help -a | awk '/^   /{print $1}' )
 	else
 		list=$( git for-each-ref refs --format '%(refname:short)'
-			command ls -F -1 "$(dirname $cur_word 2> /dev/null)" 2> /dev/null \
-			| if test "$dir" != .; then sed -e "s@^@$dir/@"; else cat; fi
+			command ls -F -1 "$dir" 2> /dev/null  \
+			| sed -e "s@^@$repl@"
+			git rev-list HEAD | sed 50q
 		)
 	fi
 
