@@ -82,7 +82,7 @@ g() {
 			"$(pwd)" \
 			"$(tput setaf 3; git rev-parse --abbrev-ref HEAD)" \
 			"$(tput setaf 2)" \
-			"${remote:+ ($remote)}"
+			"${remote:+ (${remote#refs/remotes/})}"
 	;; (root)
 		root=$(git rev-parse --git-dir) \
 		&& root=$(cd "$root" && pwd 2> /dev/null)/ \
