@@ -40,6 +40,7 @@ PS1='\[$(
 		printf "%s" "${DOCKER+ ** $DOCKER ** }";
 	# Wall clock
 		)\D{%T}\[$(
+	# Set rotating color schemd (rotates color on cd)
 		tput setaf ${COLORS:$color_index:1} 2> /dev/null
 		)\]$(
 	# project

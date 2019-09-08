@@ -74,11 +74,15 @@ execute() { local cmd=$1; tmux-title "$cmd";
 g() {
 	# Basically, this is a wrapper around git.  Plus we do some post-processing.
 	# Passing . as first arg allows us to just do the post-processing.
-	local rv=0 root
+	local rv=0 root remote
 	case $1 in
 	(.)
-		printf 'In %s on branch %s\n' "$(pwd)" \
-			"$(git rev-parse --abbrev-ref HEAD)"
+		remote="$(git rev-parse --symbolic-full-name @{upstream} 2> /dev/null)"
+		printf 'In %s on branch %s%s%s\n' \
+			"$(pwd)" \
+			"$(tput setaf 3; git rev-parse --abbrev-ref HEAD)" \
+			"$(tput setaf 2)" \
+			"${remote:+ ($remote)}"
 	;; (root)
 		root=$(git rev-parse --git-dir) \
 		&& root=$(cd "$root" && pwd 2> /dev/null)/ \
