@@ -79,3 +79,5 @@
 	meta = red green bold
 [color]
 	branch = true
+[pull]
+	rebase = true
