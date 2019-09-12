@@ -95,7 +95,7 @@ g() {
 	esac
 	rv=$?
 
-	echo "$err" >&2
+	test -n "$err" && echo "$err" >&2
 	if dir="$( echo "$err" | tr -d "'" |
 			awk '/is already checked out at/{ print $NF; f=1 }
 			END {exit !f}')"
