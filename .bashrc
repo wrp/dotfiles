@@ -99,9 +99,7 @@ debug_trap() {
 after_cmd() {
 	# Run after a command, and before a prompt is displayed
 	local _status=$?
-	local val
 	report_cmd_status $HISTFILE $_status >> $HOME/.bash-history
-	tmux-title
 }
 
 report_cmd_status() {
