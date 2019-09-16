@@ -1,10 +1,14 @@
-GIT_COMPLETE_REVLIST_MAX=150
+GIT_COMPLETE_REVLIST_MAX=1500
 
 _git_complete() {
 	local cur_word="${COMP_WORDS[ COMP_CWORD ]}"
 	local dir=$(dirname $cur_word 2> /dev/null)
 	local repl
-	if test "$dir" != .; then repl="${dir}/"; fi
+	case "$dir" in
+	(.) ;;
+	(/) repl=/;;
+	(*) repl="${dir}/";;
+	esac
 
 	if test "$COMP_CWORD" = 1; then
 		list=$( git help -a | awk '/^   /{print $1}' )
