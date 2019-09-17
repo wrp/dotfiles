@@ -61,7 +61,7 @@ PS1='\[$(
 		fi
 	)'"\[$(tput setaf 2 2> /dev/null)\]$$\$ "
 
-read_file() { for f; do test -f "$f" && . "$f"; done; }
+read_file() { for f; do if test -f "$f"; then . "$f"; fi; done; }
 complete -r
 complete -r gsutil 2> /dev/null
 complete -r gcloud 2> /dev/null
