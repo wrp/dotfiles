@@ -58,9 +58,9 @@ read_file() { for f; do test -f "$f" && . "$f"; done; }
 unalias -a
 shopt -s histappend
 trap 'history -a' DEBUG
-export EVENT_NOKQUEUE=1
 HISTTIMEFORMAT='%H:%M:%S '
 HISTFILESIZE=9999999999
+export EVENT_NOKQUEUE=1
 export LSCOLORS=fxfxcxdxbxegedabagacad
 export LESS=FeRXSQ
 export LC_TIME=C
