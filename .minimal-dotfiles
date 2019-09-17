@@ -55,8 +55,6 @@ fi
 cat << '-------------- EOF --------------' >> $HOME/.bashrc
 ################################################################################
 read_file() { for f; do test -f "$f" && . "$f"; done; }
-read_file /etc/bashrc
-unset PROMPT_COMMAND
 unalias -a
 shopt -s histappend
 trap 'history -a' DEBUG
