@@ -112,7 +112,6 @@ set includeexpr=substitute(v:fname,'$DAEMON_PATH/','','g')
 set t_ti= t_te=  " Disable clear screen on exit
 set novisualbell
 set noerrorbells
-set virtualedit=all
 set wildmenu
 set wildmode=longest,list,full
 highlight Comment ctermfg=darkcyan
