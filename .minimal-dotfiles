@@ -158,7 +158,7 @@ bind -v
 # .gitconfig
 cat << EOF > $HOME/.gitconfig
 [user]
-        email = ${EMAIL}
+        email = ${EMAIL:-${USER}@foo.com}
         name = ${USER}
 EOF
 cat << '-------------- EOF --------------' >> $HOME/.gitconfig
