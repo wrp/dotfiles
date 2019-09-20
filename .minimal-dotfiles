@@ -61,6 +61,7 @@ shopt -s histappend
 trap 'history -a' DEBUG
 HISTTIMEFORMAT='%H:%M:%S '
 HISTFILESIZE=9999999999
+unset PROMPT_COMMAND
 export EVENT_NOKQUEUE=1
 export LSCOLORS=fxfxcxdxbxegedabagacad
 export LESS=FeRXSQ
