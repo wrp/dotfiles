@@ -56,7 +56,7 @@ PS1='\[$(
 			"$(pwd 2> /dev/null | sed -E -e "s/.*(..........)/\1/" )" \
 			"$( git rev-parse --abbrev-ref HEAD 2> /dev/null \
 				| sed -E -e "s@^heads/@@" \
-				-e "s/^/:/" -e "s/(...........).*/\1/" )"
+				-e "s/^/:/" -e "/(...........).*/s//\1~/" )"
 		else printf :
 		fi
 	)'"\[$(tput setaf 2 2> /dev/null)\]$$\$ "
