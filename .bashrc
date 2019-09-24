@@ -24,6 +24,7 @@ esac
 
 export HISTCONTROL=ignoredups
 set -o vi
+set -o physical # make pwd do the right thing w.r.t. symbolic links
 shopt -s histappend
 shopt -s cmdhist
 shopt -s checkwinsize
