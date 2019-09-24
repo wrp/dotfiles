@@ -39,7 +39,7 @@ cd() {
 		_dir=$( dirname "$1")
 		echo cd: Truncating target to $_dir >&2
 	fi
-	command cd "${_dir:-${_SESSION_DIR:-$USE_HOME}}" || return 1;
+	command cd "${_dir:-${_SESSION_DIR:-${USE_HOME:-$HOME}}}" || return 1;
 	test "$PWD" != "$OLDPWD" && : $(( color_index = (color_index + 1) % ${#COLORS}))
 	tmux-title;
 	setup_vars
