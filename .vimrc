@@ -1,4 +1,4 @@
-autocmd BufWritePre !*.test :%s/\s\+$//e
+autocmd BufWritePre * :%s/\s\+$//e
 noremap v V
 noremap V v
 noremap ; :
