@@ -27,8 +27,13 @@ fi
 
 title="${DOCKER+$DOCKER:}$( echo "$*" | sed '/.\{20\}/s/^'$patt'$/'$repl/)"
 
+# This is now a poorly named script.  Instead of renaming the window,
+# we will change the title of the currnet pane, and rely on the
+# tmux configuration to set the string shown in the status bar via
+# the automatic-rename-format
 if test -n "$TMUX"; then
-	tmux rename-window -- "$title"
+	# tmux rename-window -- "$title"
+	tmux select-pane -T "$title"
 elif test -n "$DOCKER"; then
 	printf '\033k%s\033\' "$title"
 fi
