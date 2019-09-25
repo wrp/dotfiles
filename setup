@@ -18,10 +18,9 @@ fi
 
 base=$( dirname $(realpath --relative-to=$HOME "$0" 2> /dev/null || echo "$0") )
 test "$(pwd)" = "$HOME" || warn "Running from $HOME"
-unset main force abort
+unset force abort
 while test $# -gt 0; do
        case $1 in
-       main) main=1;;
        -f)  force=1;;
        *)   die unexpected argument: $1;;
        esac
@@ -33,18 +32,12 @@ cd $HOME
 files=$(ls -a $base | while read f; do grep -q "^${f}$" $base/blacklist \
 	|| echo $f; done)
 
-target() {
-	local suffix
-	test -n "$main" && test -e $base/$1.primary && suffix=.primary
-	echo $base/$1$suffix
-}
-
 for file in $files; do
 	if test -e $file && ! test -d $file; then
 		if test "$($MD5 < $HOME/$file)" != \
-				"$($MD5 < $(target $file))"; then
+				"$($MD5 < "$base/$file)"; then
 			warn "$file is different, set V=1 to see diff"
-			test -n "$V" && diff -u $HOME/$file $(target $file)
+			test -n "$V" && diff -u $HOME/$file "$base/$file"
 			abort=1
 		fi
 	fi
@@ -60,6 +53,6 @@ test -n "$abort" && warn overwriting
 mkdir -p $HOME/.bash-history-dir
 for file in $files; do
 	test "$file" = .git \
-	|| ln -sf $(target $file) .${file#.} \
+	|| ln -sf "$base/$file" .${file#.} \
 	|| die
 done
