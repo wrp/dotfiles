@@ -147,6 +147,8 @@ bind-key -T root C-n swap-window -t +1
 bind-key C-i rotate-window -D
 bind-key ',' command-prompt "rename-window '%%'"
 bind-key '$' command-prompt "rename-session '%%'"
+set -wg automatic-rename on
+set -wg automatic-rename-format "#{pane_title}"
 set-hook -g client-attached 'run-shell "kill -s WINCH $(ps -ax | grep [b]ash)"'
 -------------- EOF --------------
 
