@@ -1,4 +1,5 @@
 autocmd BufWritePre * :%s/\s\+$//e
+autocmd BufWritePre * :exe "normal \<c-o>"
 noremap v V
 noremap V v
 noremap ; :
