@@ -1,12 +1,3 @@
-" These commands would remove trailing whitespace.
-" But...without the second command, the cursor will
-" jump to the last change.  With it, it works great only
-" if there was some trailing whitespace that was deleted
-" so that the jump-list is modified.  If not, it moves
-" too far.  TODO: fix this
-" autocmd BufWritePre * :%s/\s\+$//e
-" autocmd BufWritePre * :exe "normal \<c-o>"
-"
 noremap v V
 noremap V v
 noremap ; :
@@ -22,6 +13,14 @@ function! WinDo(command)
   execute currwin . 'wincmd w'
 endfunction
 com! -nargs=+ -complete=command Windo call WinDo(<q-args>)
+
+function! ClearWhite()
+    let l:save_pos = getcurpos()
+    execute '%s/\s\+$//e'
+    call cursor(l:save_pos[1:])
+endfunction
+autocmd BufWritePre * call ClearWhite()
+
 
 " inoremap jk <esc>
 let loaded_matchparen=1
