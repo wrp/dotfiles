@@ -410,7 +410,7 @@ if ! which tac; then
 	fi
 fi > /dev/null 2>&1
 
-ta() { EVENT_NOKQUEUE=1 tmux attach; }
+ta() { tmux attach || tmux; }
 if test -n "$TMUX"; then
 	ta() { echo 'Already in a tmux session' >&2; }
 fi
