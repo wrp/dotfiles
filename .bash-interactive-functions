@@ -444,7 +444,9 @@ update() {
 	fi
 }
 vi() { test $# = 0 && set $(get-modified-files ${h});
-	vim "$@"; }  # .vimrc handles tmux titles
+	vim "$@"    # .vimrc sets tmux titles...
+	tmux-title  # but does not unset them
+}
 y() { select-git-branch "$@"; }
 
 for name in man; do
