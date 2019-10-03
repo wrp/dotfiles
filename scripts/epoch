@@ -24,12 +24,18 @@ sub handle_line($) {
 	print;
 }
 
-foreach my $arg (@ARGV) {
-	if(open(my $fh, $arg)) {
-		while( <$fh> ) {
-			handle_line($_)
+if(@ARGV) {
+	foreach my $arg (@ARGV) {
+		if(open(my $fh, $arg)) {
+			while( <$fh> ) {
+				handle_line($_)
+			}
+		} else {
+			handle_line($arg . "\n")
 		}
-	} else {
-		handle_line($arg . "\n")
+	}
+} else {
+	while(<>) {
+		handle_line($_)
 	}
 }
