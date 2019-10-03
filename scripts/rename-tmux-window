@@ -33,6 +33,7 @@ title="${DOCKER+$DOCKER:}$( echo "$*" | sed '/.\{20\}/s/^'$patt'$/'$repl/)"
 # the automatic-rename-format
 if test -n "$TMUX"; then
 	if test -n "$FORCE"; then
+		echo 'WARNING: window renamed.  Auto-rename is now disabled' >&2
 		tmux rename-window -- "$title"
 	else
 		tmux select-pane -T "$title"
