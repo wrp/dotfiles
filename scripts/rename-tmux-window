@@ -32,8 +32,11 @@ title="${DOCKER+$DOCKER:}$( echo "$*" | sed '/.\{20\}/s/^'$patt'$/'$repl/)"
 # tmux configuration to set the string shown in the status bar via
 # the automatic-rename-format
 if test -n "$TMUX"; then
-	# tmux rename-window -- "$title"
-	tmux select-pane -T "$title"
+	if test -n "$FORCE"; then
+		tmux rename-window -- "$title"
+	else
+		tmux select-pane -T "$title"
+	fi
 elif test -n "$DOCKER"; then
 	printf '\033k%s\033\' "$title"
 fi
