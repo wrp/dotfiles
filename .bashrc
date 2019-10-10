@@ -141,5 +141,4 @@ trap archive 0
 trap debug_trap DEBUG
 trap '. $HOME/.bashrc' SIGUSR1
 
-
 PROMPT_COMMAND='after_cmd'
