@@ -38,6 +38,6 @@ if test -n "$TMUX"; then
 	else
 		tmux select-pane -T "$title"
 	fi
-elif test -n "$DOCKER"; then
+else
 	printf '\033k%s\033\' "$title"
 fi
