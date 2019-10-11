@@ -24,10 +24,18 @@ compat() {
 
 schema() {
         local topic
+        local color
+        local which=before
         : ${URL=http://$(hostname):8081}
+        if test -t 1; then
+                color=-C
+        fi
         for topic; do
+                if test "$topic" = -c; then color=-C; continue; fi
+                if test "$topic" = -a; then which=after; continue; fi
                 curl -Ss $URL/subjects/${topic}-value/versions/latest \
-                | jq -r .schema  | jq -C . | less
+                | jq -r .schema \
+                | jq ${color} -c '.fields[] | select( .name == "'$which'") | .type[1].fields[]' \
+                | less
         done
 }
-
