@@ -29,7 +29,7 @@
 	dw = diff --word-diff
 	dwa = diff --word-diff-regex=.
 	l = log --oneline --decorate --format=format:'%Cgreen%h%Cred %<(10,trunc)%an%Cblue%D%Creset %<(80,trunc)%s'
-	l1 = log --format=format:'%Cgreen%h%Cred %<(10,trunc)%an%Creset %<(60,trunc)%s %Cblue%D%Creset'
+	l1 = log --format=format:'%Cgreen%h%Cred %<(12,trunc)%an%Creset %<(60,trunc)%s %Cblue%D%Creset'
 	lr = log --format=format:'%Cgreen%h%C(yellow) %cr %Cred %<(10,trunc)%an%Creset %<(60,trunc)%s %Cblue%D%Creset'
 	ld = log --date=format:'%H:%M:%S %d%b%y' --format=format:'%Cgreen%h%C(yellow) %Cred %<(10,trunc)%an%Creset %<(60,trunc)%s %ad %Cblue%D%Creset'
 
