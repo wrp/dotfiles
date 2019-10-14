@@ -410,9 +410,10 @@ if ! which tac; then
 	fi
 fi > /dev/null 2>&1
 
-ta() { tmux attach || tmux; }
 if test -n "$TMUX"; then
-	ta() { echo 'Already in a tmux session' >&2; }
+	ta() { echo 'Already in a tmux session' >&2; return 1; }
+else
+	ta() { tmux attach || tmux; }
 fi
 tmux-title() { test -t 1 || return;
 	while test "${1#-}" != "$1"; do shift; done;
