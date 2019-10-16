@@ -45,7 +45,7 @@
 	sa = status -uall --ignored
 	sl = stash list
 	sp = stash pop
-	ss = stash save
+	ss = stash push
 	exec = "!exec "
 	ll = log --stat
 	lg = log
