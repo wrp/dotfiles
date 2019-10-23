@@ -184,6 +184,7 @@ cat << '-------------- EOF --------------' >> $HOME/.gitconfig
 	dc = diff --cached
 	d = diff
 	dn = diff --numstat
+	dno = diff --name-only
 	dw = diff --word-diff
 	l = log --oneline --decorate --format=format:'%Cgreen%h%Cred %<(10,trunc)%an%Cblue%D%Creset %<(80,trunc)%s'
 	l1 = log --format=format:'%Cgreen%h%Cred %<(10,trunc)%an%Creset %<(60,trunc)%s %Cblue%D%Creset'
