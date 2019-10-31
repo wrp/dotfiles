@@ -15,9 +15,13 @@ endfunction
 com! -nargs=+ -complete=command Windo call WinDo(<q-args>)
 
 function! ClearWhite()
-    let l:save_pos = getcurpos()
-    execute '%s/\s\+$//e'
-    call cursor(l:save_pos[1:])
+    " A bit hacky: if you :let keep_white=1 before you
+    " do any writes, you can keep trailing whitespace
+    if !exists("g:keep_white")
+        let l:save_pos = getcurpos()
+        execute '%s/\s\+$//e'
+        call cursor(l:save_pos[1:])
+    endif
 endfunction
 autocmd BufWritePre * call ClearWhite()
 
