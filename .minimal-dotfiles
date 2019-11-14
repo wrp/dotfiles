@@ -76,7 +76,7 @@ PS1="\[$(tput rev)"'$( r=$(( $? != 0 )); tput setaf $((2 - r));
 c() { clear; }
 g() { git "$@"; }
 ta() { tmux attach; }
-curl() { command curl -Ssf "$@"; }
+curl() { command curl -Ss "$@"; }
 epoch() { perl -pe 's/([0-9]{9,10})/sprintf "%s (%sUTC)", $1,
         scalar gmtime $1/ge' "$@"; }
 trim() { perl -nE "chomp; say substr \$_, 0, ${COLUMNS-$(tput cols)} - 1" "$@"; }
