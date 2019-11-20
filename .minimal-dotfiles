@@ -219,4 +219,6 @@ cat << '-------------- EOF --------------' >> $HOME/.gitconfig
 	meta = red green bold
 [color]
 	branch = true
+[pull]
+	rebase = true
 -------------- EOF --------------
