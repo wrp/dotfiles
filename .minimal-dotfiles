@@ -7,6 +7,11 @@
 
 # Use -h for help and a list of available files.
 
+if (return 0 2>/dev/null); then
+	echo 'Do not source this.  Just execute it!' >&2
+	return 1
+fi
+
 available=$(
 	sed -e '1,/UNI[Q]UE_STRING/d' -e '/^#[^#]/!d' -e 's/^# /    /' $0
 )
