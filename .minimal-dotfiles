@@ -51,6 +51,7 @@ if test -n "$TMUX"; then
 		fi
 	done \
 	| expand \
+	| sed -e "s|@@EMAIL@@|$EMAIL|g" \
 	| tmux loadb -
 	exit
 fi
@@ -167,6 +168,7 @@ bind -v
 
 
 # .gitconfig
+EMAIL=@@EMAIL@@
 cat << EOF > $HOME/.gitconfig &&
 [user]
         email = ${EMAIL:?}
