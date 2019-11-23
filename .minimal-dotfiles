@@ -71,7 +71,7 @@ unset PROMPT_COMMAND
 export EVENT_NOKQUEUE=1
 export LSCOLORS=fxfxcxdxbxegedabagacad
 export LESS=FeRXSQM#.95
-export SYSTEMD_LESS="$LESS"
+export SYSTEMD_LESS="${LESS//S/}"
 export LC_TIME=C
 set -o vi
 set -o physical   # make pwd do the right thing w.r.t. symbolic links
