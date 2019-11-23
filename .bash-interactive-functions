@@ -293,35 +293,36 @@ ls() { command ls -GF "$@"; }
 which md5sum > /dev/null 2>&1 || md5sum() { md5 "$@" | tr -d '()' | awk 'NF>1{$0=$4 OFS $2 }1'; }
 mon() { inotifywait -qmr "${@-.}" --exclude '^\./\.git'; }
 
+get_current_gcp_project() {
+	# This is faster than calling gcloud config get-value project,
+	# but very fragile
+	echo "searching $file to find current config" >&2
+	if awk '/^project =/ {print $3}' "$file" 2> /dev/null | grep .; then
+		return 0
+	fi
+	if ! gcloud config get-value project 2> /dev/null | grep . ; then
+		{
+		printf "\nNo currently configured project.  Please run"
+		printf " 'gcloud config set project \$PROJECT'\n"
+		printf "You can get list of possible options from "
+		printf "'gcloud projects list'\n"
+		} >&2
+		return 1
+	fi
+}
 p() {
 	local line
 	local file
 	local base
-	local CONFIGGED_PROJECT
 	base=${HOME}/.config/gcloud/configurations/config
 	file=${base}_${CLOUDSDK_ACTIVE_CONFIG_NAME-default}
-	# This is faster than calling gcloud config get-value project,
-	# but very fragile
-	CONFIGGED_PROJECT=$(awk '/^project =/ {print $3}' "$file" 2> /dev/null)
-	if test -z "$CONFIGGED_PROJECT"; then
-		printf "%s..." "Unable to determine current project. Querying..."
-		CONFIGGED_PROJECT=$( gcloud config get-value project 2> /dev/null )
-		if test -z "$CONFIGGED_PROJECT"; then
-		        printf "\n" >&3
-			printf "\nNo currently configured project.  Please run"
-			printf " 'gcloud config set project \$PROJECT'\n"
-			printf "You can get list of possible options from "
-			printf "'gcloud projects list'\n"
-			return 1
-		fi >&2 3>&1
-		printf "$CONFIGGED_PROJECT\n"
-	fi
 
 	local cfg_file=$HOME/.config/$USER/gcloud-project-list
 	test -f $cfg_file || gcloud projects list | sed 1d > $cfg_file
 	if test -n "$1"; then
 		REPLY="$1"
 	else
+		local CONFIGGED_PROJECT=$(get_current_gcp_project)
 		nl -s ') ' < $cfg_file | sed "/$CONFIGGED_PROJECT/s/^  / */"
 		read -p "#? " REPLY
 	fi
