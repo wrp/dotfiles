@@ -72,6 +72,12 @@ g() {
 	# Basically, this is a wrapper around git.  Plus we do some post-processing.
 	# Passing . as first arg allows us to just do the post-processing.
 	local rv=0 root remote err dir
+
+	if env | grep -q DOCKER; then
+		echo "Do not run git in a docker image" >&2
+		return 1
+	fi
+
 	case $1 in
 	(.)
 		remote="$(git rev-parse --symbolic-full-name @{upstream} 2> /dev/null)"
