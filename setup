@@ -16,7 +16,7 @@ else
 fi
 
 
-base=$( dirname $(realpath --relative-to=$HOME "$0" 2> /dev/null || echo "$0") )
+base=$( cd $(dirname "$0"); pwd -P)
 test "$(pwd)" = "$HOME" || warn "Running from $HOME"
 unset force abort
 while test $# -gt 0; do
