@@ -113,5 +113,6 @@ nmap ga <Plug>(EasyAlign)
 " Grrr.  I occasionally get ft set to things that change my formatoptions
 " eg, if vim sets ft=conf, it add 'r' and 'o'.  Get rid of them!
 autocmd BufEnter * set formatoptions-=ro
+autocmd BufEnter * set indentexpr=
 
 " vim: fen:sw=4 fdm=indent fdl=1
