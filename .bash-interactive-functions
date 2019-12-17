@@ -81,7 +81,7 @@ g() {
 	case $1 in
 	(.)
 		remote="$(git rev-parse --symbolic-full-name @{upstream} 2> /dev/null)"
-		printf 'In %s on branch %s%s%s\n' \
+		printf 'cwd:%s branch:%s%s%s\n' \
 			"$(pwd)" \
 			"$(tput setaf 3; git rev-parse --abbrev-ref HEAD)" \
 			"$(tput setaf 2)" \
