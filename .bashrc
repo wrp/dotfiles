@@ -69,9 +69,9 @@ complete -r gcloud 2> /dev/null
 complete -r bq 2> /dev/null
 read_file $HOME/.bash-functions $HOME/.bash-interactive-functions $HOME/.bash-completions
 
-append_var PATH $HOME/.scripts
-append_var PATH $HOME/all/bin
-prepend_var PATH $HOME/$(uname -m)/$(uname -s)/bin
+append_path $HOME/.scripts
+append_path $HOME/all/bin
+prepend_path $HOME/$(uname -m)/$(uname -s)/bin
 read_file $HOME/.bash-env
 test -z "$HISTFILE" && HISTFILE=$HOME/.bash-history-$$
 export HISTFILE

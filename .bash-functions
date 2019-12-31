@@ -1,35 +1,9 @@
 
-delete_var() {
-	local _var=$1
-	local _v
-	shift
-	for _v; do
-		eval "$_var=\"$( eval echo \"\$$_var\" |
-			tr : \\n | sed -e "\@^$_v\$@d" | tr \\n : | sed 's/:$//' )\""
-	done
+in_path() {
+	case ":$PATH:" in
+	*:$1:*) return 0;;
+	*) return 1;;
+	esac
 }
-clean_var() {
-	local _var=$1;
-	eval "$_var=\"$( eval echo \"\$$_var\" |
-		sed -e 's/::*/:/g' -e 's/^:*//' -e 's/:*$//' )\"";
-}
-append_var() {
-	local _var=$1
-	local _v
-	shift
-	for _v; do
-		delete_var $_var $_v
-		eval "$_var=\"\$$_var:$_v\""
-	done
-	clean_var $_var
-}
-prepend_var() {
-	local _var=$1
-	local _v
-	shift
-	for _v; do
-		delete_var $_var $_v
-		eval "$_var=\"$_v:\$$_var\""
-	done
-	clean_var $_var
-}
+append_path() { in_path "$1" || PATH="$PATH:$1"; }
+prepend_path() { in_path "$1" || PATH="$1:$PATH"; }
