@@ -41,6 +41,7 @@ set nowrap
 set nowrapscan
 " set smartindent
 " set cindent
+set scrolloff=5
 set tildeop
 set t_ti= t_te=  " Disable clear screen on exit
 set novisualbell
