@@ -1,9 +1,18 @@
 
 in_path() {
+	# Check if $1 is in PATH
 	case ":$PATH:" in
 	*:$1:*) return 0;;
 	*) return 1;;
 	esac
 }
-append_path() { in_path "$1" || PATH="$PATH:$1"; }
-prepend_path() { in_path "$1" || PATH="$1:$PATH"; }
+clear_path() {
+	# Ensure that $1 is not in PATH
+	PATH=$(echo "$PATH" | sed \
+		-e "s@:$1:@:@g" \
+		-e "s@^$1:@@" \
+		-e "s@:$1\$@@" \
+	)
+}
+append_path() { clear_path "$1" && PATH="$PATH:$1"; }
+prepend_path() { clear_path "$1" && PATH="$1:$PATH"; }
