@@ -418,7 +418,7 @@ if ! which tac; then
 fi > /dev/null 2>&1
 
 if test -n "$TMUX"; then
-	ta() { echo 'Already in a tmux session' >&2; return 1; }
+	ta() { tmux new-window; }
 else
 	ta() { tmux attach || tmux; }
 fi
