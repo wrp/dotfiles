@@ -142,7 +142,8 @@ unbind C-b
 set -g prefix C-k
 bind C-k send-prefix
 set -g window-status-current-style fg=yellow,bold,bg=black
-set -g window-status-current-format '#I:#W'
+set -g window-status-current-format '#{?automatic-rename,#{pane_title},#{window_name}}'
+set -g window-status-format '#{?automatic-rename,#{pane_title},#{window_name}}'
 set -g status-left-length 25
 set -g status-right '%H:%M %e-%b'
 set -g status-style bg=red
@@ -155,8 +156,6 @@ bind-key -T root C-n swap-window -t +1
 bind-key C-i rotate-window -D
 bind-key ',' command-prompt "rename-window '%%'"
 bind-key '$' command-prompt "rename-session '%%'"
-set -wg automatic-rename on
-set -wg automatic-rename-format "#{pane_title}"
 set-hook -g client-attached 'run-shell "kill -s WINCH $(ps -ax | grep [b]ash)"'
 -------------- EOF --------------
 
