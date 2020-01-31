@@ -287,7 +287,7 @@ j() {
 _j_complete() {
 	local curr_word=${COMP_WORDS[$COMP_CWORD]}
 	list=$(get_dir_list "$curr_word")
-	COMPREPLY=($(echo "$list" | tr ' ' \\n | grep "$curr_word"))
+	COMPREPLY=($(echo "$list" | tr -s ' ' \\n | grep "$curr_word"))
 }
 complete -o default -F _j_complete j
 debug() { test -n "$VERBOSE" && echo "$@" >&2; }
@@ -354,6 +354,12 @@ p() {
 	gcloud config set project "$PROJECT" || return 1
 	echo PROJECT=$PROJECT
 }
+_p_complete() {
+	local curr_word=${COMP_WORDS[$COMP_CWORD]}
+	list=$(cat $HOME/.config/$USER/gcloud-project-list)
+	COMPREPLY=($(echo "$list" | tr ' ' \\n | grep "$curr_word"))
+}
+complete -o default -F _p_complete p
 ps() { COLUMNS=${CO:-15000} command ps "$@"; }
 push() { kill -s SIGUSR1 $(ls $HOME/.bash-history-dir | sed 's/shell-pid-//g'); }
 POST() {
