@@ -296,7 +296,13 @@ lba() { { if test $# -gt 1; then "$@"; else cat; fi; } | tmux loadb -; }
 less() { if test -t 1; then command less "$@"; else cat "$@"; fi; }
 ls() { command ls -GF "$@"; }
 
-which md5sum > /dev/null 2>&1 || md5sum() { md5 "$@" | tr -d '()' | awk 'NF>1{$0=$4 OFS $2 }1'; }
+if ! which md5sum > /dev/null 2>&1; then
+	md5sum() {
+		openssl md5 "$@" | tr '()' \  | awk 'NF>1{$0=$4 OFS $2 }1';
+	}
+fi
+
+
 mon() { inotifywait -qmr "${@-.}" --exclude '^\./\.git'; }
 
 get_current_gcp_project() {
