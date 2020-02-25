@@ -298,7 +298,7 @@ ls() { command ls -GF "$@"; }
 
 if ! which md5sum > /dev/null 2>&1; then
 	md5sum() {
-		openssl md5 "$@" | tr '()' \  | awk 'NF>1{$0=$4 OFS $2 }1';
+		openssl md5 "$@" | awk 'NF > 1 {print $2,$4}' FS='[()=]'
 	}
 fi
 
