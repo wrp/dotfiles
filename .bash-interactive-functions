@@ -367,7 +367,7 @@ p() {
 		gcloud config configurations create $CLOUDSDK_ACTIVE_CONFIG_NAME
 	fi
 	gcloud config set project "$PROJECT" || return 1
-	echo PROJECT=$PROJECT
+	echo "PROJECT=$PROJECT ($PROJECT_NAME)"
 }
 _p_complete() {
 	local curr_word=${COMP_WORDS[$COMP_CWORD]}
