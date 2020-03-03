@@ -135,6 +135,14 @@ gcd() {
 		echo "$_dir is not a directory" >&2
 	fi
 }
+gcloud() {
+	local quiet=-q
+	if test "$1" = -v && test $# != 1; then
+		shift
+		quiet=
+	fi
+	command gcloud $quiet "$@"
+}
 gdb() { command gdb -tui "$@"; }
 GET() {
 	# ACCESS_TOKEN will need be refreshed periodically.  Just unset it.
