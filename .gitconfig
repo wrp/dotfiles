@@ -1,7 +1,4 @@
 
-[user]
-	name = William Pursell
-	email = williamp@wepay.com
 [alias]
 	ap = add --patch
 	b = branch -vv
