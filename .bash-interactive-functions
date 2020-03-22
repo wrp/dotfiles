@@ -424,6 +424,24 @@ setup_vars() {
 }
 sf() { USE_FAILED=1 search-bash-history "$@"; }
 ssh() { tmux-title "$@"; command ssh -o LogLevel=error "$@"; tmux-title; }
+
+
+ssh_split() {
+	# Ssh in a new pane
+	if test -z "$TMUX"; then
+		echo 'Not in a tmux session.  Aborting'  >&2
+		return 1
+	fi
+	tmux split-window -p 80 -b sh -c 'ssh $@
+		printf "\n*************************\n" >&2
+		printf "Hit return to close pane\n" >&2
+		read' sh "$@";
+	tmux select-pane -T "$1"
+	tmux-title "$1"
+	# TODO: figure out how to use tmux set-hook to reset the title
+	# (probably on a pane-died event) when the ssh session ends
+}
+
 scp() { [[ ! $* =~ : ]] &&
 	{ echo 'One of the files should be remote' >&2; return 1; }
 	command scp -p -o LogLevel=error "$@"
