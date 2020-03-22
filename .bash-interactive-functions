@@ -433,7 +433,7 @@ ssh_split() {
 		return 1
 	fi
 	tmux split-window -p 80 -b sh -c 'ssh $@
-		printf "\n*************************\n" >&2
+		printf "\n******** terminated: ssh %s ********\n" "$*" >&2
 		printf "Hit return to close pane\n" >&2
 		read' sh "$@";
 	tmux select-pane -T "$1"
