@@ -144,6 +144,12 @@ gcloud() {
 	fi
 	command gcloud $quiet "$@"
 }
+gcurl() {
+	curl \
+		-H "Authorization: Bearer $(gcloud auth application-default print-access-token)" \
+		-H "Content-Type: application/json" \
+		"$@"
+}
 gdb() { command gdb -tui "$@"; }
 GET() {
 	# ACCESS_TOKEN will need be refreshed periodically.  Just unset it.
