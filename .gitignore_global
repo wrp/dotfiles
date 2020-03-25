@@ -2,3 +2,5 @@
 .netrwhist
 .DS_Store
 *.dSYM
+*.jar
+*.o
