@@ -443,8 +443,8 @@ ssh_split() {
 		printf "\n******** terminated: ssh %s ********\n" "$*" >&2
 		printf "Hit return to close pane\n" >&2
 		read' sh "$@";
-	tmux select-pane -T "$1"
-	tmux-title "$1"
+	while test "${1#-}" != "$1"; do shift; done
+	tmux select-pane -T "${1%%.*}"
 	# TODO: figure out how to use tmux set-hook to reset the title
 	# (probably on a pane-died event) when the ssh session ends
 }
