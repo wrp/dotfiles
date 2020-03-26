@@ -14,5 +14,5 @@ clear_path() {
 		-e "s@:$1\$@@" \
 	)
 }
-append_path() { in_path "$1" || PATH="$PATH:$1"; }
-prepend_path() { in_path "$1" || PATH="$1:$PATH"; }
+append_path() { in_path "$1" || PATH="$PATH${PATH:+:}$1"; }
+prepend_path() { in_path "$1" || PATH="$1${PATH:+:}$PATH"; }
