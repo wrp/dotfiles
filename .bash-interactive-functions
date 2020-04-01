@@ -87,7 +87,7 @@ g() {
 			"$(tput setaf 2)" \
 			"${remote:+ (${remote#refs/remotes/})}"
 	;;
-	(l1a) tig;; # Train myself to use tig
+	(l1a) if test -t 1; then tig; else git "$@"; fi;; # Train myself to use tig
 	(root)
 		root=$(git rev-parse --git-dir) \
 		&& root=$(cd "$root" && pwd 2> /dev/null)/ \
