@@ -73,7 +73,7 @@ g() {
 	# Passing . as first arg allows us to just do the post-processing.
 	local rv=0 root remote err dir
 
-	if env | grep -q DOCKER; then
+	if test -n "$DOCKER"; then
 		echo "Do not run git in a docker image" >&2
 		return 1
 	fi
