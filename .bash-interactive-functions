@@ -468,6 +468,13 @@ if test -n "$TMUX"; then
 else
 	ta() { tmux attach || tmux; }
 fi
+tee() {
+	if test -n "$TMUX"; then
+		command tee "$@" | tmux split-window -l 10 -dI
+	else
+		command tee "$@"
+	fi
+}
 tmux-title() { test -t 1 || return;
 	while test "${1#-}" != "$1"; do shift; done;
 	rename-tmux-window "$@"; }
