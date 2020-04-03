@@ -12,7 +12,7 @@
 #     option may be used to force another file to be read, but neither
 #     rshd nor sshd  generally  invoke  the  shell  with those options
 #     or allow them to be specified.
-
+# But this should only be used in interactive shells, so make it explicit.
 case "$-" in
 *i*) # interactive shell
         ;;
@@ -21,6 +21,12 @@ case "$-" in
         ;;
 esac
 
+# If .bashrc is from git, find the current hash.  PS1 will
+# display an indicator if the shell is out of date.
+if test -n "${BASH_SOURCE[0]}"; then
+	__base_dir=$(dirname $(realpath "${BASH_SOURCE[0]}"))
+	__git_version=$(cd "$__base_dir" && git describe --dirty)
+fi
 
 export HISTCONTROL=ignoredups
 set -o vi
@@ -37,6 +43,10 @@ PS1='\[$(
 	# Colorize based on previous command status
 		{ test $? != 0 && tput setaf 1 || tput setaf 2; } 2> /dev/null
 		)\]$(
+	# Insert warning if shell is out of date
+		if test -n "'"$__git_version"'" &&
+			test "$(cd "$__base_dir" && git describe --dirty)" != \
+			"'"$__git_version"'"; then printf "* "; fi
 	# Marker if running in a docker image
 		printf "%s" "${DOCKER+ ** $DOCKER ** }";
 	# Wall clock
