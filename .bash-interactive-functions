@@ -403,13 +403,17 @@ ru () { tac | awk '!a[$0]++' | tac; } ## reverse-unique
 
 if test -n "$TMUX"; then
 run() { # Create two new panes, run a command with stderr in one, stdout in the other
-	local stdout="$HOME/.bash-run-output/$$-stdout"
-	local stderr="$HOME/.bash-run-output/$$-stderr"
-	{
-	{ date; printf "stdout for: %s\n" "$*"; date >&3; printf "stderr for: %s\n" "$*" >&3;
-	sh -c "$* | tee -a $stdout" 2>&3; } |
-	tmux split-window -p 30 -dI; } 3>&1 |
-	tmux split-window -p 30 -dI
+	# For some reason, bash is spawning too many panes, so run this through dash
+	dash -c '
+	stdout="$HOME/.bash-run-output/$0-stdout"
+	stderr="$HOME/.bash-run-output/$0-stderr"
+	hdr="************************************"
+	printf "\n%s\n%s\n$ %s\n" "$hdr" "$(date)" "$*" |
+	tee -a "$stdout" "$stderr" > /dev/null
+	{ eval "$@ 2>&3 | tee -a $stdout" |
+	tmux split-window -l 10 -dI; } 3>&1 | tee -a "$stderr" |
+	tmux split-window -l 10 -dI
+	' "$$" "$@"
 }
 fi
 rsync() { command rsync -e 'ssh -o LogLevel=error' "$@"; }
