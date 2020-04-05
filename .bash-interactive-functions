@@ -408,11 +408,17 @@ run() { # Create two new panes, run a command with stderr in one, stdout in the 
 	stdout="$HOME/.bash-run-output/$0-stdout"
 	stderr="$HOME/.bash-run-output/$0-stderr"
 	hdr="************************************"
-	printf "\n%s\n%s\n$ %s\n" "$hdr" "$(date)" "$*" |
-	tee -a "$stdout" "$stderr" > /dev/null
-	{ eval "$@ 2>&3 | tee -a $stdout" |
-	tmux split-window -l 10 -dI; } 3>&1 | tee -a "$stderr" |
-	tmux split-window -l 10 -dI
+	printf "\n%s\n%s\n$ %s\n" "$hdr" "$(date)" "$*" \
+	| tee -a "$stdout" "$stderr" > /dev/null
+	{
+		"$@" 2>&3 \
+		| perl -pe '"'"'$|=1; print localtime . ": "'"'"' \
+		| tee -a "$stdout" \
+		| tmux split-window -l 10 -dI
+	} 3>&1 \
+	| perl -pe '"'"'$|=1; print localtime . ": "'"'"' \
+	| tee -a "$stderr" \
+	| tmux split-window -l 10 -dI
 	' "$$" "$@"
 }
 fi
