@@ -405,24 +405,24 @@ if test -n "$TMUX"; then
 run() { # Create two new panes, run a command with stderr in one, stdout in the other
 	# For some reason, bash is spawning too many panes, so run this through dash
 	pid=$$ dash -s "$@" << \EOF
+		st_split() {  # "stamp-tee split"
+			perl -pe '$|=1; print localtime . ": "' \
+			| tee -a "$1" \
+			| tmux split-window -l 10 -dI
+		}
 		stdout="$HOME/.bash-run-output/$pid-stdout"
 		stderr="$HOME/.bash-run-output/$pid-stderr"
 		hdr="************************************"
 		{
 			printf "\n%s\n%s\n$" "$hdr" "$(date)"
-			for x; do printf " '%s'" "$x"; done
+			printf " '%s'" "$@"
 			printf "\n"
 		} \
 		| tee -a "$stdout" "$stderr" > /dev/null
 		{
-		"$@" 2>&3 \
-		| perl -pe '$|=1; print localtime . ": "' \
-		| tee -a "$stdout" \
-		| tmux split-window -l 10 -dI
-	} 3>&1 \
-	| perl -pe '$|=1; print localtime . ": "' \
-	| tee -a "$stderr" \
-	| tmux split-window -l 10 -dI
+			"$@" 2>&3 | st_split "$stdout"
+		} 3>&1 \
+		| st_split "$stderr"
 EOF
 }
 fi
