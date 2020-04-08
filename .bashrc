@@ -37,7 +37,7 @@ shopt -s checkwinsize
 shopt -s histverify
 # set +H      # disable history expansion
 
-test -x /usr/bin/lesspipe && eval "$(SHELL=/bin/sh lesspipe)"
+# test -x /usr/bin/lesspipe && eval "$(SHELL=/bin/sh lesspipe)"
 
 PS1='\[$(
 	# Colorize based on previous command status
@@ -47,8 +47,9 @@ PS1='\[$(
 		if test -n "'"$__git_version"'" &&
 			test "$(cd "$__base_dir" && git describe --dirty)" != \
 			"'"$__git_version"'"; then printf "* "; fi
-	# Marker if running in a docker image
-		printf "%s" "${DOCKER+ ** $DOCKER ** }";
+	# Marker if running in a docker image or dvtm
+		printf "%s" "${DOCKER+ <$DOCKER> }";
+		printf "%s" "${DVTM+ <dvtm-$DVTM> }";
 	# Wall clock
 		)\D{%T}\[$(
 	# Set rotating color schemd (rotates color on cd)
