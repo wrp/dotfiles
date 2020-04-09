@@ -41,7 +41,7 @@ cd() {
 	fi
 	command cd "${_dir:-${_SESSION_DIR:-${USE_HOME:-$HOME}}}" || return 1;
 	test "$PWD" != "$OLDPWD" && : $(( color_index = (color_index + 1) % ${#COLORS}))
-	tmux-title;
+	window-title;
 	setup_vars
 
 	# If actual cd fails, we returned 1 above.
@@ -64,10 +64,10 @@ checkout_previous_branch() {
 }
 curl() { command curl -Ss "$@"; }
 which ncdu > /dev/null 2>&1 && du() { ncdu "$@"; }
-execute() { local cmd=$1; tmux-title "$cmd";
+execute() { local cmd=$1; window-title "$cmd";
 	test "$V" -gt 0 2> /dev/null && echo \$ "$@" >&2;
 	command "$@";
-	RV=$?; tmux-title; return $RV; }
+	RV=$?; window-title; return $RV; }
 g() {
 	# Basically, this is a wrapper around git.  Plus we do some post-processing.
 	# Passing . as first arg allows us to just do the post-processing.
@@ -456,7 +456,7 @@ setup_vars() {
 	fi
 }
 sf() { USE_FAILED=1 search-bash-history "$@"; }
-ssh() { tmux-title "$@"; command ssh -o LogLevel=error "$@"; tmux-title; }
+ssh() { window-title "$@"; command ssh -o LogLevel=error "$@"; window-title; }
 
 
 ssh_split() {
@@ -501,7 +501,7 @@ tee() {
 		command tee "$@"
 	fi
 }
-tmux-title() { test -t 1 || return;
+window-title() { test -t 1 || return;
 	while test "${1#-}" != "$1"; do shift; done;
 	rename-tmux-window "$@"; }
 tn() { tmux switch-client -n; }
@@ -532,10 +532,10 @@ update() {
 }
 vi() { test $# = 0 && set $(get-modified-files ${h});
 	vim "$@"    # .vimrc sets tmux titles...
-	tmux-title  # but does not unset them
+	window-title  # but does not unset them
 }
 y() { select-git-branch "$@"; }
 
 for name in man; do
-	eval "$name"'() { tmux-title "'"$name"' $1"; command '$name' "$@"; tmux-title; }'
+	eval "$name"'() { window-title "'"$name"' $1"; command '$name' "$@"; window-title; }'
 done
