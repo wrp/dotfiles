@@ -80,6 +80,7 @@ PS1="\[$(tput rev)"'$( r=$(( $? != 0 )); tput setaf $((2 - r));
         )\]\D{%T}'"\[$( tput setaf 2)$(tput sgr0)\]"' $$ \h\$ '
 
 c() { clear; }
+dvtm_title() { printf '\033]0;%s\007' "$*"; }
 g() { git "$@"; }
 ta() { tmux attach; }
 curl() { command curl -Ss "$@"; }
