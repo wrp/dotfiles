@@ -1,5 +1,10 @@
+# environment setting common in all environs.
+# host specific settings belong in ~/.bash-local
 
+export BASH_SILENCE_DEPRECATION_WARNING=1
 export COLORS=356
+export CLOUDSDK_CORE_DISABLE_PROMPTS=1
+
 color_index=$(expr \( "${color_index:-${#COLORS}}" + 1 \) % ${#COLORS})
 export color_index
 unset NO_COLOR
@@ -16,6 +21,7 @@ export CONFIG_SITE=$HOME/CONFIG_SITE
 export COLUMNS
 export LESS=FeRXSQM#.95
 export GIT_PAGER=less
+export GIT_CEILING_DIRECTORIES=$HOME
 export ACK_PAGER_COLOR=less
 export PAGER=less
 export PYTHONSTARTUP=$HOME/.pystartup
