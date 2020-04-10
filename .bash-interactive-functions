@@ -466,8 +466,11 @@ ssh_split() {
 		return 1
 	fi
 	tmux split-window -p 80 -b sh -c 'ssh $@
-		printf "\n******** terminated: ssh %s ********\n" "$*" >&2
-		printf "Hit return to close pane\n" >&2
+		nl="$(tput el)
+"
+		printf "${nl}${nl}******** terminated: ssh %s ********${nl}" "$*" >&2
+		printf "Hit return to close pane${nl}" >&2
+		printf "******** terminated: ssh %s ********${nl}${nl}" "$*" >&2
 		read' sh "$@";
 	while test "${1#-}" != "$1"; do shift; done
 	tmux select-pane -T "${1%%.*}"
