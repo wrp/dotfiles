@@ -468,7 +468,7 @@ ssh_split() {
 	tmux split-window -p 80 -b sh -c 'ssh $@
 		nl="$(tput el)
 "
-		printf "${nl}${nl}******** terminated: ssh %s ********${nl}" "$*" >&2
+		printf "${nl}******** terminated: ssh %s ********${nl}" "$*" >&2
 		printf "Hit return to close pane${nl}" >&2
 		printf "******** terminated: ssh %s ********${nl}${nl}" "$*" >&2
 		read' sh "$@";
