@@ -60,12 +60,13 @@ syntax on
 
 " Attempt to deal with a brain-dead coding style that
 " does not put { in the first column
-" map [[ ?{<CR>w99[{<esc>:nohlsearch
-" map ][ /}<CR>b99]}<esc>:nohlsearch
-" map ]] j0[[%/{<CR><esc>:nohlsearch
-" map [] k$][%?}<CR><esc>:nohlsearch
+map [[ ?{<CR>w99[{<esc>:nohlsearch<Enter>
+map ][ /}<CR>b99]}<esc>:nohlsearch<Enter>
+map ]] j0[[%/{<CR><esc>:nohlsearch<Enter>
+map [] k$][%?}<CR><esc>:nohlsearch<Enter>
 "map [[ ][%
 "map ]] ][][%
+
 
 autocmd BufEnter,BufReadPost,FileReadPost,BufNewFile *
 	\ call system("test -z \"$NORENAMEVIM\" && rename-tmux-window " .
