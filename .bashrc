@@ -57,13 +57,11 @@ if test $COLUMNS -gt 80; then
 		printf "%s" "${DOCKER+ <$DOCKER> }";
 		printf "%s" "${DVTM+ <dvtm-$DVTM> }";
 	)'
-fi
+	PS1+='\D{%T}'
+PS1+='\[$( # Set rotating color schema (rotates color on cd)
+	tput setaf ${COLORS:$color_index:1} 2> /dev/null
+	)\]'
 PS1+='$(
-	# Wall clock
-		)\D{%T}\[$(
-	# Set rotating color schemd (rotates color on cd)
-		tput setaf ${COLORS:$color_index:1} 2> /dev/null
-		)\]$(
 	# project
 		echo "${PROJECT:+(}${PROJECT%-[0-9]*}${PROJECT:+)}";
 		)$(
@@ -80,7 +78,9 @@ PS1+='$(
 				-e "s/^/:/" -e "/(...........).*/s//\1~/" )"
 		else printf :
 		fi
-	)'"\[$(tput setaf 2 2> /dev/null)\]$$\$ "
+	)'
+fi
+PS1+="\[$GREEN\]$$\$ "
 
 read_file() { for f; do if test -f "$f"; then . "$f"; fi; done; }
 complete -r
