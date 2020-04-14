@@ -55,7 +55,7 @@ PS1+='$( # Insert warning if shell is out of date
 if test $COLUMNS -gt 80; then
 	PS1+='$( # Marker if running in a docker image or dvtm
 		printf "%s" "${DOCKER+ <$DOCKER> }";
-		printf "%s" "${DVTM+ <dvtm-$DVTM> }";
+		printf "%s" "${DVTM+ <dvtm> }";
 	)'
 	PS1+='\D{%T}'
 PS1+='\[$( # Set rotating color schema (rotates color on cd)
