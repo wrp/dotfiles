@@ -121,6 +121,7 @@ after_cmd() {
 	# Run after a command, and before a prompt is displayed
 	local _status=$?
 	report_cmd_status $HISTFILE $_status >> $HOME/.bash-history
+	return $_status
 }
 
 report_cmd_status() {
