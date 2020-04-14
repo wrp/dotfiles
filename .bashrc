@@ -39,20 +39,20 @@ shopt -s histverify
 
 # test -x /usr/bin/lesspipe && eval "$(SHELL=/bin/sh lesspipe)"
 
-# Colorize based on previous command status
 __RED=$(tput setaf 1)
 __GREEN=$(tput setaf 2)
 PS1=''
 if test -n "$__RED" && test -n "$__GREEN"; then
-PS1+='\[$(
+PS1+='\[$( # Colorize based on previous command status
 	{ test $? != 0 && printf "%s" "$__RED" || printf "%s" "$__GREEN"; }
 	)\]'
 fi
+PS1+='$( # Insert warning if shell is out of date
+	if test -n "'"$__git_version"'" &&
+		test "$(cd "$__base_dir" && git describe --dirty)" != \
+		"'"$__git_version"'"; then printf "* "; fi
+)'
 PS1+='$(
-	# Insert warning if shell is out of date
-		if test -n "'"$__git_version"'" &&
-			test "$(cd "$__base_dir" && git describe --dirty)" != \
-			"'"$__git_version"'"; then printf "* "; fi
 	# Marker if running in a docker image or dvtm
 		printf "%s" "${DOCKER+ <$DOCKER> }";
 		printf "%s" "${DVTM+ <dvtm-$DVTM> }";
