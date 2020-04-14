@@ -161,5 +161,6 @@ report_cmd_status() {
 trap archive 0
 trap debug_trap DEBUG
 trap '. $HOME/.bashrc' SIGUSR1
+trap '. $HOME/.bashrc' SIGWINCH
 
 PROMPT_COMMAND='after_cmd'
