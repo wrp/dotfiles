@@ -52,10 +52,13 @@ PS1+='$( # Insert warning if shell is out of date
 		test "$(cd "$__base_dir" && git describe --dirty)" != \
 		"'"$__git_version"'"; then printf "* "; fi
 )'
-PS1+='$(
-	# Marker if running in a docker image or dvtm
+if test $COLUMNS -gt 80; then
+	PS1+='$( # Marker if running in a docker image or dvtm
 		printf "%s" "${DOCKER+ <$DOCKER> }";
 		printf "%s" "${DVTM+ <dvtm-$DVTM> }";
+	)'
+fi
+PS1+='$(
 	# Wall clock
 		)\D{%T}\[$(
 	# Set rotating color schemd (rotates color on cd)
