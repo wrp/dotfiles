@@ -80,7 +80,7 @@ PS1+='$(
 		fi
 	)'
 fi
-PS1+="\[$GREEN\]$$\$ "
+PS1+="\[$__GREEN\]$$\$ "
 
 read_file() { for f; do if test -f "$f"; then . "$f"; fi; done; }
 complete -r
