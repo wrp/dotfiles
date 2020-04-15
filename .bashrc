@@ -52,7 +52,7 @@ PS1+='$( # Insert warning if shell is out of date
 		test "$(cd "$__base_dir" && git describe --dirty)" != \
 		"'"$__git_version"'"; then printf "* "; fi
 )'
-if test $COLUMNS -gt 80; then
+if test "$(tput cols)" -gt 80; then
 	PS1+='$( # Marker if running in a docker image or dvtm
 		printf "%s" "${DOCKER+ <$DOCKER> }";
 		printf "%s" "${DVTM+ <dvtm> }";
