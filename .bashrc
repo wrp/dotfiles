@@ -58,19 +58,18 @@ if test "$(tput cols)" -gt 80; then
 		printf "%s" "${DVTM+ <dvtm> }";
 	)'
 	PS1+='\D{%T}'
-PS1+='\[$( # Set rotating color schema (rotates color on cd)
-	tput setaf ${COLORS:$color_index:1} 2> /dev/null
-	)\]'
-PS1+='$(
-	# project
+	PS1+='\[$( # Set rotating color schema (rotates color on cd)
+		tput setaf ${COLORS:$color_index:1} 2> /dev/null
+		)\]'
+	PS1+='$( # project
 		echo "${PROJECT:+(}${PROJECT%-[0-9]*}${PROJECT:+)}";
-		)$(
-	# hostname
+	)'
+	PS1+='$( # hostname
 		test "${COLUMNS:-0}" -gt 140 && printf "%s" "$(uname -n \
 			| cut -d. -f1 \
 			| cut -b 1-20 | sed -E -e "/${USER}-[0-9A-Z]{7}./d" )"
-		)$(
-	# directory and git branch
+	)'
+	PS1+='$( # directory and git branch
 		if test "${COLUMNS:-0}" -gt 40; then printf "[%s%s]" \
 			"$(pwd 2> /dev/null | sed -E -e "s/.*(..........)/\1/" )" \
 			"$( git rev-parse --abbrev-ref HEAD 2> /dev/null \
