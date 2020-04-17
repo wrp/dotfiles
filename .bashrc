@@ -95,7 +95,9 @@ read_file $HOME/.bash-env
 test -z "$HISTFILE" && HISTFILE=$HOME/.bash-history-$$
 export HISTFILE
 if ! test -s "$HISTFILE"; then
-	{ printf '#'; date +%s; echo ": Shell $$ begins"; } >> $HISTFILE
+	{ printf '# %s: Shell %d begins, child of %s\n' \
+		"$(date +%s)" "$$" "$(ps -o pid=,comm= $PPID)"
+	} >> $HISTFILE
 fi
 
 read_file $HOME/.bash-local
