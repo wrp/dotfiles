@@ -60,10 +60,10 @@ syntax on
 
 " Attempt to deal with a brain-dead coding style that
 " does not put { in the first column
-map [[ ?{<CR>w99[{<esc>:nohlsearch<Enter>
-map ][ /}<CR>b99]}<esc>:nohlsearch<Enter>
-map ]] j0[[%/{<CR><esc>:nohlsearch<Enter>
-map [] k$][%?}<CR><esc>:nohlsearch<Enter>
+map [[ ?{<CR>w99[{<esc>:nohlsearch<Enter>:call histdel("search", -1)<ENTER>:let @/ = histget("search", -1)<ENTER>
+map ][ /}<CR>b99]}<esc>:nohlsearch<Enter>:call histdel("search", -1)<ENTER>:let @/ = histget("search", -1)<ENTER>
+map ]] j0[[%/{<CR><esc>:nohlsearch<Enter>:call histdel("search", -1)<ENTER>:let @/ = histget("search", -1)<ENTER>
+map [] k$][%?}<CR><esc>:nohlsearch<Enter>:call histdel("search", -1)<ENTER>:let @/ = histget("search", -1)<ENTER>
 "map [[ ][%
 "map ]] ][][%
 
