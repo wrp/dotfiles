@@ -71,11 +71,19 @@ execute() { local cmd=$1; window-title "$cmd";
 g() {
 	# Basically, this is a wrapper around git.  Plus we do some post-processing.
 	# Passing . as first arg allows us to just do the post-processing.
-	local rv=0 root remote err dir
+	local rv=0 root remote err dir src
 
 	if test -n "$DOCKER"; then
-		echo "Do not run git in a docker image" >&2
+		echo "Do not run git in a docker image.  Unset DOCKER to force" >&2
 		return 1
+	fi
+
+	src=$(awk '/^top_srcdir/{print $3}' Makefile 2> /dev/null)
+	if test -n "$src" && test "$(pwd)" != "$(cd "$src"; pwd)"; then (
+			cd "$src"
+			g "$@"
+		)
+		return;
 	fi
 
 	case $1 in
