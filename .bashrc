@@ -25,9 +25,9 @@ esac
 # display an indicator if the shell is out of date.
 
 if test -n "${BASH_SOURCE[0]}"; then
-	__base_dir=$(dirname $($HOME/$(uname -m)/$(uname -s)/bin/realpath "${BASH_SOURCE[0]}"))
-	__git_version=$(cd "$__base_dir" && git describe --dirty 2> /dev/null)
-fi
+	__base_dir=$( dirname $(realpath "${BASH_SOURCE[0]}"  ))
+	__git_version=$( cd "$__base_dir" && git describe --dirty )
+fi 2> /dev/null
 
 export HISTCONTROL=ignoredups
 set -o vi
