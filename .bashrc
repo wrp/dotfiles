@@ -23,9 +23,10 @@ esac
 
 # If .bashrc is from git, find the current hash.  PS1 will
 # display an indicator if the shell is out of date.
+
 if test -n "${BASH_SOURCE[0]}"; then
-	__base_dir=$(dirname $(realpath "${BASH_SOURCE[0]}"))
-	__git_version=$(cd "$__base_dir" && git describe --dirty)
+	__base_dir=$(dirname $($HOME/$(uname -m)/$(uname -s)/bin/realpath "${BASH_SOURCE[0]}"))
+	__git_version=$(cd "$__base_dir" && git describe --dirty 2> /dev/null)
 fi
 
 export HISTCONTROL=ignoredups
