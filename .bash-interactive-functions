@@ -508,9 +508,9 @@ if ! which tac; then
 fi > /dev/null 2>&1
 
 if test -n "$TMUX"; then
-	ta() { tmux new-window; }
+ta() { tmux new-window; }
 else
-	ta() { tmux attach || tmux; }
+ta() { tmux attach 2> /dev/null || tmux; }
 fi
 tee() {
 	if test -n "$TMUX"; then
