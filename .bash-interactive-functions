@@ -73,8 +73,8 @@ g() {
 	# Passing . as first arg allows us to just do the post-processing.
 	local rv=0 root remote err dir src
 
-	if test -n "$DOCKER"; then
-		echo "Do not run git in a docker image.  Unset DOCKER to force" >&2
+	if test -n "$DOCKER" && test -z "$FORCE_G"; then
+		echo "Do not run git in a docker image.  Set FORCE_G to force" >&2
 		return 1
 	fi
 
