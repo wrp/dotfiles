@@ -21,6 +21,7 @@ function! ClearWhite()
         let l:save_pos = getcurpos()
         execute '%s/\s\+$//e'
         call cursor(l:save_pos[1:])
+        call histdel("search", -1)
     endif
 endfunction
 autocmd BufWritePre * call ClearWhite()
