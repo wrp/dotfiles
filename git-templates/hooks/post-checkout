@@ -1,13 +1,10 @@
 #!/bin/sh
 
-die() { test -n "$*" && echo "$@" >&2; exit 1; }
-
-url=$(git ls-remote 2>&1 > /dev/null | awk '{print $2; exit}')
-if test -z "$url" && test -z "$GIT_EMAIL_DEFAULT"; then
-	die 'Cannot find url of remote, not configuring email.  Set GIT_EMAIL_DEFAULT to force'
-fi
+remote=$( git rev-parse --symbolic-full-name --abbrev-ref @{u} | cut -d / -f 1 )
+url=$( git ls-remote --get-url "$remote" )
 case $url in
 *github*) git config user.email "${GITHUB_EMAIL?}" ;;
 *)        git config user.email "${EMAIL?}" ;;
 esac
 git config user.name "${NAME?}"
+echo  "email set to $(git config user.email)" >&2
