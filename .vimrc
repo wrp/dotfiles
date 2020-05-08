@@ -50,8 +50,6 @@ set noerrorbells
 " set virtualedit=all
 set wildmenu
 set wildmode=longest,list,full
-"set textwidth=80
-"set colorcolumn+=+1
 highlight ColorColumn ctermbg=green
 highlight Search ctermfg=red ctermbg=blue
 highlight Folded ctermbg=black
