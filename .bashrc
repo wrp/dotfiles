@@ -30,6 +30,7 @@ if test -n "${BASH_SOURCE[0]}"; then
 fi 2> /dev/null
 
 export HISTCONTROL=ignoredups
+export IGNOREEOF=2
 set -o vi
 set -o physical # make pwd do the right thing w.r.t. symbolic links
 shopt -s histappend
