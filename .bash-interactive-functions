@@ -113,7 +113,7 @@ g() {
 			END {exit !f}')"
 	then
 		echo "**** Changing directory to $dir!!! ****"
-		cd "$dir"
+		cd "$dir" && g "$@"; return
 	fi
 	setup_vars
 	return $rv
