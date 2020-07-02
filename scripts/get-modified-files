@@ -7,7 +7,7 @@
 
 test -n "$TOP" && cd $(git exec pwd)
 arg_set=${1}
-branch=${1-$(git rev-parse --abbrev-ref HEAD)}
+branch=${1-$(git rev-parse --abbrev-ref HEAD)} || exit
 depth=${1-1}
 
 
