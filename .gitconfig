@@ -47,7 +47,6 @@
 	lp = log -p
 	w = rev-parse --abbrev-ref HEAD
 [core]
-	excludesfile = ~/.gitignore_global
 	whitespace = no-tab-in-indent
 	editor = vim
 [push]

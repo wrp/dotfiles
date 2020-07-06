@@ -209,7 +209,6 @@ cat << '-------------- EOF --------------' >> $HOME/.gitconfig
 	exec = "!exec "
 	ll = log --stat
 [core]
-	excludesfile = ~/.gitignore_global
 	editor = vim
 [push]
 	default = current
