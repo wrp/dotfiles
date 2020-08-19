@@ -508,7 +508,12 @@ if ! which tac; then
 fi > /dev/null 2>&1
 
 if test -n "$TMUX"; then
-ta() { tmux new-window; }
+ta() {
+	case $# in
+	(0) tmux new-window;;
+	(*) for name; do tmux new-session -d -s "$name"; done;;
+	esac
+}
 else
 ta() { tmux attach 2> /dev/null || tmux; }
 fi
