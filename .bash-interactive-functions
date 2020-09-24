@@ -158,7 +158,12 @@ gcurl() {
 		-H "Content-Type: application/json" \
 		"$@"
 }
-gdb() { command gdb -tui "$@"; }
+gdb() {
+	case $(uname -s) in
+	(Darwin) lldb "$@";;
+	(*) command gdb -tui "$@";;
+	esac;
+}
 GET() {
 	# ACCESS_TOKEN will need be refreshed periodically.  Just unset it.
 	test -z "$ACCESS_TOKEN" \
