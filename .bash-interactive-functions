@@ -516,7 +516,7 @@ if test -n "$TMUX"; then
 ta() {
 	case $# in
 	(0) tmux new-window;;
-	(*) for name; do tmux new-session -d -s "$name"; done;;
+	(*) for name; do tmux new-session -A -d -s "$name"; done;;
 	esac
 }
 else
