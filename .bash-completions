@@ -71,6 +71,6 @@ _gcloud_complete() {
 	COMPREPLY=($(compgen -W "$list" -- "${COMP_WORDS[$COMP_CWORD]}"))
 }
 
-complete -o filenames -F _git_complete g git
+complete -o filenames -F _git_complete git
 complete -o default -F _y_complete y
 complete -o default -F _gcloud_complete gcloud
