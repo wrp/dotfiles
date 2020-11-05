@@ -71,6 +71,13 @@ _gcloud_complete() {
 	COMPREPLY=($(compgen -W "$list" -- "${COMP_WORDS[$COMP_CWORD]}"))
 }
 
+_abduco_complete() {
+	cur_word="${COMP_WORDS[ COMP_CWORD ]}"
+	list=$( { abduco | awk 'NR > 1{print $NF}'; } 2> /dev/null )
+	COMPREPLY=( $(compgen -W "${list}" -- ${cur_word}) )
+}
+
 complete -o filenames -F _git_complete git
 complete -o default -F _y_complete y
 complete -o default -F _gcloud_complete gcloud
+complete -o default -F _abduco_complete abduco
