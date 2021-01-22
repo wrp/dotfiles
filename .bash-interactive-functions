@@ -519,8 +519,6 @@ ta() {
 	(*) for name; do tmux new-session -A -d -s "$name"; done;;
 	esac
 }
-elif test -z "$SMTX"; then
-ta() { dtach -A $HOME/.config/dtach/smtx smtx; }
 else
 ta() { tmux attach 2> /dev/null || tmux; }
 fi
