@@ -275,11 +275,23 @@ use() {
 	fi
 }
 unuse() {
-	local d
+	local d=.
 	root="${USE_HOME:-$HOME}"
-	d=$(cd "${1-.}"; g root) || return
-	d="${d#$root/}"
 	local file="$root/.config/$USER/usage-list"
+
+	if test "$1" = old; then
+		for path in $(cat "$file"); do (
+			cd "$root/$path"
+			if ! find .git -mtime -7 | grep -q .; then
+				unuse $path
+			fi
+		) done
+		return
+	elif test -n "$1"; then
+		d=$(cd "$root/${1}"; g root) || return
+	fi
+
+	d="${d#$root/}"
 	content=$( grep -v "^$d$" "$file" ) \
 	&& echo "$content" > $file
 }
