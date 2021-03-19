@@ -63,3 +63,6 @@
 	branch = true
 [pull]
 	rebase = true
+[user]
+	email = XXXXXXXX
+	name = XXX
