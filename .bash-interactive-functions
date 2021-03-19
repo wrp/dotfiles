@@ -150,7 +150,7 @@ gcloud() {
 		shift
 		quiet=
 	fi
-	command gcloud $quiet "$@"
+	PYTHONPATH= command gcloud $quiet "$@"
 }
 gcurl() {
 	curl \
