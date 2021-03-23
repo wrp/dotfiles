@@ -150,7 +150,7 @@ gcloud() {
 		shift
 		quiet=
 	fi
-	PYTHONPATH= command gcloud $quiet "$@"
+	command gcloud $quiet "$@"
 }
 gcurl() {
 	curl \
@@ -344,7 +344,7 @@ ls() { command ls -GF "$@"; }
 
 if ! which md5sum > /dev/null 2>&1; then
 	md5sum() {
-		openssl md5 "$@" | sed -e 's/MD5(//' -e 's/)=\( [a-z0-9]*$\)/\1/'
+		openssl md5 "$@" | sed -e 's/MD5(//' -e 's/)=\( [a-z0-9]*$\)/\1/' | awk '{print $2, $1}'
 	}
 fi
 
