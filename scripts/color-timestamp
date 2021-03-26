@@ -1,8 +1,0 @@
-#!/bin/sh
-
-# Execute commands, prepending timestamps with terminal color sequences to output.
-
-exec 3>&1
-{ "$@" 2>&4 |
-	perl -MTerm::ANSIColor -nwe 'print color("reset"); printf "%s: %s", scalar(localtime), $_' >&3; } 4>&1 |
-	perl -MTerm::ANSIColor -nwe 'print color("red"); printf "%s: %s", scalar(localtime), $_;' >&2

@@ -1,7 +1,0 @@
-# tmux gets SSH_AUTH_SOCK reset, and
-# set-option -g update-environment "SSH_AUTH_SOCK" is not working.
-# Source this to reset within a shell
-
-c=$( tmux show-env SSH_AUTH_SOCK 2> /dev/null )
-echo $c
-eval $c

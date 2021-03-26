@@ -1,7 +1,0 @@
-#!/bin/sh
-
-
-test $# = 0 && set -- -
-for x; do
-	awk '{a[NR] = $0 } END {for(c=NR; c>0; c--) print a[c]}' "$x"
-done
