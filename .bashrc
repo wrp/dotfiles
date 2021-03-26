@@ -72,11 +72,12 @@ if test "$(tput cols)" -gt 80; then
 			| cut -b 1-20 | sed -E -e "/${USER}-[0-9A-Z]{7}./d" )"
 	)'
 	PS1+='$( # directory and git branch
-		if test "${COLUMNS:-0}" -gt 40; then printf "[%10s%10s]" \
+		if test "${COLUMNS:-0}" -gt 40; then printf "[%10s:%10s]" \
 			"$(pwd 2> /dev/null | sed -E -e "s/.*(..........)/\1/" )" \
-			"$( git rev-parse --abbrev-ref HEAD 2> /dev/null \
+			"$( { git rev-parse --abbrev-ref HEAD 2> /dev/null \
+				|| echo "<nogit>"; } \
 				| sed -E -e "s@^heads/@@" \
-				-e "s/^/:/" -e "/(...........).*/s//\1~/" )"
+				-e "/(...........).*/s//\1~/" )"
 		else printf :
 		fi
 	)'
