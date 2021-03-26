@@ -1,3 +1,0 @@
-This directory is used by vim's undodir
-option.  This file is added to git prevent the
-directory from being deleted by git clean,
