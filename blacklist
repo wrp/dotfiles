@@ -1,9 +1,0 @@
-.
-..
-.git
-.gitattributes
-.minimal-dotfiles
-.gitignore_global
-.tmux.conf.primary
-setup
-blacklist
