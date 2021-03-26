@@ -49,7 +49,7 @@ PS1+='\[$( # Colorize based on previous command status
 	{ test $? != 0 && printf "%s" "$__RED" || printf "%s" "$__GREEN"; }
 	)\]'
 fi
-PS1+='$( # Insert warning if shell is out of date
+PS1+='$( # Insert asterisk if shell is out of date
 	if test -n "'"$__git_version"'" &&
 		test "$(cd "$__base_dir" && git describe --dirty)" != \
 		"'"$__git_version"'"; then printf "* "; fi
@@ -72,7 +72,7 @@ if test "$(tput cols)" -gt 80; then
 			| cut -b 1-20 | sed -E -e "/${USER}-[0-9A-Z]{7}./d" )"
 	)'
 	PS1+='$( # directory and git branch
-		if test "${COLUMNS:-0}" -gt 40; then printf "[%s%s]" \
+		if test "${COLUMNS:-0}" -gt 40; then printf "[%10s%10s]" \
 			"$(pwd 2> /dev/null | sed -E -e "s/.*(..........)/\1/" )" \
 			"$( git rev-parse --abbrev-ref HEAD 2> /dev/null \
 				| sed -E -e "s@^heads/@@" \
