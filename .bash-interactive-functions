@@ -63,6 +63,15 @@ checkout_previous_branch() {
 	fi
 }
 curl() { command curl -Ss "$@"; }
+dedup() {
+	# ad-hoc awk script to deduplicat .bash-history
+	{ cat .bash-history; echo '#'; } \
+	| awk '/^#/{if( ts && ! a[cmd]++) printf("%s\n%s\n", ts, cmd); ts=$0; cmd=""; next}
+	1 {cmd = sprintf("%s%s%s", cmd, cmd ? "\n" : "", $0)}'
+}
+
+
+
 which ncdu > /dev/null 2>&1 && du() { ncdu "$@"; }
 execute() { local cmd=$1; window-title "$cmd";
 	test "$V" -gt 0 2> /dev/null && echo \$ "$@" >&2;
