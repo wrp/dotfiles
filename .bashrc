@@ -52,7 +52,7 @@ fi
 PS1+='$( # Insert asterisk if shell is out of date
 	if test -n "'"$__git_version"'" &&
 		test "$(cd "$__base_dir" && git describe --dirty)" != \
-		"'"$__git_version"'"; then printf "* "; fi
+		"'"$__git_version"'"; then printf "* "; else printf "  "; fi
 )'
 if test "$(tput cols)" -gt 80; then
 	PS1+='$( # Marker if running in a docker image or dvtm
