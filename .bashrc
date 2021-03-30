@@ -59,7 +59,7 @@ if test "$(tput cols)" -gt 80; then
 		printf "%s" "${DOCKER+ <$DOCKER> }";
 		printf "%s" "${DVTM+ <dvtm> }";
 	)'
-	PS1+='\D{%T}'
+	PS1+='\D{%T}|'
 	PS1+='\[$( # Set rotating color schema (rotates color on cd)
 		tput setaf ${COLORS:$color_index:1} 2> /dev/null
 		)\]'
