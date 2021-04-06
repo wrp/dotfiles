@@ -16,7 +16,7 @@ test -z "$*" && {
 	if git_dir=$(git rev-parse --absolute-git-dir 2> /dev/null); then
 		set "$(basename $(dirname "$git_dir"))"
 	else
-		set "$(pwd 2> /dev/null)"
+		set "$(pwd | sed -e 's@.*/@@' 2> /dev/null)"
 	fi
 }
 
