@@ -41,7 +41,6 @@ cd() {
 	fi
 	command cd "${_dir:-${_SESSION_DIR:-${USE_HOME:-$HOME}}}" || return 1;
 	test "$PWD" != "$OLDPWD" && : $(( color_index = (color_index + 1) % ${#COLORS}))
-	window-title;
 	setup_vars
 
 	# If actual cd fails, we returned 1 above.
@@ -76,7 +75,7 @@ which ncdu > /dev/null 2>&1 && du() { ncdu "$@"; }
 execute() { local cmd=$1; window-title "$cmd";
 	test "$V" -gt 0 2> /dev/null && echo \$ "$@" >&2;
 	command "$@";
-	RV=$?; window-title; return $RV; }
+	RV=$?; return $RV; }
 g() {
 	# Basically, this is a wrapper around git.  Plus we do some post-processing.
 	# Passing . as first arg allows us to just do the post-processing.
@@ -497,7 +496,7 @@ setup_vars() {
 	fi
 }
 sf() { USE_FAILED=1 search-bash-history "$@"; }
-ssh() { window-title "$@"; command ssh -o LogLevel=error "$@"; window-title; }
+ssh() { window-title "$@"; command ssh -o LogLevel=error "$@"; }
 
 
 ssh_split() {
@@ -580,11 +579,10 @@ update() {
 	fi
 }
 vi() { test $# = 0 && set $(get-modified-files ${h});
-	vim "$@"    # .vimrc sets tmux titles...
-	window-title  # but does not unset them
+	vim "$@"    # .vimrc sets tmux titles
 }
 y() { select-git-branch "$@"; }
 
 for name in man; do
-	eval "$name"'() { window-title "'"$name"' $1"; command '$name' "$@"; window-title; }'
+	eval "$name"'() { window-title "'"$name"' $1"; command '$name' "$@"; }'
 done
