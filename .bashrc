@@ -129,7 +129,8 @@ after_cmd() {
 	# Run after a command, and before a prompt is displayed
 	local _status=$?
 	report_cmd_status $HISTFILE $_status >> $HOME/.bash-history
-	window-title
+	window-title "$__pane_title"
+	unset __pane_title
 	return $_status
 }
 
