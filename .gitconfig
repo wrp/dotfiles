@@ -66,3 +66,5 @@
 [user]
 	email = XXXXXXXX
 	name = XXX
+[advice]
+	detachedHead = false
