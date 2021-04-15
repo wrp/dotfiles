@@ -15,7 +15,7 @@ endfunction
 com! -nargs=+ -complete=command Windo call WinDo(<q-args>)
 
 function! ClearWhite()
-    " A bit hacky: if you :let keep_white=1 before you
+    " A bit hacky: if you :let g:keep_white=1 before you
     " do any writes, you can keep trailing whitespace
     if !exists("g:keep_white")
         let l:save_pos = getcurpos()
