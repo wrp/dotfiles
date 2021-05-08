@@ -1,0 +1,8 @@
+#!/bin/sh
+
+for x; do
+	if test "$x" = -; then
+		x=/dev/stdin
+	fi
+	openssl md5 "$x"
+done | sed -e 's/MD5(//' -e 's/)=\( [a-z0-9]*$\)/\1/' | awk '{print $2, $1}'
