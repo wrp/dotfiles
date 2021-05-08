@@ -82,6 +82,10 @@ set includeexpr=substitute(v:fname,'^//','','')
 filetype plugin on
 
 highlight Comment ctermfg=darkcyan
+highlight DiffChange ctermbg=25
+highlight DiffAdd    term=bold ctermbg=5
+highlight DiffDelete term=bold ctermfg=12 ctermbg=159
+highlight DiffText   term=reverse cterm=bold ctermbg=7
 set cinkeys="0{,0},0),!^F,o,O,e"
 
 set formatoptions=cq
