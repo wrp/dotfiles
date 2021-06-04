@@ -335,7 +335,7 @@ j() {
 _j_complete() {
 	local curr_word=${COMP_WORDS[$COMP_CWORD]}
 	list=$(get_dir_list "$curr_word")
-	COMPREPLY=($(echo "$list" | tr -s ' ' \\n | grep -- "$curr_word"))
+	COMPREPLY=($(echo "$list" | tr -s ' ' \\n | grep -- "/$curr_word"))
 }
 complete -o default -F _j_complete j
 debug() { test -n "$VERBOSE" && echo "$@" >&2; }
