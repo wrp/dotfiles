@@ -228,6 +228,9 @@ gpu() {
 	{ git push $set_upstream "$remote" HEAD:"$remote_branch" 2>&1 >&3 \
 		| sed -e '/^remote:/d' >&2; } 3>&1
 }
+gr() { # Git recursive
+	find . -name .git -execdir sh -c 'pwd; git "$@"' _ "$@" \;
+}
 grep() {
 	if test -t 1; then
 		command grep --color=always "$@" | ${PAGER-more}
