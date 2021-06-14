@@ -1,5 +1,6 @@
 #!/bin/sh
 
+die() { printf "%s${1:+\n}" "$*"; exit 1; } >&2
 usage() {
 	cat <<- EOF
 		usage: $(basename $0) [-r] sleep_time
