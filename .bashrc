@@ -67,12 +67,12 @@ if test "$(tput cols)" -gt 80; then
 		echo "${PROJECT:+(}${PROJECT%-[0-9]*}${PROJECT:+)}";
 	)'
 	PS1+='$( # directory and git branch
-		if test "${COLUMNS:-0}" -gt 140; then printf "[%10s:%10s]" \
-			"$(pwd 2> /dev/null | sed -E -e "s@^$HOME@~@" -e "s/.*(..........)/\1/" )" \
+		if test "${COLUMNS:-0}" -gt 140; then printf "[%20s:%10s]" \
+			"$(pwd 2> /dev/null | sed -E -e "s@^$HOME@~@" -e "s/.*(.{20})/\1/" )" \
 			"$( { git rev-parse --abbrev-ref HEAD 2> /dev/null \
 				|| echo "<nogit>"; } \
 				| sed -E -e "s@^heads/@@" \
-				-e "/(...........).*/s//\1~/" )"
+				-e "/(.{11}).*/s//\1~/" )"
 		else printf :
 		fi
 	)'
