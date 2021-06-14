@@ -229,7 +229,7 @@ gpu() {
 		| sed -e '/^remote:/d' >&2; } 3>&1
 }
 gr() { # Git recursive
-	find . -name .git -execdir sh -c 'pwd; command git "$@" | sed -e "s/^/    /"' _ "$@" \; | ${PAGER-more}
+	find . -name .git -execdir sh -c 'p=$(pwd); command git "$@" | sed -e "s@^@$p: @"' _ "$@" \; | ${PAGER-more}
 }
 grep() {
 	if test -t 1; then
