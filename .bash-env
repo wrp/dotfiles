@@ -2,12 +2,8 @@
 # host specific settings belong in ~/.bash-local
 
 export BASH_SILENCE_DEPRECATION_WARNING=1
-export COLORS=356
 export CLOUDSDK_CORE_DISABLE_PROMPTS=1
 
-color_index=$(expr \( "${color_index:-${#COLORS}}" + 1 \) % ${#COLORS})
-export color_index
-unset NO_COLOR
 export EVENT_NOKQUEUE=1
 export LC_TIME=C  #  Get 24 hour times for %X (sar)
 export HISTSIZE=1000

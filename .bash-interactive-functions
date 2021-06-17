@@ -40,7 +40,6 @@ cd() {
 		echo cd: Truncating target to $_dir >&2
 	fi
 	command cd "${_dir:-${_SESSION_DIR:-${USE_HOME:-$HOME}}}" || return 1;
-	test "$PWD" != "$OLDPWD" && : $(( color_index = (color_index + 1) % ${#COLORS}))
 	setup_vars
 
 	# If actual cd fails, we returned 1 above.

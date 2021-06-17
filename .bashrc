@@ -60,9 +60,6 @@ if test "$(tput cols)" -gt 80; then
 		printf "%s" "${DVTM+ <dvtm> }";
 	)'
 	PS1+='\D{%T}'  # %T is passed to strftime for time
-	PS1+='\[$( # Set rotating color schema (rotates color on cd)
-		tput setaf ${COLORS:$color_index:1} 2> /dev/null
-		)\]'
 	PS1+='$( # project
 		echo "${PROJECT:+(}${PROJECT%-[0-9]*}${PROJECT:+)}";
 	)'
