@@ -75,7 +75,7 @@ if test "$(tput cols)" -gt 80; then
 				| sed -E -e "s@^heads/@@" \
 				-e "/(.{29}).*/s//\1~/" )"
 		else printf :
-		fi
+		fi | tr \  .
 	)'
 fi
 PS1+="\[$__GREEN\]$( printf "%5d" "$$" )\$ "
