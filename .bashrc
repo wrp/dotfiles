@@ -78,7 +78,7 @@ if test "$(tput cols)" -gt 80; then
 		fi | tr \  .
 	)'
 fi
-PS1+="\[$__GREEN\]$( printf "%5d" "$$" )\$ "
+PS1+="\[$__GREEN\]$( printf "%05d" "$$" )\$ "
 
 read_file() { for f; do if test -f "$f"; then . "$f"; fi; done; }
 complete -r
