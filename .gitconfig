@@ -53,6 +53,11 @@
 	default = current
 [pager]
 	status = true
+	diff = delta
+	log = delta
+	reflog = delta
+	show = delta
+
 [init]
 	templatedir = ~/.git-templates
 [versionsort]
@@ -68,3 +73,15 @@
 	name = XXX
 [advice]
 	detachedHead = false
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    features = side-by-side line-numbers decorations
+    whitespace-error-style = 22 reverse
+
+[delta "decorations"]
+    commit-decoration-style = bold yellow box ul
+    file-style = bold yellow ul
+    file-decoration-style = none
