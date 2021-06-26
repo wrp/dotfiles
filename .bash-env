@@ -21,6 +21,8 @@ export GIT_CEILING_DIRECTORIES=$HOME
 export ACK_PAGER_COLOR=less
 export PAGER=less
 export PYTHONSTARTUP=$HOME/.pystartup
+export CPATH=$HOME/$(uname -m)/$(uname -s)/include
+export LDPATH=$HOME/$(uname -m)/$(uname -s)/lib
 
 export LSCOLORS=fxfxcxdxbxegedabagacad
 
