@@ -107,13 +107,13 @@ debug_trap() {
 		rm "$HISTFILE"
 	fi
 	if test "$IFS" != $' \t\n'; then
-		echo "WARNING: IFS contains unexpected characters" >&2
+		echo "WARNING: IFS contains unexpected characters"
 	fi
 	test -f "$HISTFILE" || history -w
 	if ! test -f "$HISTFILE"; then
 		echo "WARNING: $HISTFILE (bash history file) does not exist"
 	fi
-	history -a || echo 'WARNING: history -a failed'
+	history -w || echo 'WARNING: history -a failed'
 } >&2
 
 after_cmd() {
