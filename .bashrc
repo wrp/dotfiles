@@ -102,10 +102,6 @@ read_file $HOME/.bash-local
 
 debug_trap() {
 	# Runs before a command in an interactive shell
-	if test -f "$HISTFILE" && ! test -s "$HISTFILE"; then
-		echo "WARNING: $HISTFILE (bash history file) is empty!  Removing."
-		rm "$HISTFILE"
-	fi
 	if test "$IFS" != $' \t\n'; then
 		echo "WARNING: IFS contains unexpected characters"
 	fi
@@ -113,7 +109,11 @@ debug_trap() {
 	if ! test -f "$HISTFILE"; then
 		echo "WARNING: $HISTFILE (bash history file) does not exist"
 	fi
-	history -w || echo 'WARNING: history -a failed'
+	touch $TMPDIR/stamp
+	history -a || echo 'WARNING: history -a failed'
+	if test "$HISTFILE" -ot "$TMPDIR/stamp"; then
+		echo "WARNING: $HISTFILE is not updating"
+	fi
 } >&2
 
 after_cmd() {
@@ -145,6 +145,7 @@ report_cmd_status() {
 	' | tac | perl -ne '
 		$ts = $_ if $. == 1;
 		if( $. == 2 )  {
+			exit 0 if /^history/;     # ignore history
 			exit 0 if /^[a-z]( |\n)/; # single letter cmds
 			exit 0 if /^[a-z]{2}$/;   # 2 letter cmds w/no args
 			foreach $cmd (
