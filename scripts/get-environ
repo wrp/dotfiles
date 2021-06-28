@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# Get the value of the environment variable $1 in a list of pids
+
+var=${1?No variable given}
+shift
+if test -d /proc; then
+	for pid; do
+		tr \\0 \\n < /proc/${pid}/environ |
+			awk -F= "/$var/{print \$2}"
+	done
+else
+	for pid; do
+		ps -Eww "$pid" | tr ' ' \\n | awk "\$1 == \"$var\"{print \$2}" FS==
+	done
+fi
