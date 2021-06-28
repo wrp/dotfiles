@@ -1,0 +1,47 @@
+#!/bin/sh
+
+# Attach/switch to the pane running the pid given as $1
+# This is convenient when vim reports that another process has a file open, for example.
+
+# If data is passed in and no argument is given, the data should be
+# colon separated lines with a pid in the first column.  If not a colon,
+# set $sep to be the desired separator (awk FS will be set to $sep)
+
+die() { echo "$@" >&2; exit 1; }
+: ${sep=:}
+nl='
+'
+
+# reading from a pipe, outputting to tty, no argument given
+if test $# = 0 && test -t 1 && ! test -t 0; then
+	trap 'rm -f $TMP' 0
+	TMP=$(mktemp)
+	IFS="$nl"
+	awk '
+		! system("tr \\0 \\n < /proc/"$1"/environ | grep -q TMUX_PANE")
+	' FS=$sep | sed 35q > $TMP
+	test -s $TMP || die "${ERRMSG-No processes from which to select}"
+	PS3="${PROMPT-Select process to jump to}: "
+	nl < $TMP
+	test -z "$response" && read -p "$PS3" -t 5 response < /dev/tty
+	if test -n "$response"; then
+		pid=$( awk "NR == ${response}"'{print $1}' FS=$sep $TMP )
+		echo Jumping to pid $pid
+		set $pid
+	else
+		echo timeout
+		exit
+	fi
+fi
+
+TPANE=$( tr \\0 \\n < /proc/${1?No pid given}/environ |
+	awk -F= '/TMUX_PANE/{print $2}' )
+
+test "${TPANE#%}" -gt 0 2> /dev/null && {
+	if test -n "$TMUX_PANE"; then # We are running in tmux
+		tmux switch-client -t $TPANE
+		tmux select-window -t $TPANE
+	else
+		tmux attach-session -t $TPANE
+	fi
+}
