@@ -24,11 +24,6 @@ esac
 # If .bashrc is from git, find the current hash.  PS1 will
 # display an indicator if the shell is out of date.
 
-if test -n "${BASH_SOURCE[0]}"; then
-	__base_dir=$( dirname $(realpath "${BASH_SOURCE[0]}"  ))
-	__git_version=$( cd "$__base_dir" && git describe --dirty )
-fi 2> /dev/null
-
 export HISTCONTROL=ignoredups
 export IGNOREEOF=4
 set -o vi
@@ -49,11 +44,6 @@ PS1+='\[$( # Colorize based on previous command status
 	{ test $? != 0 && printf "%s" "$__RED" || printf "%s" "$__GREEN"; }
 	)\]'
 fi
-PS1+='$( # Insert asterisk if shell is out of date
-	if test -n "'"$__git_version"'" &&
-		test "$(cd "$__base_dir" && git describe --dirty)" != \
-		"'"$__git_version"'"; then printf "* "; else printf "  "; fi
-)'
 if test "$(tput cols)" -gt 80; then
 	PS1+='$( # Marker if running in a docker image or dvtm
 		printf "%s" "${DOCKER+ <$DOCKER> }";
