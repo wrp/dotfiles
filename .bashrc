@@ -99,9 +99,11 @@ debug_trap() {
 	if ! test -f "$HISTFILE"; then
 		echo "WARNING: $HISTFILE (bash history file) does not exist"
 	fi
-	touch $TMPDIR/stamp
+
+
 	history -a || echo 'WARNING: history -a failed'
-	if test "$HISTFILE" -ot "$TMPDIR/stamp"; then
+	if H=$HISTFILE perl -e 'open my $fh, "<", "$ENV{\"H\"}"; my $mtime = (stat($fh))[9];
+			exit( $mtime > (time() - 2))'; then
 		echo "WARNING: $HISTFILE is not updating"
 	fi
 } >&2
