@@ -17,9 +17,7 @@ if test $# = 0 && test -t 1 && ! test -t 0; then
 	trap 'rm -f $TMP' 0
 	TMP=$(mktemp)
 	IFS="$nl"
-	awk '
-		! system("tr \\0 \\n < /proc/"$1"/environ | grep -q TMUX_PANE")
-	' FS=$sep | sed 35q > $TMP
+	awk '! system("get-environ TMUX_PANE $1")' FS=$sep | sed 35q > $TMP
 	test -s $TMP || die "${ERRMSG-No processes from which to select}"
 	PS3="${PROMPT-Select process to jump to}: "
 	nl < $TMP
@@ -34,8 +32,7 @@ if test $# = 0 && test -t 1 && ! test -t 0; then
 	fi
 fi
 
-TPANE=$( tr \\0 \\n < /proc/${1?No pid given}/environ |
-	awk -F= '/TMUX_PANE/{print $2}' )
+TPANE=$( get-environ TMUX_PANE ${1?No pid given} )
 
 test "${TPANE#%}" -gt 0 2> /dev/null && {
 	if test -n "$TMUX_PANE"; then # We are running in tmux
