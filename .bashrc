@@ -76,8 +76,7 @@ append_path $HOME/.scripts
 append_path $HOME/all/bin
 prepend_path $HOME/$(uname -m)/$(uname -s)/bin
 read_file $HOME/.bash-env
-test -z "$HISTFILE" && HISTFILE=$HOME/.bash-history-$$
-export HISTFILE
+export HISTFILE=$HOME/.bash-history-$$
 if ! test -s "$HISTFILE"; then
 	{
 	printf '# %s: Shell %d begins' "$(date +%s)" "$$"
