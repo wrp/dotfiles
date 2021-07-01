@@ -99,11 +99,9 @@ debug_trap() {
 		echo "WARNING: $HISTFILE (bash history file) does not exist"
 	fi
 
-
 	history -a || echo 'WARNING: history -a failed'
-	if H=$HISTFILE perl -e 'open my $fh, "<", "$ENV{\"H\"}"; my $mtime = (stat($fh))[9];
-			exit( $mtime > (time() - 2))'; then
-		echo "WARNING: $HISTFILE is not updating"
+	if test $(tac "$HISTFILE" | awk '/^#/{print substr($1, 2, 10) + 10; exit}') -lt $(date +%s); then
+		echo 'WARNING: $HISTFILE is not updating'
 	fi
 } >&2
 
