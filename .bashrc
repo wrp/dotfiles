@@ -97,8 +97,9 @@ debug_trap() {
 		echo "WARNING: IFS contains unexpected characters"
 	fi
 	history -a || echo 'WARNING: history -a failed'
-	if ! tac "$HISTFILE" | awk '/^#/ && a++ {exit} $0 ~ l {b++} END{exit !b}'; then
-		echo 'WARNING: $HISTFILE is not updating'
+	if test -n "$last" && ! tac "$HISTFILE" | awk '/^#/ && a++ {exit}
+			$1 == last {b++} END{exit !b}' last="$last"; then
+		echo "WARNING: $HISTFILE is not updating: last=$last"
 	fi
 } >&2
 
