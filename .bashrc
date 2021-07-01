@@ -91,16 +91,13 @@ read_file $HOME/.bash-local
 
 debug_trap() {
 	# Runs before a command in an interactive shell
+	local last
+	last=$(fc -l -1 | awk '{print $2}')
 	if test "$IFS" != $' \t\n'; then
 		echo "WARNING: IFS contains unexpected characters"
 	fi
-	test -f "$HISTFILE" || history -w
-	if ! test -f "$HISTFILE"; then
-		echo "WARNING: $HISTFILE (bash history file) does not exist"
-	fi
-
 	history -a || echo 'WARNING: history -a failed'
-	if test $(tac "$HISTFILE" | awk '/^#/{print substr($1, 2, 10) + 10; exit}') -lt $(date +%s); then
+	if ! tac "$HISTFILE" | awk '/^#/ && a++ {exit} $0 ~ l {b++} END{exit !b}'; then
 		echo 'WARNING: $HISTFILE is not updating'
 	fi
 } >&2
