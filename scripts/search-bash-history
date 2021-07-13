@@ -95,6 +95,7 @@ if test -z "$choice"; then
 	| perl -nE '
 		s/([0-9]{9,10})/sprintf "%s", scalar localtime $1/e;
 		chop; say substr $_, 0, '"${COLUMNS-80} - 1"
+	echo ' 0) Exit'
 
 	check_tmux
 	printf 'Select command to store in tmux buffer: '
@@ -104,10 +105,12 @@ else
 fi
 check_tmux
 
-if test "$n" -gt 0 2> /dev/null; then
+if test "$n" -eq 0 2> /dev/null; then
+	exit 0
+elif test "$n" -gt 0 2> /dev/null; then
 	< $RESULTS sed -n -e "${n}s/[^|]*| //" -e "$n"p \
 	| tr -d \\n | tmux loadb -b ${buffer_name?} -
-elif test -n "$n"; then
+elif test -n "$n"; then  # This is a hack to catch user error (eg, typing a command instead of making a selection)
 	printf "%s" "$n" | tmux loadb -b ${buffer_name?} -
 else
 	echo
