@@ -21,7 +21,6 @@ if test "$1" -ge 0 2> /dev/null; then
 	shift
 fi
 
-
 do_search() {
 	# Prepend "?:" to every command with unknown status
 	# This relies on the formatting given in the PROMPT_COMMAND in .bashrc
@@ -82,10 +81,10 @@ check_tmux() {
 }
 
 if test -z "$choice"; then
-	if test -z "$V"; then
-		printf "Only commands which did not fail are shown (set V to see all).\n" >&2
-	fi
 	if test "$status" != 0; then
+		if test -z "$V"; then
+			V=1 exec $0 "$@"
+		fi
 		printf "No results found for search terms: %s\n" "$*">&2
 		exit 1
 	fi
