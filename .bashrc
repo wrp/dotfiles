@@ -92,7 +92,7 @@ read_file $HOME/.bash-local
 debug_trap() {
 	# Runs before a command in an interactive shell
 	local last
-	last=$(fc -l -1 | awk '{print $2}')
+	last=$(fc -l -1 | awk '{print $2; exit}')
 	if test "$IFS" != $' \t\n'; then
 		echo "WARNING: IFS contains unexpected characters"
 	fi
