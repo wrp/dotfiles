@@ -18,6 +18,7 @@ export COLUMNS
 export LESS=FeRXSQM#.95
 export GIT_PAGER=less
 export GIT_CEILING_DIRECTORIES=$HOME
+export GPG_TTY=$(tty)
 export ACK_PAGER_COLOR=less
 export PAGER=less
 export PYTHONSTARTUP=$HOME/.pystartup

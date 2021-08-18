@@ -71,6 +71,7 @@
 [user]
 	email = XXXXXXXX
 	name = XXX
+	signingkey = 3222427DAB7061ED
 [advice]
 	detachedHead = false
 

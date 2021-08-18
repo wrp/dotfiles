@@ -216,7 +216,7 @@ git() {
 		set -- clone ${origin:+--origin="$origin"} "$@";
 	;;
 	esac
-	execute git "$@";
+	command git "$@";
 }
 gpu() {
 	local set_upstream
