@@ -98,9 +98,8 @@ debug_trap() {
 	fi
 	history -a || echo 'WARNING: history -a failed'
 	if test -n "$last" && ! tac "$HISTFILE" | awk '/^#/ && a++ > 2 {exit}
-			$1 == last {b++} END{exit !b}' last="$last"; then
+			$1 == "rh" || $1 == last {b++} END{exit !b}' last="$last"; then
 		echo "WARNING: $HISTFILE is not updating: last=$last"
-		tail $HISTFILE
 	fi
 } >&2
 
