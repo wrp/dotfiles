@@ -576,6 +576,7 @@ update() {
 		pfx=../$pfx
 	done
 	if test -x $pfx/$cmd; then
+		echo $pfx/$cmd "$@"
 		$pfx/$cmd "$@"
 	else
 		echo Unable to find update command looking up in filesystem >&2

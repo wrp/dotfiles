@@ -38,6 +38,8 @@ shopt -s histverify
 
 __RED=$(tput setaf 1)
 __GREEN=$(tput setaf 2)
+__YELLOW=$(tput setaf 3)
+__PS1_COLOR="$GREEN"
 PS1=''
 if test -n "$__RED" && test -n "$__GREEN"; then
 PS1+='\[$( # Colorize based on previous command status
@@ -63,7 +65,7 @@ if test "$(tput cols)" -gt 80; then
 		fi | tr \  .
 	)'
 fi
-PS1+="\[$__GREEN\]$( printf "%05d" "$$" )\$ "
+PS1+='\[$__PS1_COLOR\]'"$( printf "%05d" "$$" )\[$__GREEN\]\$ "
 
 read_file() { for f; do if test -f "$f"; then . "$f"; fi; done; }
 complete -r
@@ -99,7 +101,9 @@ debug_trap() {
 	history -a || echo 'WARNING: history -a failed'
 	if test -n "$last" && ! tac "$HISTFILE" | awk '/^#/ && a++ > 2 {exit}
 			$1 == "rh" || $1 == last {b++} END{exit !b}' last="$last"; then
-		echo "WARNING: $HISTFILE is not updating: last=$last"
+		__PS1_COLOR=${__YELLOW}
+	else
+		__PS1_COLOR=${__GREEN}
 	fi
 } >&2
 
