@@ -3,22 +3,22 @@
 	ap = add --patch
 	b = branch -vv
 	# b = branch --color --format='"%(align:14)%(HEAD) %(refname:short)%(end)%(color:red)%(push:short) %(push:track)%(color:reset)%(contents:subject)"'
+	caa = !bash -c '"git commit --amend -a -m \"$(git log --format=format:%B -n 1)\" --cleanup=strip"'
+	caan = !bash -c '"git commit --amend -an -m \"$(git log --format=format:%B -n 1)\" --cleanup=strip"'
 	cd = commit -m Documentation
 	cda = commit -a -m Documentation
+	cda = commit -a -mDocumentation
 	cf = commit -m 'Trivial reformat'
 	cfa = commit -a -m 'Trivial reformat'
+	ci = commit
+	ciam = commit -a -m
+	co = checkout
 	cp = cherry-pick -x
 	cr = commit -m 'Trivial refactor'
 	cra = commit -a -m 'Trivial refactor'
+	csa = commit -a -m'Sanity Check'
 	cw = commit -m 'Whitespace'
 	cwa = commit -a -m 'Whitespace'
-	ciam = commit -a -m
-	ci = commit
-	caa = !bash -c '"git commit --amend -a -m \"$(git log --format=format:%B -n 1)\" --cleanup=strip"'
-	caan = !bash -c '"git commit --amend -an -m \"$(git log --format=format:%B -n 1)\" --cleanup=strip"'
-	co = checkout
-	cda = commit -a -mDocumentation
-	csa = commit -a -m'Sanity Check'
 	d = diff
 	dc = diff --cached
 	dn = diff --numstat
