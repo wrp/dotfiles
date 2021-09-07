@@ -6,4 +6,4 @@
 *.jar
 *.o
 default.profraw
-tags
+/tags
