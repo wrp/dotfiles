@@ -208,8 +208,8 @@ git() {
 		case $2 in
 		http*) test -n "$HTTP_OK" ||
 			{ echo "Use ssh or set HTTP_OK!!" >&2; return 1; } ;;
-		ssh://git@github.*) origin=github;;
-		ssh://git@bitbucket.devops.wepay-inc.*) origin=wepay;;
+		*github*) origin=github;;
+		*bitbucket.devops.wepay-inc.*) origin=wepay;;
 		esac
 		shift;
 		test -n "$origin" && echo "Setting origin=$origin"
