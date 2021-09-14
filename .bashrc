@@ -21,19 +21,6 @@ case "$-" in
         ;;
 esac
 
-# If .bashrc is from git, find the current hash.  PS1 will
-# display an indicator if the shell is out of date.
-
-export HISTCONTROL=ignoredups
-export IGNOREEOF=4
-set -o vi
-set -o physical # make pwd do the right thing w.r.t. symbolic links
-shopt -s histappend
-shopt -s cmdhist
-shopt -s checkwinsize
-shopt -s histverify
-# set +H      # disable history expansion
-
 # test -x /usr/bin/lesspipe && eval "$(SHELL=/bin/sh lesspipe)"
 
 __RED=$(tput setaf 1)
@@ -78,16 +65,28 @@ append_path $HOME/.scripts
 append_path $HOME/all/bin
 prepend_path $HOME/$(uname -m)/$(uname -s)/bin
 read_file $HOME/.bash-env
-export HISTFILE=$HOME/.bash-history-$$
-if ! test -s "$HISTFILE"; then
-	{
-	printf '# %s: Shell %d begins' "$(date +%s)" "$$"
-	if test "$PPID" -gt 0 2> /dev/null; then
-		printf ', child of %s' "$(ps -o pid=,comm= $PPID)"
+make_hist_file() {
+	if ! test -s "$1"; then
+		{
+		printf '# %s: Shell %d begins' "$(date +%s)" "$$"
+		if test "$PPID" -gt 0 2> /dev/null; then
+			printf ', child of %s' "$(ps -o pid=,comm= $PPID)"
+		fi
+		printf '\n'
+		} >> $1
 	fi
-	printf '\n'
-	} >> $HISTFILE
-fi
+	export HISTFILE=$1
+}
+make_hist_file $HOME/.bash-history-dir/.bash-history-$$
+export HISTCONTROL=ignoredups
+export IGNOREEOF=4
+set -o vi
+set -o physical # make pwd do the right thing w.r.t. symbolic links
+shopt -s histappend
+shopt -s cmdhist
+shopt -s checkwinsize
+shopt -s histverify
+# set +H      # disable history expansion
 
 read_file $HOME/.bash-local
 
@@ -98,10 +97,10 @@ debug_trap() {
 	if test "$IFS" != $' \t\n'; then
 		echo "WARNING: IFS contains unexpected characters"
 	fi
-	history -a || echo 'WARNING: history -a failed'
-	if test -n "$last" && ! tac "$HISTFILE" | awk '/^#/ && a++ > 2 {exit}
-			$1 == "rh" || $1 == last {b++} END{exit !b}' last="$last"; then
-		__PS1_COLOR=${__YELLOW}
+	history -a || echo 'WARNING: history -a failed' >&2
+	if { test $(wc -l < $HISTFILE) -le 1; } || { test -n "$last" && ! tac "$HISTFILE" | awk '/^#/ && a++ > 2 {exit}
+			$1 == "rh" || $1 == last {b++} END{exit !b}' last="$last"; } then
+		__PS1_COLOR=${__RED}
 	else
 		__PS1_COLOR=${__GREEN}
 	fi
