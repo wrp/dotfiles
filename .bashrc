@@ -61,9 +61,6 @@ complete -r gcloud 2> /dev/null
 complete -r bq 2> /dev/null
 read_file $HOME/.bash-functions $HOME/.bash-interactive-functions $HOME/.bash-completions
 
-append_path $HOME/.scripts
-append_path $HOME/all/bin
-prepend_path $HOME/$(uname -m)/$(uname -s)/bin
 read_file $HOME/.bash-env
 make_hist_file() {
 	if ! test -s "$1"; then
