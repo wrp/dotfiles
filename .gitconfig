@@ -68,10 +68,6 @@
 	branch = true
 [pull]
 	rebase = true
-[user]
-	email = william.r.pursell@gmail.com
-	name = William Pursell
-	signingkey = D82AB6C84C84E24C
 [advice]
 	detachedHead = false
 
@@ -86,3 +82,6 @@
     commit-decoration-style = bold yellow box ul
     file-style = bold yellow ul
     file-decoration-style = none
+
+[include]
+    path = ~/.gitconfig-user
