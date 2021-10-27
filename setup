@@ -59,3 +59,11 @@ for file in $files; do
 	|| ln -sf "$base/$file" .${file#.} \
 	|| die
 done
+
+if ! test -f $HOME/.gitconfig-user; then
+	sed 's/.//' >> $HOME/.gitconfig-user << EOF
+	[user]
+		email = ${EMAIL?}
+		name = ${NAME?}
+EOF
+fi
