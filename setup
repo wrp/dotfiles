@@ -75,3 +75,11 @@ if ! test -f $HOME/.gitconfig-user; then
 		name = ${NAME?}
 EOF
 fi
+
+if ! test -f $HOME/.bash-local; then
+	cat > $HOME/.bash-local <<- EOF
+		EMAIL="$EMAIL"
+		NAME="$NAME"
+		export EMAIL NAME
+EOF
+fi
