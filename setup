@@ -60,6 +60,14 @@ for file in $files; do
 	|| die
 done
 
+for n in EMAIL NAME; do
+	eval v=\$$n;
+	if test -z "$v"; then
+		printf "$n not set in environment.  Enter value: "
+		eval read $n
+	fi
+done
+
 if ! test -f $HOME/.gitconfig-user; then
 	sed 's/.//' >> $HOME/.gitconfig-user << EOF
 	[user]
