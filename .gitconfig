@@ -69,8 +69,8 @@
 [pull]
 	rebase = true
 [user]
-	email = XXXXXXXX
-	name = XXX
+	email = william.r.pursell@gmail.com
+	name = William Pursell
 	signingkey = D82AB6C84C84E24C
 [advice]
 	detachedHead = false
