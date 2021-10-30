@@ -4,8 +4,15 @@ remote=$( git rev-parse --symbolic-full-name --abbrev-ref @{u} 2> /dev/null \
 	| cut -d / -f 1 )
 url=$( git ls-remote --get-url "$remote" 2> /dev/null )
 case $url in
-*github.com:wrp*) git config user.email "${GITHUB_EMAIL-EMAIL}" ;;
-*)        git config user.email "${EMAIL?}" ;;
+*github.com:$GITHUB_USER*)
+	git config user.email "${GITHUB_EMAIL-$EMAIL}"
+	git config user.name "${GITHUB_NAME-$NAME}"
+	;;
+*)
+	git config user.email "${EMAIL?}"
+	git config user.name "${NAME?}"
+	;;
 esac
-git config user.name "${NAME?}"
-echo  "email set to $(git config user.email)" >&2
+printf >&2 "name/email set to %s/%s\n" \
+	"$(git config user.name)" \
+	"$(git config user.email)"
