@@ -583,7 +583,6 @@ update() {
 	fi
 }
 vi() {
-	local h
 	test $# = 0 && set $(get-modified-files ${h});
 	vim -p "$@"    # .vimrc sets tmux titles
 }
