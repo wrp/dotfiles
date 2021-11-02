@@ -582,7 +582,9 @@ update() {
 		echo Unable to find update command looking up in filesystem >&2
 	fi
 }
-vi() { test $# = 0 && set $(get-modified-files ${h});
+vi() {
+	local h
+	test $# = 0 && set $(get-modified-files ${h});
 	vim -p "$@"    # .vimrc sets tmux titles
 }
 y() { select-git-branch "$@"; }
