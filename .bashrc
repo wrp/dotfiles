@@ -148,9 +148,7 @@ report_cmd_status() {
 }
 
 trap archive 0
-# trap debug_trap DEBUG  This is causing an annoying error on macos.  Clean
-# this up; write a script to properly merge $HISTFILE into .bash-history and
-# move the remaining functionality into PROMPT_COMMAND
+trap debug_trap DEBUG
 trap '. $HOME/.bashrc' SIGUSR1
 trap '. $HOME/.bashrc' SIGWINCH
 
