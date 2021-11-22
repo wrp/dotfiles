@@ -56,6 +56,7 @@
 
 [init]
 	templatedir = ~/.git-templates
+	defaultBranch = main
 [versionsort]
 	prereleaseSuffix = .rc
 [color "branch"]
