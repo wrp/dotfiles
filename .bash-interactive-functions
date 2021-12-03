@@ -359,6 +359,7 @@ if ! which md5sum > /dev/null 2>&1; then
 fi
 
 
+mg() { find . -name .git -exec sh -c 'cd $0/..; git "$@" | sed "s@^@$0@"' {} "$@" \; ; }
 mon() { inotifywait -qmr "${@-.}" --exclude '^\./\.git'; }
 
 get_current_gcp_project() {
