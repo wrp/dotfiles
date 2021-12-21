@@ -340,6 +340,7 @@ _j_complete() {
 	COMPREPLY=($(echo "$list" | tr -s ' ' \\n | grep -- "/$curr_word"))
 }
 complete -o default -F _j_complete j
+k() { kubectl "$@"; }
 lb() { tr \\n \ | perl -pe 's/ *$//' | tmux loadb - ; }
 lba() { { if test $# -gt 1; then "$@"; else cat; fi; } | tmux loadb -; }
 less() { if test -t 1; then command less "$@"; else cat "$@"; fi; }
