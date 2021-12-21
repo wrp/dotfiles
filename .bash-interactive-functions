@@ -340,13 +340,6 @@ _j_complete() {
 	COMPREPLY=($(echo "$list" | tr -s ' ' \\n | grep -- "/$curr_word"))
 }
 complete -o default -F _j_complete j
-debug() { test -n "$VERBOSE" && echo "$@" >&2; }
-dvtm () {
-    local fifo=$HOME/.dvtm/cmdfifo-$$;
-    test -p $fifo || mkfifo $fifo || return 1;
-    command dvtm -c $fifo "$@";
-    rm $fifo
-}
 lb() { tr \\n \ | perl -pe 's/ *$//' | tmux loadb - ; }
 lba() { { if test $# -gt 1; then "$@"; else cat; fi; } | tmux loadb -; }
 less() { if test -t 1; then command less "$@"; else cat "$@"; fi; }
