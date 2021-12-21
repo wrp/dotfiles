@@ -341,6 +341,7 @@ _j_complete() {
 }
 complete -o default -F _j_complete j
 k() { kubectl "$@"; }
+kx() { kubectx "$@"; }
 lb() { tr \\n \ | perl -pe 's/ *$//' | tmux loadb - ; }
 lba() { { if test $# -gt 1; then "$@"; else cat; fi; } | tmux loadb -; }
 less() { if test -t 1; then command less "$@"; else cat "$@"; fi; }
