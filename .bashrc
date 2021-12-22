@@ -26,7 +26,8 @@ esac
 __RED=$(tput setaf 1)
 __GREEN=$(tput setaf 2)
 __YELLOW=$(tput setaf 3)
-__PS1_COLOR="$GREEN"
+__MAGENTA=$(tput setaf 5)
+__PS1_COLOR="$__GREEN"
 PS1=''
 if test -n "$__RED" && test -n "$__GREEN"; then
 PS1+='\[$( # Colorize based on previous command status
@@ -39,6 +40,7 @@ if test "$(tput cols)" -gt 80; then
 		printf "%s" "${DVTM+ <dvtm> }";
 	)'
 	PS1+='\D{%T}'  # %T is passed to strftime for time
+	PS1+='\[$__MAGENTA\]'
 	PS1+='$( # project
 		echo "${PROJECT:+(}${PROJECT%-[0-9]*}${PROJECT:+)}";
 	)'
