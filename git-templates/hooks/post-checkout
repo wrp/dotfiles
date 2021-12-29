@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 remote=$( git rev-parse --symbolic-full-name --abbrev-ref @{u} 2> /dev/null \
 	| cut -d / -f 1 )
@@ -7,17 +7,18 @@ url=$( git ls-remote --get-url "$remote" 2> /dev/null )
 
 assigned=
 
-for k in "${!GITHUB[@]}"; do
-	read email name name <<< "${GITHUB[$k]}"
-
+while read project email name; do
+	test -z "$project" && continue
 	case $url in
-	*github.com:$k*)
+	*github.com:${project}*)
 		git config user.email "${email-$EMAIL}"
 		git config user.name "${name-$NAME}"
 		assigned=1
 	;;
 	esac
-done
+done << EOF
+$GITHUB
+EOF
 
 if test -z "$assigned"; then
 	git config user.email "${EMAIL?}"
