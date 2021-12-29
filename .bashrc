@@ -88,8 +88,6 @@ shopt -s histverify
 shopt -s direxpand  # prevent tab expand from expanding $D to \$D
 # set +H      # disable history expansion
 
-read_file $HOME/.bash-local
-
 debug_trap() {
 	# Runs before a command in an interactive shell
 	local last
@@ -156,3 +154,5 @@ trap '. $HOME/.bashrc' SIGUSR1
 trap '. $HOME/.bashrc' SIGWINCH
 
 PROMPT_COMMAND=after_cmd
+
+. $HOME/.bash-local
