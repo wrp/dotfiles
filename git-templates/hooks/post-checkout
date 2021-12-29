@@ -1,18 +1,29 @@
-#!/bin/sh
+#!/bin/bash
 
 remote=$( git rev-parse --symbolic-full-name --abbrev-ref @{u} 2> /dev/null \
 	| cut -d / -f 1 )
+
 url=$( git ls-remote --get-url "$remote" 2> /dev/null )
-case $url in
-*github.com:$GITHUB_USER*)
-	git config user.email "${GITHUB_EMAIL-$EMAIL}"
-	git config user.name "${GITHUB_NAME-$NAME}"
+
+assigned=
+
+for k in "${!GITHUB[@]}"; do
+	read email name name <<< "${GITHUB[$k]}"
+
+	case $url in
+	*github.com:$k*)
+		git config user.email "${email-$EMAIL}"
+		git config user.name "${name-$NAME}"
+		assigned=1
 	;;
-*)
+	esac
+done
+
+if test -z "$assigned"; then
 	git config user.email "${EMAIL?}"
 	git config user.name "${NAME?}"
-	;;
-esac
+fi
+
 printf >&2 "name/email set to %s/%s\n" \
 	"$(git config user.name)" \
 	"$(git config user.email)"
