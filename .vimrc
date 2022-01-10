@@ -76,6 +76,7 @@ if &diff
 endif
 
 au BufNewFile,BufRead .bash-history setlocal path+=$HOME/.bash-history-dir
+au BufNewFile *.c r ~/.vim/skeleton.c
 
 set includeexpr=substitute(v:fname,'^//','','')
 
