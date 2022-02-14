@@ -16,26 +16,28 @@ ack() {
 
 bundle() {
 	local file base
-	if test -d "$1"; then
-		(cd "$1"; shift; bundle "$@")
-		return $?
+	if test $# -ne 0; then
+		for x; do
+			(command cd "$x" && shift && bundle) || return 1
+		done
+		return 0
 	fi
-	if ! git rev-parse HEAD > /dev/null 2>&1; then
+	if ! command git rev-parse HEAD > /dev/null 2>&1; then
 		echo "Not a git repo" >&2
 		return 1
 	fi
-	if ! git diff-index --quiet HEAD; then
+	if ! command git diff-index --quiet HEAD; then
 		echo "Repo is dirty.  Stubbornly refusing to create bundle" >&2
 		return 1
 	fi
-	base=$(git config core.name ||
-		awk 'NR==1{print $1}' "$(git rev-parse --git-dir)/description" | grep . ||
-		basename $(git rev-parse --show-toplevel)
+	base=$(command git config core.name ||
+		awk 'NR==1{print $1}' "$(command git rev-parse --git-dir)/description" | grep . ||
+		basename $(command git rev-parse --show-toplevel)
 	)
 	test -n "$base" || return
-	file="$base"-$(git rev-parse --short HEAD ).bundle
+	file="$base"-$(command git rev-parse --short HEAD ).bundle
 	test -e "$file" && { echo "$file already exists" >&2; return 1; }
-	git bundle create "$file" ${@-HEAD} \
+	command git bundle create "$file" HEAD 2> /dev/null \
 	&& echo Created "$(pwd)/$file"
 }
 c() { tput sc; clear; tput rc; } # save cursor/restore cursor  man terminfo
