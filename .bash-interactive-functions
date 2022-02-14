@@ -15,7 +15,10 @@ ack() {
 }
 bundle() {
 	local file base
-	base=$(git config core.name || basename $(git rev-parse --show-toplevel))
+	base=$(git config core.name ||
+		awk 'NR==1{print $1}' "$(git rev-parse --git-dir)/description" | grep . ||
+		basename $(git rev-parse --show-toplevel)
+	)
 	test -n "$base" || return
 	file="$base"-$(git rev-parse --short HEAD ).bundle
 	test -e "$file" && { echo "$file already exists" >&2; return 1; }
