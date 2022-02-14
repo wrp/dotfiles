@@ -13,8 +13,17 @@ ack() {
 	shift
 	find "${@-.}" -name .git -prune -o -type f -exec grep $_dash_i -H "$_regex" {} \;
 }
+
 bundle() {
 	local file base
+	if test -d "$1"; then
+		(cd "$1"; shift; bundle "$@")
+		return $?
+	fi
+	if ! git rev-parse HEAD > /dev/null 2>&1; then
+		echo "Not a git repo" >&2
+		return 1
+	fi
 	base=$(git config core.name ||
 		awk 'NR==1{print $1}' "$(git rev-parse --git-dir)/description" | grep . ||
 		basename $(git rev-parse --show-toplevel)
@@ -23,7 +32,7 @@ bundle() {
 	file="$base"-$(git rev-parse --short HEAD ).bundle
 	test -e "$file" && { echo "$file already exists" >&2; return 1; }
 	git bundle create "$file" ${@-HEAD} \
-	&& echo Created "$file"
+	&& echo Created "$(pwd)/$file"
 }
 c() { tput sc; clear; tput rc; } # save cursor/restore cursor  man terminfo
 cd() {
