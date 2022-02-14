@@ -15,9 +15,9 @@ ack() {
 }
 bundle() {
 	local file base
-	base=$(g root) || return
-	test -d "$base" || return
-	file="$base"/$(basename "$base")-$(git rev-parse --short HEAD ).bundle
+	base=$(git config core.name || basename $(git rev-parse --show-toplevel))
+	test -n "$base" || return
+	file="$base"-$(git rev-parse --short HEAD ).bundle
 	test -e "$file" && { echo "$file already exists" >&2; return 1; }
 	git bundle create "$file" ${@-HEAD} \
 	&& echo Created "$file"
@@ -104,9 +104,9 @@ g() {
 	;;
 	# (l1a) if test -t 1; then tig; else git "$@"; fi;; # Train myself to use tig
 	(root)
-		root=$(git rev-parse --git-dir) \
+	        root=$(git rev-parse --show-toplevel) \
 		&& root=$(cd "$root" && pwd 2> /dev/null)/ \
-		&& echo "${root%%/.git/*}"
+		&& echo "${root}"
 	;;
 	(*)
 		{ err=$( git "$@" 2>&1 >&3 ); } 3>&1
