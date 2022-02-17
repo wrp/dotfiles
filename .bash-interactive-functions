@@ -591,7 +591,7 @@ update() {
 }
 vi() {
 	test $# = 0 && set $(get-modified-files ${h});
-	vim -p "$@"    # .vimrc sets tmux titles
+	vim "$@"    # .vimrc sets tmux titles
 }
 y() { select-git-branch "$@"; }
 
