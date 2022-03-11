@@ -452,7 +452,8 @@ PUT() {
 	curl -X PUT -H "Authorization: Bearer $ACCESS_TOKEN" "$@"
 }
 rg() { find . -type d -name .git -exec sh -c 'cd ${0%.git}; git "$@" |
-	sed -e "s@^@${0%/.git}: @"' {} "$@" \; ;}
+	perl -pe "s@^@sprintf(\"%30s: \", \"${0%/.git}\")@e"' {} "$@" \;
+}
 rh() { history -r $HOME/.bash-history; }
 ru () { tac | awk '!a[$0]++' | tac; } ## reverse-unique
 
