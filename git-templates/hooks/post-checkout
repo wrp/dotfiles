@@ -2,6 +2,7 @@
 
 remote=$( git rev-parse --symbolic-full-name --abbrev-ref @{u} 2> /dev/null \
 	|| git rev-parse --symbolic-full-name --abbrev-ref main@{u} 2> /dev/null \
+	|| git rev-parse --symbolic-full-name --abbrev-ref master@{u} 2> /dev/null \
 	| cut -d / -f 1 )
 
 url=$( git ls-remote --get-url "$remote" 2> /dev/null )
