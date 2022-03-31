@@ -26,6 +26,9 @@ function! ClearWhite()
 endfunction
 autocmd BufWritePre * call ClearWhite()
 
+packadd! matchit
+let b:match_words = '<<<<<<<:=======:>>>>>>>'
+
 
 " inoremap jk <esc>
 let loaded_matchparen=1
