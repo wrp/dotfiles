@@ -139,7 +139,6 @@ g() {
 		echo "**** Changing directory to $dir!!! ****"
 		cd "$dir" && g "$@"; return
 	fi
-	setup_vars
 	return $rv
 }
 ga() {
@@ -486,6 +485,7 @@ rsync() { command rsync -e 'ssh -o LogLevel=error' "$@"; }
 s() { search-bash-history "$@"; }
 setup_vars() {
 	# Assign some variables for the shell
+	# git name-rev can be dog slow, so this is (mostly?) unused
 	local b
 	if b=$(V=0 git rev-parse --abbrev-ref HEAD 2> /dev/null ); then
 		if test "$branch" != "$b"; then
