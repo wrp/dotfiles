@@ -85,6 +85,7 @@ shopt -s histappend
 shopt -s cmdhist
 shopt -s checkwinsize
 shopt -s histverify
+shopt -s cdable_vars 2> /dev/null
 shopt -s direxpand 2> /dev/null # prevent tab expand from expanding $D to \$D
 # set +H      # disable history expansion
 
