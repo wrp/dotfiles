@@ -5,6 +5,7 @@ noremap , ;
 noremap ' `
 noremap ` '
 noremap gw :Windo set wrap!
+com! Nt :NERDTree
 
 " Just like windo, but restore the current window when done.
 function! WinDo(command)
