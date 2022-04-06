@@ -1,5 +1,5 @@
 # environment setting common in all environs.
-# host specific settings belong in ~/.bash-local
+# host specific settings belong in ~/.bash-local and ~/.bash-localenv
 
 export BASH_SILENCE_DEPRECATION_WARNING=1
 export CLOUDSDK_CORE_DISABLE_PROMPTS=1

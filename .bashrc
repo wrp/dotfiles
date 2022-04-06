@@ -32,7 +32,7 @@ __PS1_COLOR="$__GREEN"
 unset PS1
 read_file() { for f; do if test -f "$f"; then . "$f"; fi; done; }
 read_file $HOME/.bash-functions $HOME/.bash-interactive-functions $HOME/.bash-completions
-read_file $HOME/.bash-env
+read_file $HOME/.bash-env $HOME/.bash-localenv
 
 if test -z "$PS1"; then
 PS1=''
