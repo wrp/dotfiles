@@ -28,6 +28,13 @@ __GREEN=$(tput setaf 2)
 __YELLOW=$(tput setaf 3)
 __MAGENTA=$(tput setaf 5)
 __PS1_COLOR="$__GREEN"
+
+unset PS1
+read_file() { for f; do if test -f "$f"; then . "$f"; fi; done; }
+read_file $HOME/.bash-functions $HOME/.bash-interactive-functions $HOME/.bash-completions
+read_file $HOME/.bash-env
+
+if test -z "$PS1"; then
 PS1=''
 if test -n "$__RED" && test -n "$__GREEN"; then
 PS1+='\[$( # Colorize based on previous command status
@@ -35,10 +42,7 @@ PS1+='\[$( # Colorize based on previous command status
 	)\]'
 fi
 if test "$(tput cols)" -gt 80; then
-	PS1+='$( # Marker if running in a docker image or dvtm
-		printf "%s" "${DOCKER+ <$DOCKER> }";
-		printf "%s" "${DVTM+ <dvtm> }";
-	)'
+	PS1+="${PS1_PREFIX}"
 	PS1+='\D{%T}'  # %T is passed to strftime for time
 	PS1+='\[$__MAGENTA\]'
 	PS1+='$( # project
@@ -55,15 +59,9 @@ if test "$(tput cols)" -gt 80; then
 	)'
 fi
 PS1+='\[$__PS1_COLOR\]'"$( printf "%05d" "$$" )\[$__GREEN\]\$ "
+fi
 
-read_file() { for f; do if test -f "$f"; then . "$f"; fi; done; }
 complete -r
-complete -r gsutil 2> /dev/null
-complete -r gcloud 2> /dev/null
-complete -r bq 2> /dev/null
-read_file $HOME/.bash-functions $HOME/.bash-interactive-functions $HOME/.bash-completions
-
-read_file $HOME/.bash-env
 make_hist_file() {
 	if ! test -s "$1"; then
 		{
