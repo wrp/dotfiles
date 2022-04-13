@@ -2,14 +2,8 @@
 # host specific settings belong in ~/.bash-local and ~/.bash-localenv
 
 export BASH_SILENCE_DEPRECATION_WARNING=1
-export CLOUDSDK_CORE_DISABLE_PROMPTS=1
-
-export EVENT_NOKQUEUE=1
-export LC_TIME=C  #  Get 24 hour times for %X (sar)
 export HISTSIZE=1000
 export HISTFILE=$HOME/.bash-history-dir/$$
-# unset HISTFILESIZE
-# Docs say unsetting HISTFILESIZE will prevent truncation.  Rumor is it does not work
 export HISTFILESIZE=9999999999
 export HISTTIMEFORMAT='%H:%M:%S ' #%m/%d
 export EDITOR=vim
@@ -19,16 +13,13 @@ export LESS=FeRXSQM#.95
 export GIT_PAGER=less
 export GIT_CEILING_DIRECTORIES=$HOME
 export GPG_TTY=$(tty)
-export ACK_PAGER_COLOR=less
 export PAGER=less
-export PYTHONSTARTUP=$HOME/.pystartup
-export CPATH=$HOME/$(uname -m)/$(uname -s)/include
-export LDPATH=$HOME/$(uname -m)/$(uname -s)/lib
+# export CPATH=$HOME/$(uname -m)/$(uname -s)/include
+# export LDPATH=$HOME/$(uname -m)/$(uname -s)/lib
 
 export LSCOLORS=fxfxcxdxbxegedabagacad
 
 prepend_path $HOME/$(uname -m)/$(uname -s)/bin
-
 
 # a = black, b = red, c = green, d = brown, e = blue, f = magenta, g = cyan,
 # h = light grey, A = bold black, B = bold red, C = bold green, D = bold brown,
@@ -74,4 +65,3 @@ ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31
 *.ra=00;36:*.wav=00;36:*.axa=00;36:*.oga=00;36:*.spx=00;36:*.xspf=00;36
 EOF
 )
-
