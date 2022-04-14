@@ -1,8 +1,10 @@
 #!/bin/sh
 # usage: @@name@@ [arg ...]
 #
-# Execute this file to load up the tmux paste buffer.
-# unset TMUX if you really want to just execute it
+# Execute this file to load up the tmux paste buffer.  With
+# commands to populate dotfiles.  Use `-c` to omit the commands
+# and just load the content into the past buffer.
+# Unset TMUX if you really want to just execute the script.
 # Pass args such as bashrc or bash_profile to load just one file.
 
 # Use -h for help and a list of available files.
