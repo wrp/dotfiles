@@ -60,7 +60,7 @@ for file in $files; do
 	|| die
 done
 
-for n in EMAIL NAME; do
+for n in EMAIL UNAME; do
 	eval v=\$$n;
 	if test -z "$v"; then
 		printf "$n not set in environment.  Enter value: "
@@ -72,14 +72,14 @@ if ! test -f $HOME/.gitconfig-user; then
 	sed 's/.//' >> $HOME/.gitconfig-user << EOF
 	[user]
 		email = ${EMAIL?}
-		name = ${NAME?}
+		name = ${UNAME?}
 EOF
 fi
 
 if ! test -f $HOME/.bash-local; then
 	cat > $HOME/.bash-local <<- EOF
 		EMAIL="$EMAIL"
-		NAME="$NAME"
-		export EMAIL NAME
+		NAME="$UNAME"
+		export EMAIL UNAME
 EOF
 fi

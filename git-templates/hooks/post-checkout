@@ -15,7 +15,7 @@ while read project email name; do
 	case $url in
 	*github.com:${project}*)
 		git config user.email "${email-$EMAIL}"
-		git config user.name "${name-$NAME}"
+		git config user.name "${name-$UNAME}"
 		assigned=1
 	;;
 	esac
@@ -25,7 +25,7 @@ EOF
 
 if test -z "$assigned"; then
 	git config user.email "${EMAIL?}"
-	git config user.name "${NAME?}"
+	git config user.name "${UNAME?}"
 fi
 
 printf >&2 "name/email set to %s/%s\n" \

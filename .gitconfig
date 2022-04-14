@@ -55,7 +55,6 @@
 	status = true
 
 [init]
-	templatedir = ~/.git-templates
 	defaultBranch = main
 [versionsort]
 	prereleaseSuffix = .rc
@@ -68,4 +67,7 @@
 [advice]
 	detachedHead = false
 [include]
-    path = ~/.gitconfig-user
+	path = ~/.gitconfig-user
+[user]
+	name = William Pursell
+	email = william.pursell@affirm.com
