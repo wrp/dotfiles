@@ -106,7 +106,7 @@ ln -s .bash_history $HOME/.bash-history
 
 # .bash_profile
 cat << '-------------- EOF --------------' > $HOME/.bash_profile
-[[ "$-" =~ i ]] && test -f $HOME/.bashrc && . $HOME/.bashrc
+[[ "$-" =~ i ]] && test -n "$BASH" && test -f $HOME/.bashrc && . $HOME/.bashrc
 -------------- EOF --------------
 
 
