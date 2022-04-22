@@ -36,6 +36,7 @@
 	lh  = log -n 10 --decorate --format=format:'%Cgreen%h%Cred %<(12,trunc)%an%Creset %<(60,trunc)%s %Cblue%D%Creset' --graph
 	l1h = log -n 10 --decorate --format=format:'%Cgreen%h%Cred %<(12,trunc)%an%Creset %<(60,trunc)%s %Cblue%D%Creset' --graph
 	lm = log --pretty=oneline --author=wrp
+	ls = log --oneline --decorate --format=format:'%Cgreen%h%Cred %<(10,trunc)%an%Cblue%D%Creset %<(80,trunc)%s' --show-signature
 	s = status -uno
 	sa = status -uall --ignored
 	sl = stash list
