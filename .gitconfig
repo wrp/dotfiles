@@ -72,3 +72,5 @@
 [user]
 	name = William Pursell
 	email = william.pursell@affirm.com
+[tag]
+	gpgSign = true
