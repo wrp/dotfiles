@@ -5,20 +5,20 @@
 	# b = branch --color --format='"%(align:14)%(HEAD) %(refname:short)%(end)%(color:red)%(push:short) %(push:track)%(color:reset)%(contents:subject)"'
 	caa = !bash -c '"git commit --amend -a -m \"$(git log --format=format:%B -n 1)\" --cleanup=strip"'
 	caan = !bash -c '"git commit --amend -an -m \"$(git log --format=format:%B -n 1)\" --cleanup=strip"'
-	cd = commit -S -m Documentation
-	cda = commit -S -a -m Documentation
-	cda = commit -S -a -mDocumentation
-	cf = commit -S -m 'Trivial refactor'
-	cfa = commit -S -a -m 'Trivial refactor'
-	ci = commit -S
-	ciam = commit -S -a -m
+	cd = commit -m Documentation
+	cda = commit -a -m Documentation
+	cda = commit -a -mDocumentation
+	cf = commit -m 'Trivial refactor'
+	cfa = commit -a -m 'Trivial refactor'
+	ci = commit
+	ciam = commit -a -m
 	co = checkout
 	cp = cherry-pick -x
-	cr = commit -S -m 'Trivial reformat'
-	cra = commit -S -a -m 'Trivial reformat'
-	csa = commit -S -a -m'Sanity Check'
-	cw = commit -S -m 'Whitespace'
-	cwa = commit -S -a -m 'Whitespace'
+	cr = commit -m 'Trivial reformat'
+	cra = commit -a -m 'Trivial reformat'
+	csa = commit -a -m'Sanity Check'
+	cw = commit -m 'Whitespace'
+	cwa = commit -a -m 'Whitespace'
 	d = diff
 	dc = diff --cached
 	dn = diff --numstat
@@ -73,4 +73,6 @@
 	name = William Pursell
 	email = william.pursell@affirm.com
 [tag]
+	gpgSign = true
+[commit]
 	gpgSign = true
