@@ -1,6 +1,4 @@
 
-
-
 ack() {
 	local _dash_i
 	local _regex
