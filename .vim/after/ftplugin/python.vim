@@ -13,8 +13,8 @@
 " skipblanks (bool): true: Skip blank lines
 " false: Don't skip blank lines
 
-"set fdm=indent
-"set foldlevel=1
+set fdm=indent
+set foldlevel=0
 "set sw=2
 "set ts=2
 "set et
