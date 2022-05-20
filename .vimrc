@@ -34,6 +34,7 @@ let b:match_words = '<<<<<<<:=======:>>>>>>>'
 " inoremap jk <esc>
 let loaded_matchparen=1
 set foldlevelstart=1
+set foldopen-=search
 set iskeyword=@,48-57,_,192-255,-
 set modelines=10
 set modeline
