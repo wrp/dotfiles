@@ -41,6 +41,7 @@ set modeline
 set ai
 set hlsearch
 set listchars=extends:%,precedes:%,eol:$,tab:>-,trail:$
+set laststatus=2   " Always show status line
 set matchpairs+=<:>
 set nowrap
 " set sidescroll=1
