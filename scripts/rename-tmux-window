@@ -30,6 +30,14 @@ fi
 
 title="${DOCKER+$DOCKER:}$( echo "$*" | sed '/.\{20\}/s/^'$patt'$/'$repl/)"
 
+
+if test -n "$VIRTUAL_ENV"; then
+	# Current convention is that VIRTUAL_ENV is a path in which useful
+	# info is in 3rd to last component
+	title='('$(basename $(dirname $(dirname $VIRTUAL_ENV)))")$title"
+fi
+
+
 # This is now a poorly named script.  Instead of renaming the window,
 # we will change the title of the currnet pane, and rely on the
 # tmux configuration to set the string shown in the status bar via
