@@ -590,7 +590,9 @@ update() {
 }
 vi() {
 	if test -t 0; then
-		test $# = 0 && set $(get-modified-files ${h});
+		local default_branch=$(git for-each-ref refs/heads | grep -q main \
+			&& echo main || echo master)
+		test $# = 0 && set $(get-modified-files ${h-$default_branch});
 		vim "$@"    # .vimrc sets tmux titles
 	else
 		vim < /dev/tty $(cat)
