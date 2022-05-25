@@ -1,17 +1,12 @@
 #!/bin/sh
 # Get a list of modified files.  First argument specifies a branch to
-# compare to, defaulting to current.  If it is an integer, it is the
-# amount of git history to explore.
-
-test -n "$TOP" && cd $(git exec pwd)
+# compare to (defaulting to current) or an integer.  If it is an integer, it
+# is the amount of git history to explore in the current branch.
 
 if test $# = 0 || test "$1" -gt 0 2> /dev/null; then
-	# First arg is an integer.  Treat it as the number of commits against which
-	# to compare
-	depth=${1-1}
-	while test ${i-0} -lt $depth; do
+	# First arg is an integer.
+	for (( i = 0; i < ${1-1}; i++ )); do
 		git diff-tree --no-commit-id --name-only -r HEAD~${i-0}
-		: $(( i += 1 ))
 	done
 else
 	branch=${1-$(git rev-parse --abbrev-ref HEAD)} || exit
