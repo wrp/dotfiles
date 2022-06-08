@@ -136,7 +136,7 @@ report_cmd_status() {
 			exit 0 if /^[a-z]{1,2}$/;   # 2 letter cmds w/no args
 			foreach $cmd (
 					"cal", "cat", "cd", "date", "echo", "exec bash",
-					"head", "less", "more", "pwd", "tail", "man"
+					"head", "less", "ls", "more", "pwd", "tail", "man"
 				) {
 				exit 0 if /^$cmd( |$)/ }
 			print $ts
