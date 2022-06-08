@@ -16,8 +16,10 @@ else
 fi
 
 
-base=$( cd $(dirname "$0"); pwd -P)
-test "$(pwd)" = "$HOME" || warn "Running from $HOME"
+base=$(dirname "$0")
+test "$(pwd)" = "$HOME" || die "Must run from $HOME"
+cd $HOME
+
 unset force abort
 while test $# -gt 0; do
        case $1 in
@@ -27,7 +29,6 @@ while test $# -gt 0; do
        shift
 done
 
-cd $HOME
 
 files=$(ls -a $base | while read f; do grep -q "^${f}$" $base/blacklist \
 	|| echo $f; done)
