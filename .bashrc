@@ -115,6 +115,10 @@ after_cmd() {
 report_cmd_status() {
 	# Clean up the most recent command in HISTFILE and append it to global .bash-history.
 	# Note that the FAILED string is used in scripts/search-bash-history
+	local HOST=""
+	if test "$HOSTNAME" != "${USER//./}.local"; then
+		HOST=" on $HOSTNAME"
+	fi
 	test -f "$1" && tac "$1" | STATUS="$2" perl -MPOSIX -pe '
 		if( /^#[0-9]{10}$/ ) { # abort after adding the timestamp.
 			s@([0-9]{10})@sprintf "%s (%s by pid:%d in %s%s%s) %s",
@@ -123,7 +127,7 @@ report_cmd_status() {
 				'"$$"',
 				"'"${PWD}"'",
 				"'"${PROJECT:+:}${PROJECT}"'",
-				"'"${HOSTNAME:+ on }${HOSTNAME}"'",
+				"'"${HOST}"'",
 				$ENV{STATUS} > 0 ? "FAILED" : "ok",
 				@ge;
 			print;  # Since about to skip auto print with -p
