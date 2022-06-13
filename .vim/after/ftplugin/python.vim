@@ -14,7 +14,7 @@
 " false: Don't skip blank lines
 
 set fdm=indent
-set foldlevel=0
+set foldlevel=99
 "set sw=2
 "set ts=2
 "set et
