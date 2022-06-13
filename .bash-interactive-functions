@@ -592,7 +592,7 @@ vi() {
 	if test -t 0; then
 		local default_branch
 
-		if git diff --name-only | grep -q .; then
+		if git diff --name-only 2> /dev/null | grep -q .; then
 			default_branch=HEAD
 		else
 			default_branch=$(git for-each-ref refs/heads | grep -q main \
