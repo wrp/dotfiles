@@ -589,6 +589,7 @@ update() {
 	fi
 }
 vi() {
+	: set h for depth, or f for filter
 	if test -t 0; then
 		local default_branch
 
