@@ -5,6 +5,7 @@
 
 TOP=$(git rev-parse --show-toplevel)
 : ${GIT_DIR=$(git rev-parse --git-dir)}
+filter=${f:-.}
 
 if test $# = 0 || test "$1" -gt 0 2> /dev/null; then
 	# First arg is an integer.
@@ -22,4 +23,4 @@ else
 	fi
 
 fi \
-| awk '!a[$0]++{print c, $0}' OFS=/ c=$TOP
+| awk '!a[$0]++ && match($0, f) {print c, $0}' OFS=/ f="$filter" c=$TOP
