@@ -15,6 +15,9 @@ fi
 test -z "$*" && {
 	if git_dir=$(git rev-parse --absolute-git-dir 2> /dev/null); then
 		set "$(basename $(dirname "$git_dir"))"
+		if test "$1" = worktrees; then
+			set "$(basename "$git_dir")"
+		fi
 	else
 		set "$(pwd | sed -e 's@.*/@@' 2> /dev/null)"
 	fi
