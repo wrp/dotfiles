@@ -118,6 +118,9 @@ g() {
 			"${remote:+ (${remote#refs/remotes/})}"
 	;;
 	# (l1a) if test -t 1; then tig; else git "$@"; fi;; # Train myself to use tig
+	(base)
+		git worktree list | awk '{print $1; exit}'
+	;;
 	(root)
 	        root=$(git rev-parse --show-toplevel) \
 		&& root=$(cd "$root" && pwd 2> /dev/null)/ \
