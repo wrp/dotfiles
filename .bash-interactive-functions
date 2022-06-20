@@ -134,7 +134,10 @@ g() {
 			awk '/is already checked out at/{ print $NF; f=1 }
 			END {exit !f}')"
 	then
-		echo "**** Changing directory to $dir!!! ****"
+		local msg="**** Changing directory to $dir!!! ****"
+		local len=$(printf "%s" "$msg" | wc -c)
+		local banner=$(perl -E 'print"*" x '"$len")
+		printf "%s\n%s\n%s\n" "$banner" "$msg" "$banner"
 		cd "$dir" && g "$@"; return
 	fi
 	return $rv
