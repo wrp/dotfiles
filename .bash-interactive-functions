@@ -91,8 +91,6 @@ execute() { local cmd=$1; window-title "$cmd";
 	command "$@";
 	RV=$?; return $RV; }
 g() {
-	# Basically, this is a wrapper around git.  Plus we do some post-processing.
-	# Passing . as first arg allows us to just do the post-processing.
 	local rv=0 root remote err dir src
 
 	if test -n "$DOCKER" && test -z "$FORCE_G"; then
@@ -101,7 +99,9 @@ g() {
 	fi
 
 	src=$(awk '/^top_srcdir/{print $3}' Makefile 2> /dev/null)
-	if test -n "$src" && test "$(pwd)" != "$(cd "$src"; pwd)"; then (
+	if test -n "$src" && test "$(pwd)" != "$(cd "$src"; pwd)"; then
+		(
+			echo "Found top_srcdir in Makefile.  Re-running in $src"
 			cd "$src"
 			g "$@"
 		)
@@ -137,7 +137,7 @@ g() {
 			awk '/is already checked out at/{ print $NF; f=1 }
 			END {exit !f}')"
 	then
-		local msg="**** Changing directory to worktree in $dir!!! ****"
+		local msg="**** Changing directory to worktree in $dir ****"
 		local len=$(printf "%s" "$msg" | wc -c)
 		local banner=$(perl -E 'print"*" x '"$len")
 		printf "%s\n" "$banner" "$msg" "$banner"
