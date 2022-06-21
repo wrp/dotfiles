@@ -604,6 +604,7 @@ vi() {
 		else
 			default_branch=$(git for-each-ref refs/heads | grep -q main \
 				&& echo main || echo master)
+			default_branch=$(git merge-base HEAD "$default_branch")
 		fi
 		test $# = 0 && set $(get-modified-files ${h-$default_branch});
 		vim "$@"    # .vimrc sets tmux titles
