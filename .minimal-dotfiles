@@ -15,7 +15,7 @@ if (return 0 2>/dev/null); then
 fi
 
 available=$(
-	sed -e '1,/UNI[Q]UE_STRING/d' -e '/^#[^#]/!d' -e 's/^# /    /' $0
+	sed -e '1,/UNI[Q]UE_STRING/d' -e '/^# \./!d' -e 's/^# /    /' $0
 )
 
 unset text_only
