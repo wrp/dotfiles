@@ -597,16 +597,14 @@ update() {
 vi() {
 	: set h for depth, or f for filter
 	if test -t 0; then
-		local default_branch
+		local default=HEAD
 
-		if git diff --name-only 2> /dev/null | grep -q .; then
-			default_branch=HEAD
-		else
-			default_branch=$(git for-each-ref refs/heads | grep -q main \
+		if ! git diff --name-only 2> /dev/null | grep -q .; then
+			default=$(git for-each-ref refs/heads | grep -q main \
 				&& echo main || echo master)
-			default_branch=$(git merge-base HEAD "$default_branch")
+			default=$(git merge-base HEAD "$default")
 		fi
-		test $# = 0 && set $(get-modified-files ${h-$default_branch});
+		test $# = 0 && set $(get-modified-files ${h-$default});
 		vim "$@"    # .vimrc sets tmux titles
 	else
 		vim < /dev/tty $(cat)
