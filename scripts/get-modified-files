@@ -3,7 +3,11 @@
 # compare to (defaulting to current) or an integer.  If it is an integer, it
 # is the amount of git history to explore in the current branch.
 
-TOP=$(git rev-parse --show-toplevel)
+if test -n "$FULL_PATH"; then
+	top=$(git rev-parse --show-toplevel)
+else
+	top=.
+fi
 : ${GIT_DIR=$(git rev-parse --git-dir)}
 filter=${f:-.}
 
@@ -24,4 +28,4 @@ else
 	fi
 
 fi \
-| awk '!a[$0]++ && match($0, f) {print c, $0}' OFS=/ f="$filter" c=$TOP
+| awk '!a[$0]++ && match($0, f) {print c, $0}' OFS=/ f="$filter" c=$top

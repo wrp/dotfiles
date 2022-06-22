@@ -61,7 +61,7 @@ cd() {
 	# Don't care about failures now.
 	return 0
 }
-cdm() { cd $(get-modified-files | longest-common-prefix -d); }
+cdm() { cd $(FULL_PATH=1 get-modified-files | longest-common-prefix -d); }
 
 
 checkout_previous_branch() {
@@ -162,7 +162,7 @@ ga() {
 }
 gcd() {
 	local _dir
-	_dir=$(get-modified-files $1 | get-most-used-dir)
+	_dir=$(FULL_PATH=1 get-modified-files $1 | get-most-used-dir)
 	test -d "$_dir" || _dir=$(dirname "$_dir")
 	if test -d "$_dir"; then
 		cd "$_dir"
@@ -604,7 +604,7 @@ vi() {
 				&& echo main || echo master)
 			default=$(git merge-base HEAD "$main_or_master")
 		fi 2> /dev/null
-		test $# = 0 && set $(get-modified-files ${h-$default});
+		test $# = 0 && set $(FULL_PATH=1 get-modified-files ${h-$default});
 		vim "$@"    # .vimrc sets tmux titles
 	else
 		vim < /dev/tty $(cat)
