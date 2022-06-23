@@ -566,7 +566,14 @@ fi
 tags() { git for-each-ref refs/tags --sort=-taggerdate --format='%(refname)' | grep ${1-members} | head; }
 window-title() { test -t 1 || return;
 	while test "${1#-}" != "$1"; do shift; done;
-	rename-tmux-window "$@"; }
+	local deactivate_is_defined
+	if type deactivate 2> /dev/null >&2; then
+		export deactivate_is_defined=1
+	else
+		unset deactivate_is_defined=
+	fi
+	rename-tmux-window "$@";
+}
 tn() { tmux switch-client -n; }
 tp() { tmux switch-client -p; }
 trim() { perl -nE "chomp; say substr \$_, 0, ${COLUMNS-80} - 1" "$@"; }
