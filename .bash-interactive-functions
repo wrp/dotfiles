@@ -132,7 +132,6 @@ g() {
 	esac
 	rv=$?
 
-	test -n "$err" && echo "$err" >&2
 	if dir="$( echo "$err" | tr -d "'" |
 			awk '/is already checked out at/{ print $NF; f=1 }
 			END {exit !f}')"
@@ -141,7 +140,10 @@ g() {
 		local len=$(printf "%s" "$msg" | wc -c)
 		local banner=$(perl -E 'print"*" x '"$len")
 		printf "%s\n" "$banner" "$msg" "$banner"
-		cd "$dir" && g "$@"; return
+		cd "$dir"
+		rv=$?
+	elif test -n "$err"; then
+		echo "$err" >&2
 	fi
 	return $rv
 }
