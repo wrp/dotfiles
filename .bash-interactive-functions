@@ -603,6 +603,21 @@ update() {
 		echo Unable to find update command looking up in filesystem >&2
 	fi
 }
+upfind() {
+	local f="${1-README}"
+	if ! find . -maxdepth 1 -name "${f}*" | sed -e "s@^.@$(pwd)@" -e 's@^//@/@' \
+			| command grep .; then
+		if ! test . -ef ..; then (
+			cd ..;
+			upfind "$f"
+			)
+			return
+		else
+			printf "%s\n" "$f not found" >&2
+			return 1
+		fi
+	fi
+}
 vi() {
 	: set h for depth, or f for filter
 	if test -t 0; then
