@@ -628,7 +628,7 @@ vi() {
 				&& echo main || echo master)
 			default=$(git merge-base HEAD "$main_or_master")
 		fi 2> /dev/null
-		test $# = 0 && set $(FULL_PATH=1 get-modified-files ${h-$default});
+		test $# = 0 && set $(FULL_PATH=1 f="$f" get-modified-files ${h-$default});
 		vim "$@"    # .vimrc sets tmux titles
 	else
 		vim < /dev/tty $(cat)
