@@ -633,7 +633,7 @@ vi() {
 				default=1
 			fi
 		fi 2> /dev/null
-		test $# = 0 && set "$(FULL_PATH=1 f="$f" get-modified-files ${h-$default})"
+		test $# = 0 && set -- $(FULL_PATH=1 f="$f" get-modified-files ${h-$default})
 		vim "$@"    # .vimrc sets tmux titles
 	else
 		vim < /dev/tty $(cat)
