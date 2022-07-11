@@ -193,6 +193,11 @@ gdb() {
 	(*) command gdb -tui "$@";;
 	esac;
 }
+gdm() { # Diff with the merge-base of main/master
+	local main_or_master=$(git for-each-ref refs/heads | grep -q main \
+		&& echo main || echo master)
+	git diff HEAD $(git merge-base HEAD "$main_or_master")
+}
 GET() {
 	# ACCESS_TOKEN will need be refreshed periodically.  Just unset it.
 	test -z "$ACCESS_TOKEN" \
