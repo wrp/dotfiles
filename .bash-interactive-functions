@@ -196,7 +196,7 @@ gdb() {
 gdm() { # Diff with the merge-base of main/master
 	local main_or_master=$(git for-each-ref refs/heads | grep -q main \
 		&& echo main || echo master)
-	git diff HEAD $(git merge-base HEAD "$main_or_master")
+	git diff "$(git merge-base HEAD "$main_or_master")" HEAD
 }
 GET() {
 	# ACCESS_TOKEN will need be refreshed periodically.  Just unset it.
