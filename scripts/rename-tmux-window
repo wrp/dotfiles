@@ -16,7 +16,10 @@ test -z "$*" && {
 	if git_dir=$(git rev-parse --absolute-git-dir 2> /dev/null); then
 		set "$(basename $(dirname "$git_dir"))"
 		if test "$1" = worktrees; then
-			set "$(basename "$git_dir")"
+			# Grrr.  After a git worktree move, the absolute-git-dir
+			# retains its old name.  So let's use the currently
+			# checked out branch
+			set -- "$(basename $(git rev-parse --abbrev-ref HEAD))"
 		fi
 	else
 		set "$(pwd | sed -e 's@.*/@@' 2> /dev/null)"
