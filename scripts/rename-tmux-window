@@ -12,6 +12,9 @@ if test -z "$TMUX$DOCKER$DVTM"; then
 	exit 0
 fi
 
+# If no argument is given, default to the basename of the git dir.
+# In a worktree, use the basename of the branch.  If not in a git repo,
+# use the output of pwd -P
 test -z "$*" && {
 	if git_dir=$(git rev-parse --absolute-git-dir 2> /dev/null); then
 		set "$(basename $(dirname "$git_dir"))"
@@ -22,7 +25,7 @@ test -z "$*" && {
 			set -- "$(basename $(git rev-parse --abbrev-ref HEAD))"
 		fi
 	else
-		set "$(pwd | sed -e 's@.*/@@' 2> /dev/null)"
+		set "$(pwd -P | sed -e 's@.*/@@' 2> /dev/null)"
 	fi
 }
 
