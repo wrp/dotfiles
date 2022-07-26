@@ -91,7 +91,7 @@ execute() { local cmd=$1; window-title "$cmd";
 	command "$@";
 	RV=$?; return $RV; }
 g() {
-	local rv=0 root remote err dir src
+	local rv=0 root remote err dir src branch
 
 	if test -n "$DOCKER" && test -z "$FORCE_G"; then
 		echo "Do not run git in a docker image.  Set FORCE_G to force" >&2
@@ -139,7 +139,9 @@ g() {
 	;;
 	(co)
 		if test "$2" -gt 0 2> /dev/null; then
-			set -- checkout wrp/MEM-$2
+			branch="${GIT_DEFAULT_BRANCH_PREFIX}$2"
+			shift; shift;
+			set -- checkout "$branch" "$@"
 		fi
 	;;
 	esac
