@@ -1,17 +1,4 @@
 
-ack() {
-	local _dash_i
-	local _regex
-	if test "${1?}" = -i; then
-		_dash_i=-i
-		shift
-	fi
-
-	_regex=$1
-	shift
-	find "${@-.}" -name .git -prune -o -type f -exec grep $_dash_i -H "$_regex" {} \;
-}
-
 bundle() {
 	local file base
 	if test $# -ne 0; then

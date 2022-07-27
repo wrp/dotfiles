@@ -53,12 +53,11 @@ test -n "$abort" && warn overwriting
 
 mkdir -p $HOME/.bash-history-dir
 mkdir -p $HOME/.config/git
-ln -s $base/.gitignore_global $HOME/.config/git/ignore
+ln -fs $base/.bashd $HOME/.bashd
+ln -fs $base/.gitignore_global $HOME/.config/git/ignore
 
 for file in $files; do
-	test "$file" = .git \
-	|| ln -sf "$base/$file" .${file#.} \
-	|| die
+	ln -sf "$base/$file" .${file#.} || die
 done
 
 for n in EMAIL UNAME; do
