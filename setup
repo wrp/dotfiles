@@ -17,7 +17,7 @@ fi
 
 
 base=$(dirname "$0")
-test "$(pwd)" = "$HOME" || die "Must run from $HOME"
+test "$(pwd)" = "$HOME" || die "Must run from \$HOME ($HOME)"
 cd $HOME
 
 unset force abort
