@@ -1,0 +1,26 @@
+bundle() {
+	local file base
+	if test $# -ne 0; then
+		for x; do
+			(command cd "$x" && shift && bundle) || return 1
+		done
+		return 0
+	fi
+	if ! command git rev-parse HEAD > /dev/null 2>&1; then
+		echo "Not a git repo" >&2
+		return 1
+	fi
+	if ! command git diff-index --quiet HEAD; then
+		echo "Repo is dirty.  Stubbornly refusing to create bundle" >&2
+		return 1
+	fi
+	base=$(command git config core.name ||
+		awk 'NR==1{print $1}' "$(command git rev-parse --git-dir)/description" | grep . ||
+		basename $(command git rev-parse --show-toplevel)
+	)
+	test -n "$base" || return
+	file="$base"-$(command git rev-parse --short HEAD ).bundle
+	test -e "$file" && { echo "$file already exists" >&2; return 1; }
+	command git bundle create "$file" HEAD 2> /dev/null \
+	&& echo Created "$(pwd)/$file"
+}
