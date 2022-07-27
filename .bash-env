@@ -12,6 +12,7 @@ export COLUMNS
 export LESS=FeRXSQM#.95
 export GIT_PAGER=less
 export GIT_CEILING_DIRECTORIES=$HOME
+export GIT_TEMPLATE_DIR=$HOME/.git-templates
 export GPG_TTY=$(tty)
 export PAGER=less
 # export CPATH=$HOME/$(uname -m)/$(uname -s)/include
