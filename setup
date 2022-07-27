@@ -34,13 +34,11 @@ files=$(ls -a $base | while read f; do grep -q "^${f}$" $base/blacklist \
 	|| echo $f; done)
 
 for file in $files; do
-	if test -f "$file"; then
-		if test "$($MD5 < $HOME/$file)" != \
-				"$($MD5 < "$base/$file")"; then
-			warn "$file is different, set V=1 to see diff"
-			test -n "$V" && diff -u $HOME/$file "$base/$file"
-			abort=1
-		fi
+	if test -f "$file" && test "$($MD5 < $HOME/$file)" != \
+			"$($MD5 < "$base/$file")"; then
+		warn "$file is different, set V=1 to see diff"
+		test -n "$V" && diff -u $HOME/$file "$base/$file"
+		abort=1
 	fi
 done
 
