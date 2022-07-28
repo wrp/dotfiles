@@ -23,19 +23,6 @@ cd() {
 	return 0
 }
 cdm() { cd $(FULL_PATH=1 get-modified-files | longest-common-prefix -d); }
-
-
-checkout_previous_branch() {
-	echo "Don't use ${FUNCNAME[0]} anymore!  Just do 'git checkout -' or 'git checkout @{-1}'" >&2
-	return
-	local prev_branch
-	if prev_branch=$(git reflog | awk '$3 == "checkout:"{print $6; exit}' | grep .); then
-		git checkout "$prev_branch"
-	else
-		echo "Couldn't determine previous branch from reflog" >&2
-		return 1
-	fi
-}
 curl() { command curl -Ss "$@"; }
 dedup() {
 	# ad-hoc awk script to deduplicat .bash-history
@@ -43,7 +30,6 @@ dedup() {
 	| awk '/^#/{if( ts && ! a[cmd]++) printf("%s\n%s\n", ts, cmd); ts=$0; cmd=""; next}
 	1 {cmd = sprintf("%s%s%s", cmd, cmd ? "\n" : "", $0)}'
 }
-
 
 
 which ncdu > /dev/null 2>&1 && du() { ncdu "$@"; }
