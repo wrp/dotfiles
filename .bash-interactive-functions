@@ -2,9 +2,7 @@
 c() { tput sc; clear; tput rc; } # save cursor/restore cursor  man terminfo
 cd() {
 	local _SESSION_DIR
-	local _rv
-	local _dir
-	_dir=$1
+	local _dir="$1"
 	if test $# -gt 1; then
 		echo 'cd takes at most one argument' >&2
 		return 1
@@ -12,15 +10,11 @@ cd() {
 	if test "$#" = 0; then
 		_SESSION_DIR=$(tmux show-options -s @dir 2> /dev/null \
 			| awk '{print $2}')
-	elif test -f "$1" && echo $1 | grep -q /; then
-		_dir=$( dirname "$1")
+	elif test -f "$1"; then
+		_dir=$( dirname "$1" )
 		echo cd: Truncating target to $_dir >&2
 	fi
-	command cd "${_dir:-${_SESSION_DIR:-${USE_HOME:-$HOME}}}" || return 1;
-
-	# If actual cd fails, we returned 1 above.
-	# Don't care about failures now.
-	return 0
+	command cd "${_dir:-${_SESSION_DIR:-${USE_HOME:-$HOME}}}"
 }
 cdm() { cd $(FULL_PATH=1 get-modified-files | longest-common-prefix -d); }
 curl() { command curl -Ss "$@"; }
