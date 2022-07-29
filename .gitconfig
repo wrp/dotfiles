@@ -33,6 +33,7 @@
 	l1h = log -n 10 --decorate --format=format:'%Cgreen%h%Cred %<(12,trunc)%an%Creset %<(60,trunc)%s %Cblue%D%Creset' --graph
 	la = log --oneline --graph --decorate --format=format:'%Cgreen%h%Cblue%d%Creset %<(80,trunc)%s'
 	ld = log --date=format:'%H:%M:%S %d%b%y' --format=format:'%Cgreen%h%C(yellow) %Cred %<(10,trunc)%an%Creset %<(60,trunc)%s %ad %Cblue%D%Creset'
+	ldh = log -n 10 --date=format:'%H:%M:%S %d%b%y' --format=format:'%Cgreen%h%C(yellow) %Cred %<(10,trunc)%an%Creset %<(60,trunc)%s %ad %Cblue%D%Creset'
 	lg = log
 	lh  = log -n 10 --decorate --format=format:'%Cgreen%h%Cred %<(12,trunc)%an%Creset %<(60,trunc)%s %Cblue%D%Creset' --graph
 	ll = log --stat
