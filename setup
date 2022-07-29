@@ -51,7 +51,7 @@ test -n "$abort" && warn overwriting
 
 mkdir -p $HOME/.bash-history-dir
 mkdir -p $HOME/.config/git
-ln -fs $base/.gitignore_global $HOME/.config/git/ignore || die
+ln -fs ../../$base/.gitignore_global $HOME/.config/git/ignore || die
 
 for file in $files; do
 	ln -sf "$base/$file" .${file#.} || die
