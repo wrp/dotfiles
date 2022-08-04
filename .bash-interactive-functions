@@ -53,9 +53,6 @@ gpu() {
 	{ git push $set_upstream "$remote" HEAD:"$remote_branch" 2>&1 >&3 \
 		| sed -e '/^remote:/d' >&2; } 3>&1
 }
-gr() { # Git recursive
-	find . -name .git -execdir sh -c 'p=$(pwd); command git "$@" | sed -e "s@^@$p: @"' _ "$@" \; | ${PAGER-more}
-}
 grep() {
 	if test -t 1; then
 		command grep --color=always "$@" | ${PAGER-more}
@@ -180,7 +177,6 @@ if ! which md5sum > /dev/null 2>&1; then
 fi
 
 
-mg() { find . -name .git -exec sh -c 'cd $0/..; git "$@" | sed "s@^@$0@"' {} "$@" \; ; }
 mon() { inotifywait -qmr "${@-.}" --exclude '^\./\.git'; }
 
 get_current_gcp_project() {
