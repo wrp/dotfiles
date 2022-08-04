@@ -30,7 +30,7 @@ g() {
 	;;
 	# (l1a) if test -t 1; then tig; else git "$@"; fi;; # Train myself to use tig
 	(base)
-		git worktree list | awk '{print $1; exit}'
+		git worktree list --porcelain | awk '{print $2; exit}'
 		return
 	;;
 	(r)
