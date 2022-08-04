@@ -55,11 +55,20 @@ g() {
 		fi
 		# Check if the current directory is a worktree and reject
 		if git worktree list --porcelain |
-			awk '/^worktree/ && substr(pwd, 1, length($2)) == $2 {m=1}END{exit !m}' pwd=$(pwd) \
-			&& test -z "$FORCE_G"
+			awk '/^worktree/ && substr(pwd, 1, length($2)) == $2 {m=1}END{exit !m}' pwd=$(pwd)
 		then
-			echo "You are in a worktree.  Set FORCE_G to override" >&2
-			return 1;
+			dir=$(git worktree list --porcelain | awk '{print $2; exit}')
+			if ! test -d "$dir"; then
+				echo "You are in a worktree.  Cannot find base dir.  Aborting!" >&2
+				return 1
+			fi
+			local msg="**** Changing directory to base in $dir ****"
+			local len=$(printf "%s" "$msg" | wc -c)
+			local banner=$(perl -E 'print"*" x '"$len")
+			printf "%s\n" "$banner" "$msg" "$banner"
+			cd "$dir"
+			g "$@"
+			return;
 		fi
 	;;
 	esac
