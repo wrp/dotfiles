@@ -51,7 +51,7 @@ g() {
 		if test "$2" -gt 0 2> /dev/null; then
 			branch="${GIT_DEFAULT_BRANCH_PREFIX}$2"
 			shift; shift;
-			set -- checkout "$branch" "$@"
+			set -- co "$branch" "$@"
 		fi
 		# Check if the current directory is a worktree and reject
 		if git worktree list --porcelain |
