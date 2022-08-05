@@ -54,7 +54,7 @@ g() {
 			set -- co "$branch" "$@"
 		fi
 		# Check if the current directory is a worktree and reject
-		if git worktree list --porcelain |
+		if test "$#" -eq 2 && git worktree list --porcelain |
 			awk 'NR > 1 && /^worktree/ && substr(pwd, 1, length($2)) == $2 {m=1}END{exit !m}' pwd=$(pwd)
 		then
 			dir=$(git worktree list --porcelain | awk '{print $2; exit}')
