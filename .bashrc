@@ -39,7 +39,7 @@ if test -z "$PS1"; then
 PS1=''
 if test -n "$__RED" && test -n "$__GREEN"; then
 PS1+='\[$( # Colorize based on previous command status
-	{ test $? != 0 && printf "%s" "$__RED" || printf "%s" "$__GREEN"; }
+	{ test $? -ne 0 && printf "%s" "$__RED" || printf "%s" "$__GREEN"; }
 	)\]'
 fi
 if test "$(tput cols)" -gt 80; then
