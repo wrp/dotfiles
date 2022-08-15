@@ -45,7 +45,7 @@
 	s = status -uno
 	sa = status -uall --ignored
 	sl = stash list
-	sp = stash pop
+	sp = stash pop -quiet
 	ss = stash push
 	w = rev-parse --abbrev-ref HEAD
 [core]
