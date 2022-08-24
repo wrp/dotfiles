@@ -3,13 +3,15 @@
 
 
 pd() {
-	three_days_ago=$( perl -MTime::Piece -MTime::Seconds=ONE_DAY -E 'my $g=gmtime; $g -= 3* ONE_DAY; say $g->datetime' )
+	limit=${1-25}
+	three_days_ago=${2-$( perl -MTime::Piece -MTime::Seconds=ONE_DAY -E 'my $g=gmtime; $g -= 3* ONE_DAY; say $g->datetime' )}
 
 	curl -X GET \
 		--header 'Accept: application/vnd.pagerduty+json;version=2' \
 		--header "Authorization: Token token=${PD_TOKEN?}" \
 		"https://api.pagerduty.com/incidents"$( :
 		)"?time_zone=UTC"$( :
+		)"&limit=$limit"$(:
 		)"&since=$three_days_ago"$(:
 		)"&sort_by=created_at:desc"$(:
 		)\
