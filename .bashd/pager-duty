@@ -14,6 +14,6 @@ pd() {
 			EOF
 		)\
 	| jq -r '.incidents[] | (.created_at, .summary)' \
-	| awk '{printf("%s%s", $0, NR % 2 ? ": " : "\n")}' \
+	| awk '{printf("%s%s", $0, match($1, "^202[0-9]-") ? ": " : "\n")}' \
 	| ${PAGER-more}
 }
