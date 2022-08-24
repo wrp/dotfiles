@@ -8,7 +8,11 @@ pd() {
 	curl -X GET \
 		--header 'Accept: application/vnd.pagerduty+json;version=2' \
 		--header "Authorization: Token token=${PD_TOKEN?}" \
-		"https://api.pagerduty.com/incidents?time_zone=UTC&since=$three_days_ago" \
+		"https://api.pagerduty.com/incidents"$( :
+		)"?time_zone=UTC"$( :
+		)"&since=$three_days_ago"$(:
+		)"&sort_by=created_at:desc"$(:
+		)\
 	| jq -r '.incidents[] | (.created_at, .summary)' \
 	| awk '{printf("%s%s", $0, NR % 2 ? ": " : "\n")}' \
 	| ${PAGER-more}
