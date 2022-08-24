@@ -22,13 +22,13 @@ if test "$1" -ge 0 2> /dev/null; then
 fi
 
 do_search() {
-	# Prepend "?:" to every command with unknown status
-	# This relies on the formatting given in the PROMPT_COMMAND in .bashrc
-
 	trap 'rm -f $tmp1 $tmp2' RETURN
 	tmp1=$(mktemp)
 	tmp2=$(mktemp)
 
+	# Format the timestamp and commands one per line
+	# Prepend "?" to every command with unknown status
+	# This relies on the formatting given in the PROMPT_COMMAND in .bashrc
 	< ~/.bash-history \
 		awk '
 			/^#/ {
