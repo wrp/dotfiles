@@ -1,0 +1,4 @@
+
+is_on_vpn(){
+	scutil --dns list | grep -q "$VPN_NAME_SERVER"
+}
