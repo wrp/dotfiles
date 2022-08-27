@@ -365,13 +365,11 @@ fi
 tags() { git for-each-ref refs/tags --sort=-taggerdate --format='%(refname)' | grep ${1-members} | head; }
 window-title() { test -t 1 || return;
 	while test "${1#-}" != "$1"; do shift; done;
-	local deactivate_is_defined
+	local t
 	if type deactivate 2> /dev/null >&2; then
-		export deactivate_is_defined=1
-	else
-		unset deactivate_is_defined
+		t=1
 	fi
-	rename-tmux-window "$@";
+	deactivate_is_defined=$t rename-tmux-window "$@";
 }
 tn() { tmux switch-client -n; }
 tp() { tmux switch-client -p; }
