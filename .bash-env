@@ -9,7 +9,7 @@ export HISTTIMEFORMAT='%H:%M:%S ' #%m/%d
 export EDITOR=vim
 export CONFIG_SITE=$HOME/CONFIG_SITE
 export COLUMNS
-export LESS=FeRXSQM#.95
+export LESS=eFiMQRSX#.95
 export GIT_PAGER=less
 export GIT_CEILING_DIRECTORIES=$HOME
 export GIT_TEMPLATE_DIR=$HOME/.git-templates
