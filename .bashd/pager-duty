@@ -2,18 +2,29 @@
 
 # Grab the timestamp and summary of the most recent pager duty incidents
 pd() {
-	limit=${1-25}
+	local base url jqfilter
+
+	base=https://api.pagerduty.com
+
+	if test "$1" -gt 0 2> /dev/null; then
+		url=$base/incidents/$1
+		jqfilter='.incident | (.created_at, .summary)'
+	else
+		url="$( tr '\n' '&' <<- EOF | tr -d '[[:space:]]'
+			$base/incidents?
+			time_zone=UTC
+			limit=${limit-25}
+			sort_by=created_at:desc
+			EOF
+		)"
+		jqfilter='.incidents[] | (.created_at, .summary)'
+	fi
 
 	curl -X GET \
 		--header 'Accept: application/vnd.pagerduty+json;version=2' \
 		--header "Authorization: Token token=${PD_TOKEN?}" \
-		https://api.pagerduty.com/incidents?$( tr '\n' '&' <<- EOF | tr -d '[[:space:]]'
-			time_zone=UTC
-			limit=$limit
-			sort_by=created_at:desc
-			EOF
-		)\
-	| jq -r '.incidents[] | (.created_at, .summary)' \
+		$url \
+	| jq -r "$jqfilter" \
 	| awk '{printf("%s%s", $0, match($1, "^202[0-9]-") ? ": " : "\n")}' \
 	| ${PAGER-more}
 }
