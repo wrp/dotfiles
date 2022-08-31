@@ -113,9 +113,8 @@ gdm() { # Diff with the merge-base of main/master
 	else
 		branch=HEAD
 	fi
-
-	local main_or_master=$(git for-each-ref refs/heads | grep -q main \
-		&& echo main || echo master)
+	local main_or_master=$(git for-each-ref refs/heads --format='%(refname)' \
+		| grep '^refs/heads/main$' || echo master)
 
 	git diff "$@" "$(git merge-base "$branch" "$main_or_master")" "$branch"
 }
