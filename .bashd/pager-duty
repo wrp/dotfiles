@@ -8,7 +8,7 @@ pd() {
 
 	if test "$1" -gt 0 2> /dev/null; then
 		url=$base/incidents/$1
-		jqfilter='.incident | (.created_at, .summary)'
+		jqfilter='.incident'
 	else
 		url="$( tr '\n' '&' <<- EOF | tr -d '[[:space:]]'
 			$base/incidents?
@@ -17,13 +17,21 @@ pd() {
 			sort_by=created_at:desc
 			EOF
 		)"
-		jqfilter='.incidents[] | (.created_at, .summary)'
+		jqfilter='.incidents[]'
 	fi
+	if test -n "title_match"; then
+		jqfilter="$jqfilter | select( .title | contains(\"$title_match\"))"
+	fi
+	jqfilter="$jqfilter | (.created_at, .summary)"
 
-	curl -X GET \
-		--header 'Accept: application/vnd.pagerduty+json;version=2' \
-		--header "Authorization: Token token=${PD_TOKEN?}" \
-		$url \
+	if test -t 0; then
+		curl -X GET \
+			--header 'Accept: application/vnd.pagerduty+json;version=2' \
+			--header "Authorization: Token token=${PD_TOKEN?}" \
+			$url
+	else
+		cat
+	fi \
 	| jq -r "$jqfilter" \
 	| awk '{printf("%s%s", $0, match($1, "^202[0-9]-") ? ": " : "\n")}' \
 	| ${PAGER-more}
