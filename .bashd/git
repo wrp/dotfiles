@@ -107,9 +107,17 @@ ga() {
 	git ci -nm "Add $list";
 }
 gdm() { # Diff with the merge-base of main/master
+	local branch=${1-HEAD}
+	if git rev-parse --verify -q -- "$branch" > /dev/null; then
+		shift
+	else
+		branch=HEAD
+	fi
+
 	local main_or_master=$(git for-each-ref refs/heads | grep -q main \
 		&& echo main || echo master)
-	git diff "$@" "$(git merge-base HEAD "$main_or_master")" HEAD
+
+	git diff "$@" "$(git merge-base "$branch" "$main_or_master")" "$branch"
 }
 git_unpack() {
 	local dir sha
