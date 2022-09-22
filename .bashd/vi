@@ -1,0 +1,29 @@
+
+vi() {
+	: set h for depth, or f for filter
+	if test -t 0; then
+		local default=HEAD main_or_master
+
+		if test -z "$h" && ! git diff --name-only | grep -q .; then
+			main_or_master=$(git for-each-ref refs/heads | grep -q main \
+				&& echo main || echo master)
+			default=$(git merge-base HEAD "$main_or_master")
+			# If the current HEAD is no different than the merge base,
+			# set default to 1 so we edit the files changed in the last commit
+			if test "$default" = "$(git rev-parse HEAD)"; then
+				default=1
+			fi
+		fi 2> /dev/null
+		test $# = 0 && set -- $(FULL_PATH=1 f="$f" get-modified-files ${h-$default})
+		vim "$@"    # .vimrc sets tmux titles
+	else
+		# Strip the input to valid filenames and uniquify.  This allows the raw
+		# output of `git grep` to be used as input, but will fail if any names contain
+		# whitespace or a colon.  (So the user doesn't have to edit previous grep commands with a -l)
+		# There is no sane way to pass names in a pipe without using a null terminator as a separator,
+		# and I do not want to accomodate the brain dead-practice of using whitespace in filenames.
+		# If there are names with whitespace or colons, construct the arguments manually.
+		vim < /dev/tty $(awk '!a[$1]++{print $1}' FS='[:[:space:]]')
+	fi
+
+}

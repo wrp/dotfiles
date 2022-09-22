@@ -413,28 +413,6 @@ upfind() {
 		fi
 	fi
 }
-vi() {
-	: set h for depth, or f for filter
-	if test -t 0; then
-		local default=HEAD main_or_master
-
-		if test -z "$h" && ! git diff --name-only | grep -q .; then
-			main_or_master=$(git for-each-ref refs/heads | grep -q main \
-				&& echo main || echo master)
-			default=$(git merge-base HEAD "$main_or_master")
-			# If the current HEAD is no different than the merge base,
-			# set default to 1 so we edit the files changed in the last commit
-			if test "$default" = "$(git rev-parse HEAD)"; then
-				default=1
-			fi
-		fi 2> /dev/null
-		test $# = 0 && set -- $(FULL_PATH=1 f="$f" get-modified-files ${h-$default})
-		vim "$@"    # .vimrc sets tmux titles
-	else
-		vim < /dev/tty $(cat)
-	fi
-
-}
 y() { select-git-branch "$@"; }
 
 for name in man; do
