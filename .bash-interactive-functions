@@ -418,3 +418,5 @@ y() { select-git-branch "$@"; }
 for name in man; do
 	eval "$name"'() { window-title "'"$name"' $1"; command '$name' "$@"; }'
 done
+
+make() { window-title "${__pane_title="make $*"}"; command make "$@"; }
