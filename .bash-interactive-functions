@@ -415,7 +415,7 @@ upfind() {
 }
 y() { select-git-branch "$@"; }
 
-for name in man; do
+for name in python idle python3 man; do
 	eval "$name"'() { window-title "'"$name"' $1"; command '$name' "$@"; }'
 done
 
