@@ -85,6 +85,7 @@ au BufNewFile,BufRead .bash-history setlocal path+=$HOME/.bash-history-dir
 au BufNewFile *.c r ~/.vim/skeleton.c
 au BufNewFile *.cc r ~/.vim/skeleton.cc
 au BufNewFile *.rs r ~/.vim/skeleton.rs
+au BufNewFile *.go r ~/.vim/skeleton.go
 
 set includeexpr=substitute(v:fname,'^//','','')
 
