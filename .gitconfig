@@ -48,6 +48,8 @@
 	sp = stash pop --quiet
 	ss = stash push
 	w = rev-parse --abbrev-ref HEAD
+[apply]
+	whitespace = error
 [core]
 	whitespace = no-tab-in-indent
 	editor = vim
