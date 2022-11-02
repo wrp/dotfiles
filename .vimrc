@@ -4,6 +4,7 @@ noremap ; :
 noremap , ;
 noremap ' `
 noremap ` '
+noremap bd! :bd<cr>:bn<cr>
 noremap gw :Windo set wrap!
 com! Nt :NERDTree
 
