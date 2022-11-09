@@ -91,7 +91,7 @@ shopt -s direxpand 2> /dev/null # prevent tab expand from expanding $D to \$D
 debug_trap() {
 	# Runs before a command in an interactive shell
 	local last
-	last=$(fc -l -1 | awk '{print $2; exit}' ) 2>/dev/null
+	last=$(fc -l -1 2> /dev/null | awk '{print $2; exit}' ) 2>/dev/null
 	if test "$IFS" != $' \t\n'; then
 		echo "WARNING: IFS contains unexpected characters"
 	fi
