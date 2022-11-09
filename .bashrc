@@ -91,13 +91,15 @@ shopt -s direxpand 2> /dev/null # prevent tab expand from expanding $D to \$D
 debug_trap() {
 	# Runs before a command in an interactive shell
 	local last
-	last=$(fc -l -1 2> /dev/null | awk '{print $2; exit}')
+	last=$(fc -l -1 | awk '{print $2; exit}' ) 2>/dev/null
 	if test "$IFS" != $' \t\n'; then
 		echo "WARNING: IFS contains unexpected characters"
 	fi
 	history -a || echo 'WARNING: history -a failed' >&2
-	if ! test -f "$HISTFILE" || test "$(wc -l < $HISTFILE)" -le 1 || { test -n "$last" && ! tac "$HISTFILE" | awk '/^#/ && a++ > 2 {exit}
-			$1 == "rh" || $1 == last {b++} END{exit !b}' last="$last"; } then
+	if ! test -f "$HISTFILE" || test "$(wc -l < $HISTFILE)" -le 1 || { test -n "$last" && ! tac "$HISTFILE" |
+			awk '/^#/ && a++ > 2 {exit}
+			$1 == "rh" || $1 == last {b++} END{exit !b}' last="$last"; } 2> /dev/null
+	then
 		__PS1_COLOR=${__RED}
 	else
 		__PS1_COLOR=${__GREEN}
