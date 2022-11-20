@@ -72,9 +72,6 @@
 	detachedHead = false
 [include]
 	path = ~/.gitconfig-user
-[user]
-	name = William Pursell
-	email = william.pursell@affirm.com
 [tag]
 	gpgSign = true
 [commit]
