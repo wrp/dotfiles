@@ -29,11 +29,11 @@ while test $# -gt 0; do
        shift
 done
 
-
-files=$(ls -a $base | while read f; do grep -q "^${f}$" $base/blacklist \
+# names is the list to be the target of symlinks
+names=$(ls -a "$base" | while read f; do grep -q "^${f}$" $base/blacklist \
 	|| echo $f; done)
 
-for file in $files; do
+for file in $names; do
 	if test -f "$file" && test "$($MD5 < $HOME/$file)" != \
 			"$($MD5 < "$base/$file")"; then
 		warn "$file is different, set V=1 to see diff"
@@ -53,7 +53,7 @@ mkdir -p $HOME/.bash-history-dir
 mkdir -p $HOME/.config/git
 ln -fs ../../$base/.gitignore_global $HOME/.config/git/ignore || die
 
-for file in $files; do
+for file in $names; do
 	ln -sf "$base/$file" .${file#.} || die
 done
 
