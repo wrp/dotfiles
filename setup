@@ -76,7 +76,7 @@ fi
 if ! test -f $HOME/.bash-local; then
 	cat > $HOME/.bash-local <<- EOF
 		EMAIL="$EMAIL"
-		NAME="$UNAME"
+		UNAME="$UNAME"
 		export EMAIL UNAME
 EOF
 fi
