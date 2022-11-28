@@ -117,4 +117,4 @@ else
 fi
 
 # Let interactive prompt print
-{ sleep .2; tmux paste-buffer -b ${buffer_name?} ; } &
+{ sleep .3; tmux paste-buffer -b ${buffer_name?} ; } &
