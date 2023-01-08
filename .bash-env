@@ -21,6 +21,7 @@ export PAGER=less
 export LSCOLORS=fxfxcxdxbxegedabagacad
 
 prepend_path $HOME/$(uname -m)/$(uname -s)/bin
+prepend_path $HOME/scripts
 
 # a = black, b = red, c = green, d = brown, e = blue, f = magenta, g = cyan,
 # h = light grey, A = bold black, B = bold red, C = bold green, D = bold brown,
