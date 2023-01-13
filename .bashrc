@@ -49,7 +49,8 @@ if test -z "$PS1"; then
 			echo "${PROJECT:+(}${PROJECT%-[0-9]*}${PROJECT:+)}";
 		)'
 		PS1+='$( # directory and git branch
-			if test "${COLUMNS:-0}" -gt 140; then printf "[%s%s]" \
+			if test "${COLUMNS:-0}" -gt 140; then printf "[%s%s%s]" \
+				"${PS1_LEADER:+$PS1_LEADER:}" \
 				"$(pwd 2> /dev/null | sed -E -e "s@^$HOME@~@" \
 					-e "s@([^/]{1})[^/]*/@\1/@g" )" \
 				"$( git rev-parse --abbrev-ref HEAD 2> /dev/null \
