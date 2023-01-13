@@ -36,30 +36,29 @@ read_file $HOME/.bash-functions $HOME/.bash-interactive-functions $HOME/.bash-co
 read_file $HOME/.bash-env $HOME/.bash-localenv
 
 if test -z "$PS1"; then
-PS1=''
-if test -n "$__RED" && test -n "$__GREEN"; then
-PS1+='\[$( # Colorize based on previous command status
-	{ test $? -ne 0 && printf "%s" "$__RED" || printf "%s" "$__GREEN"; }
-	)\]'
-fi
-if test "$(tput cols)" -gt 80; then
-	PS1+="${PS1_PREFIX}"
-	PS1+='\D{%T}'  # %T is passed to strftime for time
-	PS1+='\[$__MAGENTA\]'
-	PS1+='$( # project
-		echo "${PROJECT:+(}${PROJECT%-[0-9]*}${PROJECT:+)}";
-	)'
-	PS1+='$( # directory and git branch
-		if test "${COLUMNS:-0}" -gt 140; then printf "[%s%s]" \
-			"$(pwd 2> /dev/null | sed -E -e "s@^$HOME@~@" \
-				-e "s@([^/]{1})[^/]*/@\1/@g" )" \
-			"$( git rev-parse --abbrev-ref HEAD 2> /dev/null \
-				| sed -E -e "s/^/@/" -e "s@^:heads/@:@" )"
-		else printf :
-		fi | tr \  .
-	)'
-fi
-PS1+='\[$__PS1_COLOR\]'"$( printf "%05d" "$$" )\[$__GREEN\]\$ "
+	if test -n "$__RED" && test -n "$__GREEN"; then
+		PS1+='\[$( # Colorize based on previous command status
+			{ test $? -ne 0 && printf "%s" "$__RED" || printf "%s" "$__GREEN"; }
+		)\]'
+	fi
+	if test "$(tput cols)" -gt 80; then
+		PS1+="${PS1_PREFIX}"
+		PS1+='\D{%T}'  # %T is passed to strftime for time
+		PS1+='\[$__MAGENTA\]'
+		PS1+='$( # project
+			echo "${PROJECT:+(}${PROJECT%-[0-9]*}${PROJECT:+)}";
+		)'
+		PS1+='$( # directory and git branch
+			if test "${COLUMNS:-0}" -gt 140; then printf "[%s%s]" \
+				"$(pwd 2> /dev/null | sed -E -e "s@^$HOME@~@" \
+					-e "s@([^/]{1})[^/]*/@\1/@g" )" \
+				"$( git rev-parse --abbrev-ref HEAD 2> /dev/null \
+					| sed -E -e "s/^/@/" -e "s@^:heads/@:@" )"
+			else printf :
+			fi | tr \  .
+		)'
+	fi
+	PS1+='\[$__PS1_COLOR\]'"$( printf "%05d" "$$" )\[$__GREEN\]\$ "
 fi
 
 complete -r
