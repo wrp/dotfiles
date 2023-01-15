@@ -27,7 +27,6 @@ __RED=$(tput setaf 1)
 __GREEN=$(tput setaf 2)
 __YELLOW=$(tput setaf 3)
 __MAGENTA=$(tput setaf 5)
-__PS1_COLOR="$__GREEN"
 
 unset PS1
 read_file() { local f; for f; do if test -f "$f"; then . "$f"; fi; done; }
@@ -59,7 +58,7 @@ if test -z "$PS1"; then
 			fi | tr \  .
 		)'
 	fi
-	PS1+='\[$__PS1_COLOR\]'"$( printf "%05d" "$$" )\[$__GREEN\]\$ "
+	PS1+="$( printf "%05d" "$$" )\[$__GREEN\]\$ "
 fi
 
 complete -r
@@ -93,20 +92,24 @@ debug_trap() {
 	if test "$IFS" != $' \t\n'; then
 		echo "WARNING: IFS contains unexpected characters"
 	fi
+
 	history -a || echo 'WARNING: history -a failed'
-	if test -f "$HISTFILE" && {
+
+	# Emit a warning if the history file is not updating
+	# When a shell starts up, the debug trap is being called multiple times
+	# before any commands have been executed.  In that case, fc emits no ouptut
+	# and we do not want to emit a warning about the HISTFILE in that situation.
+	if ! test -f "$HISTFILE" || ! {
 		local last  # last is the first word of the most recent command
 		last=$(fc -l -1 2> /dev/null | awk '{print $2; exit}')
 		# Check the last command to ensure that the HISTFILE is updating.
 		# Last command may be multi-line, hence the tac.
-		tac "$HISTFILE" |
+		test -z "$last" || tac "$HISTFILE" |
 			awk '/^#/ && a++ > 2 {exit}
 			$1 == "rh" || $1 == last {b++} END{ exit !b }' last="$last";
 	} 2> /dev/null
 	then
-		__PS1_COLOR=${__GREEN}
-	else
-		__PS1_COLOR=${__RED}
+		echo 'WARNING: HISTFILE is not updating!!'
 	fi
 } >&2
 
