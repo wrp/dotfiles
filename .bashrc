@@ -96,7 +96,8 @@ debug_trap() {
 		echo "WARNING: IFS contains unexpected characters"
 	fi
 	history -a || echo 'WARNING: history -a failed'
-	if ! test -f "$HISTFILE" || test "$(wc -l < $HISTFILE)" -le 1 || { test -n "$last" && ! tac "$HISTFILE" |
+	if ! test -f "$HISTFILE" || test "$(wc -l < $HISTFILE)" -lt 1 || {
+		test "$(wc -l < $HISTFILE)" -gt 1 && ! tac "$HISTFILE" |
 			awk '/^#/ && a++ > 2 {exit}
 			$1 == "rh" || $1 == last {b++} END{exit !b}' last="$last"; } 2> /dev/null
 	then
