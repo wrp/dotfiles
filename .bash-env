@@ -1,6 +1,14 @@
 # environment setting common in all environs.
 # host specific settings belong in ~/.bash-local and ~/.bash-localenv
 
+
+prefix=$HOME/$(uname -m)/$(uname -s)
+
+# It only makes sense to define ACLOCAL_PATH if we have
+# installed libtool in $HOME, so this really belongs in
+# .bash-localenv.  But I want the name of the variable documented here.
+# export ACLOCAL_PATH=${prefix}/share/aclocal/
+
 export BASH_SILENCE_DEPRECATION_WARNING=1
 export HISTSIZE=1000
 export HISTFILE=$HOME/.bash-history-dir/$$
@@ -20,7 +28,7 @@ export PAGER=less
 
 export LSCOLORS=fxfxcxdxbxegedabagacad
 
-prepend_path $HOME/$(uname -m)/$(uname -s)/bin
+prepend_path ${prefix}/bin
 prepend_path $HOME/scripts
 
 # a = black, b = red, c = green, d = brown, e = blue, f = magenta, g = cyan,
