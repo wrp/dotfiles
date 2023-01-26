@@ -104,7 +104,7 @@ ga() {
 	fi
 	git add "$@";
 	list=$(git diff --name-only --cached | tr \\n \ )
-	git ci -nm "Add $list";
+	test -n "$list" && git ci -nm "Add $list";
 }
 gdm() { # Diff with the merge-base of main/master
 	local branch=${1-HEAD}
