@@ -103,8 +103,11 @@ ga() {
 		return 1
 	fi
 	git add "$@";
-	list=$(git diff --name-only --cached | tr \\n \ )
-	test -n "$list" && git ci -nm "Add $list";
+	msg=$(git diff --name-only --cached \
+		| perl -0000 -nE 'if(length > 56) {s/^/Add files\n\n/} else {
+			s/\n/ /g; s/^/Add / }; say'
+	)
+	test -n "$msg" && git ci -nm "$msg";
 }
 gdm() { # Diff with the merge-base of main/master
 	local branch=${1-HEAD}
