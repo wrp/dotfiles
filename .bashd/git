@@ -107,7 +107,7 @@ ga() {
 		| perl -0000 -nE 'if(length > 56) {s/^/Add files\n\n/} else {
 			s/\n/ /g; s/^/Add / }; say'
 	)
-	test -n "$msg" && git ci -nm "$msg";
+	test -n "$msg" && git commit --no-verify -m "$msg";
 }
 gdm() { # Diff with the merge-base of main/master
 	local branch=${1-HEAD}
