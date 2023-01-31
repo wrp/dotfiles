@@ -16,7 +16,6 @@ vi() {
 			fi
 		fi 2> /dev/null
 		test $# = 0 && set -- $(FULL_PATH=1 f="$f" get-modified-files ${h-$default})
-		vim "$@"    # .vimrc sets tmux titles
 	else
 		# Strip the input to valid filenames and uniquify.  This allows the raw
 		# output of `git grep` to be used as input, but will fail if any names contain
@@ -24,7 +23,8 @@ vi() {
 		# There is no sane way to pass names in a pipe without using a null terminator as a separator,
 		# and I do not want to accomodate the brain dead-practice of using whitespace in filenames.
 		# If there are names with whitespace or colons, construct the arguments manually.
-		vim < /dev/tty $(grep -v "${VIM_IGNORE_FILES:-^$}" | awk '!a[$1]++{print $1}' FS='[:[:space:]]')
+		set -- $(grep -v "${VIM_IGNORE_FILES:-^$}" | awk '!a[$1]++{print $1}' FS='[:[:space:]]')
+		exec < /dev/tty
 	fi
-
+	vim "$@"    # .vimrc sets tmux titles
 }
