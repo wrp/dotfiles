@@ -1,7 +1,7 @@
 
 vi() {
 	: set h for depth, or f for filter
-	if test -t 0; then
+	if test -t 0; then   # input is from a tty
 		local default=HEAD main_or_master
 
 		if test -z "$h" && ! git diff --name-only | grep -q .; then
