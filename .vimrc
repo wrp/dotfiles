@@ -40,6 +40,7 @@ set iskeyword=@,48-57,_,192-255,-
 set modelines=10
 set modeline
 set ai
+set viminfofile=$HOME/.config/vim/.viminfo
 set hlsearch
 set listchars=extends:%,precedes:%,eol:$,tab:>-,trail:$
 set laststatus=2   " Always show status line
