@@ -11,7 +11,7 @@ g() {
 	src=$(awk '/^top_srcdir/{print $3}' Makefile 2> /dev/null)
 	if test -n "$src" && test "$(pwd)" != "$(cd "$src"; pwd)"; then
 		(
-			echo "Found top_srcdir in Makefile.  Re-running in $src"
+			echo "Found top_srcdir in Makefile.  Re-running in $src" >&2
 			cd "$src"
 			g "$@"
 		)
