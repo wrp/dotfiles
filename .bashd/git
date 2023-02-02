@@ -97,9 +97,14 @@ ga() {
 	# will fail until `git status` is run in that environment.)  So run
 	# git status to "uncorrupt" the repo.  Terrible hack.
 	git status > /dev/null
-	if test "$1" != "-f" && git rev-parse HEAD > /dev/null 2>&1 \
+	local force
+	if test "$1" = "-f"; then
+		force=1
+		shift
+	fi
+	if test -z "$force" && git rev-parse HEAD > /dev/null 2>&1 \
 			&& ! git diff-index --quiet HEAD; then
-		echo 'Repo is dirty.  -f to force' >&2
+		echo 'Repo is dirty.  -f to force (will also skip pre-commit check)' >&2
 		return 1
 	fi
 	git add "$@";
@@ -107,7 +112,7 @@ ga() {
 		| perl -0000 -nE 'if(length > 56) {s/^/Add files\n\n/} else {
 			s/\n/ /g; s/^/Add / }; say'
 	)
-	test -n "$msg" && git commit -m "$msg";
+	test -n "$msg" && git commit ${force:+--no-verify} -m "$msg";
 }
 gdm() { # Diff with the merge-base of main/master
 	local branch=${1-HEAD}
