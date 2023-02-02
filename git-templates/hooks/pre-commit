@@ -1,0 +1,29 @@
+#!/bin/sh
+
+valid_chars='a-zA-Z0-9_.-'  # Characters that are acceptable in names
+
+exec >&2
+if ! git rev-parse --verify HEAD >/dev/null 2>&1; then
+	# Initial commit: diff against an empty tree object
+	against=$(git hash-object -t tree /dev/null)
+else
+	against=HEAD
+fi
+
+die() {
+	printf 'Pre-commit hook is rejecting this commit: '
+	printf '%s\n' "$1";
+	printf 'Use --no-verify (-n) to ignore\n'
+	exit 1
+}
+
+# Reject files with non standard names
+if git diff --cached --name-only --diff-filter=A -z $against |
+	LC_ALL=C tr -d $valid_chars | grep -q .
+then
+	die 'Invalid characters in filename'
+fi
+
+if ! git diff-index --check --cached $against --; then
+	die 'Whitespace errors'
+fi
