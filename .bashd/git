@@ -97,13 +97,17 @@ ga() {
 	# will fail until `git status` is run in that environment.)  So run
 	# git status to "uncorrupt" the repo.  Terrible hack.
 	git status > /dev/null
-	local force
+
+	local force against=HEAD
 	if test "$1" = "-f"; then
 		force=1
 		shift
 	fi
-	if test -z "$force" && git rev-parse HEAD > /dev/null 2>&1 \
-			&& ! git diff-index --quiet HEAD; then
+	if ! git rev-parse --verify HEAD >/dev/null 2>&1; then
+		# Initial commit: diff against an empty tree object
+		against=$(git hash-object -t tree /dev/null)
+	fi
+	if test -z "$force" && ! git diff-index --quiet $against; then
 		echo 'Repo is dirty.  -f to force (will also skip pre-commit check)' >&2
 		return 1
 	fi
