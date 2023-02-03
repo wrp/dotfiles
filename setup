@@ -66,28 +66,24 @@ for n in EMAIL UNAME; do
 	fi
 done
 
-if ! test -f $HOME/.gitconfig-user; then
-	cat > $HOME/.gitconfig-user <<- EOF
-	[user]
-		email = ${EMAIL?}
-		name = ${UNAME?}
-	EOF
-fi
+# Create files that should be local to this machine
+create_file() { if ! test -f "$1"; then cat > "$1"; fi }
+create_file "$HOME/.gitconfig-user" <<- EOF
+[user]
+	email = ${EMAIL?}
+	name = ${UNAME?}
+EOF
 
-if ! test -f $HOME/.bash-local; then
-	cat > $HOME/.bash-local <<- EOF
-		EMAIL="$EMAIL"
-		UNAME="$UNAME"
-		export EMAIL UNAME
-	EOF
-fi
+create_file "$HOME/.bash-local" <<- EOF
+	EMAIL="$EMAIL"
+	UNAME="$UNAME"
+	export EMAIL UNAME
+EOF
 
-if ! test -f $HOME/CONFIG_SITE; then
-	cat > $HOME/CONFIG_SITE <<- EOF
-		prefix=$HOME/$(uname -m)/$(uname -s)
-		CFLAGS=-I${prefix}/include
-		LDFLAGS=-L${prefix}/lib
-	EOF
-fi
+create_file "$HOME/CONFIG_SITE" <<- 'EOF'
+	prefix=$HOME/$(uname -m)/$(uname -s)
+	CFLAGS=-I${prefix}/include
+	LDFLAGS=-L${prefix}/lib
+EOF
 
 ln -s "$base/scripts" scripts
