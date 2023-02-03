@@ -82,4 +82,12 @@ if ! test -f $HOME/.bash-local; then
 	EOF
 fi
 
+if ! test -f $HOME/CONFIG_SITE; then
+	cat > $HOME/CONFIG_SITE <<- EOF
+		prefix=$HOME/$(uname -m)/$(uname -s)
+		CFLAGS=-I${prefix}/include
+		LDFLAGS=-L${prefix}/lib
+	EOF
+fi
+
 ln -s "$base/scripts" scripts
