@@ -67,11 +67,11 @@ for n in EMAIL UNAME; do
 done
 
 if ! test -f $HOME/.gitconfig-user; then
-	sed 's/.//' >> $HOME/.gitconfig-user << EOF
+	cat > $HOME/.gitconfig-user <<- EOF
 	[user]
 		email = ${EMAIL?}
 		name = ${UNAME?}
-EOF
+	EOF
 fi
 
 if ! test -f $HOME/.bash-local; then
@@ -79,7 +79,7 @@ if ! test -f $HOME/.bash-local; then
 		EMAIL="$EMAIL"
 		UNAME="$UNAME"
 		export EMAIL UNAME
-EOF
+	EOF
 
 ln -s "$base/scripts" scripts
 fi
