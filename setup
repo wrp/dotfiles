@@ -80,6 +80,6 @@ if ! test -f $HOME/.bash-local; then
 		UNAME="$UNAME"
 		export EMAIL UNAME
 	EOF
+fi
 
 ln -s "$base/scripts" scripts
-fi
