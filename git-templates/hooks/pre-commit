@@ -3,12 +3,7 @@
 valid_chars='a-zA-Z0-9_.-'  # Characters that are acceptable in names
 
 exec >&2
-if ! git rev-parse --verify HEAD >/dev/null 2>&1; then
-	# Initial commit: diff against an empty tree object
-	against=$(git hash-object -t tree /dev/null)
-else
-	against=HEAD
-fi
+against=$(git rev-parse --verify HEAD >/dev/null 2>&1 && echo HEAD || git hash-object -t tree /dev/null)
 
 die() {
 	printf 'Pre-commit hook is rejecting this commit: '
