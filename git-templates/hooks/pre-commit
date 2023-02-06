@@ -1,6 +1,6 @@
 #!/bin/sh
 
-valid_chars='a-zA-Z0-9_.-'  # Characters that are acceptable in names
+valid_chars='a-zA-Z0-9_.-'  # Characters that are acceptable in path names
 
 exec >&2
 against=$(git rev-parse --verify HEAD >/dev/null 2>&1 && echo HEAD || git hash-object -t tree /dev/null)
@@ -12,7 +12,7 @@ die() {
 	exit 1
 }
 
-# Reject files with non standard names
+# Reject name with non standard characters
 if git diff --cached --name-only --diff-filter=A -z $against |
 	LC_ALL=C tr -d $valid_chars | grep -q .
 then
