@@ -98,7 +98,7 @@ ga() {
 	# git status to "uncorrupt" the repo.  Terrible hack.
 	git status > /dev/null
 
-	local force against=HEAD
+	local msg force against=HEAD preamble
 	if test "$1" = "-f"; then
 		force=1
 		shift
@@ -112,8 +112,9 @@ ga() {
 		return 1
 	fi
 	git add "$@";
+	preamble=$(perl -E 'say substr "@ARGV", 0, 56' "$@")
 	msg=$(git diff --name-only --cached \
-		| perl -0000 -nE 'if(length > 56) {s/^/Add files\n\n/} else {
+		| perl -0000 -nE 'if(length > 56) {s@^@Add files: '"$preamble"'\n\n@} else {
 			s/\n/ /g; s/^/Add / }; say'
 	)
 	test -n "$msg" && git commit ${force:+--no-verify} -m "$msg";
