@@ -111,6 +111,9 @@ debug_trap() {
 	then
 		echo 'WARNING: HISTFILE is not updating!!'
 	fi
+	if test -z "$TMUX" && test -z "$NO_TMUX_OK"; then
+		echo 'WARNING: not running in TMUX! (set NO_TMUX_OK to suppress warning)'
+	fi
 } >&2
 
 after_cmd() {
