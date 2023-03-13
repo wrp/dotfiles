@@ -111,13 +111,24 @@ ga() {
 		echo 'Repo is dirty.  -f to force (will also skip pre-commit check)' >&2
 		return 1
 	fi
+
+	if test -z "$force"; then
+		# If we abort, or git commit fails, we want to return to a clean state.
+		# If commit succeeds, doing reset should be a no-op.  But, if user
+		# asked to force, do not attempt to clean up.
+		trap 'git reset' RETURN
+	fi
 	git add "$@";
 	preamble=$(perl -E 'say substr "@ARGV", 0, 56' "$@")
 	msg=$(git diff --name-only --cached \
 		| perl -0000 -nE 'if(length > 56) {s@^@Add files: '"$preamble"'\n\n@} else {
 			s/\n/ /g; s/^/Add / }; say'
 	)
-	test -n "$msg" && git commit ${force:+--no-verify} -m "$msg";
+	if test -z "$msg"; then
+		echo "Unable to generate commit message!" >&2
+		return 1;
+	fi
+	git commit ${force:+--no-verify} -m "$msg";
 }
 gdm() { # Diff with the merge-base of main/master
 	local branch=${1-HEAD}
