@@ -111,8 +111,8 @@ debug_trap() {
 	then
 		echo 'WARNING: HISTFILE is not updating!!'
 	fi
-	if test -z "$TMUX" && test -z "$NO_TMUX_OK"; then
-		echo 'WARNING: not running in TMUX! (set NO_TMUX_OK to suppress warning)'
+	if test -z "$TMUX" && test -z "$NO_TMUX_OK" && test "${FUNCNAME[1]}" != 'source'; then
+		echo "WARNING: not running in TMUX! (set NO_TMUX_OK to suppress warning)"
 	fi
 } >&2
 
