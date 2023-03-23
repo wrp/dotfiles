@@ -168,17 +168,26 @@ git_unpack() {
 git() {
 	case "$1" in
 	clone)
-		local origin
+		local origin url
+		shift    # discard 'clone'
+		url=$1
+		shift
+
 		# Parse the url to specify a name for origin
-		case $2 in
-		http*) test -n "$HTTP_OK" ||
-			{ echo "Use ssh or set HTTP_OK!!" >&2; return 1; } ;;
+		case $url in
+		http*)
+			# By default, remap name to use ssh
+			if test -z "$HTTP_OK"; then
+				echo 'Remapping http target to git@ to use ssh.  To force http, set HTTP_OK' >&2
+				url=$(printf '%s\n' "$url" | sed -e 's|.*://|git@|' -e 's@/@:@')
+				shift
+			fi
+		;;
 		*github*) origin=github;;
 		*bitbucket.devops.wepay-inc.*) origin=wepay;;
 		esac
-		shift;
-		test -n "$origin" && echo "Setting origin=$origin"
-		set -- clone ${origin:+--origin="$origin"} "$@";
+		test -n "$origin" && echo "Setting origin=$origin" >&2
+		set -- clone ${origin:+--origin="$origin"} "$url" "$@";
 	;;
 	esac
 	command git "$@";
