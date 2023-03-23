@@ -26,7 +26,6 @@ function! ClearWhite()
         call histdel("search", -1)
     endif
 endfunction
-autocmd BufWritePre * call ClearWhite()
 
 packadd! matchit
 let b:match_words = '<<<<<<<:=======:>>>>>>>'
@@ -74,10 +73,6 @@ map [] k$][%?}<CR><esc>:nohlsearch<Enter>:call histdel("search", -1)<ENTER>:let 
 "map [[ ][%
 "map ]] ][][%
 
-
-autocmd BufEnter,BufReadPost,FileReadPost,BufNewFile *
-	\ call system("test -z \"$NORENAMEVIM\" && rename-tmux-window " .
-	\ expand("%"))
 
 if &diff
 	highlight DiffAdd ctermbg=5
@@ -127,6 +122,11 @@ call plug#end()
 xmap ga <Plug>(EasyAlign)
 " " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
+
+autocmd BufWritePre * call ClearWhite()
+autocmd BufEnter,BufReadPost,FileReadPost,BufNewFile *
+	\ call system("test -z \"$NORENAMEVIM\" && rename-tmux-window " .
+	\ expand("%"))
 
 " Grrr.  I occasionally get ft set to things that change my formatoptions
 " eg, if vim sets ft=conf, it add 'r' and 'o'.  Get rid of them!
