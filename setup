@@ -9,12 +9,7 @@ IFS=" $nl"
 die() { test -n "$*" && echo "$*" >&2; exit 1; }
 warn() { test -z "$NOWARN" && echo "$@" >&2; }
 
-if echo foo | md5sum > /dev/null 2>&1; then
-	MD5=md5sum
-else
-	MD5=md5
-fi
-
+for MD5 in md5sum md5; do $MD5 > /dev/null </dev/null 2>&1 && break; done
 
 base=$(dirname "$0")
 test "$(pwd)" = "$HOME" || die "Must run from \$HOME ($HOME)"
