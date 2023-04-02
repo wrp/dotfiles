@@ -132,5 +132,6 @@ autocmd BufEnter,BufReadPost,FileReadPost,BufNewFile *
 " eg, if vim sets ft=conf, it add 'r' and 'o'.  Get rid of them!
 autocmd BufEnter * set formatoptions-=ro
 autocmd BufEnter * set indentexpr=
+autocmd BufNewFile postmortem-*.md 0r ~/3rd-party/postmortem-templates/templates/postmortem-template-srebook.md
 
 " vim: fen:sw=4 fdm=indent fdl=1
