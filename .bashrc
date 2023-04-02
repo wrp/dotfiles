@@ -89,6 +89,8 @@ shopt -s direxpand 2> /dev/null # prevent tab expand from expanding $D to \$D
 
 debug_trap() {
 	# Runs before a command in an interactive shell
+	# warning: if you execute a loop, this will run for every iteration
+	# TODO: figure out how to suppress that behavior
 	if test "$IFS" != $' \t\n'; then
 		echo "WARNING: IFS contains unexpected characters"
 	fi
