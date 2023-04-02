@@ -13,7 +13,6 @@ for MD5 in md5sum md5; do $MD5 > /dev/null </dev/null 2>&1 && break; done
 
 base=$(dirname "$0")
 test "$(pwd)" = "$HOME" || die "Must run from \$HOME ($HOME)"
-cd $HOME
 
 unset force abort
 while test $# -gt 0; do
