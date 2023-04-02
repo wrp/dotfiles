@@ -76,3 +76,5 @@
 	gpgSign = true
 [commit]
 	gpgSign = true
+[merge]
+	tool = vimdiff
