@@ -24,8 +24,7 @@ while test $# -gt 0; do
 done
 
 # names is the list to be the target of symlinks
-names=$(ls -a "$base" | while read f; do grep -q "^${f}$" $base/blacklist \
-	|| echo $f; done)
+names=$(ls -a "$base" | awk 'NR==FNR {a[$0] = 1; next} ! ($0 in a)' $base/blacklist -)
 
 for file in $names; do
 	if test -f "$file" && test "$($MD5 < $HOME/$file)" != \
