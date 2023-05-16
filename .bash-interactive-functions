@@ -413,6 +413,7 @@ upfind() {
 		fi
 	fi
 }
+xclip() { command xclip -selection clipboard "$@"; }
 y() { select-git-branch "$@"; }
 
 for name in python idle python3 man; do
