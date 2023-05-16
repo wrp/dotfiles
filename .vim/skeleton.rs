@@ -8,4 +8,5 @@ use std::{
 };
 
 fn main() -> io::Result<()> {
+	Ok(())
 }
