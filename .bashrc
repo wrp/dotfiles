@@ -35,11 +35,9 @@ read_file $HOME/.bash-functions $HOME/.bash-interactive-functions $HOME/.bash-co
 read_file $HOME/.bash-env $HOME/.bash-localenv
 
 if test -z "$PS1"; then
-	if test -n "$__RED" && test -n "$__GREEN"; then
-		PS1+='\[$( # Colorize based on previous command status
-			{ test $? -ne 0 && printf "%s" "$__RED" || printf "%s" "$__GREEN"; }
-		)\]'
-	fi
+	PS1+='\[$( # Colorize based on previous command status
+		{ test $? -ne 0 && printf "%s" "$__RED" || printf "%s" "$__GREEN"; }
+	)\]'
 	if test "$(tput cols)" -gt 80; then
 		PS1+="${PS1_PREFIX}"
 		PS1+='\D{%T}'  # %T is passed to strftime for time
