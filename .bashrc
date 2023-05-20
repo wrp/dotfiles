@@ -43,6 +43,24 @@ if test -z "$PS1"; then
 	if test "$(tput cols)" -gt 80; then
 		PS1+="${PS1_PREFIX}"
 		PS1+='\D{%T}'  # %T is passed to strftime for time
+
+		# Insert battery percentage
+		PS1+='$(
+			bat=$(battery | tr -d %)
+			if test -n "$bat"; then
+				printf '\\[';
+				if test "$bat" -gt 30; then
+					printf "%s" "$__GREEN"
+				elif test "$bat" -gt 15; then
+					printf "%s" "$__YELLOW";
+				else
+					printf "%s" "$__RED";
+				fi
+				printf '\\]';
+				printf "%s" "[${bat}%]";
+			fi
+		)'
+
 		PS1+='\[$__MAGENTA\]'
 		PS1+='$( # project
 			echo "${PROJECT:+(}${PROJECT%-[0-9]*}${PROJECT:+)}";
