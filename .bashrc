@@ -26,7 +26,9 @@ esac
 __RED=$(tput setaf 1)
 __GREEN=$(tput setaf 2)
 __YELLOW=$(tput setaf 3)
+__BLUE=$(tput setaf 4)
 __MAGENTA=$(tput setaf 5)
+__CYAN=$(tput setaf 6)
 
 unset PS1
 read_file() { local f; for f; do if test -f "$f"; then . "$f"; fi; done; }
@@ -40,7 +42,7 @@ if test -z "$PS1"; then
 	)\]'
 	if test "$(tput cols)" -gt 80; then
 		PS1+="${PS1_PREFIX}"
-		PS1+='\[$__YELLOW\]'
+		PS1+='\[$__CYAN\]'
 		PS1+='\D{%T}'  # %T is passed to strftime for time
 		# Insert battery percentage
 		PS1+='$(
