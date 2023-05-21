@@ -39,7 +39,7 @@ make_hist_file() {
 			printf ', child of %s' "$(ps -o pid=,comm= $PPID)"
 		fi
 		printf '\n'
-		} >> $1
+		} | tr -s ' ' >> $1
 	fi
 	export HISTFILE=$1
 }
