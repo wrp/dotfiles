@@ -23,61 +23,12 @@ esac
 
 # test -x /usr/bin/lesspipe && eval "$(SHELL=/bin/sh lesspipe)"
 
-__RED=$(tput setaf 1)
-__GREEN=$(tput setaf 2)
-__YELLOW=$(tput setaf 3)
-__BLUE=$(tput setaf 4)
-__MAGENTA=$(tput setaf 5)
-__CYAN=$(tput setaf 6)
-
-unset PS1
+unset PS1  # Set PS1 from ~.bashd/PS1
 read_file() { local f; for f; do if test -f "$f"; then . "$f"; fi; done; }
 read_file $HOME/.bashd/*
 read_file $HOME/.bash-functions $HOME/.bash-interactive-functions $HOME/.bash-completions
 read_file $HOME/.bash-env $HOME/.bash-localenv
 
-if test -z "$PS1"; then
-	PS1+='\[$( # Colorize based on previous command status
-		{ test $? -ne 0 && printf "%s" "$__RED" || printf "%s" "$__GREEN"; }
-	)\]'
-	if test "$(tput cols)" -gt 80; then
-		PS1+="${PS1_PREFIX}"
-		PS1+='\[$__CYAN\]'
-		PS1+='\D{%T}'  # %T is passed to strftime for time
-		# Insert battery percentage
-		PS1+='$(
-			bat=$(battery | tr -d %)
-			if test -n "$bat"; then
-				printf '\\[';
-				if test "$bat" -gt 30; then
-					printf "%s" "$__GREEN"
-				elif test "$bat" -gt 15; then
-					printf "%s" "$__YELLOW";
-				else
-					printf "%s" "$__RED";
-				fi
-				printf '\\]';
-				printf "%s" "[${bat}%]";
-			fi
-		)'
-
-		PS1+='\[$__MAGENTA\]'
-		PS1+='$( # project
-			echo "${PROJECT:+(}${PROJECT%-[0-9]*}${PROJECT:+)}";
-		)'
-		PS1+='$( # directory and git branch
-			if test "${COLUMNS:-0}" -gt 140; then printf "[%s%s%s]" \
-				"${PS1_LEADER:+$PS1_LEADER:}" \
-				"$(pwd 2> /dev/null | sed -E -e "s@^$HOME@~@" \
-					-e "s@([^/]{1})[^/]*/@\1/@g" )" \
-				"$( git rev-parse --abbrev-ref HEAD 2> /dev/null \
-					| sed -E -e "s/^/@/" -e "s@^:heads/@:@" )"
-			else printf :
-			fi | tr \  .
-		)'
-	fi
-	PS1+="$( printf "%05d" "$$" )\[$__GREEN\]\$ "
-fi
 
 complete -r
 make_hist_file() {
