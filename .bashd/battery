@@ -2,4 +2,4 @@
 battery() {
 	{ upower -i /org/freedesktop/UPower/devices/battery_cw2015_battery || :; } |
 	awk '/percentage:/{printf "%02d%\n", $2}'
-} 2> /dev/null
+}
