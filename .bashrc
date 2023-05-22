@@ -91,7 +91,6 @@ after_cmd() {
 	local _status=$?
 	report_cmd_status $HISTFILE $_status >> $HOME/.bash-history
 	window-title "$__pane_title"
-	_battery_remaining=$( battery 2> /dev/null | tr -d % )
 	unset __pane_title
 	return $_status
 }

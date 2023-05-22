@@ -1,21 +1,22 @@
 
-__RED=$(tput setaf 1)
-__GREEN=$(tput setaf 2)
-__YELLOW=$(tput setaf 3)
-__BLUE=$(tput setaf 4)
-__MAGENTA=$(tput setaf 5)
-__CYAN=$(tput setaf 6)
+__RED=$(printf '\x01'; tput setaf 1; printf '\x02')
+__GREEN=$(printf '\x01'; tput setaf 2; printf '\x02')
+__YELLOW=$(printf '\x01'; tput setaf 3; printf '\x02')
+__BLUE=$(printf '\x01'; tput setaf 4; printf '\x02')
+__MAGENTA=$(printf '\x01'; tput setaf 5; printf '\x02')
+__CYAN=$(printf '\x01'; tput setaf 6; printf '\x02')
 
 if test -z "$PS1"; then
-	PS1+='\[$( # Colorize based on previous command status
+	PS1+='$( # Colorize based on previous command status
 		{ test $? -ne 0 && printf "%s" "$__RED" || printf "%s" "$__GREEN"; }
-	)\]'
+	)'
 	if test "$(tput cols)" -gt 80; then
 		PS1+="${PS1_PREFIX}"
-		PS1+='\[$__CYAN\]'
+		PS1+='${__CYAN}'
 		PS1+='\D{%T}'  # %T is passed to strftime for time
 		# Insert battery percentage
-		PS1+='\[$(
+		PS1+='$(
+			_battery_remaining=$( battery 2> /dev/null | tr -d % )
 			if test -n "$_battery_remaining"; then
 				if test "$_battery_remaining" -gt 30; then
 					printf "%s" "$__GREEN"
@@ -24,9 +25,10 @@ if test -z "$PS1"; then
 				else
 					printf "%s" "$__RED";
 				fi 2> /dev/null
+				printf "%s" "[${_battery_remaining}%]"
 			fi
-		)\]${_battery_remaining:+[}${_battery_remaining}${_battery_remaining:+%]}'
-		PS1+='\[$__MAGENTA\]'
+		)'
+		PS1+='$__MAGENTA'
 		PS1+='$( # project
 			echo "${PROJECT:+(}${PROJECT%-[0-9]*}${PROJECT:+)}";
 		)'
@@ -41,5 +43,5 @@ if test -z "$PS1"; then
 			fi | tr \  .
 		)'
 	fi
-	PS1+="$( printf "%05d" "$$" )\[$__GREEN\]\$ "
+	PS1+="$( printf "%05d" "$$" )$__GREEN\$ "
 fi
