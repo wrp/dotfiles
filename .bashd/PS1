@@ -30,7 +30,7 @@ if test -z "$PS1"; then
 		)'
 		PS1+='$__MAGENTA'
 		PS1+='$( # project
-			echo "${PROJECT:+(}${PROJECT%-[0-9]*}${PROJECT:+)}";
+			printf '%s' "${PROJECT:+(}${PROJECT%-[0-9]*}${PROJECT:+)}";
 		)'
 		PS1+='$( # directory and git branch
 			if test "${COLUMNS:-0}" -gt 140; then printf "[%s%s%s]" \
