@@ -8,11 +8,10 @@ __CYAN=$(printf '\x01'; tput setaf 6; printf '\x02')
 
 if test -z "$PS1"; then
 	PS1+='$( # Colorize based on previous command status
-		{ test $? -ne 0 && printf "%s" "$__RED" || printf "%s" "$__GREEN"; }
+		{ test $? -ne 0 && printf "%s" "$__RED" || printf "%s" "$__CYAN"; }
 	)'
 	if test "$(tput cols)" -gt 80; then
 		PS1+="${PS1_PREFIX}"
-		PS1+='${__CYAN}'
 		PS1+='\D{%T}'  # %T is passed to strftime for time
 		# Insert battery percentage
 		PS1+='$(
