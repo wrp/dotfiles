@@ -6,6 +6,20 @@ __BLUE=$(printf '\x01'; tput setaf 4; printf '\x02')
 __MAGENTA=$(printf '\x01'; tput setaf 5; printf '\x02')
 __CYAN=$(printf '\x01'; tput setaf 6; printf '\x02')
 
+__battery_check='$(
+	_battery_remaining=$( battery 2> /dev/null | tr -d % )
+	if test -n "$_battery_remaining"; then
+		if test "$_battery_remaining" -gt 30; then
+			printf "%s" "$__GREEN"
+		elif test "$_battery_remaining" -gt 15; then
+			printf "%s" "$__YELLOW";
+		else
+			printf "%s" "$__RED";
+		fi 2> /dev/null
+		printf "%s" "[${_battery_remaining}%]"
+	fi
+)'
+
 set_prompt() {
 	PS1+='$( # Colorize based on previous command status
 		{ test $? -ne 0 && printf "%s" "$__RED" || printf "%s" "$__CYAN"; }
@@ -17,19 +31,9 @@ set_prompt() {
 	PS1+='\D{%T}'  # %T is passed to strftime for time
 
 	# Insert battery percentage
-	PS1+='$(
-		_battery_remaining=$( battery 2> /dev/null | tr -d % )
-		if test -n "$_battery_remaining"; then
-			if test "$_battery_remaining" -gt 30; then
-				printf "%s" "$__GREEN"
-			elif test "$_battery_remaining" -gt 15; then
-				printf "%s" "$__YELLOW";
-			else
-				printf "%s" "$__RED";
-			fi 2> /dev/null
-			printf "%s" "[${_battery_remaining}%]"
-		fi
-	)'
+	if battery > /dev/null 2>&1; then
+		PS1+="$__battery_check"
+	fi
 	PS1+='$__MAGENTA'
 	PS1+='$( # project
 		printf '%s' "${PROJECT:+(}${PROJECT%-[0-9]*}${PROJECT:+)}";
@@ -50,3 +54,4 @@ if test -z "$PS1"; then
 	set_prompt
 fi
 unset set_prompt
+unset __battery_check
