@@ -2,6 +2,7 @@
 c() { tput sc; clear; tput rc; } # save cursor/restore cursor  man terminfo
 cdm() { cd $(FULL_PATH=1 get-modified-files | longest-common-prefix -d); }
 curl() { command curl -Ss "$@"; }
+clock() { watch -n 1 banner -C '$(date +%H:%M:%S)'; }
 execute() { local cmd=$1; window-title "$cmd";
 	test "$V" -gt 0 2> /dev/null && echo \$ "$@" >&2;
 	command "$@";
