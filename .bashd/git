@@ -193,5 +193,6 @@ git() {
 	command git "$@";
 }
 gr() { # Git recursive
-	find . -name .git -execdir sh -c 'p=$(pwd); command git "$@" | sed -e "s@^@$p: @"' _ "$@" \; | ${PAGER-more}
+	find . -name .git -execdir sh -c 'p=$(pwd); command git "$@" |
+		sed -e "s@^@.${p#'$(pwd)'}: @"' _ "$@" \; | ${PAGER-more}
 }
