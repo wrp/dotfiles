@@ -1,22 +1,20 @@
 #!/bin/sh
 
 valid_chars=':a-zA-Z0-9_./-'  # Characters that are acceptable in path names
-
-exec >&2
-against=$(git rev-parse --verify HEAD >/dev/null 2>&1 && echo HEAD || git hash-object -t tree /dev/null)
+against=$(git rev-parse --verify HEAD 2>/dev/null || git hash-object -t tree /dev/null)
 
 die() {
 	printf 'Pre-commit hook is rejecting this commit: '
 	printf '%s\n' "$1";
 	printf 'Use --no-verify (-n) to ignore\n'
 	exit 1
-}
+} >&2
 
-# Reject name with non standard characters
-if git diff --cached --name-only --diff-filter=A -z $against |
-	LC_ALL=C tr -d $valid_chars | grep -q .
+# Reject names with non standard characters
+if invalid=$(git diff --cached --name-only --diff-filter=A -z $against |
+	LC_ALL=C tr -d "\000${valid_chars}" | xxd | cut -d: -f 2- | tr -s ' ' | grep .)
 then
-	die 'Invalid characters in filename'
+	die "Invalid characters in filename: $invalid"
 fi
 
 if ! git diff-index --check --cached $against --; then
