@@ -413,7 +413,12 @@ upfind() {
 		fi
 	fi
 }
-xclip() { command xclip -selection clipboard "$@"; }
+xclip() {
+	if test -t 0 && ! printf '%s' "$*" | grep -q -- ' -o'; then
+		set -- -o "$@"
+	fi
+	command xclip -selection clipboard "$@";
+}
 y() { select-git-branch "$@"; }
 
 for name in python idle python3 man; do
