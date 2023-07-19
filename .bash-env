@@ -1,5 +1,7 @@
 # environment setting common in all environs.
 # host specific settings belong in ~/.bash-local and ~/.bash-localenv
+# .bash-local gets sources at the very end of .bashrc, while
+# .bash-localenv gets sourced near the beginning.
 
 
 prefix=$HOME/$(uname -m)/$(uname -s)
