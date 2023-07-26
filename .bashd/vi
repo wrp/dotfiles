@@ -6,8 +6,10 @@ vi() {
 
 		# If no arguments are given, try to find most recently changed files from git
 		if test $# = 0 && test -z "$h" && ! git diff --name-only | grep -q .; then
-			main_or_master=$(git for-each-ref refs/heads | grep -q main \
-				&& echo main || echo master)
+			main_or_master=$(
+				git config diff.base-branch | grep . ||
+				{ git for-each-ref refs/heads | grep -q main \
+				&& echo main || echo master; } )
 			default=$(git merge-base HEAD "$main_or_master")
 			# If the current HEAD is no different than the merge base,
 			# set default to 1 so we edit the files changed in the last commit
