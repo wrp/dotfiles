@@ -1,6 +1,10 @@
 
 vi() {
 	: set h for depth, or f for filter
+	if ! test -t 1; then
+		echo 'Output is not to a terminal.  Aborting' >&2
+		return 1
+	fi
 	if test -t 0; then   # input is from a tty
 		local default=HEAD main_or_master
 
