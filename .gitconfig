@@ -80,3 +80,5 @@
 	tool = vimdiff
 [status]
 	showUntrackedFiles = no
+[diff]
+	base-branch = dev
