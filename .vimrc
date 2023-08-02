@@ -134,4 +134,6 @@ autocmd BufEnter * set formatoptions-=ro
 autocmd BufEnter * set indentexpr=
 autocmd BufNewFile postmortem-*.md 0r ~/3rd-party/postmortem-templates/templates/postmortem-template-srebook.md
 
+autocmd BufEnter * syn match comment "\v(^\s*//.*\n)+" fold
+
 " vim: fen:sw=4 fdm=indent fdl=1
