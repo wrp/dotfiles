@@ -136,4 +136,12 @@ autocmd BufNewFile postmortem-*.md 0r ~/3rd-party/postmortem-templates/templates
 
 autocmd BufEnter * syn match comment "\v(^\s*//.*\n)+" fold
 
+" See :help fold-foldtext for details
+set foldtext=MyFoldText()
+function MyFoldText()
+    return getline(v:foldstart + 1)
+endfunction
+
+
+
 " vim: fen:sw=4 fdm=indent fdl=1
