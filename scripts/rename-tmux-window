@@ -16,8 +16,8 @@ fi
 # In a worktree, use the basename of the branch.  If not in a git repo,
 # use the output of pwd -P
 test -z "$*" && {
-	if git_dir=$(git rev-parse --absolute-git-dir 2> /dev/null); then
-		set "$(basename $(dirname "$git_dir"))"
+	if git_dir=$(git rev-parse --show-toplevel 2> /dev/null); then
+		set "$(basename "$git_dir")"
 		if test "$1" = worktrees; then
 			# Grrr.  After a git worktree move, the absolute-git-dir
 			# retains its old name.  So let's use the currently
