@@ -9,6 +9,9 @@ noremap gw :Windo set wrap!
 com! Nt :NERDTree
 
 let g:keep_white=1
+set expandtab
+set ts=4
+set sw=4
 
 
 " Just like windo, but restore the current window when done.
