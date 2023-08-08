@@ -43,8 +43,7 @@ set_prompt() {
 	PS1+='$( # directory and git branch
 		if test "${COLUMNS:-0}" -gt 140; then printf "[%s%s%s]" \
 			"${PS1_LEADER:+$PS1_LEADER:}" \
-			"$(pwd 2> /dev/null | sed -E -e "s@^$HOME@~@" \
-				-e "s@([^/]{1})[^/]*/@\1/@g" )" \
+			"${PWD##*/}"\
 			"$( git rev-parse --abbrev-ref HEAD 2> /dev/null \
 				| sed -E -e "s/^/@/" -e "s@^:heads/@:@" )"
 		else printf :
