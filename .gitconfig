@@ -51,7 +51,7 @@
 [apply]
 	whitespace = error
 [core]
-	whitespace = no-tab-in-indent
+	whitespace = tab-in-indent
 	editor = vim
 [push]
 	default = current
