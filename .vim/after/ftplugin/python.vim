@@ -24,6 +24,12 @@ setlocal expandtab
 set expandtab
 hi IndentGuidesOdd  guibg=red   ctermbg=7
 hi IndentGuidesEven guibg=green ctermbg=6
+let g:keep_white=1
+
+syn region pythonString
+      \ start=+[uU]\=\z('''\|"""\)+ end="\z1" keepend transparent fold
+syn region pythonRawString
+      \ start=+[uU]\=[rR]\z('''\|"""\)+ end="\z1" keepend transparent fold
 
 function! NextIndent(exclusive, fwd, lowerlevel, skipblanks)
   let line = line('.')
