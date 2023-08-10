@@ -9,7 +9,7 @@ vi() {
 		local default=HEAD main_or_master
 
 		# If no arguments are given, try to find most recently changed files from git
-		if test $# = 0 && test -z "$h" && ! git diff --name-only | grep -q .; then
+		if test $# = 0 && test -z "$h" && ! git diff --name-only --ignore-submodules | grep -q .; then
 			main_or_master=$(
 				git config diff.base-branch | grep . ||
 				{ git for-each-ref refs/heads | grep -q main \

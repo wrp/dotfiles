@@ -22,9 +22,9 @@ else
 
 	if test -d "$GIT_DIR"/rebase-merge; then
 		# rebase in progress.  Only report files with merge conflict
-		git diff --name-only --diff-filter=U
+		git diff --ignore-submodules --name-only --diff-filter=U
 	else
-		git diff --name-only "${commit}" --
+		git diff --ignore-submodules --name-only "${commit}" --
 	fi
 
 fi \
