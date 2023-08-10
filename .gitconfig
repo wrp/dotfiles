@@ -82,3 +82,4 @@
 	showUntrackedFiles = no
 [diff]
 	base-branch = dev
+	ignoreSubmodules = all
