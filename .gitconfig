@@ -55,6 +55,7 @@
 	editor = vim
 [push]
 	default = upstream
+	autoSetupRemote = true
 [pager]
 	status = true
 
