@@ -8,9 +8,6 @@ cd() {
 	if test "$#" = 0; then
 		_SESSION_DIR=$(tmux show-options -s @dir 2> /dev/null \
 			| awk '{print $2}')
-	elif test -f "$1"; then
-		_dir=$( dirname "$1" )
-		echo cd: Truncating target to $_dir >&2
 	fi
 	command cd "${_dir:-${_SESSION_DIR:-${USE_HOME:-$HOME}}}"
 }
