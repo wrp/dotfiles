@@ -132,17 +132,19 @@ ga() {
 }
 gdm() { # Diff with the merge-base of main/master
 	local branch=${1-HEAD}
-	if git rev-parse --verify -q -- "$branch" > /dev/null; then
+	if git rev-parse --verify -q "$branch" > /dev/null; then
 		shift
 	else
 		branch=HEAD
 	fi
-	local main_or_master=$(git for-each-ref refs/heads --format='%(refname)' \
-		| grep '^refs/heads/main$' || echo master)
-
-	git diff "$@" "$(git merge-base "$branch" "$main_or_master")" "$branch"
+	local base
+	if ! base=$(git config diff.base-branch); then
+		echo "Don't know which branch to diff against" >&2
+		return 1
+	fi
+	git diff "$@" "$(git merge-base "$branch" "$base")" "$branch"
 }
-gdmno() { gdm --name-only "$@"; }
+gno() { gdm --name-only "$@"; }
 git_unpack() {
 	local dir sha
 	test $# = 0 && { echo 'Expected tarball arg' >&2; return 1; }
