@@ -424,7 +424,7 @@ xclip() {
 }
 y() { select-git-branch "$@"; }
 
-for name in python idle python3 man; do
+for name in find python idle python3 man; do
 	eval "$name"'() { window-title "'"$name"' $1"; command '$name' "$@"; }'
 done
 
