@@ -1,0 +1,9 @@
+#!/bin/sh
+
+while read local_ref local_obj remote_ref remote_obj; do
+	if ! [[ "${remote_ref#refs/heads/}" =~ ${BRANCH_ERE_MATCH-.} ]]; then
+		echo "Bad remote branch name: $remote_ref"
+		echo "Branch names must match $BRANCH_ERE_MATCH"
+		exit 1
+	fi >&2
+done
