@@ -169,6 +169,15 @@ git_unpack() {
 }
 git() {
 	case "$1" in
+    ciam|ci|commit)
+        local branch=$(command git rev-parse --abbrev-ref HEAD)
+        local ticket=$(command git config branch."$branch".ticket)
+        if test -z "$ticket" && ! test -n "$ALLOW_NO_TICKET"; then
+            echo "No ticket configured for branch $branch" >&2
+            return 1
+        fi
+        set -- "$@" --trailer ticket:"$ticket"
+        ;;
 	clone)
 		local origin url
 		shift    # discard 'clone'
