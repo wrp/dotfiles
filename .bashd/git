@@ -175,7 +175,9 @@ git() {
 			get-ticket-from-branch "$branch" 2> /dev/null ||
 			command git config branch."$branch".ticket
 		)
-		if test -z "$ticket" && ! test -n "$ALLOW_NO_TICKET"; then
+		if test -z "$ticket" && test -z "$ALLOW_NO_TICKET" &&
+			! test "$(command git config core.require-trailers)" = false
+		then
 			echo "No ticket configured for branch $branch" >&2
 			return 1
 		fi
