@@ -1,5 +1,13 @@
 #!/bin/sh
 
+main() {
+	get_ticket || return 1
+	if test -n "$ticket"; then
+		echo "Adding ticket: $ticket"
+		git-interpret-trailers --in-place --if-exists doNothing --trailer ticket="$ticket" "$1"
+	fi
+}
+
 get_ticket() {
     test -n "$ticket" && return
 	branch=$(git branch --show-current)
@@ -28,8 +36,4 @@ get_ticket() {
 	fi >&2
 }
 
-get_ticket || exit 1
-if test -n "$ticket"; then
-	echo "Adding ticket: $ticket"
-	git-interpret-trailers --in-place --if-exists doNothing --trailer ticket="$ticket" "$1"
-fi
+main "$@"
