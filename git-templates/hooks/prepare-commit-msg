@@ -29,6 +29,6 @@ get_ticket() {
 
 get_ticket || exit 1
 if test -n "$ticket"; then
-	echo adding ticket
+	echo "Adding ticket: $ticket"
 	git-interpret-trailers --in-place --if-exists doNothing --trailer ticket="$ticket" "$1"
 fi
