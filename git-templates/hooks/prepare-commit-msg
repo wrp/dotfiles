@@ -4,7 +4,7 @@ main() {
 	get_ticket || return 1
 	if test -n "$ticket"; then
 		echo "Adding ticket: $ticket"
-		git-interpret-trailers --in-place --if-exists doNothing --trailer ticket="$ticket" "$1"
+		git-interpret-trailers --in-place --if-exists addIfDifferent --trailer ticket="$ticket" "$1"
 	fi
 }
 
