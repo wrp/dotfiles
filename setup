@@ -80,3 +80,5 @@ create_file "$HOME/CONFIG_SITE" <<- 'EOF'
 EOF
 
 ln -s "$base/scripts" scripts
+mkdir $HOME/.git-template-links
+(cd $HOME/.git-template-links; ln -s $HOME/.git-template-dir/hooks)
