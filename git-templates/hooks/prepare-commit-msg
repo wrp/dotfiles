@@ -11,9 +11,10 @@ get_ticket() {
 	if test -z "$ticket" && test -z "$ALLOW_NO_TICKET" &&
 		! test "$(command git config core.require-trailers)" = false
 	then
-		echo "No ticket configured for branch $branch" >&2
+		echo "No ticket configured for branch $branch"
+		echo "Use 'git config branch.$branch.ticket \$ticket' to specify"
 		return 1
-	fi
+	fi >&2
 }
 
 get_ticket || exit 1
