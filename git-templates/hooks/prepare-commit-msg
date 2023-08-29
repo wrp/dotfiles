@@ -1,7 +1,7 @@
 #!/bin/sh
 
 get_ticket() {
-	branch=$(command git rev-parse --abbrev-ref HEAD)
+	branch=$(git branch --show-current)
 	ticket=$(
 		# get-ticket-from-branch is expected to be a local
 		# script that may not exist
