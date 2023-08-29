@@ -169,20 +169,6 @@ git_unpack() {
 }
 git() {
 	case "$1" in
-	ciam|ci|commit)
-		local branch=$(command git rev-parse --abbrev-ref HEAD)
-		local ticket=$(
-			get-ticket-from-branch "$branch" 2> /dev/null ||
-			command git config branch."$branch".ticket
-		)
-		if test -z "$ticket" && test -z "$ALLOW_NO_TICKET" &&
-			! test "$(command git config core.require-trailers)" = false
-		then
-			echo "No ticket configured for branch $branch" >&2
-			return 1
-		fi
-		set -- "$@" --trailer ticket:"$ticket"
-		;;
 	clone)
 		local origin url
 		shift    # discard 'clone'
