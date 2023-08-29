@@ -16,11 +16,11 @@ get_ticket() {
 	ticket=$(
 		# get-ticket-from-branch is expected to be a local
 		# script that may not exist
-		command git config branch."$branch".ticket ||
+		git config branch."$branch".ticket ||
 		get-ticket-from-branch "$branch" 2> /dev/null
 	)
 	if test -z "$ticket" && test -z "$ALLOW_NO_TICKET" &&
-		! test "$(command git config core.require-trailers)" = false
+		! test "$(git config core.require-trailers)" = false
 	then
 		echo "No ticket configured for branch $branch"
 		echo "Use 'git config branch.$branch.ticket \$ticket' to specify"
