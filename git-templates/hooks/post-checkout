@@ -41,18 +41,20 @@ get_names_for_remote() {
 	EOF
 }
 
-get_branch
-branch_email=$(git config branch.$branch.email)
+main() {
+	get_branch
+	branch_email=$(git config branch.$branch.email)
 
-if test -n "$branch_email"; then
-	EMAIL=$branch_email
-else
-	get_names_for_remote
-fi
+	if test -n "$branch_email"; then
+		EMAIL=$branch_email
+	else
+		get_names_for_remote
+	fi
 
-git config user.email "${EMAIL?}"
-git config user.name "${UNAME?}"
+	git config user.email "${EMAIL?}"
+	git config user.name "${UNAME?}"
 
-printf >&2 "name/email set to %s/%s\n" \
-	"$(git config user.name)" \
-	"$(git config user.email)"
+	printf >&2 "name/email set to %s/%s\n" "${UNAME}" "${EMAIL}"
+}
+
+main "$@"
