@@ -1,32 +1,57 @@
 #!/bin/sh
 
-remote=$( {
-	git rev-parse --symbolic-full-name --abbrev-ref @{u} 2> /dev/null \
-	|| git rev-parse --symbolic-full-name --abbrev-ref main@{u} 2> /dev/null \
-	|| git rev-parse --symbolic-full-name --abbrev-ref master@{u} 2> /dev/null \
-	; } | cut -d / -f 1 )
+get_remote() {
+	remote=$( {
+		git rev-parse --symbolic-full-name --abbrev-ref @{u} 2> /dev/null \
+		|| git rev-parse --symbolic-full-name --abbrev-ref main@{u} 2> /dev/null \
+		|| git rev-parse --symbolic-full-name --abbrev-ref master@{u} 2> /dev/null \
+		; } | cut -d / -f 1 )
+}
 
-url=$( git ls-remote --get-url "$remote" 2> /dev/null )
+get_branch() {
+	branch=$(git branch --show-current)
+	local i p
+	if test -z "$branch"; then
+		# Maybe we are rebasing; try to get the original branch name
+		for i in rebase-merge rebase-apply; do
+			p=$(git rev-parse --git-path $i)
+			if test -d "$p"; then
+				branch=$(sed -e 's@refs/heads/@@' "$p"/head-name)
+				break;
+			fi
+		done
+	fi
+}
 
-assigned=
+get_names_for_remote() {
+	get_remote
+	url=$( git ls-remote --get-url "$remote" 2> /dev/null )
 
-while read project email name; do
-	test -z "$project" && continue
-	case $url in
-	*github.com:${project}*)
-		git config user.email "${email-$EMAIL}"
-		git config user.name "${name-$UNAME}"
-		assigned=1
-	;;
-	esac
-done << EOF
-$GITHUB
-EOF
+	while read project email name; do
+		test -z "$project" && continue
+		case $url in
+		*github.com:${project}*)
+			EMAIL="${email-$EMAIL}"
+			UNAME="${name-$UNAME}"
+		break
+		;;
+		esac
+	done <<- EOF
+	    $GITHUB
+	EOF
+}
 
-if test -z "$assigned"; then
-	git config user.email "${EMAIL?}"
-	git config user.name "${UNAME?}"
+get_branch
+branch_email=$(git config branch.$branch.email)
+
+if test -n "$branch_email"; then
+	EMAIL=$branch_email
+else
+	get_names_for_remote
 fi
+
+git config user.email "${EMAIL?}"
+git config user.name "${UNAME?}"
 
 printf >&2 "name/email set to %s/%s\n" \
 	"$(git config user.name)" \
