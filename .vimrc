@@ -8,7 +8,7 @@ noremap bd! :bd<cr>:bn<cr>
 noremap gw :Windo set wrap!
 com! Nt :NERDTree
 
-let g:keep_white=1
+" let g:keep_white=1
 set expandtab
 set ts=4
 set sw=4
