@@ -3,8 +3,8 @@
 	ap = add --patch
 	b = branch -vv
 	# b = branch --color --format='"%(align:14)%(HEAD) %(refname:short)%(end)%(color:red)%(push:short) %(push:track)%(color:reset)%(contents:subject)"'
-	caa = !bash -c '"git commit --amend -a -m \"$(git log --format=format:%B -n 1)\" --cleanup=strip"'
-	caan = !bash -c '"git commit --amend -an -m \"$(git log --format=format:%B -n 1)\" --cleanup=strip"'
+	caa = !bash -c 'git commit --amend -a \"$@\" -m \"$(git log --format=format:%B -n 1)\" --cleanup=strip' _
+	caan = caa -n
 	cd = commit -m Documentation
 	cda = commit -a -m Documentation
 	cda = commit -a -mDocumentation
