@@ -45,6 +45,7 @@
 	s = status
 	sa = status -uall --ignored
 	sl = stash list
+	sno = show --name-only --pretty=format:
 	sp = stash pop --quiet
 	ss = stash push
 	w = rev-parse --abbrev-ref HEAD
