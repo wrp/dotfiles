@@ -42,10 +42,10 @@
 	lr = log --format=format:'%Cgreen%h%C(yellow) %cr %Cred %<(10,trunc)%an%Creset %<(60,trunc)%s %Cblue%D%Creset'
 	ls = log --oneline --decorate --format=format:'%Cgreen%h%Cred %<(10,trunc)%an%Cblue%D%Creset %<(80,trunc)%s' --show-signature
 	lt  = log --format=format:'%<(40,trunc)%s %Cblue%D%Creset'
+	no = show --name-only --pretty=format:
 	s = status
 	sa = status -uall --ignored
 	sl = stash list
-	sno = show --name-only --pretty=format:
 	sp = stash pop --quiet
 	ss = stash push
 	w = rev-parse --abbrev-ref HEAD
