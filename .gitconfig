@@ -84,6 +84,7 @@
 	showUntrackedFiles = no
 [diff]
 	base-branch = dev
+	wsErrorHighlight = all
 	# ignoreSubmodules = all        # ignore with --ignore-submodules=none
 [filter "lfs"]
 	clean = git-lfs clean -- %f
@@ -92,3 +93,5 @@
 	required = true
 [submodule]
 	recurse = true
+[color "diff"]
+	whitespace = red reverse
