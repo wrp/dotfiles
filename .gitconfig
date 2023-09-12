@@ -27,7 +27,7 @@
 	dwa = diff --word-diff-regex=.
 	exec = "!exec "
 	l = log --oneline --decorate --format=format:'%Cgreen%h%Cred %<(10,trunc)%an%Cblue%D%Creset %<(80,trunc)%s'
-	l1 = !bash -c 'git log \"$@\" --format=format:\"%Cgreen%h%Cred %<(12,trunc)%an%Creset [%>(${w-11})%(trailers:key=${trailer},separator=%x2C,valueonly)%-C()] %<(60,trunc)%s %Cblue%D%Creset\"' _
+	l1 = !bash -c 'git log \"$@\" --format=format:\"%Cgreen%h%Cred %<(12,trunc)%an%Creset [%>(${w-11})%(trailers:key=${trailer},separator=%x2C,valueonly)] %<(60,trunc)%s %Cblue%D%Creset\"' _
 	l1a = log --format=format:'%Cgreen%h%Cred %<(10,trunc)%an%Creset %<(40,trunc)%s %Cblue%d%Creset' --graph
 	l1ah = log -n 10 --format=format:'%Cgreen%h%Cred %<(10,trunc)%an%Creset %<(40,trunc)%s %Cblue%d%Creset' --graph
 	l1h = l1 -n 10
