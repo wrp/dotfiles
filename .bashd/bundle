@@ -15,7 +15,8 @@ bundle() {
 		return 1
 	fi
 	base=$(command git config core.name ||
-		awk 'NR==1{print $1}' "$(command git rev-parse --git-dir)/description" | grep . ||
+		awk 'NR==1 && $1 != "Unnamed" {print $1}' \
+			"$(command git rev-parse --git-dir)/description" | grep . ||
 		basename $(command git rev-parse --show-toplevel)
 	)
 	test -n "$base" || return
