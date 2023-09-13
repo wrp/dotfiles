@@ -34,6 +34,7 @@ get_ticket() {
 		echo "No ticket configured for branch $branch"
 		echo "Use 'git config branch.$branch.ticket \$ticket' to specify"
 		echo "or  'git config branch.$branch.require-trailers false'"
+		echo 'or set ALLOW_NO_TICKET'
 		return 1
 	fi >&2
 }
