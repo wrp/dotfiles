@@ -28,12 +28,12 @@ get_ticket() {
 	)
 	if test -z "$ticket" \
 		&& test -z "$ALLOW_NO_TICKET" \
-		&& ! test "$(git config core.require-trailers)" = false \
-		&& ! test "$(git config branch.$branch.require-trailers)" = false \
+		&& ! test "$(git config core.require-ticket)" = false \
+		&& ! test "$(git config branch.$branch.require-ticket)" = false \
 	; then
 		echo "No ticket configured for branch $branch"
 		echo "Use 'git config branch.$branch.ticket \$ticket' to specify"
-		echo "or  'git config branch.$branch.require-trailers false'"
+		echo "or  'git config branch.$branch.require-ticket false'"
 		echo 'or set ALLOW_NO_TICKET'
 		return 1
 	fi >&2
