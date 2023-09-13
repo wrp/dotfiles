@@ -32,9 +32,10 @@ get_ticket() {
 		&& ! test "$(git config branch.$branch.require-ticket)" = false \
 	; then
 		echo "No ticket configured for branch $branch"
-		echo "Use 'git config branch.$branch.ticket \$ticket' to specify"
-		echo "or  'git config branch.$branch.require-ticket false'"
-		echo 'or set ALLOW_NO_TICKET'
+		echo "Use 'git config branch.$branch.ticket \${ticket}' to specify"
+		echo 'To suppress this check, set ALLOW_NO_TICKET'
+		echo "or 'git config core.require-ticket false'"
+		echo "or 'git config branch.$branch.require-ticket false'"
 		return 1
 	fi >&2
 }
