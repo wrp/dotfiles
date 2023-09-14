@@ -54,7 +54,7 @@ main() {
 	git config user.email "${EMAIL?}"
 	git config user.name "${UNAME?}"
 
-	printf >&2 "name/email set to %s/%s\n" "${UNAME}" "${EMAIL}"
+	test -z "$STFU" && printf >&2 "name/email set to %s/%s\n" "${UNAME}" "${EMAIL}"
 }
 
 main "$@"
