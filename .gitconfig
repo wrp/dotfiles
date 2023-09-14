@@ -31,11 +31,11 @@
 	l1 = !bash -c 'a=$(echo ${t-$trailers} | sed -E \"s/^|,/&key=/g\" ) && git log \"$@\" \
 		--format=format:\"$(echo \"\
 		%Cgreen%h\
-		%Cred %<(12,trunc)%an\
-		%Creset [%><(${w-11})%(trailers:${a},separator=%x2C,valueonly)]\
+		%Cred%<(12,trunc)%an\
+		%Creset[%><(${w-11})%(trailers:${a},separator=%x2C,valueonly)]\
 		%<(60,trunc)%s \
 		%Cblue%D%Creset\
-		\" | tr -s \\  )\"' _
+		\" | tr -s \" \"  )\"' _
 	l1a = log --format=format:'%Cgreen%h%Cred %<(10,trunc)%an%Creset %<(40,trunc)%s %Cblue%d%Creset' --graph
 	l1ah = log -n 10 --format=format:'%Cgreen%h%Cred %<(10,trunc)%an%Creset %<(40,trunc)%s %Cblue%d%Creset' --graph
 	l1h = l1 -n 10
