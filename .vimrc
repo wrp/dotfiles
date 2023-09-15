@@ -22,14 +22,14 @@ endfunction
 com! -nargs=+ -complete=command Windo call WinDo(<q-args>)
 
 function! ClearWhite()
-    " A bit hacky: if you :let g:keep_white=1 before you
-    " do any writes, you can keep trailing whitespace
-    if !exists("g:keep_white")
-        let l:save_pos = getcurpos()
-        execute '%s/\s\+$//e'
-        call cursor(l:save_pos[1:])
-        call histdel("search", -1)
-    endif
+	" A bit hacky: if you :let g:keep_white=1 before you
+	" do any writes, you can keep trailing whitespace
+	if g:keep_white != 1
+		let l:save_pos = getcurpos()
+		execute '%s/\s\+$//e'
+		call cursor(l:save_pos[1:])
+		call histdel("search", -1)
+	endif
 endfunction
 
 packadd! matchit
