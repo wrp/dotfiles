@@ -1,3 +1,13 @@
 #!/bin/sh
 
-tmux set-option -s @dir "$(pwd)"
+dir=$(realpath "$1" 2> /dev/null) || dir=${PWD}
+name=${dir##*/}
+
+# tmux new-session -A -c ${PWD} -s "$name" bash
+
+if tmux has-session -t "$name" 2> /dev/null; then
+	tmux switch-client -t "$name"
+else
+	tmux new-session -c "$dir" -s "$name" -d
+	tmux switch-client -t "$name"
+fi

@@ -6,8 +6,7 @@ cd() {
 		return 1
 	fi
 	if test "$#" = 0; then
-		_SESSION_DIR=$(tmux show-options -s @dir 2> /dev/null \
-			| awk '{print $2}')
+		_SESSION_DIR=$(tmux display-message -p '#{session_path}')
 	fi
 	command cd "${_dir:-${_SESSION_DIR:-${USE_HOME:-$HOME}}}"
 }
