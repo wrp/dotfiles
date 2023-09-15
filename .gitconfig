@@ -28,11 +28,11 @@
 	exec = "!exec "
 	l = log --oneline --decorate --format=format:'%Cgreen%h%Cred %<(10,trunc)%an%Creset %<(80,trunc)%s%Cblue%D'
 	# Set t or trailers to a comma separated list of trailers to be displayed in the log output
-	l1 = !bash -c 'a=$(echo ${t-$trailers} | sed -E \"s/^|,/&key=/g\" ) && git log \"$@\" \
+	l1 = !bash -c 'a=$(printf \"%s\" ${t-$trailers} | sed -E \"s/^|,/&key=/g\" ) && git log \"$@\" \
 		--format=format:\"$(echo \"\
 		%Cgreen%h\
-		%Cred%<(12,trunc)%an\
-		%Creset[%><(${w-11})%(trailers:${a},separator=%x2C,valueonly)]\
+		%Cred%<(12,trunc)%an%Creset\
+		${a:+[%><(${w-11})%(trailers:${a},separator=%x2C,valueonly)]}\
 		%<(60,trunc)%s \
 		%Cblue%D%Creset\
 		\" | tr -s \" \"  )\"' _
