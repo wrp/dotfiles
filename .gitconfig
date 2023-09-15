@@ -28,6 +28,9 @@
 	exec = "!exec "
 	l = log --oneline --decorate --format=format:'%Cgreen%h%Cred %<(10,trunc)%an%Creset %<(80,trunc)%s%Cblue%D'
 	# Set t or trailers to a comma separated list of trailers to be displayed in the log output
+	# The idea here is that you can specify trailers in the environment in ~/.bash-local or override with t
+	# at the command line.  eg, set trailers=ticket in the environ to usually show the ticket in the log, or
+	# use 't=ticket,style g l1' to show both the ticket at the style trailer in the log.
 	l1 = !bash -c 'a=$(printf \"%s\" ${t-$trailers} | sed -E \"s/^|,/&key=/g\" ) && git log \"$@\" \
 		--format=format:\"$(echo \"\
 		%Cgreen%h\
