@@ -1,0 +1,44 @@
+#!/bin/sh
+
+# Select the desired vim setting, based on various metadata from git, etc.
+# This is expected to be invoked from .vimrc, with the desired setting
+# as first argument and path as second.
+
+die() { printf "%s${1:+\n}" "$*"; exit 1; } >&2
+git() {
+    command git -C "${base_dir:?}" "$@"
+}
+get_remote_url() {
+	remote=$(git config branch.${current_branch?}.remote)
+	git config remote.$remote.url
+}
+expandtab() {
+	if git config branch.${current_branch?}.expandtab | grep .; then
+		return 0
+	fi
+	case $(get_remote_url) in
+	*github*        ) echo no;;
+	*               ) echo yes;;
+	esac
+}
+get_tabstop() {
+	if git config branch.${current_branch?}.tabstop | grep .; then
+		return 0
+	fi
+	case $(get_remote_url) in
+	*github*        ) echo 8;;
+	*               ) echo ${TAB_SIZE-8};;
+	esac
+}
+main(){
+	base_dir=$(dirname "$2")
+	current_branch=$(git branch --show-current)
+	case $1 in
+	et|expandtab) expandtab "$@";;
+	ts|tabstop) get_tabstop "$@";;
+	sw|shiftwidth) get_tabstop "$@";;
+	*) die "Unknown setting: $1";;
+	esac
+}
+
+main "$@"
