@@ -163,4 +163,6 @@ endfunction
 
 runtime local/all.vim
 
+source $HOME/.config/vim/horizontal-scroll
+
 " vim: fen:sw=4 fdm=indent fdl=1

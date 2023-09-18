@@ -4,5 +4,6 @@
 .minimal-dotfiles
 .gitignore_global
 .tmux.conf.primary
+vim
 setup
 blacklist
