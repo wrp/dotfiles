@@ -8,14 +8,19 @@ noremap bd! :bd<cr>:bn<cr>
 noremap gw :Windo set wrap!
 com! Nt :NERDTree
 
-if trim(system('guess-vim-setting expandtab ' . expand('%:p') . ' || echo no')) == 'yes'
+function! s:get_option(name, default)
+	return trim(system('guess-vim-setting ' . a:name . ' ' .
+	\ expand('%:p') . ' || echo ' . a:default))
+endfunction
+
+if s:get_option('expandtab', 'no') == 'yes'
 	set expandtab
 else
 	set noexpandtab
 endif
 
-let &tabstop=str2nr(system('guess-vim-setting tabstop ' . expand('%:p') . ' || echo 8'))
-let &shiftwidth=str2nr(system('guess-vim-setting shiftwidth ' . expand('%:p') . ' || echo 8'))
+let &tabstop = str2nr(s:get_option('tabstop', '8'))
+let &shiftwidth = str2nr(s:get_option('shiftwidth', '8'))
 
 " Just like windo, but restore the current window when done.
 function! WinDo(command)
