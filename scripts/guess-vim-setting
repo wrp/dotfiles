@@ -12,42 +12,31 @@ get_remote_url() {
 	remote=$(git config branch.${current_branch?}.remote)
 	git config remote.$remote.url
 }
-expandtab() {
-	if git config branch.${current_branch?}.expandtab | grep .; then
-		return 0
-	fi
+get_values() {
+	tabstop=$(git config branch.${current_branch?}.tabstop)
+	expandtab=$(git config branch.${current_branch?}.expandtab)
 
 	case $basename in
-	*.go            ) echo no; return;;
-	*.yaml          ) echo yes; return;;
+	*.go            ) : ${tabstop:=8} ${expandtab:=no};;
+	*.yaml          ) : ${tabstop:=4} ${expandtab:=yes};;
 	esac
 
 	case $(get_remote_url) in
-	*github*        ) echo no;;
-	*               ) echo yes;;
+	*github*        ) : ${tabstop:=8} ${expandtab:=no};;
+	*               ) : ${expandtab:=yes}
 	esac
-}
-get_tabstop() {
-	git config branch.${current_branch?}.tabstop | grep . && return
-
-	case $basename in
-	*.go            ) echo 8; return;;
-	*.yaml          ) echo 4; return;;
-	esac
-
-	case $(get_remote_url) in
-	*github*        ) echo 8; return;;
-	esac
-	echo ${TAB_SIZE-8}
+	: ${tabstop:=${TAB_SIZE-8}}
+	: ${expandtab:=no}
 }
 main(){
 	dirname=$(dirname "$2")
 	basename=$(basename "$2")
 	current_branch=$(git branch --show-current)
+	get_values
 	case $1 in
-	et|expandtab) expandtab "$@";;
-	ts|tabstop) get_tabstop "$@";;
-	sw|shiftwidth) get_tabstop "$@";;
+	et|expandtab) echo "${expandtab:?}";;
+	ts|tabstop) echo "${tabstop:?}";;
+	sw|shiftwidth) echo "${tabstop:?}";;
 	*) die "Unknown setting: $1";;
 	esac
 }
