@@ -6,7 +6,7 @@
 
 die() { printf "%s${1:+\n}" "$*"; exit 1; } >&2
 git() {
-    command git -C "${base_dir:?}" "$@"
+    command git -C "${dirname:?}" "$@"
 }
 get_remote_url() {
 	remote=$(git config branch.${current_branch?}.remote)
@@ -22,16 +22,20 @@ expandtab() {
 	esac
 }
 get_tabstop() {
-	if git config branch.${current_branch?}.tabstop | grep .; then
-		return 0
-	fi
-	case $(get_remote_url) in
-	*github*        ) echo 8;;
-	*               ) echo ${TAB_SIZE-8};;
+	git config branch.${current_branch?}.tabstop | grep . && return
+
+	case $basename in
+	*.go) echo 8; return;;
 	esac
+
+	case $(get_remote_url) in
+	*github*        ) echo 8; return;;
+	esac
+	echo ${TAB_SIZE-8}
 }
 main(){
-	base_dir=$(dirname "$2")
+	dirname=$(dirname "$2")
+	basename=$(basename "$2")
 	current_branch=$(git branch --show-current)
 	case $1 in
 	et|expandtab) expandtab "$@";;
