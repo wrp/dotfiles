@@ -4,6 +4,8 @@
 "
 " go.vim: Vim filetype plugin for Go.
 
+set iskeyword=@,48-57,_,192-255
+
 if exists("b:did_ftplugin")
   finish
 endif
