@@ -16,6 +16,12 @@ expandtab() {
 	if git config branch.${current_branch?}.expandtab | grep .; then
 		return 0
 	fi
+
+	case $basename in
+	*.go            ) echo no; return;;
+	*.yaml          ) echo yes; return;;
+	esac
+
 	case $(get_remote_url) in
 	*github*        ) echo no;;
 	*               ) echo yes;;
@@ -25,7 +31,8 @@ get_tabstop() {
 	git config branch.${current_branch?}.tabstop | grep . && return
 
 	case $basename in
-	*.go) echo 8; return;;
+	*.go            ) echo 8; return;;
+	*.yaml          ) echo 4; return;;
 	esac
 
 	case $(get_remote_url) in
