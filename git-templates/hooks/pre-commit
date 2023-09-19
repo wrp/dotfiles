@@ -5,7 +5,7 @@ against=$(git rev-parse --verify HEAD 2>/dev/null || git hash-object -t tree /de
 
 die() {
 	printf 'Pre-commit hook is rejecting this commit: '
-	printf '%s\n' "$1";
+	printf '%s\n' "$*";
 	printf 'Use --no-verify (-n) to ignore\n'
 	exit 1
 } >&2
@@ -17,6 +17,11 @@ then
 	die "Invalid characters in filename: $invalid"
 fi
 
-if ! git diff-index --check --cached $against --; then
-	die 'Whitespace errors'
+if \
+	test -z "$IGNORE_WHITESPACE_ERRORS" &&
+	git config apply.whitespace | grep -q error &&
+	! git diff-index --check --cached $against --
+then
+	die 'Whitespace errors. "git config apply.whitespace warn"' \
+		'or set IGNORE_WHITESPACE_ERRORS'
 fi
