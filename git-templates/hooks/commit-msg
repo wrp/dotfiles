@@ -1,0 +1,19 @@
+#!/bin/sh
+
+main() {
+	check_subject "$@" || return 1
+}
+
+check_subject() {
+	# Abort if the first line of the message is non-conforming
+	if ! < "$1" awk 'NR == 1 && ! /[a-z0-9]$/ {exit 1;}'; then
+		echo 'Subject of commit message must end with a-z or 0-9' >&2
+		return 1
+	fi
+}
+
+
+if ! main "$@"; then
+	echo "commit-msg hook is rejecting this commit" >&2
+	exit 1
+fi
