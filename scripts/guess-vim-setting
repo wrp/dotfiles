@@ -1,10 +1,20 @@
-#!/bin/sh
+#!/bin/bash
 
 # Select the desired vim setting, based on various metadata from git, etc.
 # This is expected to be invoked from .vimrc, with the desired setting
-# as first argument and path as second.
+# as first argument, full path as second, and vim's deduced filetype
+# as (optional) third.  eg: "$0 tabstop /path/to/a.cpp cpp"
+
+# At the moment, we are just comparing the values in the local
+# environment variable REMOTE_VIM_SETTINGS.  If a remote in the
+# repo exists that matches, we will use the values from the first
+# one that matches.
+
+# It is considered an error if no value can be determined, in which
+# case output nothing and return 1.
 
 die() { printf "%s${1:+\n}" "$*"; exit 1; } >&2
+result() { printf '%s\n' $1; exit 0; }
 git() {
     command git -C "${dirname:?}" "$@"
 }
@@ -12,33 +22,33 @@ get_remote_url() {
 	remote=$(git config branch.${current_branch?}.remote)
 	git config remote.$remote.url
 }
-get_values() {
-	tabstop=$(git config branch.${current_branch?}.tabstop)
-	expandtab=$(git config branch.${current_branch?}.expandtab)
-
-	case $basename in
-	*.go            ) : ${tabstop:=8} ${expandtab:=no};;
-	*.yaml          ) : ${tabstop:=4} ${expandtab:=yes};;
-	esac
-
-	case $(get_remote_url) in
-	*github*        ) : ${tabstop:=8} ${expandtab:=no};;
-	*               ) : ${expandtab:=yes}
-	esac
-	: ${tabstop:=${TAB_SIZE-8}}
-	: ${expandtab:=no}
+get_value() {
+	test -n "$*" || return 1
+	# $* is expected to look like "{filetype} {tabstop} [no]expandtab"
+	read filetype tabstop expandtab <<< "$*"
+	rv=$?
+	return $rv
 }
 main(){
 	dirname=$(dirname "$2")
-	basename=$(basename "$2")
-	current_branch=$(git branch --show-current)
-	get_values
-	case $1 in
-	et|expandtab) echo "${expandtab:?}";;
-	ts|tabstop) echo "${tabstop:?}";;
-	sw|shiftwidth) echo "${tabstop:?}";;
-	*) die "Unknown setting: $1";;
-	esac
+	tab=$(printf '\t')
+	declare -A remotes
+
+	if test -z "$REMOTE_VIM_SETTINGS"; then
+		die no remotes are set in REMOTE_VIM_SETTINGS
+	fi
+
+	while read key value; do test -n "$key" && remotes[$key]=$value; done <<< "$REMOTE_VIM_SETTINGS"
+	while IFS=" ${tab}:@/" read _ _ git_url _ http_url _; do
+		get_value ${remotes[$git_url]} && break
+		get_value ${remotes[$http_url]} && break
+	done < <(git remote -vv)
+
+	shiftwidth=$tabstop
+	if test -z "$3" || test "$3" = "$filetype"; then
+		test -n "${!1}" && result "${!1}"
+	fi
 }
 
 main "$@"
+exit 1
