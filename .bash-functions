@@ -16,3 +16,15 @@ clear_path() {
 }
 append_path() { in_path "$1" || PATH="$PATH${PATH:+:}$1"; }
 prepend_path() { in_path "$1" || PATH="$1${PATH:+:}$PATH"; }
+
+make_hist_file() {
+	{
+	printf '#%s Shell %d' "$(date +%s)" "$$"
+	if test "$PPID" -gt 0 2> /dev/null; then
+		printf ', child of %s,' "$(ps -o pid=,comm= $PPID)"
+	fi
+	printf ' begins in %s' "$PWD"
+	printf '\n'
+	} | tr -s ' ' >> $1
+	export HISTFILE=$1
+}

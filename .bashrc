@@ -31,17 +31,6 @@ read_file $HOME/.bashd/*
 read_file $HOME/.bash-functions $HOME/.bash-interactive-functions $HOME/.bash-completions
 read_file $HOME/.bash-env $HOME/.bash-localenv
 
-make_hist_file() {
-	{
-	printf '#%s Shell %d' "$(date +%s)" "$$"
-	if test "$PPID" -gt 0 2> /dev/null; then
-		printf ', child of %s,' "$(ps -o pid=,comm= $PPID)"
-	fi
-	printf ' begins in %s' "$PWD"
-	printf '\n'
-	} | tr -s ' ' >> $1
-	export HISTFILE=$1
-}
 make_hist_file $HOME/.bash-history-dir/.bash-history-$$
 export HISTCONTROL=ignoredups
 export IGNOREEOF=4
