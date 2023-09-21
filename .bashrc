@@ -23,15 +23,14 @@ esac
 
 # test -x /usr/bin/lesspipe && eval "$(SHELL=/bin/sh lesspipe)"
 
-unalias -a
-unset PS1  # Set PS1 from ~.bashd/PS1
+unalias -a   # Remove all existing aliases
+complete -r  # Remove all existing completion specs
+unset PS1    # Set PS1 from ~.bashd/PS1
 read_file() { local f; for f; do if test -f "$f"; then . "$f"; fi; done; }
 read_file $HOME/.bashd/*
 read_file $HOME/.bash-functions $HOME/.bash-interactive-functions $HOME/.bash-completions
 read_file $HOME/.bash-env $HOME/.bash-localenv
 
-
-complete -r
 make_hist_file() {
 	{
 	printf '#%s Shell %d' "$(date +%s)" "$$"
