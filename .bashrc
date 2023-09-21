@@ -13,13 +13,7 @@
 #     rshd nor sshd  generally  invoke  the  shell  with those options
 #     or allow them to be specified.
 # But this should only be used in interactive shells, so make it explicit.
-case "$-" in
-*i*) # interactive shell
-	;;
-*)
-	return 0
-	;;
-esac
+case "$-" in *i*) : ;; *) return 0 ;; esac
 
 unalias -a   # Remove all existing aliases
 complete -r  # Remove all existing completion specs
