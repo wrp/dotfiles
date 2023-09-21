@@ -9,7 +9,7 @@ warn() { test -z "$NOWARN" && echo "$@" >&2; }
 
 for MD5 in md5sum md5; do $MD5 > /dev/null </dev/null 2>&1 && break; done
 
-base=$(dirname "$0")
+base=$(dirname $(realpath "$0"))
 test "$(pwd)" = "$HOME" || die "Must run from \$HOME ($HOME)"
 
 unset force abort
@@ -77,4 +77,4 @@ EOF
 
 ln -s "$base/scripts" scripts
 mkdir $HOME/.git-template-links
-(cd $HOME/.git-template-links; ln -s $HOME/.git-template-dir/hooks)
+(cd $HOME/.git-template-links; ln -s $base/git-templates/hooks)
