@@ -36,40 +36,6 @@ shopt -s cdable_vars 2> /dev/null
 shopt -s direxpand 2> /dev/null # prevent tab expand from expanding $D to \$D
 # set +H      # disable history expansion
 
-report_cmd_status() {
-	# Clean up the most recent command in HISTFILE and append it to global .bash-history.
-	# Note that the FAILED string is used in scripts/search-bash-history
-	test -f "$1" && tac "$1" | STATUS="$2" perl -MPOSIX -pe '
-		if( /^#[0-9]{10}$/ ) { # abort after adding the timestamp.
-			s@([0-9]{10})@sprintf "%s (%s by pid:%d in %s%s%s) %s",
-				$1,
-				POSIX::strftime("%a %b %d %H:%M:%S GMT", gmtime $1),
-				'"$$"',
-				"'"${PWD}"'",
-				"'"${PROJECT:+:}${PROJECT}"'",
-				"'"${DOCKER:+ on }$DOCKER"'",
-				$ENV{STATUS} > 0 ? "FAILED" : "ok",
-				@ge;
-			print;  # Since about to skip auto print with -p
-			exit 0; # Exit so we only process most recent command
-		}
-	' | tac | perl -ne '
-		$ts = $_ if $. == 1;
-		if( $. == 2 )  {
-			exit 0 if /^history/;     # ignore history
-			exit 0 if /^[a-z]{1,2}$/;   # 2 letter cmds w/no args
-			foreach $cmd (
-					"cal", "cat", "cd", "date", "echo", "exec bash",
-					"head", "less", "ls", "more", "pwd", "tail", "man"
-				) {
-				exit 0 if /^$cmd( |$)/ }
-			print $ts
-		}
-		s/[ \t]+$//;
-		print unless $. == 1; # Delay printing of timestamp
-	'
-}
-
 trap archive 0
 trap debug_trap DEBUG
 trap '. $HOME/.bashrc' SIGUSR1
