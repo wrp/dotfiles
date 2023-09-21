@@ -21,8 +21,6 @@ case "$-" in
 	;;
 esac
 
-# test -x /usr/bin/lesspipe && eval "$(SHELL=/bin/sh lesspipe)"
-
 unalias -a   # Remove all existing aliases
 complete -r  # Remove all existing completion specs
 unset PS1    # Set PS1 from ~.bashd/PS1
