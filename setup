@@ -41,8 +41,6 @@ test -n "$abort" && warn overwriting
 
 mkdir -p $HOME/.bash-history-dir
 mkdir -p $HOME/.config/git
-mkdir -p $HOME/.config/vim
-ln -fs ../../$base/vim/horizontal-scroll $HOME/.config/vim || die
 ln -fs ../../$base/.gitignore_global $HOME/.config/git/ignore || die
 
 for file in $targets; do
