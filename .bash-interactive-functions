@@ -332,10 +332,6 @@ ssh_split() {
 		printf "******** terminated: ssh %s ********${nl}${nl}" "$*" >&2
 		read' sh "$@";
 	while test "${1#-}" != "$1"; do shift; done
-	# tmux select-pane -T "${1%%.*}"
-	# TODO: figure out how to use tmux set-hook to reset the title
-	# (probably on a pane-died event) when the ssh session ends
-	__pane_title="${1%%.*}"
 }
 
 scp() { [[ ! $* =~ : ]] &&
@@ -424,8 +420,6 @@ xclip() {
 }
 y() { select-git-branch "$@"; }
 
-for name in find python idle python3 man; do
+for name in find python idle python3 man make; do
 	eval "$name"'() { window-title "'"$name"' $1"; command '$name' "$@"; }'
 done
-
-make() { window-title "${__pane_title="make $*"}"; command make "$@"; }
