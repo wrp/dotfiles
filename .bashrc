@@ -36,15 +36,6 @@ shopt -s cdable_vars 2> /dev/null
 shopt -s direxpand 2> /dev/null # prevent tab expand from expanding $D to \$D
 # set +H      # disable history expansion
 
-after_cmd() {
-	# Run after a command, and before a prompt is displayed
-	local _status=$?
-	report_cmd_status $HISTFILE $_status >> $HOME/.bash-history
-	window-title "$__pane_title"
-	unset __pane_title
-	return $_status
-}
-
 report_cmd_status() {
 	# Clean up the most recent command in HISTFILE and append it to global .bash-history.
 	# Note that the FAILED string is used in scripts/search-bash-history

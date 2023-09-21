@@ -17,6 +17,15 @@ clear_path() {
 append_path() { in_path "$1" || PATH="$PATH${PATH:+:}$1"; }
 prepend_path() { in_path "$1" || PATH="$1${PATH:+:}$PATH"; }
 
+after_cmd() {
+	# Run after a command, and before a prompt is displayed
+	local _status=$?
+	report_cmd_status $HISTFILE $_status >> $HOME/.bash-history
+	window-title "$__pane_title"
+	unset __pane_title
+	return $_status
+}
+
 make_hist_file() {
 	{
 	printf '#%s Shell %d' "$(date +%s)" "$$"
