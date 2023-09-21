@@ -21,11 +21,10 @@ unset PS1    # Set PS1 from ~.bashd/PS1
 read_file() { local f; for f; do if test -f "$f"; then . "$f"; fi; done; }
 read_file $HOME/.bashd/*
 read_file $HOME/.bash-functions $HOME/.bash-interactive-functions $HOME/.bash-completions
-read_file $HOME/.bash-env $HOME/.bash-localenv
+read_file $HOME/.bash-env
+read_file $HOME/.bash-localenv
 
 make_hist_file $HOME/.bash-history-dir/.bash-history-$$
-export HISTCONTROL=ignoredups
-export IGNOREEOF=4
 set -o vi
 set -o physical # make pwd do the right thing w.r.t. symbolic links
 shopt -s histappend
