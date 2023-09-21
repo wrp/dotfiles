@@ -15,10 +15,10 @@
 # But this should only be used in interactive shells, so make it explicit.
 case "$-" in
 *i*) # interactive shell
-        ;;
+	;;
 *)
 	return 0
-        ;;
+	;;
 esac
 
 # test -x /usr/bin/lesspipe && eval "$(SHELL=/bin/sh lesspipe)"
