@@ -36,37 +36,6 @@ shopt -s cdable_vars 2> /dev/null
 shopt -s direxpand 2> /dev/null # prevent tab expand from expanding $D to \$D
 # set +H      # disable history expansion
 
-debug_trap() {
-	# Runs before a command in an interactive shell
-	# warning: if you execute a loop, this will run for every iteration
-	# TODO: figure out how to suppress that behavior
-	if test "$IFS" != $' \t\n'; then
-		echo "WARNING: IFS contains unexpected characters"
-	fi
-
-	history -a || echo 'WARNING: history -a failed'
-
-	# Emit a warning if the history file is not updating
-	# When a shell starts up, the debug trap is being called multiple times
-	# before any commands have been executed.  In that case, fc emits no ouptut
-	# and we do not want to emit a warning about the HISTFILE in that situation.
-	if ! test -f "$HISTFILE" || ! {
-		local last  # last is the first word of the most recent command
-		last=$(fc -l -1 2> /dev/null | awk '{print $2; exit}')
-		# Check the last command to ensure that the HISTFILE is updating.
-		# Last command may be multi-line, hence the tac.
-		test -z "$last" || tac "$HISTFILE" |
-			awk '/^#/ && a++ > 2 {exit}
-			$1 == "rh" || $1 == last {b++} END{ exit !b }' last="$last";
-	} 2> /dev/null
-	then
-		echo 'WARNING: HISTFILE is not updating!!'
-	fi
-	if test -z "${TMUX}${NO_TMUX_OK}" && test "${FUNCNAME[1]}" != 'source'; then
-		echo "WARNING: not running in TMUX! (set NO_TMUX_OK to suppress warning)"
-	fi
-} >&2
-
 after_cmd() {
 	# Run after a command, and before a prompt is displayed
 	local _status=$?
