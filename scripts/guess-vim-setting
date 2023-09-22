@@ -40,8 +40,8 @@ main(){
 
 	while read key value; do test -n "$key" && remotes[$key]=$value; done <<< "$REMOTE_VIM_SETTINGS"
 	while IFS=" ${tab}:@/" read _ _ git_url _ http_url _; do
-		get_value ${remotes[$git_url]} && break
-		get_value ${remotes[$http_url]} && break
+		test -n "$git_url" && get_value ${remotes[$git_url]} && break
+		test -n "$http_url" && get_value ${remotes[$http_url]} && break
 	done < <(git remote -vv)
 
 	shiftwidth=$tabstop
