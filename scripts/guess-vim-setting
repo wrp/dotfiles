@@ -24,10 +24,32 @@ get_remote_url() {
 }
 get_value() {
 	test -n "$*" || return 1
-	# $* is expected to look like "{filetype} {tabstop} [no]expandtab"
-	read filetype tabstop expandtab <<< "$*"
-	rv=$?
-	return $rv
+
+	# $* is expected to look like "{filetype} {tabstop} [no]expandtab [keep_trailing_whitespace]"
+	read filetype tabstop expandtab keep_white <<< "$*"
+
+	if ! test "$tabstop" -gt 0 2> /dev/null; then
+		echo "Invalid tabstop in REMOTE_VIM_SETTINGS" >&2
+		return 1
+	fi
+
+	case $expandtab in
+	expandtab|noexpandtab) : ;;
+	*)
+		echo "Invalid expandtab value in REMOTE_VIM_SETTINGS" >&2
+		return 1;
+	esac
+
+	if test -n "$keep_white" && test "$keep_white" != keep_trailing_whitespace; then
+		echo "Invalid trailing whitespace column in REMOTE_VIM_SETTINGS" >&2
+		return 1;
+	fi
+
+	if test -n "$keep_white"; then
+		keep_white=1
+	else
+		keep_white=0
+	fi
 }
 main(){
 	dirname=$(dirname "$2")
