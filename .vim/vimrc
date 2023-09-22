@@ -13,6 +13,15 @@ function! Get_option(name, default)
 	\ expand('%:p') . ' ' . expand(&filetype) . ' || echo ' . a:default))
 endfunction
 
+function! Guess_expandtab()
+	if Get_option('expandtab', 'noexpandtab') == 'expandtab'
+		set expandtab
+	else
+		set noexpandtab
+	endif
+endfunction
+
+
 set noexpandtab
 let &tabstop = 8
 set shiftwidth=8
