@@ -54,7 +54,11 @@ main() {
 	git config user.email "${EMAIL?}"
 	git config user.name "${UNAME?}"
 
-	test -z "$STFU" && printf >&2 "name/email set to %s/%s\n" "${UNAME}" "${EMAIL}"
+	if ! git rev-parse --show-superproject-working-tree | grep -q . \
+		&& test -z "$STFU" \
+	; then
+		printf >&2 "name/email set to %s/%s\n" "${UNAME}" "${EMAIL}"
+	fi
 }
 
 main "$@"
