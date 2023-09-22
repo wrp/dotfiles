@@ -1,7 +1,8 @@
 set foldlevelstart=0
 set foldmethod=manual
 " syn match comment "\v(^\s*//.*\n)+" fold
-if line('$') >= 29
+
+if line('$') >= 29 && match(getline(30), '^// \**$') != -1
 	1,29fold
 endif
 let &tabstop = str2nr(Get_option('tabstop', 8))
