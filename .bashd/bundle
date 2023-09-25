@@ -1,11 +1,5 @@
 bundle() {
 	local file base
-	if test $# -ne 0; then
-		for x; do
-			(command cd "$x" && shift && bundle) || return 1
-		done
-		return 0
-	fi
 	if ! command git rev-parse HEAD > /dev/null 2>&1; then
 		echo "Not a git repo" >&2
 		return 1
@@ -20,8 +14,11 @@ bundle() {
 		basename $(command git rev-parse --show-toplevel)
 	)
 	test -n "$base" || return
-	file="$base"-$(command git rev-parse --short HEAD ).bundle
+	revs="${@-HEAD}"
+	file="$base"-$(command git rev-list "$revs" |
+		awk 'NR==1{ printf "%s..", substr($0, 0, 7)} END {print substr($0, 0, 7)}'
+		).bundle
 	test -e "$file" && { echo "$file already exists" >&2; return 1; }
-	command git bundle create "$file" HEAD 2> /dev/null \
+	command git bundle create "$file" "$revs" 2> /dev/null \
 	&& echo Created "$(pwd)/$file"
 }
