@@ -126,20 +126,7 @@ end
 set undofile
 set undodir^=~/.vim/undo//
 
-call plug#begin('~/.vim/plugged')
-" Declare the list of plugins.
-" (Get plugin manager with:
-" curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-"
-Plug 'junegunn/vim-easy-align'
-" See https://github.com/junegunn/vim-easy-align
-call plug#end()
 
-
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-" " Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
 
 autocmd BufWritePre * call ClearWhite()
 autocmd BufEnter,BufReadPost,FileReadPost,BufNewFile *
