@@ -15,7 +15,7 @@
 	cp = cherry-pick -x
 	cr = commit -m 'Trivial reformat'
 	cra = commit -a -m 'Trivial reformat'
-	csa = commit -a -m'Sanity Check'
+	csa = commit -a -m 'Sanity Check'
 	cw = commit -m 'Whitespace'
 	cwa = commit -a -m 'Whitespace'
 	d = diff
