@@ -53,7 +53,7 @@
 	l1h = l1 -n 10
 	la = l1 --graph --decorate  # same as l1a
 	ld = l1 --date=format:'%H:%M:%S %d%b%y'
-	ldh = log -n 10 --date=format:'%H:%M:%S %d%b%y' --format=format:'%Cgreen%h%C(yellow) %Cred %<(10,trunc)%an%Creset %<(60,trunc)%s %ad %Cblue%D%Creset'
+	ldh = l1 -n 10 --date=format:'%H:%M:%S %d%b%y'
 	lg = log
 	lh  = log -n 10 --decorate --format=format:'%Cgreen%h%Cred %<(12,trunc)%an%Creset %<(60,trunc)%s %Cblue%D%Creset' --graph
 	ll = log --stat
