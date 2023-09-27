@@ -26,8 +26,7 @@
 	dw = diff --word-diff
 	dwa = diff --word-diff-regex=.
 	exec = "!exec "
-	l = log --oneline --decorate --format=format:'%<|(\
-		1)%Cgreen%h%Cred %<(10,trunc)%an%Creset %<(80,trunc)%s%Cblue%D'
+	l = l1
 	# Set t to a comma separated list of trailers to be
 	# displayed in the log output The idea here is that you can
 	# specify trailers with 'git config cored.default-trailers'
@@ -54,14 +53,7 @@
 	la = l1 --graph --decorate  # same as l1a
 	ld = l1 --date=format:'%H:%M:%S %d%b%y'
 	ldh = l1 -n 10 --date=format:'%H:%M:%S %d%b%y'
-	lg = log
-	lh  = log -n 10 --decorate --format=format:'%Cgreen%h%Cred %<(12,trunc)%an%Creset %<(60,trunc)%s %Cblue%D%Creset' --graph
-	ll = log --stat
-	lm = log --pretty=oneline --author=wrp
-	lp = log -p
-	lr = log --format=format:'%Cgreen%h%C(yellow) %cr %Cred %<(10,trunc)%an%Creset %<(60,trunc)%s %Cblue%D%Creset'
-	ls = log --oneline --decorate --format=format:'%Cgreen%h%Cred %<(10,trunc)%an%Cblue%D%Creset %<(80,trunc)%s' --show-signature
-	lt  = log --format=format:'%<(40,trunc)%s %Cblue%D%Creset'
+	ls = l1 --show-signature
 	no = show --name-only --pretty=format:
 	s = status
 	sa = status -uall --ignored
