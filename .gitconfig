@@ -7,7 +7,6 @@
 	caan = caa -n
 	cd = commit -m Documentation
 	cda = commit -a -m Documentation
-	cda = commit -a -mDocumentation
 	cf = commit -m 'Trivial refactor'
 	cfa = commit -a -m 'Trivial refactor'
 	ci = commit
