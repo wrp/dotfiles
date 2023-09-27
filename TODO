@@ -1,6 +1,6 @@
 
-Clean up the commit message in ga.  When multiple files
-are committed, should summarize the directory in the
-first line instead of just "Add files".  Maybe just
-mention the directory with the most commits, or find the common
-directory of all files added, or ???
+
+Clean up gitconfig for logging.  Need to make l take
+options like l1 does and implement all the other aliases
+in terms of l (or just purge the l garbage and always
+use l1)
