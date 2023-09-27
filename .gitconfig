@@ -25,7 +25,7 @@
 	dno = diff --name-only
 	dw = diff --word-diff
 	dwa = diff --word-diff-regex=.
-	exec = "!exec "
+	exec = "!exec "  # execute a shell command in the top level
 	l = l1
 	# Set t to a comma separated list of trailers to be
 	# displayed in the log output The idea here is that you can
