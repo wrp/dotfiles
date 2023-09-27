@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Create symbolic links in $HOME to all entries in this directory except
-# those listed in blacklist.  All links created in $HOME will have a .
+# those listed in denylist.  All links created in $HOME will have a .
 # prepended if the name here does not contain a leading .
 
 die() { test -n "$*" && echo "$*" >&2; exit 1; }
@@ -21,7 +21,7 @@ while test $# -gt 0; do
        shift
 done
 
-targets=$(ls -a "$base" | awk 'NR==FNR {a[$0] = 1; next} ! ($0 in a)' $base/blacklist -)
+targets=$(ls -a "$base" | awk 'NR==FNR {a[$0] = 1; next} ! ($0 in a)' $base/denylist -)
 
 for file in $targets; do
 	if test -f "$file" && test "$($MD5 < $HOME/$file)" != \
