@@ -46,10 +46,10 @@
 		%<(60,trunc)%s \
 		%Cblue%D%Creset\
 		\" | tr -s \" \"  )\" \"$@\"' _
-	l1a = l1 --graph
-	l1ah = log -n 10 --format=format:'%Cgreen%h%Cred %<(10,trunc)%an%Creset %<(40,trunc)%s %Cblue%d%Creset' --graph
+	l1a = l1 --graph --decorate
+	l1ah = l1 -n 10 --graph
 	l1h = l1 -n 10
-	la = log --oneline --graph --decorate --format=format:'%Cgreen%h%Cblue%d%Creset %<(80,trunc)%s'
+	la = l1 --graph --decorate  # same as l1a
 	ld = log --date=format:'%H:%M:%S %d%b%y' --format=format:'%Cgreen%h%C(yellow) %Cred %<(10,trunc)%an%Creset %<(60,trunc)%s %ad %Cblue%D%Creset'
 	ldh = log -n 10 --date=format:'%H:%M:%S %d%b%y' --format=format:'%Cgreen%h%C(yellow) %Cred %<(10,trunc)%an%Creset %<(60,trunc)%s %ad %Cblue%D%Creset'
 	lg = log
