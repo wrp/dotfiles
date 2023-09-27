@@ -11,13 +11,13 @@ check_subject() {
 			print "Summary of commit message must end with a-z, A-Z, ), }, or 0-9" > "/dev/stderr"
 			exit 1;
 		}
-		NR == 1 && length > ENVIRON["MAX_GIT_SUMMARY"] {
+		NR == 1 && length > maxlen {
 			err = "Summary of commit message is too long"
 			err = err " (%d > MAX_GIT_SUMMARY)\n"
 			printf err, length > "/dev/stderr"
 			exit 1;
 		}
-	'
+	' maxlen=${MAX_GIT_SUMMARY-60}
 }
 
 
