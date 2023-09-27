@@ -6,18 +6,20 @@
 		--format=format:%B -n 1)\" --cleanup=strip' _
 	caan = caa -n
 	cd = commit -m Documentation
-	cda = commit -a -m Documentation
+	cda = cd -a
 	cf = commit -m 'Trivial refactor'
-	cfa = commit -a -m 'Trivial refactor'
+	cfa = cf -a
 	ci = commit
 	ciam = commit -a -m
 	co = checkout
-	cp = cherry-pick -x
+	cp = cherry-pick
+	cpx = cp -x
 	cr = commit -m 'Trivial reformat'
-	cra = commit -a -m 'Trivial reformat'
-	csa = commit -a -m 'Sanity Check'
+	cra = cr -a
+	cs = commit -m 'Sanity Check'
+	csa = cs -a
 	cw = commit -m 'Whitespace'
-	cwa = commit -a -m 'Whitespace'
+	cwa = cw -a
 	d = diff
 	dc = diff --cached
 	dn = diff --numstat
