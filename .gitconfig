@@ -26,7 +26,8 @@
 	dw = diff --word-diff
 	dwa = diff --word-diff-regex=.
 	exec = "!exec "
-	l = log --oneline --decorate --format=format:'%Cgreen%h%Cred %<(10,trunc)%an%Creset %<(80,trunc)%s%Cblue%D'
+	l = log --oneline --decorate --format=format:'%<|(\
+		1)%Cgreen%h%Cred %<(10,trunc)%an%Creset %<(80,trunc)%s%Cblue%D'
 	# Set t to a comma separated list of trailers to be
 	# displayed in the log output The idea here is that you can
 	# specify trailers with 'git config cored.default-trailers'
@@ -35,7 +36,8 @@
 	# in the log, or use 't=ticket,style g l1' to show both
 	# the ticket adn the style trailer in the log, or 't= g l1'
 	# to show none.
-	l1 = !bash -c 'a=$(printf \"%s\" ${t-$(git config core.default-trailers)} | sed -E \"s/^|,/&key=/g\" ) && \
+	l1 = !bash -c 'a=$(printf \"%s\" ${t-$(git config \
+		core.default-trailers)} | sed -E \"s/^|,/&key=/g\" ) && \
 		git log \
 		--format=format:\"$(echo \"\
 		%Cgreen%h\
