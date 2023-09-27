@@ -7,8 +7,8 @@ main() {
 check_subject() {
 	# Abort if the first line of the message is non-conforming
 	< "$1" awk '
-		NR == 1 && ! /[a-z)}"A-Z0-9]$/ {
-			print "Summary of commit message must end with a-z, A-Z, ), }, or 0-9" > "/dev/stderr"
+		NR == 1 && ! /[a-z)}/"A-Z0-9]$/ {
+			print "Summary of commit message must end with one of a-zA-Z)}/\"0-9" > "/dev/stderr"
 			exit 1;
 		}
 		NR == 1 && length > maxlen {
