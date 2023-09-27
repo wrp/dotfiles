@@ -41,3 +41,4 @@ trap '. $HOME/.bashrc' SIGWINCH
 
 PROMPT_COMMAND=after_cmd
 read_file $HOME/.bash-local
+return 0
