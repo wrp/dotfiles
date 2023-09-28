@@ -5,6 +5,12 @@ unset name
 if ! tmux has-session -t "${name=${1-${PWD##*/}}}" 2> /dev/null; then
 	dir=$(realpath "$1" 2> /dev/null || echo ${PWD})
 	name=${dir##*/}
-	tmux new-session -c "$dir" -s "$name" -d
+
+	# Create new session with multiple windows.  Default 3, max 9
+	tmux new-session -c "$dir" -n "$name" -s "$name" -d
+	yes | sed -e 1d -e "${NEW_SESSION_PANE_COUNT-3}q" -e 9q | while read s
+	do
+		tmux new-window  -c "$dir" -a -n "$name" -t "$name":0 $SHELL
+	done
 fi
 tmux switch-client -t "$name"
