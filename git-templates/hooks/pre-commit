@@ -10,18 +10,29 @@ die() {
 	exit 1
 } >&2
 
-# Reject names with non standard characters
-if invalid=$(git diff --cached --name-only --diff-filter=A -z $against |
-	LC_ALL=C tr -d "\000${valid_chars}" | xxd | cut -d: -f 2- | tr -s ' ' | grep .)
-then
-	die "Invalid characters in filename: $invalid"
-fi
+validate_pathnames() {
+	# Reject names with non standard characters
+	if invalid=$(git diff --cached --name-only --diff-filter=A -z $against |
+		LC_ALL=C tr -d "\000${valid_chars}" | xxd | cut -d: -f 2- | tr -s ' ' | grep .)
+	then
+		die "Invalid characters in filename: $invalid"
+	fi
+}
 
-if \
-	test -z "$IGNORE_WHITESPACE_ERRORS" &&
-	git config apply.whitespace | grep -q error &&
-	! git diff-index --check --cached $against --
-then
-	die 'Whitespace errors. "git config apply.whitespace warn"' \
-		'or set IGNORE_WHITESPACE_ERRORS'
-fi
+validate_whitespace() {
+	if \
+		test -z "$IGNORE_WHITESPACE_ERRORS" &&
+		git config apply.whitespace | grep -q error &&
+		! git diff-index --check --cached $against --
+	then
+		die 'Whitespace errors. "git config apply.whitespace warn"' \
+			'or set IGNORE_WHITESPACE_ERRORS'
+	fi
+}
+
+main() {
+	validate_pathnames "$@"
+	validate_whitespace "$@"
+}
+
+main "$@"
