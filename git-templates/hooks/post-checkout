@@ -43,9 +43,7 @@ get_names_for_remote() {
 
 main() {
 	get_branch
-	branch_email=$(git config branch.$branch.email)
-
-	if test -n "$branch_email"; then
+	if test -n "${branch_email=$(git config branch.$branch.email)}"; then
 		EMAIL=$branch_email
 	else
 		get_names_for_remote
