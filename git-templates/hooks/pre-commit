@@ -33,6 +33,10 @@ validate_whitespace() {
 main() {
 	validate_pathnames "$@"
 	validate_whitespace "$@"
+	local_hook="$(dirname $(dirname $0))/local-hooks/$(basename $0)"
+	if test -x "$local_hook"; then
+		"$local_hook" "$@" || die $local_hook failed
+	fi
 }
 
 main "$@"
