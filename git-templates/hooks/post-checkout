@@ -30,14 +30,14 @@ get_names_for_remote() {
 	while read project email name; do
 		test -z "$project" && continue
 		case $url in
-		*github.com:${project}*)
-			EMAIL="${email-$EMAIL}"
-			UNAME="${name-$UNAME}"
+		*${project}*)
+			EMAIL="${email:-$EMAIL}"
+			UNAME="${name:-$UNAME}"
 		break
 		;;
 		esac
 	done <<- EOF
-	    $GITHUB
+		$GIT_REMOTE_IDENTITY
 	EOF
 }
 
