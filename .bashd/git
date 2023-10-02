@@ -33,6 +33,10 @@ g() {
 		command git worktree list --porcelain | awk '{print $2; exit}'
 		return
 	;;
+	(grep)
+		shift
+		set -- grep --no-recurse-submodules "$@"
+	;;
 	(r)
 		shift
 		find . -type d -name .git -exec sh -c '
