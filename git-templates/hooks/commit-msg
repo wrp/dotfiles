@@ -4,11 +4,16 @@ main() {
 	check_subject "$@" || return 1
 }
 
+
 check_subject() {
+	allowed_end='[a-z)}/_"A-Z0-9]$'  # Characters that can end a commit subject line
+
 	# Abort if the first line of the message is non-conforming
 	< "$1" awk '
-		NR == 1 && ! /[a-z)}/"A-Z0-9]$/ {
-			print "Summary of commit message must end with one of a-zA-Z)}/\"0-9" > "/dev/stderr"
+		NR == 1 && ! match($0, end) {
+			printf "Summary of commit message must match /%s/. " \
+				"(Do not end with punctuation)\n", \
+				end > "/dev/stderr"
 			exit 1;
 		}
 		NR == 1 && length > maxlen {
@@ -17,7 +22,7 @@ check_subject() {
 			printf err, length > "/dev/stderr"
 			exit 1;
 		}
-	' maxlen=${MAX_GIT_SUMMARY-60}
+	' maxlen=${MAX_GIT_SUMMARY-60} end="$allowed_end"
 }
 
 
