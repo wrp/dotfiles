@@ -9,7 +9,7 @@
 	cda = cd -a
 	cf = ci 'Trivial refactor'
 	cfa = cf -a
-	ci = commit
+	ci = commit -s
 	ciam = ci -am
 	co = checkout
 	cp = cherry-pick
