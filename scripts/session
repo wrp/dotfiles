@@ -10,7 +10,7 @@ if ! tmux has-session -t "${name=${1-${PWD##*/}}}" 2> /dev/null; then
 	tmux new-session -c "$dir" -s "$name" -d
 	yes | sed -e 1d -e "${NEW_SESSION_PANE_COUNT-3}q" -e 9q | while read s
 	do
-		tmux new-window  -c "$dir" -a -t "$name":0 $SHELL
+		tmux new-window -d -c "$dir" -a -t "$name":0 $SHELL
 	done
 fi
 tmux switch-client -t "$name"
