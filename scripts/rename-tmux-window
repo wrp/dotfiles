@@ -19,7 +19,7 @@ test -z "$*" && {
 	git_dir=$(realpath $(git rev-parse --git-dir))
 	if test "${git_dir##*/}" = .git; then
 		set -- "$(basename $(dirname "$git_dir"))"
-	elif work_dir=$(git rev-parse --show-toplevel 2> /dev/null); then
+	elif work_dir=$(git rev-parse --show-toplevel); then
 		set -- "$(basename "$work_dir")"
 		if test "$1" = worktrees; then
 			# Grrr.  After a git worktree move, the absolute-git-dir
@@ -30,7 +30,7 @@ test -z "$*" && {
 	else
 		set -- "$(basename "$(pwd -P)")"
 	fi
-}
+} 2> /dev/null
 
 if test -z "$left_justify"; then
 	patt='.*\(.\{19\}\)'
