@@ -3,7 +3,8 @@
 Clean up gitconfig for logging.  Need to make l take
 options like l1 does and implement all the other aliases
 in terms of l (or just purge the l garbage and always
-use l1)
+use l1)  (Note: need to implement l1 as a script and get all
+of that cruft out of .gitconfig)
 
 
 Maybe use something like:
