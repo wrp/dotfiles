@@ -22,6 +22,8 @@ if test "$1" -ge 0 2> /dev/null; then
 fi
 
 do_search() {
+	# Search ~/.bash-history for matching commands, strip duplicates
+	# put results in $RESULTS
 	trap 'rm -f $tmp1 $tmp2' RETURN
 	tmp1=$(mktemp)
 	tmp2=$(mktemp)
@@ -88,17 +90,21 @@ if test -z "$choice"; then
 		printf "No results found for search terms: %s\n" "$*">&2
 		exit 1
 	fi
-	< $RESULTS \
-	sed "${max_lines}q" \
-	| nl -s ') ' -w 2 -ba | expand | $tac \
-	| perl -nE '
-		s/([0-9]{9,10})/sprintf "%s", scalar localtime $1/e;
-		chop; say substr $_, 0, '"${COLUMNS-80} - 1"
-	echo ' 0) Exit'
+	if "$(wc -l $RESULTS)" = 1; then
+		n=1
+	else
+		< $RESULTS \
+		sed "${max_lines}q" \
+		| nl -s ') ' -w 2 -ba | expand | $tac \
+		| perl -nE '
+			s/([0-9]{9,10})/sprintf "%s", scalar localtime $1/e;
+			chop; say substr $_, 0, '"${COLUMNS-80} - 1"
+		echo ' 0) Exit'
 
-	check_tmux
-	printf 'Select command to store in tmux buffer: '
-	read n
+		check_tmux
+		printf 'Select command to store in tmux buffer: '
+		read n
+	fi
 else
 	n=$choice
 fi
