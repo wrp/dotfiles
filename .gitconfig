@@ -36,7 +36,7 @@
 	# in the log, or use 't=ticket,style g l1' to show both
 	# the ticket adn the style trailer in the log, or 't= g l1'
 	# to show none.
-	l1 = !bash -c 'a=$(printf \"%s\" ${t-$(git config \
+	l1 = !bash -c 'cd ${GIT_PREFIX:-.} && a=$(printf \"%s\" ${t-$(git config \
 		core.default-trailers)} | sed -E \"s/^|,/&key=/g\" ) && \
 		git log \
 		--date=format:\"\" \
