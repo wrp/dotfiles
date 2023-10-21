@@ -66,6 +66,20 @@ debug_trap() {
 	if test -z "${TMUX}${NO_TMUX_OK}" && test "${FUNCNAME[1]}" != 'source'; then
 		echo "WARNING: not running in TMUX! (set NO_TMUX_OK to suppress warning)"
 	fi
+
+	local cmd=${BASH_COMMAND%% }
+	local args=${BASH_COMMAND#$cmd}
+	case $cmd in
+	after_cmd|debug_trap)
+		# Do not set window title for these commands
+		;;
+	python|idle|python3|man|make)
+		# Include first argument in title for these commands
+		window-title "$cmd ${args%% }";;
+	*)
+		window-title "$cmd";;
+	esac
+
 } >&2
 
 report_cmd_status() {

@@ -418,7 +418,3 @@ xclip() {
 	command xclip -selection clipboard "$@";
 }
 y() { select-git-branch "$@"; }
-
-for name in find python idle python3 man make; do
-	eval "$name"'() { window-title "'"$name"' $1"; command '$name' "$@"; }'
-done
