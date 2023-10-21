@@ -310,7 +310,7 @@ setup_vars() {
 	fi
 }
 sf() { USE_FAILED=1 search-bash-history "$@"; }
-ssh() { window-title "$@"; command ssh -o LogLevel=error "$@"; }
+ssh() { command ssh -o LogLevel=error "$@"; }
 
 
 ssh_split() {
