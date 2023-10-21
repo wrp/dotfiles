@@ -173,8 +173,6 @@ git_unpack() {
 	done
 }
 git() {
-	window-title git "$1"
-
 	case "$1" in
 	clone)
 		local origin url

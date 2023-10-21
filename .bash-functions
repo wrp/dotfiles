@@ -73,7 +73,7 @@ debug_trap() {
 	after_cmd|debug_trap)
 		# Do not set window title for these commands
 		;;
-	python|idle|python3|man|make)
+	python|idle|python3|man|make|git)
 		# Include first argument in title for these commands
 		window-title "$cmd ${args%% }";;
 	*)
