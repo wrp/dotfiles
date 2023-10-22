@@ -115,3 +115,13 @@ report_cmd_status() {
 		print unless $. == 1; # Delay printing of timestamp
 	'
 }
+
+window-title() {
+	test -t 1 || return;
+	while test "${1#-}" != "$1"; do shift; done;
+	local t
+	if type deactivate 2> /dev/null >&2; then
+		t=1
+	fi
+	deactivate_is_defined=$t rename-tmux-window "$@";
+}

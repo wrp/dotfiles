@@ -354,14 +354,6 @@ else
 ta() { tmux attach 2> /dev/null || tmux; }
 fi
 tags() { git for-each-ref refs/tags --sort=-taggerdate --format='%(refname)' | grep ${1-members} | head; }
-window-title() { test -t 1 || return;
-	while test "${1#-}" != "$1"; do shift; done;
-	local t
-	if type deactivate 2> /dev/null >&2; then
-		t=1
-	fi
-	deactivate_is_defined=$t rename-tmux-window "$@";
-}
 tn() { tmux switch-client -n; }
 tp() { tmux switch-client -p; }
 trim() { perl -nE "chomp; say substr \$_, 0, ${COLUMNS-80} - 1" "$@"; }
