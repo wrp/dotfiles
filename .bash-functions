@@ -67,19 +67,14 @@ debug_trap() {
 		echo "WARNING: not running in TMUX! (set NO_TMUX_OK to suppress warning)"
 	fi
 
-	local cmd=${BASH_COMMAND%% }
-	local args=${BASH_COMMAND#$cmd}
-	case $cmd in
+	case ${BASH_COMMAND%% } in
 	after_cmd|debug_trap)
 		# Do not set window title for these commands
 		;;
-	python|idle|python3|man|make|git)
-		# Include first argument in title for these commands
-		window-title "$cmd ${args%% }";;
 	*)
-		window-title "$cmd";;
+		window-title "${BASH_COMMAND}"
+		;;
 	esac
-
 } >&2
 
 report_cmd_status() {
