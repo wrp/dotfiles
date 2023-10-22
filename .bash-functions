@@ -68,7 +68,12 @@ debug_trap() {
 	fi
 
 	case ${BASH_COMMAND%% } in
-	after_cmd|debug_trap)
+	:\
+	|after_cmd\
+	|debug_trap\
+	|ls\
+	|cd\
+	)
 		# Do not set window title for these commands
 		;;
 	*)
