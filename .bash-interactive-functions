@@ -343,16 +343,7 @@ if ! which tac; then
 	fi
 fi > /dev/null 2>&1
 
-if test -n "$TMUX"; then
-ta() {
-	case $# in
-	(0) tmux new-window;;
-	(*) for name; do tmux new-session -A -d -s "$name"; done;;
-	esac
-}
-else
-ta() { tmux attach 2> /dev/null || tmux; }
-fi
+ta() { session "$@"; }
 tags() { git for-each-ref refs/tags --sort=-taggerdate --format='%(refname)' | grep ${1-members} | head; }
 tn() { tmux switch-client -n; }
 tp() { tmux switch-client -p; }
