@@ -32,7 +32,7 @@ test -z "$*" && {
 	fi
 } 2> /dev/null
 
-if test -z "$left_justify"; then
+if test -n "$truncate_left"; then
 	patt='.*\(.\{19\}\)'
 	repl='<\1'
 else
