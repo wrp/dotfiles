@@ -6,20 +6,15 @@
 		--format=format:%B -n 1)\" --cleanup=strip' _
 	caan = caa -n
 	cd = ci Documentation
-	cda = cd -a
 	cf = ci 'Trivial refactor'
-	cfa = cf -a
 	ci = commit -s
 	ciam = ci -am
 	co = checkout
 	cp = cherry-pick
 	cpx = cp -x
 	cr = ci 'Trivial reformat'
-	cra = cr -a
-	cs = ci 'Sanity Check'
-	csa = cs -a
-	cw = ci 'Whitespace'
-	cwa = cw -a
+	cs = ci -m 'Sanity Check'
+	cw = ci -m 'Whitespace'
 	d = diff
 	dc = diff --cached
 	dn = diff --numstat
