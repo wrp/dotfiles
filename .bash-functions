@@ -50,7 +50,7 @@ debug_trap() {
 
 	# Emit a warning if the history file is not updating
 	# When a shell starts up, the debug trap is being called multiple times
-	# before any commands have been executed.  In that case, fc emits no ouptut
+	# before any commands have been executed.  In that case, fc emits no output
 	# and we do not want to emit a warning about the HISTFILE in that situation.
 	if ! {
 		local last  # last is the first word of the most recent command
