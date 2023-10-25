@@ -45,13 +45,14 @@ debug_trap() {
 		echo "WARNING: IFS contains unexpected characters"
 	fi
 
-	history -a || echo 'WARNING: history -a failed'
+	history -a || warn history -a failed
+	test -f "$HISTFILE" || warn HISTFILE does not exist
 
 	# Emit a warning if the history file is not updating
 	# When a shell starts up, the debug trap is being called multiple times
 	# before any commands have been executed.  In that case, fc emits no ouptut
 	# and we do not want to emit a warning about the HISTFILE in that situation.
-	if ! test -f "$HISTFILE" || ! {
+	if ! {
 		local last  # last is the first word of the most recent command
 		last=$(fc -l -1 2> /dev/null | awk '{print $2; exit}')
 		# Check the last command to ensure that the HISTFILE is updating.
@@ -61,7 +62,7 @@ debug_trap() {
 			$1 == "rh" || $1 == last {b++} END{ exit !b }' last="$last";
 	} 2> /dev/null
 	then
-		echo 'WARNING: HISTFILE is not updating!!'
+		warn HISTFILE is not updating
 	fi
 
 	case ${BASH_COMMAND%% } in
