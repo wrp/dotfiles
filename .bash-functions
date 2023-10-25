@@ -113,6 +113,9 @@ report_cmd_status() {
 	'
 }
 
+die() { test -n "$*" && printf 'FATAL: %s\n' "$*" >&2; exit 1; }
+warn() { test -z "$NOWARN" && printf 'WARNING: %s\n' "$*" >&2; }
+
 window-title() {
 	test -t 1 || return;
 	while test "${1#-}" != "$1"; do shift; done;
