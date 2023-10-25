@@ -63,10 +63,6 @@ debug_trap() {
 	then
 		echo 'WARNING: HISTFILE is not updating!!'
 	fi
-	if test -z "${TMUX}" && test "${NO_TMUX_OK:-0}" -lt 1 2> /dev/null; then
-		echo "WARNING: not running in TMUX! (set NO_TMUX_OK > 0 to suppress warning)"
-		NO_TMUX_OK=1
-	fi
 
 	case ${BASH_COMMAND%% } in
 	:\

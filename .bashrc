@@ -41,4 +41,8 @@ trap '. $HOME/.bashrc' SIGWINCH
 
 PROMPT_COMMAND=after_cmd
 read_file $HOME/.bash-local
+
+if test -z "${TMUX}"; then
+	echo "WARNING: not running in TMUX!"
+fi
 return 0
