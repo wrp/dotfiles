@@ -1,12 +1,8 @@
 cd() {
-	local _SESSION_DIR
-	local _dir="$1"
 	if test $# -gt 1; then
 		echo 'cd takes at most one argument' >&2
 		return 1
 	fi
-	if test "$#" = 0; then
-		_SESSION_DIR=$(tmux display-message -p '#{session_path}')
-	fi
-	command cd "${_dir:-${_SESSION_DIR:-${USE_HOME:-$HOME}}}"
+	local _dir=${1-$(tmux display-message -p '#{session_path}')}
+	command cd "${_dir:-$HOME}"
 }
