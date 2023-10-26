@@ -2,7 +2,7 @@
 
 
 if test -z "$TMUX"; then
-	tmux attach 2> /dev/null || tmux
+	tmux attach 2> /dev/null || tmux new-session -s $(basename $(pwd))
 	exit 0
 fi
 
