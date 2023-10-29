@@ -57,7 +57,7 @@ done
 
 # Create files that should be local to this machine
 create_file() { if ! test -f "$1"; then cat > "$1"; fi }
-create_file "$HOME/.gitconfig-user" <<- EOF
+create_file "$HOME/.gitconfig-local" <<- EOF
 [user]
 	email = ${EMAIL?}
 	name = ${UNAME?}

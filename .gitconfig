@@ -82,7 +82,7 @@
 [advice]
 	detachedHead = false
 [include]
-	path = ~/.gitconfig-user
+	path = ~/.gitconfig-local
 [tag]
 	gpgSign = true
 [commit]
