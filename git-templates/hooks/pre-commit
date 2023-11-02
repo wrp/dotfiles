@@ -5,10 +5,12 @@ against=$(git rev-parse --verify HEAD 2>/dev/null || git hash-object -t tree /de
 
 die() {
 	printf 'Pre-commit hook is rejecting this commit: '
-	if test -n "$*"; then printf '%s\n' "$*"; fi
+	if test -n "$*"; then printf '%s\n' "$@"; fi
 	printf 'Use --no-verify (-n) to ignore\n'
 	exit 1
 } >&2
+
+warn() { printf 'WARNING from pre-commit hook: %s\n' "$@"; } >&2
 
 validate_pathnames() {
 	# Reject names with non standard characters
@@ -19,14 +21,42 @@ validate_pathnames() {
 	fi
 }
 
-validate_whitespace() {
+indentation_is_okay() {
+	# Sigh.  With core.whitespace set to 'indent-with-no-tab' and
+	# apply.whitepace set to 'error', git diff-index does not treat
+	# a leading tab follwed by space as an error.  So we need to
+	# explicitly check for any spaces in the indentation.
+	local tab=$(printf '\t')
 	if \
-		test -z "$IGNORE_WHITESPACE_ERRORS" &&
-		git config apply.whitespace | grep -q error &&
-		! git diff-index --check --cached $against --
+		test $(git config core.whitespace) = indent-with-no-tab &&
+		git diff --cached |
+			grep -v -e '^+++' -e '^---' -e '^@@' -e '^diff' -e '^index' |
+			grep -E "^[+]${tab}*[ ]"
 	then
-		die 'Whitespace errors. "git config apply.whitespace warn"' \
-			'or set IGNORE_WHITESPACE_ERRORS'
+		reason='spaces in leading indentation'
+		return 1
+	fi
+}
+
+validate_whitespace() {
+	if test -n "$IGNORE_WHITESPACE_ERRORS"; then
+		return 0
+	fi
+
+	local reason='Whitespace errors reported by git-diff-index'
+	if \
+		! git diff-index --check --cached $against -- ||
+		! indentation_is_okay
+	then
+		if git config apply.whitespace | grep -q error; then
+			func=die
+		else
+			func=warn
+		fi
+		$func "$reason" \
+			'To ignore, do one of:' \
+			'  * set "git config apply.whitespace warn"' \
+			'  * set IGNORE_WHITESPACE_ERRORS'
 	fi
 }
 
