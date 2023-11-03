@@ -90,7 +90,7 @@ if test -z "$choice"; then
 		printf "No results found for search terms: %s\n" "$*">&2
 		exit 1
 	fi
-	if "$(wc -l $RESULTS)" = 1; then
+	if test "$(wc -l < $RESULTS)" = 1; then
 		n=1
 	else
 		< $RESULTS \
