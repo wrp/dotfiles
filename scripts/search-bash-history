@@ -112,24 +112,28 @@ get_current_selection() {
 	fi
 }
 
-set_global_vars
-get_previous_selection "$@"
-status=$?
-get_current_selection "$@"
+main() {
+	set_global_vars
+	get_previous_selection "$@"
+	status=$?
+	get_current_selection "$@"
 
-check_tmux
+	check_tmux
 
-if test "$n" -eq 0 2> /dev/null; then
-	exit 0
-elif test "$n" -gt 0 2> /dev/null; then
-	< $RESULTS sed -n -e "${n}s/[^|]*| //" -e "$n"p \
-	| tr -d \\n | tmux loadb -b ${buffer_name?} -
-elif test -n "$n"; then  # This is a hack to catch user error (eg, typing a command instead of making a selection)
-	printf "%s" "$n" | tmux loadb -b ${buffer_name?} -
-else
-	echo
-	exit 0
-fi
+	if test "$n" -eq 0 2> /dev/null; then
+		exit 0
+	elif test "$n" -gt 0 2> /dev/null; then
+		< $RESULTS sed -n -e "${n}s/[^|]*| //" -e "$n"p \
+		| tr -d \\n | tmux loadb -b ${buffer_name?} -
+	elif test -n "$n"; then  # This is a hack to catch user error (eg, typing a command instead of making a selection)
+		printf "%s" "$n" | tmux loadb -b ${buffer_name?} -
+	else
+		echo
+		exit 0
+	fi
+}
+
+main "$@"
 
 # Let interactive prompt print
 { sleep .3; tmux paste-buffer -b ${buffer_name?} ; } &
