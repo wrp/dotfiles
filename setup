@@ -15,33 +15,40 @@ establish_context() {
 	base=$(dirname $(realpath "$0"))
 	test "$(pwd)" = "$HOME" || die "Must run from \$HOME ($HOME)"
 }
+
+parse_arguments() {
+	unset force abort
+	while test $# -gt 0; do
+	       case $1 in
+	       -f)  force=1;;
+	       *)   die unexpected argument: $1;;
+	       esac
+	       shift
+	done
+}
+
 find_md5_executable
 establish_context
-
-unset force abort
-while test $# -gt 0; do
-       case $1 in
-       -f)  force=1;;
-       *)   die unexpected argument: $1;;
-       esac
-       shift
-done
+parse_arguments "$@"
 
 targets=$(ls -a "$base" | awk 'NR==FNR {a[$0] = 1; next} ! ($0 in a)' $base/denylist -)
 
-for file in $targets; do
-	if test -f "$file" && test "$($MD5 < $HOME/$file)" != \
-			"$($MD5 < "$base/$file")"; then
-		warn "$file is different, set V=1 to see diff"
-		test -n "$V" && diff -u "$HOME/$file" "$base/$file"
-		abort=1
+validate_md5_sums() {
+	for file in $targets; do
+		if test -f "$file" && test "$($MD5 < $HOME/$file)" != \
+				"$($MD5 < "$base/$file")"; then
+			warn "$file is different, set V=1 to see diff"
+			test -n "$V" && diff -u "$HOME/$file" "$base/$file"
+			abort=1
+		fi
+	done
+	if test -n "$abort" && test -z "$force"; then
+	       warn "-f to force overwrite"
+	       exit 1;
 	fi
-done
+}
+validate_md5_sums
 
-if test -n "$abort" && test -z "$force"; then
-       warn "-f to force overwrite"
-       exit 1;
-fi
 
 test -n "$abort" && warn overwriting
 
