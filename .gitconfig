@@ -5,16 +5,21 @@
 	caa = !bash -c 'git commit --amend -a \"$@\" -m \"$(git log \
 		--format=format:%B -n 1)\" --cleanup=strip' _
 	caan = caa -n
-	cd = ci Documentation
-	cf = ci 'Trivial refactor'
-	ci = commit -s
+	cd = ci -m Documentation
+	cda = cd -a
+	cf = ci -m 'Trivial refactor'
+	cfa = cf -a
+	ci = commit --signoff
 	ciam = ci -am
 	co = checkout
 	cp = cherry-pick
 	cpx = cp -x
-	cr = ci 'Trivial reformat'
+	cr = ci -m 'Trivial reformat'
+	cra = cr -a
 	cs = ci -m 'Sanity Check'
+	csa = cs -a
 	cw = ci -m 'Whitespace'
+	cwa = cw -a
 	d = diff
 	dc = diff --cached
 	dn = diff --numstat
