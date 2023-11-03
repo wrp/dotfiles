@@ -7,14 +7,14 @@
 	caan = caa -n
 	cd = ci -m Documentation
 	cda = cd -a
-	cf = ci -m 'Trivial refactor'
+	cf = ci -m 'Trivial reformat'
 	cfa = cf -a
 	ci = commit --signoff
 	ciam = ci -am
 	co = checkout
 	cp = cherry-pick
 	cpx = cp -x
-	cr = ci -m 'Trivial reformat'
+	cr = ci -m 'Trivial refactor'
 	cra = cr -a
 	cs = ci -m 'Sanity Check'
 	csa = cs -a
