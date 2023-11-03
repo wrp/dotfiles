@@ -12,17 +12,10 @@ set_global_vars() {
 	RESULTS=$DIR/bash-search-history-results
 	tac=$(which tac || which gtac)
 	test -n "$tac" || die 'No valid tac in path'
+	buffer_name=history_search
+	: ${max_lines=15}
 }
 set_global_vars
-
-
-buffer_name=history_search
-: ${max_lines=15}
-
-if test "$1" -ge 0 2> /dev/null; then
-	choice=$1
-	shift
-fi
 
 do_search() {
 	# Search ~/.bash-history for matching commands, strip duplicates
@@ -68,14 +61,23 @@ do_search() {
 	cat $tmp1 > $RESULTS
 }
 
-if test $# = 0; then
-	test -s $RESULTS || die No previous results saved
-else
-	echo "$*" > $HIST.tmp
-	test -r $HIST && sed -e "\@^$*\$@d" $HIST >> $HIST.tmp
-	mv $HIST.tmp $HIST
-	do_search "$@"
-fi
+get_selection() {
+	if test "$1" -ge 0 2> /dev/null; then
+		choice=$1
+		shift
+	fi
+
+
+	if test $# = 0; then
+		test -s $RESULTS || die No previous results saved
+	else
+		echo "$*" > $HIST.tmp
+		test -r $HIST && sed -e "\@^$*\$@d" $HIST >> $HIST.tmp
+		mv $HIST.tmp $HIST
+		do_search "$@"
+	fi
+}
+get_selection "$@"
 status=$?
 
 check_tmux() {
