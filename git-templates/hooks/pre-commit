@@ -29,11 +29,9 @@ indentation_is_okay() {
 	local tab=$(printf '\t')
 	if \
 		test $(git config core.whitespace) = indent-with-no-tab &&
-		git diff --cached |
-			grep -v -e '^+++' -e '^---' -e '^@@' -e '^diff' -e '^index' |
-			grep -E "^[+]${tab}*[ ]"
+		git diff --cached | grep -E "^[+]${tab}*[ ]"
 	then
-		reason='spaces in leading indentation'
+		reason='spaces after tabs in indentation'
 		return 1
 	fi
 }
