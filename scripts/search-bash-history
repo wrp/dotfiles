@@ -15,7 +15,6 @@ set_global_vars() {
 	buffer_name=history_search
 	: ${max_lines=15}
 }
-set_global_vars
 
 do_search() {
 	# Search ~/.bash-history for matching commands, strip duplicates
@@ -61,12 +60,11 @@ do_search() {
 	cat $tmp1 > $RESULTS
 }
 
-get_selection() {
+get_previous_selection() {
 	if test "$1" -ge 0 2> /dev/null; then
 		choice=$1
 		shift
 	fi
-
 
 	if test $# = 0; then
 		test -s $RESULTS || die No previous results saved
@@ -77,8 +75,6 @@ get_selection() {
 		do_search "$@"
 	fi
 }
-get_selection "$@"
-status=$?
 
 check_tmux() {
 	if test -z "$TMUX"; then
@@ -87,32 +83,40 @@ check_tmux() {
 	fi
 }
 
-if test -z "$choice"; then
-	if test "$status" != 0; then
-		if test -z "$V"; then
-			V=1 exec $0 "$@"
+get_current_selection() {
+	if test -z "$choice"; then
+		if test "$status" != 0; then
+			if test -z "$V"; then
+				V=1 exec $0 "$@"
+			fi
+			printf "No results found for search terms: %s\n" "$*">&2
+			exit 1
 		fi
-		printf "No results found for search terms: %s\n" "$*">&2
-		exit 1
-	fi
-	if test "$(wc -l < $RESULTS)" = 1; then
-		n=1
-	else
-		< $RESULTS \
-		sed "${max_lines}q" \
-		| nl -s ') ' -w 2 -ba | expand | $tac \
-		| perl -nE '
-			s/([0-9]{9,10})/sprintf "%s", scalar localtime $1/e;
-			chop; say substr $_, 0, '"${COLUMNS-80} - 1"
-		echo ' 0) Exit'
+		if test "$(wc -l < $RESULTS)" = 1; then
+			n=1
+		else
+			< $RESULTS \
+			sed "${max_lines}q" \
+			| nl -s ') ' -w 2 -ba | expand | $tac \
+			| perl -nE '
+				s/([0-9]{9,10})/sprintf "%s", scalar localtime $1/e;
+				chop; say substr $_, 0, '"${COLUMNS-80} - 1"
+			echo ' 0) Exit'
 
-		check_tmux
-		printf 'Select command to store in tmux buffer: '
-		read n
+			check_tmux
+			printf 'Select command to store in tmux buffer: '
+			read n
+		fi
+	else
+		n=$choice
 	fi
-else
-	n=$choice
-fi
+}
+
+set_global_vars
+get_previous_selection "$@"
+status=$?
+get_current_selection "$@"
+
 check_tmux
 
 if test "$n" -eq 0 2> /dev/null; then
