@@ -5,13 +5,16 @@
 
 die() { test -n "*" && echo "$@"; exit 1; }
 
-DIR=$HOME/.config/$USER
-HIST=$DIR/bash-search-history-args
-RESULTS=$DIR/bash-search-history-results
-tac=$(which tac || which gtac)
-test -n "$tac" || die 'No valid tac in path'
+set_global_vars() {
+	DIR=$HOME/.config/$USER
+	mkdir -p "$DIR"
+	HIST=$DIR/bash-search-history-args
+	RESULTS=$DIR/bash-search-history-results
+	tac=$(which tac || which gtac)
+	test -n "$tac" || die 'No valid tac in path'
+}
+set_global_vars
 
-mkdir -p "$DIR"
 
 buffer_name=history_search
 : ${max_lines=15}
