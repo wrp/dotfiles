@@ -60,9 +60,6 @@ create_symlinks() {
 	done
 }
 
-init "$@"
-create_symlinks
-
 create_file() {
 	if ! test -f "$1"; then
 		cat > "$1"
@@ -87,21 +84,30 @@ setup_git() {
 		name = ${UNAME?}
 	EOF
 }
-setup_git
 
+setup_local_files() {
+	create_file "$HOME/.bash-local" <<- EOF
+		EMAIL="$EMAIL"
+		UNAME="$UNAME"
+		export EMAIL UNAME
+	EOF
 
-create_file "$HOME/.bash-local" <<- EOF
-	EMAIL="$EMAIL"
-	UNAME="$UNAME"
-	export EMAIL UNAME
-EOF
+	create_file "$HOME/CONFIG_SITE" <<- 'EOF'
+		prefix=$HOME/$(uname -m)/$(uname -s)
+		CFLAGS=-I${prefix}/include
+		LDFLAGS=-L${prefix}/lib
+	EOF
+}
 
-create_file "$HOME/CONFIG_SITE" <<- 'EOF'
-	prefix=$HOME/$(uname -m)/$(uname -s)
-	CFLAGS=-I${prefix}/include
-	LDFLAGS=-L${prefix}/lib
-EOF
+main() {
+	init "$@"
+	create_symlinks
+	setup_git
+	setup_local_files
 
-ln -s "$base/scripts" scripts
-mkdir $HOME/.git-template-links
-(cd $HOME/.git-template-links; ln -s $base/git-templates/hooks)
+	ln -s "$base/scripts" scripts
+	mkdir $HOME/.git-template-links
+	(cd $HOME/.git-template-links; ln -s $base/git-templates/hooks)
+}
+
+main "$@"
