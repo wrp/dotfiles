@@ -18,7 +18,7 @@ establish_context() {
 }
 
 parse_arguments() {
-	unset force abort
+	unset force
 	while test $# -gt 0; do
 	       case $1 in
 	       -f)  force=1;;
@@ -29,6 +29,7 @@ parse_arguments() {
 }
 
 validate_md5_sums() {
+	unset abort
 	for file in $targets; do
 		if test -f "$file" && test "$($MD5 < $HOME/$file)" != \
 				"$($MD5 < "$base/$file")"; then
@@ -37,9 +38,11 @@ validate_md5_sums() {
 			abort=1
 		fi
 	done
-	if test -n "$abort" && test -z "$force"; then
-	       warn "-f to force overwrite"
-	       exit 1;
+	if test -n "$abort"; then
+		if test -z "$force"; then
+			die "-f to force overwrite"
+		fi
+		warn overwriting
 	fi
 }
 
@@ -49,7 +52,6 @@ init() {
 	parse_arguments "$@"
 	targets=$(ls -a "$base" | awk 'NR==FNR {a[$0] = 1; next} ! ($0 in a)' $base/denylist -)
 	validate_md5_sums
-	test -n "$abort" && warn overwriting
 	mkdir -p $HOME/.bash-history-dir
 	mkdir -p $HOME/.config/git
 	ln -fs ../../$base/.gitignore_global $HOME/.config/git/ignore || die
