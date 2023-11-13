@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# Execute a command, prepending headers to stdout and stderr
+{ { $@ | sed '/./s/^/stdout: /' >&3; } 2>&1 | sed '/./s/^/stderr: /' >&2; } 3>&1
