@@ -97,7 +97,6 @@
 [status]
 	showUntrackedFiles = no
 [diff]
-	base-branch = dev
 	wsErrorHighlight = all
 	# ignoreSubmodules = all        # ignore with --ignore-submodules=none
 [submodule]
