@@ -2,7 +2,7 @@
 
 # Filter the stream, prepending timestamp and arguments to each line
 add_header() {
-	perl -mPOSIX -pe "\$m='$*'; s/^/\$m: /;
+	perl -mPOSIX -pe "\$s=length > 1 ? ' ' : ''; \$m='$*'; s/^/\$m:\$s/;
 		print POSIX::strftime '%y/%m/%d %H:%M:%S: ', gmtime"
 }
 
