@@ -1,10 +1,10 @@
 #!/bin/sh
 
-# Execute a command, prepending headers to stdout and stderr
+# Filter the stream, prepending timestamp and arguments to each line
 add_header() {
-	perl -mPOSIX -pe "s/^/$1: /;
+	perl -mPOSIX -pe "\$m='$*'; s/^/\$m: /;
 		print POSIX::strftime '%y/%m/%d %H:%M:%S: ', gmtime"
 }
 
-
+# Execute the command, adding timestamp and labels to output streams
 { { $@ | add_header stdout >&3; } 2>&1 | add_header stderr; } 3>&1
