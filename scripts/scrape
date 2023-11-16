@@ -1,0 +1,4 @@
+#!/bin/sh
+
+
+tmux capture-pane -p -S - -t :${1-0.0}
