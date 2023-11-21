@@ -153,6 +153,7 @@ j() {
 	esac
 	g .
 }
+jq() { command jq --tab "$@"; }
 _j_complete() {
 	local curr_word=${COMP_WORDS[$COMP_CWORD]}
 	list=$(get_dir_list "$curr_word")
