@@ -1,11 +1,13 @@
 #!/bin/sh
 
 if test "$1" = .; then
-	start=$(( $(tput lines) - ${2-10}))
+	end=$(( $(tput lines) - 2))
+	start=$(( end - 10 ))
 	target=$TMUX_PANE
 else
 	start=-
+	end=-
 	target=:${1-0.0}
 fi
 
-tmux capture-pane -p -S "$start" -t "$target"
+tmux capture-pane -p -E "$end" -S "$start" -t "$target"
