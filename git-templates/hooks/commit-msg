@@ -6,7 +6,7 @@ main() {
 
 
 check_subject() {
-	allowed_end='[a-z)}/_"'"'A-Z0-9]$"  # Characters that can end a commit subject line
+	allowed_end='[-a-z)}/_"'"'A-Z0-9]$"  # Characters that can end a commit subject line
 
 	# Abort if the first line of the message is non-conforming
 	< "$1" awk '
