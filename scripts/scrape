@@ -5,7 +5,7 @@ if test "$1" = .; then
 	target=$TMUX_PANE
 	adjust=2
 else
-	target=:${1-0.0}
+	target="${1-0.0}"
 	adjust=0
 fi
 
