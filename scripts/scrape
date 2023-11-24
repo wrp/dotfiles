@@ -1,13 +1,20 @@
 #!/bin/sh
 
+
 if test "$1" = .; then
-	end=$(( $(tput lines) - 2))
-	start=$(( end - 10 ))
 	target=$TMUX_PANE
+	adjust=2
+else
+	target=:${1-0.0}
+	adjust=0
+fi
+
+if test "$2" -ne 0; then
+	start=$(( end - 10 ))
+	end=$(( $(tmux display-message -pt "$target" -F '#{pane_height}') - $adjust))
 else
 	start=-
 	end=-
-	target=:${1-0.0}
 fi
 
 tmux capture-pane -p -E "$end" -S "$start" -t "$target"
