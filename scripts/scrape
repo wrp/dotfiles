@@ -9,7 +9,7 @@ else
 	adjust=0
 fi
 
-if test "$2" -ne 0; then
+if test "${2-0}" -ne 0; then
 	end=$(( $(tmux display-message -pt "$target" -F '#{pane_height}') - $adjust))
 	start=$(( end - $2 ))
 else
