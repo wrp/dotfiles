@@ -43,8 +43,7 @@
 		git log \
 		--date=format:\"\" \
 		--format=format:\"$(echo \"\
-		%Cgreen%h\
-		%Cblue%as \
+		%Cgreen%h%Cblue% ad\
 		%Cred%<(12,trunc)%an%Creset\
 		${a}\
 		%<(60,trunc)%s \
@@ -54,7 +53,8 @@
 	l1ah = l1 -n 10 --graph
 	l1h = l1 -n 10
 	la = l1 --graph --decorate  # same as l1a
-	ld = l1 --date=format:'%H:%M:%S %d%b%y'
+	ld = l1 --date=short
+	lh = l1 --date=human
 	ldh = l1 -n 10 --date=format:'%H:%M:%S %d%b%y'
 	ls = l1 --show-signature
 	no = show --name-only --pretty=format:
