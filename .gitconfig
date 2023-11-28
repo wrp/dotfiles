@@ -45,9 +45,9 @@
 		--format=format:\"$(echo \"\
 		%Cgreen%h\
 		%Cred%<(12,trunc)%an%Creset\
+		%ad \
 		${a}\
 		%<(60,trunc)%s \
-		%ad \
 		%Cblue%D%Creset\
 		\" | tr -s \" \"  )\" \"$@\"' _
 	l1a = l1 --graph --decorate
