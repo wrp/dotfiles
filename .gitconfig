@@ -44,8 +44,8 @@
 		--date=format:\"\" \
 		--format=format:\"$(echo \"\
 		%Cgreen%h\
+		%Cblue%as \
 		%Cred%<(12,trunc)%an%Creset\
-		%ad \
 		${a}\
 		%<(60,trunc)%s \
 		%Cblue%D%Creset\
