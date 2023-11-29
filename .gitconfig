@@ -50,7 +50,7 @@
 		%Cblue%D%Creset\
 		\" | tr -s \" \"  )\" \"$@\"' _
 	l1a = l1 --graph --decorate
-	l1ah = l1 -n 10 --graph
+	l1ah = l1 -n 10 --graph --decorate
 	l1h = l1 -n 10
 	la = l1 --graph --decorate  # same as l1a
 	ld = l1 --date=short
