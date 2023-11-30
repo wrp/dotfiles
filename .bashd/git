@@ -1,17 +1,8 @@
 # Git related interactive functions
 
 g() {
-	local rv=0 root remote err dir src branch
+	local rv=0 root remote err dir branch
 
-	src=$(awk '/^top_srcdir/{print $3}' Makefile 2> /dev/null)
-	if test -n "$src" && test "$(pwd)" != "$(cd "$src"; pwd)"; then
-		(
-			echo "Found top_srcdir in Makefile.  Re-running in $src" >&2
-			cd "$src"
-			g "$@"
-		)
-		return 0;
-	fi
 
 	case $1 in
 	(.)
