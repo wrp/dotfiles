@@ -12,7 +12,6 @@ g() {
 			"$(tput setaf 2)${remote:+ (${remote#refs/remotes/})}"
 		return
 	;;
-	# (l1a) if test -t 1; then tig; else git "$@"; fi;; # Train myself to use tig
 	(base)
 		command git worktree list --porcelain | awk '{print $2; exit}'
 		return
