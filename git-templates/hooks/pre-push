@@ -1,6 +1,7 @@
 #!/bin/sh
 
 while read local_ref local_obj remote_ref remote_obj; do
+	test "$local_ref" = '(delete)' && continue
 	if ! echo "${remote_ref#refs/heads/}" | grep -qE "${BRANCH_ERE_MATCH-.}"; then
 		echo $0 is rejecting this push
 		echo "Bad remote branch name: $remote_ref"
