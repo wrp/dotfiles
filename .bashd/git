@@ -3,15 +3,13 @@
 g() {
 	local rv=0 root remote err dir branch
 
-
 	case $1 in
 	(.)
 		remote="$(command git rev-parse --symbolic-full-name @{upstream} 2> /dev/null)"
-		printf 'cwd:%s branch:%s%s%s\n' \
-			"$(pwd)" \
+		printf '%s: %s%s\n' \
+			"$(tput setaf 4; pwd)" \
 			"$(tput setaf 3; command git rev-parse --abbrev-ref HEAD)" \
-			"$(tput setaf 2)" \
-			"${remote:+ (${remote#refs/remotes/})}"
+			"$(tput setaf 2)${remote:+ (${remote#refs/remotes/})}"
 		return
 	;;
 	# (l1a) if test -t 1; then tig; else git "$@"; fi;; # Train myself to use tig
