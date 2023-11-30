@@ -3,11 +3,6 @@
 g() {
 	local rv=0 root remote err dir src branch
 
-	if test -n "$DOCKER" && test -z "$FORCE_G"; then
-		echo "Do not run git in a docker container.  Set FORCE_G to force" >&2
-		return 1
-	fi
-
 	src=$(awk '/^top_srcdir/{print $3}' Makefile 2> /dev/null)
 	if test -n "$src" && test "$(pwd)" != "$(cd "$src"; pwd)"; then
 		(
