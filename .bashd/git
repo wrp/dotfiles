@@ -16,6 +16,7 @@ git_recurse() {
 		perl -pe "s@^@sprintf(\"%30s: \", \"${0%/.git}\")@e"' {} "$@" \;
 }
 git_root() {
+	# TODO: make this work inside the .git dir of a working repo
 	local root
 	root=$(command git rev-parse --show-toplevel) \
 	&& root=$(cd "$root" && pwd 2> /dev/null)/ \
