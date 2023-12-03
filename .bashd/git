@@ -1,7 +1,7 @@
 # Git related interactive functions
 
 g() {
-	local rv=0 root remote err dir branch
+	local rv=0 root remote dir branch
 
 	case $1 in
 	(.)
@@ -30,44 +30,9 @@ g() {
 		&& printf '%s\n' "${root}"
 		return
 	;;
-	(co)
-		# Check if the current directory is a worktree and reject
-		if test "$#" -eq 2 && command git worktree list --porcelain |
-			awk 'NR > 1 && /^worktree/ && substr(pwd, 1, length($2)) == $2 {m=1}END{exit !m}' pwd=$(pwd)
-		then
-			dir=$(command git worktree list --porcelain | awk '{print $2; exit}')
-			if ! test -d "$dir"; then
-				echo "You are in a worktree.  Cannot find base dir.  Aborting!" >&2
-				return 1
-			fi
-			local msg="**** Changing directory to base in $dir ****"
-			local len=$(printf "%s" "$msg" | wc -c)
-			local banner=$(perl -E 'print"*" x '"$len")
-			printf "%s\n" "$banner" "$msg" "$banner"
-			cd "$dir"
-			g "$@"
-			return;
-		fi
-	;;
 	esac
 
-	{ err=$( command git "$@" 2>&1 >&3 ); } 3>&1
-	rv=$?
-
-	if dir="$( printf '%s\n' "$err" | tr -d "'" |
-		awk '/is already checked out at/{ print $NF; f=1 }
-		END {exit !f}'
-	)"; then
-		local msg="**** Changing directory to worktree in $dir ****"
-		local len=$(printf "%s" "$msg" | wc -c)
-		local banner=$(perl -E 'print"*" x '"$len")
-		printf "%s\n" "$banner" "$msg" "$banner"
-		cd "$dir"
-		rv=$?
-	elif test -n "$err"; then
-		printf '%s\n' "$err" >&2
-	fi
-	return $rv
+	command git "$@"
 }
 ga() {
 	# When running on both docker and outside, the repos seem to get corrupt
