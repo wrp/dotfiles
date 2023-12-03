@@ -16,7 +16,7 @@ g() {
 		command git worktree list --porcelain | awk '{print $2; exit}'
 		return
 	;;
-	(r)
+	(r)  # run git recursively and prepend path to output
 		shift
 		find . -type d -name .git -exec sh -c '
 			cd ${0%.git};
