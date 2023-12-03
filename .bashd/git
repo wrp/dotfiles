@@ -1,33 +1,34 @@
 # Git related interactive functions
 
+git_dot() {
+	local remote
+	remote="$(command git rev-parse --symbolic-full-name @{upstream} 2> /dev/null)"
+	printf '%s: %s%s\n' \
+		"$(tput setaf 4; pwd)" \
+		"$(tput setaf 3; command git rev-parse --abbrev-ref HEAD)" \
+		"$(tput setaf 2)${remote:+ (${remote#refs/remotes/})}"
+}
+git_recurse() {
+	# run git recursively and prepend path to output
+	find . -type d -name .git -exec sh -c '
+		cd ${0%.git};
+		command git "$@" |
+		perl -pe "s@^@sprintf(\"%30s: \", \"${0%/.git}\")@e"' {} "$@" \;
+}
+git_root() {
+	local root
+	root=$(command git rev-parse --show-toplevel) \
+	&& root=$(cd "$root" && pwd 2> /dev/null)/ \
+	&& printf '%s\n' "${root}"
+}
 g() {
-	local rv=0 root remote dir branch
-
 	case $1 in
-	(.)
-		remote="$(command git rev-parse --symbolic-full-name @{upstream} 2> /dev/null)"
-		printf '%s: %s%s\n' \
-			"$(tput setaf 4; pwd)" \
-			"$(tput setaf 3; command git rev-parse --abbrev-ref HEAD)" \
-			"$(tput setaf 2)${remote:+ (${remote#refs/remotes/})}"
-	;;
-	(base) command git worktree list --porcelain | awk '{print $2; exit}' ;;
-	(clone) git_clone "$@" ;;
-	(r)  # run git recursively and prepend path to output
-		shift
-		find . -type d -name .git -exec sh -c '
-			cd ${0%.git};
-			command git "$@" |
-			perl -pe "s@^@sprintf(\"%30s: \", \"${0%/.git}\")@e"' {} "$@" \;
-	;;
-	(root)
-		root=$(command git rev-parse --show-toplevel) \
-		&& root=$(cd "$root" && pwd 2> /dev/null)/ \
-		&& printf '%s\n' "${root}"
-	;;
-	(*)
-		command git "$@"
-	;;
+	(.        ) git_dot;;
+	(base     ) command git worktree list --porcelain | awk '{print $2; exit}' ;;
+	(clone    ) git_clone "$@" ;;
+	(r        ) shift; git_recurse "@";;
+	(root     ) git_root;;
+	(*        ) command git "$@" ;;
 	esac
 
 }
