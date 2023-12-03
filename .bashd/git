@@ -16,6 +16,10 @@ g() {
 		command git worktree list --porcelain | awk '{print $2; exit}'
 		return
 	;;
+	(clone)
+		git_clone "$@"
+		return
+	;;
 	(r)  # run git recursively and prepend path to output
 		shift
 		find . -type d -name .git -exec sh -c '
@@ -30,9 +34,11 @@ g() {
 		&& printf '%s\n' "${root}"
 		return
 	;;
+	(*)
+		command git "$@"
+	;;
 	esac
 
-	command git "$@"
 }
 ga() {
 	# When running on both docker and outside, the repos seem to get corrupt
@@ -111,33 +117,30 @@ git_unpack() {
 		&& git commit -n -m "Initial unpack: $sha $(basename $x)"
 	done
 }
-git() {
-	case "$1" in
-	clone)
-		local origin url
-		shift    # discard 'clone'
-		url=$1
-		shift
+git_clone() {
+	local origin url
+	shift    # discard 'clone'
+	url=$1
+	shift
 
-		# Parse the url to specify a name for origin
-		case $url in
-		http*)
-			# By default, remap name to use ssh
-			if test -z "$HTTP_OK"; then
-				echo 'Remapping http target to git@ to use ssh.  To force http, set HTTP_OK' >&2
-				url=$(printf '%s\n' "$url" | sed -e 's|.*://|git@|' -e 's@/@:@')
-				shift
-			fi
-		;;
-		*github*) origin=github;;
-		*bitbucket.devops.wepay-inc.*) origin=wepay;;
-		esac
-		test -n "$origin" && echo "Setting origin=$origin" >&2
-		set -- clone ${origin:+--origin="$origin"} "$url" "$@";
+	# Parse the url to specify a name for origin
+	case $url in
+	http*)
+		# By default, remap name to use ssh
+		if test -z "$HTTP_OK"; then
+			echo 'Remapping http target to git@ to use ssh.  To force http, set HTTP_OK' >&2
+			url=$(printf '%s\n' "$url" | sed -e 's|.*://|git@|' -e 's@/@:@')
+			shift
+		fi
 	;;
+	*github*) origin=github;;
+	*bitbucket.devops.wepay-inc.*) origin=wepay;;
 	esac
-	command git "$@";
+	test -n "$origin" && echo "Setting origin=$origin" >&2
+	set -- clone ${origin:+--origin="$origin"} "$url" "$@";
+	command git "$@"
 }
+git() { g "$@"; }
 gr() { # Git recursive
 	echo 'Stop using gr.  Use "g r" instead and fix it as needed' >&2
 	return 1
