@@ -139,8 +139,6 @@ git() {
 	command git "$@";
 }
 gr() { # Git recursive
-	local delim=': '
-	test "$1" = grep && delim='/'
-	find . -name .git -type d -execdir sh -c 'p=$(pwd); command git "$@" |
-		sed -e "s@^@.${p#'"$(pwd)"'}'"${delim}"'@"' _ "$@" \; | ${PAGER-more}
+	echo 'Stop using gr.  Use "g r" instead and fix it as needed' >&2
+	return 1
 }
