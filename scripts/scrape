@@ -1,13 +1,12 @@
 #!/bin/sh
 
 
-if test "$1" = .; then
-	target=$TMUX_PANE
-	adjust=2
-else
-	target="${1-0.0}"
-	adjust=0
-fi
+adjust=2
+case $1 in
+.    ) target=$TMUX_PANE; : $((adjust += 2)) ;;
+[0-9]) target=0.$1 ;;
+*    ) target=$1 ;;
+esac
 
 if test "${2-0}" -ne 0; then
 	end=$(( $(tmux display-message -pt "$target" -F '#{pane_height}') - $adjust))
