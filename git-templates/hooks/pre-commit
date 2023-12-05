@@ -26,12 +26,18 @@ indentation_is_okay() {
 	# apply.whitepace set to 'error', git diff-index does not treat
 	# a leading tab follwed by space as an error.  So we need to
 	# explicitly check for any spaces in the indentation.
+
+	# git-diff-index also does not treat space at the start of the line as an
+	# error if the amount of space at the start of a line is less
+	# than core.whitespace.tabwidth.
+	# core.whitespace can be a comma-separated list; eg
+	# core.whitespace = indent-with-non-tab,tabwidth=4
 	local tab=$(printf '\t')
 	if \
-		test "$(git config core.whitespace)" = indent-with-no-tab &&
+		git config core.whitespace | grep -q indent-with-non-tab &&
 		git diff --cached | grep -E "^[+]${tab}*[ ]"
 	then
-		reason='spaces after tabs in indentation'
+		reason='spaces in indentation'
 		return 1
 	fi
 }
