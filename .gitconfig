@@ -1,7 +1,7 @@
 
 [alias]
 	ap = add --patch
-	b = !bash -c 'git branch -vv | grep -v \"^  attic/\"'
+	b = branch -vv
 	caa = !bash -c 'git commit --amend -a \"$@\" -m \"$(git log \
 		--format=format:%B -n 1)\" --cleanup=strip' _
 	caan = caa -n
