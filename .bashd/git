@@ -27,7 +27,7 @@ g() {
 	(.        ) git_dot;;
 	(base     ) command git worktree list --porcelain | awk '{print $2; exit}' ;;
 	(clone    ) git_clone "$@" ;;
-	(r        ) shift; git_recurse "@";;
+	(r        ) shift; git_recurse "$@";;
 	(root     ) git_root;;
 	(*        ) command git "$@" ;;
 	esac
