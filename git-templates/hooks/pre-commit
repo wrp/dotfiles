@@ -43,7 +43,7 @@ indentation_is_okay() {
 }
 
 validate_whitespace() {
-	if test -n "$IGNORE_WHITESPACE_ERRORS"; then
+	if test -n "$ALLOW_WHITESPACE_ERRORS"; then
 		return 0
 	fi
 
@@ -60,7 +60,7 @@ validate_whitespace() {
 		$func "$reason" \
 			'To ignore, do one of:' \
 			'  * set "git config apply.whitespace warn"' \
-			'  * set IGNORE_WHITESPACE_ERRORS'
+			'  * set ALLOW_WHITESPACE_ERRORS'
 	fi
 }
 
