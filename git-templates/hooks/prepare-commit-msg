@@ -5,6 +5,11 @@ main() {
 	if test "$2" != message; then
 		return 0
 	fi
+	# Do not check if this is from an existing commit (-c, -C, or --amend)
+	if test -n "$3"; then
+		return 0
+	fi
+
 	get_ticket || return 1
 	if test -n "$ticket"; then
 		git-interpret-trailers --in-place --if-exists addIfDifferent --trailer ticket="$ticket" "$1"
