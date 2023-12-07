@@ -9,7 +9,7 @@
 	cda = cd -a
 	cf = ci -m 'Trivial reformat'
 	cfa = cf -a
-	ci = commit --signoff
+	ci = commit
 	ciam = ci -am
 	co = checkout
 	cp = cherry-pick
