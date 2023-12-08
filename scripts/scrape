@@ -1,7 +1,9 @@
 #!/bin/sh
 
-
-adjust=2
+# for capture pane, zero is the first line of visible pane,
+# positive numbers go down the pane, negative numbers are
+# scrolled off top
+adjust=$((${3-0}))
 case $1 in
 .    ) target=$TMUX_PANE; : $((adjust += 2)) ;;
 [0-9]) target=$1.0 ;;
@@ -9,8 +11,8 @@ case $1 in
 esac
 
 if test "${2-0}" -ne 0; then
-	end=$(( $(tmux display-message -pt "$target" -F '#{pane_height}') - $adjust))
-	start=$(( end - $2 ))
+	end=$(( $(tmux display-message -pt "$target" -F '#{pane_height}') - $adjust - 1))
+	start=$((end - $2 + 1))
 else
 	start=-
 	end=-
