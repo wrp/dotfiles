@@ -61,6 +61,7 @@ create_symlinks() {
 }
 
 create_file() {
+	mkdir -p "$(dirname "$1")" || return 1
 	if ! test -f "$1"; then
 		cat > "$1"
 	else
@@ -92,7 +93,7 @@ setup_local_files() {
 		export EMAIL UNAME
 	EOF
 
-	create_file "$HOME/CONFIG_SITE" <<- 'EOF'
+	create_file "$HOME/.config/$USER/CONFIG_SITE" <<- 'EOF'
 		prefix=$HOME/$(uname -m)/$(uname -s)
 		CFLAGS=-I${prefix}/include
 		LDFLAGS=-L${prefix}/lib

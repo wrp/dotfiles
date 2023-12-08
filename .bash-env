@@ -18,7 +18,7 @@ export HISTFILE=$HOME/.bash-history-dir/$$
 export HISTFILESIZE=9999999999
 export HISTTIMEFORMAT='%H:%M:%S ' #%m/%d
 export EDITOR=vim
-export CONFIG_SITE=$HOME/CONFIG_SITE
+export CONFIG_SITE=$HOME/.config/$USER/CONFIG_SITE
 export COLUMNS
 export LESS=FFiMQRSX#.95
 export GIT_PAGER=less
