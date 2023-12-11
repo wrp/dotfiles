@@ -44,7 +44,7 @@
 		--date=format:\"\" \
 		--format=format:\"$(echo \"\
 		%Cgreen%h%Cblue% ad\
-		%Cred%<(12,trunc)%an%Creset\
+		%Cred%<($(($(tput cols)/10 - 2)),trunc)%an%Creset\
 		${a}\
 		%<($(($(tput cols) / 3)),trunc)%s \
 		%Cblue%D%Creset\
