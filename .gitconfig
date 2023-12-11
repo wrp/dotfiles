@@ -2,8 +2,7 @@
 [alias]
 	ap = add --patch
 	b = branch -vv
-	caa = !bash -c 'git commit --amend -a \"$@\" -m \"$(git log \
-		--format=format:%B -n 1)\" --cleanup=strip' _
+	caa = !bash -c 'git commit --amend -a -C HEAD --cleanup=strip \"$@\"' _
 	caan = caa -n
 	cd = ci -m Documentation
 	cda = cd -a
