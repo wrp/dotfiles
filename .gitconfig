@@ -46,7 +46,7 @@
 		%Cgreen%h%Cblue% ad\
 		%Cred%<(12,trunc)%an%Creset\
 		${a}\
-		%<(60,trunc)%s \
+		%<($(($(tput cols) / 3)),trunc)%s \
 		%Cblue%D%Creset\
 		\" | tr -s \" \"  )\" \"$@\"' _
 	l1a = l1 --graph --decorate
