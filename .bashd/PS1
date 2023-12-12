@@ -49,7 +49,9 @@ set_prompt() {
 	PS1+='$( # project
 		printf '%s' "${PROJECT:+(}${PROJECT%-[0-9]*}${PROJECT:+)}";
 	)'
-	PS1+='$( # directory and git branch
+
+	# directory and git branch
+	PS1+='$(
 		if test "${COLUMNS:-0}" -gt 140; then printf "[%s%s%s]" \
 			"${PS1_LEADER:+$PS1_LEADER:}" \
 			"${PWD##*/}"\
