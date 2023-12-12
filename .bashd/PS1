@@ -46,9 +46,9 @@ set_prompt() {
 		PS1+="$__battery_check"
 	fi
 	PS1+='$__MAGENTA'
-	PS1+='$( # project
-		printf '%s' "${PROJECT:+(}${PROJECT%-[0-9]*}${PROJECT:+)}";
-	)'
+
+	# project
+	PS1+='$(printf '%s' "${PROJECT:+(}${PROJECT%-[0-9]*}${PROJECT:+)}")'
 
 	# directory and git branch
 	PS1+='$(
