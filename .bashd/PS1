@@ -23,7 +23,7 @@ __battery_check='$(
 check_variable() {
 	name=$1
 	PS1+='$(
-		if test -n "${'$name'}"; then
+		if test -n "$(sh -c '"'"'echo ${'$name'}'"'"')"; then
 			printf "$__RED%s:" "'$name'"
 		fi
 	)'
