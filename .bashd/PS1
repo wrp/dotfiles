@@ -68,8 +68,6 @@ set_prompt() {
 
 	PS1+="$trailer"
 }
-if test -z "$PS1"; then
-	set_prompt
-fi
+set_prompt
 unset set_prompt
 unset __battery_check
