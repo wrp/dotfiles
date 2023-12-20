@@ -8,4 +8,8 @@ while read local_ref local_obj remote_ref remote_obj; do
 		echo "Branch names must match BRANCH_ERE_MATCH:'$BRANCH_ERE_MATCH'"
 		exit 1
 	fi >&2
-done
+
+	if git show --pretty=format:%s --no-patch "$local_ref" | grep AMEND; then
+		echo $0 is rejecting this push because of $ref
+	fi
+done >&2
