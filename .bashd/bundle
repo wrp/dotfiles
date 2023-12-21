@@ -16,6 +16,6 @@ bundle() {
 		awk 'NR==1 && NF > 1 { printf "%s..", substr($0, 0, 7)} END {print substr($0, 0, 7)}'
 		).bundle
 	test -e "$file" && { echo "$file already exists" >&2; return 1; }
-	command git bundle create "$file" "$revs" 2> /dev/null \
+	command git bundle create "$file" "$revs" --tags \
 	&& echo Created "$(pwd)/$file"
 }
