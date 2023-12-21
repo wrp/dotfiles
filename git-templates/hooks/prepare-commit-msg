@@ -17,7 +17,7 @@ main() {
 }
 
 get_ticket() {
-    test -n "$ticket" && return
+	test -n "$ticket" && return
 	branch=$(git branch --show-current)
 	if test -z "$branch"; then
 		# Maybe we are rebasing; try to get the original branch name
