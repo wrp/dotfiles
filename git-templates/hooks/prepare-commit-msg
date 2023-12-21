@@ -40,14 +40,8 @@ get_ticket() {
 		&& ! test "$(git config core.require-ticket)" = false \
 		&& ! test "$(git config branch.$branch.require-ticket)" = false \
 	; then
-		echo "prepare-commit-msg hook is rejecting this commit:"
-		echo "    No ticket configured for branch $branch"
-		echo "    Specify 'ticket' in the environment or"
-		echo "    use 'git config branch.$branch.ticket \${ticket}'"
-		echo 'To suppress this check, set ALLOW_NO_TICKET'
-		echo "    or 'git config core.require-ticket false'"
-		echo "    or 'git config branch.$branch.require-ticket false'"
-		return 1
+		echo "WARNING: setting ticket to None"
+		ticket=None
 	fi >&2
 }
 
