@@ -14,6 +14,10 @@ main() {
 	if test -n "$ticket"; then
 		git-interpret-trailers --in-place --if-exists addIfDifferent --trailer ticket="$ticket" "$1"
 	fi
+	local_hook="$(dirname $(dirname $0))/local-hooks/$(basename $0)"
+	if test -x "$local_hook"; then
+		"$local_hook" "$@" || die $local_hook failed
+	fi
 }
 
 get_ticket() {

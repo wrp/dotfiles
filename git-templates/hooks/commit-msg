@@ -2,6 +2,10 @@
 
 main() {
 	check_subject "$@" || return 1
+	local_hook="$(dirname $(dirname $0))/local-hooks/$(basename $0)"
+	if test -x "$local_hook"; then
+		"$local_hook" "$@" || die $local_hook failed
+	fi
 }
 
 
