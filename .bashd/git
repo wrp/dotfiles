@@ -10,10 +10,12 @@ git_dot() {
 }
 git_recurse() {
 	# run git recursively and prepend path to output
+	local delim=': '
+	if test "$1" = grep; then delim='/'; fi
 	find . -type d -name .git -exec sh -c '
 		cd ${0%.git};
 		command git "$@" |
-		perl -pe "s@^@sprintf(\"%30s: \", \"${0%/.git}\")@e"' {} "$@" \;
+		perl -pe "s@^@sprintf(\"%30s'"$delim"'\", \"${0%/.git}\")@e"' {} "$@" \;
 }
 git_root() {
 	# TODO: make this work inside the .git dir of a working repo
