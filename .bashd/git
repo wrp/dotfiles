@@ -11,11 +11,10 @@ git_dot() {
 git_recurse() {
 	# run git recursively and prepend path to output
 	local delim=': '
-	if test "$1" = grep; then delim='/'; fi
+	if test "$1" = grep; then delim=''; fi
 	find . -type d -name .git -exec sh -c '
 		command git -C "${0%.git}" "$@" |
-		perl -pe "s@^@sprintf(\"%30s'"$delim"'\", \
-			\"${0%/.git}\")@e"' {} "$@" \; \
+		perl -pe "print \"${0%.git}'"$delim"'\""' {} "$@" \; \
 	| ${GIT_PAGER-${PAGER-more}}
 }
 git_root() {
