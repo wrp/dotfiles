@@ -13,8 +13,7 @@ git_recurse() {
 	local delim=': '
 	if test "$1" = grep; then delim='/'; fi
 	find . -type d -name .git -exec sh -c '
-		cd ${0%.git};
-		command git "$@" |
+		command git -C "${0%.git}" "$@" |
 		perl -pe "s@^@sprintf(\"%30s'"$delim"'\", \"${0%/.git}\")@e"' {} "$@" \;
 }
 git_root() {
