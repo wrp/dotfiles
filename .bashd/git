@@ -28,7 +28,9 @@ g() {
 	case $1 in
 	(.        ) git_dot;;
 	(base     ) command git worktree list --porcelain | awk '{print $2; exit}' ;;
+	(dm       ) shift; gdm "$@";;   # diff with main
 	(clone    ) git_clone "$@" ;;
+	(no       ) shift; gno "$@";;   # name-only (diffs with main)
 	(r        ) shift; git_recurse "$@";;
 	(root     ) git_root;;
 	(*        ) command git "$@" ;;
