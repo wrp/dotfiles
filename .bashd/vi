@@ -29,7 +29,10 @@ vi() {
 		# There is no sane way to pass names in a pipe without using a null terminator as a separator,
 		# and I do not want to accomodate the brain dead-practice of using whitespace in filenames.
 		# If there are names with whitespace or colons, construct the arguments manually.
-		set -- $(grep -v "${VIM_IGNORE_FILES:-^$}" | awk '!a[$1]++{print $1}' FS='[:[:space:]]')
+		set -- $(grep -v "${VIM_IGNORE_FILES:-^$}" |
+			awk '{gsub("[[:space:]]", "", $0)} 1' |  # remove leading whitespace
+			awk '!a[$1]++{print $1}' FS='[:[:space:]]'
+		)
 		exec < /dev/tty
 	fi
 	vim "$@"    # .vimrc sets tmux titles
