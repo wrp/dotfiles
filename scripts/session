@@ -1,6 +1,6 @@
 #!/bin/sh
 
-test $1 = . && set --
+test "$1" = . && set --
 
 name=${1-${PWD##*/}}
 name=${name%/}
