@@ -14,7 +14,9 @@ git_recurse() {
 	if test "$1" = grep; then delim='/'; fi
 	find . -type d -name .git -exec sh -c '
 		command git -C "${0%.git}" "$@" |
-		perl -pe "s@^@sprintf(\"%30s'"$delim"'\", \"${0%/.git}\")@e"' {} "$@" \;
+		perl -pe "s@^@sprintf(\"%30s'"$delim"'\", \
+			\"${0%/.git}\")@e"' {} "$@" \; \
+	| ${GIT_PAGER-${PAGER-more}}
 }
 git_root() {
 	# TODO: make this work inside the .git dir of a working repo
