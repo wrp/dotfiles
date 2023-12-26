@@ -41,7 +41,7 @@
 		) && \
 		git log \
 		--date=format:\"\" \
-		--format=format:\"$(echo \"\
+		--format=tformat:\"$(echo \"\
 		%Cgreen%h%Cblue% ad\
 		%Cred%<($(($(tput cols)/10 - 2)),trunc)%an%Creset\
 		${a}\
