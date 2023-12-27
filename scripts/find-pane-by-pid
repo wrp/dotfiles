@@ -15,24 +15,31 @@ if test $# = 0 && test -t 1 && ! test -t 0; then
 	trap 'rm -f $TMP' 0
 	TMP=$(mktemp)
 	IFS="$nl"
-	grep -woE '[0-9]{5,}' | sort -u | xargs get-environ TMUX_PANE  > $TMP
+	grep -woE '[0-9]{5,}' |
+		grep -v ^$PPID\$ | # Skip the shell used to invoke this script
+		sort -u | xargs get-environ TMUX_PANE  > $TMP
 	test -s $TMP || die "${ERRMSG-No processes from which to select}"
-	PS3="${PROMPT-Select process to jump to}: "
-	nl < $TMP
-	test -z "$response" && read -p "$PS3" -t 5 response < /dev/tty
+	if test "$(wc -l < $TMP)" = 1; then
+		response=1
+	else
+		PS3="${PROMPT-Select process to jump to}: "
+		nl < $TMP
+		test -z "$response" && read -p "$PS3" -t 5 response < /dev/tty
+	fi
 	if test -n "$response"; then
 		pid=$( awk "NR == ${response}{print \$1}"  $TMP )
 		echo Jumping to pid $pid
-		set $pid
+		set -- $pid
 	else
 		echo timeout >&2
 		exit
 	fi
 fi
 
-TPANE=$( get-environ TMUX_PANE ${1?No pid given} | awk '{print $3}')
+set -x
+TPANE=$(get-environ TMUX_PANE ${1?No pid given} | awk '{print $2}')
 
-test "${TPANE#%}" -gt 0 2> /dev/null && {
+test "${TPANE#%}" -ge 0 2> /dev/null && {
 	if test -n "$TMUX_PANE"; then # We are running in tmux
 		tmux switch-client -t $TPANE
 		tmux select-window -t $TPANE

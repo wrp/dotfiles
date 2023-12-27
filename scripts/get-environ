@@ -6,9 +6,10 @@ var=${1?No variable given}
 shift
 if test -d /proc; then
 	for pid; do
-		printf "%s %s " "$pid" "$(ps -o cmd= $pid)"
+		printf "%s " "$pid"
 		tr \\0 \\n < /proc/${pid}/environ |
-			awk -F= "/$var/{print \$2}"
+			awk -F= "/$var/{printf \"%s \", \$2}"
+		printf "%s\n" "$(ps -o cmd= $pid)"
 	done
 else
 	for pid; do
