@@ -21,6 +21,12 @@ validate_pathnames() {
 	fi
 }
 
+filetype() {
+	case $1 in
+	*.py) echo spaces;;
+	*) echo tabs;;
+	esac
+}
 indentation_is_okay() {
 	# Sigh.  With core.whitespace set to 'indent-with-no-tab' and
 	# apply.whitepace set to 'error', git diff-index does not treat
@@ -33,13 +39,21 @@ indentation_is_okay() {
 	# core.whitespace can be a comma-separated list; eg
 	# core.whitespace = indent-with-non-tab,tabwidth=4
 	local tab=$(printf '\t')
-	if \
-		git config core.whitespace | grep -q indent-with-non-tab &&
-		git diff --cached | grep -E "^[+]${tab}*[ ]"
-	then
-		reason='spaces in indentation'
-		return 1
-	fi
+	local pattern
+	git diff --name-only --cached | while read path; do
+		case $(filetype $path) in
+		tabs)
+			pattern="^[+]${tab}*[ ]"
+			reason='unwanted spaces in indentation';;
+		spaces)
+			pattern="^[+][ ]*${tab}"
+			reason='unwanted tabs in indentation';;
+		esac
+		if git diff --cached $path | grep -E "$pattern"; then
+			echo "$reason" >&2
+			return 1
+		fi
+	done
 }
 
 validate_whitespace() {
@@ -47,17 +61,13 @@ validate_whitespace() {
 		return 0
 	fi
 
-	local reason='Whitespace errors reported by git-diff-index'
-	if \
-		! git diff-index --check --cached $against -- ||
-		! indentation_is_okay
-	then
+	if ! indentation_is_okay; then
 		if git config apply.whitespace | grep -q error; then
 			func=die
 		else
 			func=warn
 		fi
-		$func "$reason" \
+		$func \
 			'To ignore, do one of:' \
 			'  * set "git config apply.whitespace warn"' \
 			'  * set ALLOW_WHITESPACE_ERRORS'
