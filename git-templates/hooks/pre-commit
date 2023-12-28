@@ -21,12 +21,14 @@ validate_pathnames() {
 	fi
 }
 
-filetype() {
+unwanted() {
+	# Return tabs or spaces; whichever is unwanted for the name in $1
 	case $1 in
-	*.py) echo spaces;;
-	*) echo tabs;;
+	*.py) echo tabs;;
+	*) echo spaces;;
 	esac
 }
+
 indentation_is_okay() {
 	# Sigh.  With core.whitespace set to 'indent-with-no-tab' and
 	# apply.whitepace set to 'error', git diff-index does not treat
@@ -41,16 +43,14 @@ indentation_is_okay() {
 	local tab=$(printf '\t')
 	local pattern
 	git diff --name-only --cached | while read path; do
-		case $(filetype $path) in
-		tabs)
-			pattern="^[+]${tab}*[ ]"
-			reason='unwanted spaces in indentation';;
-		spaces)
-			pattern="^[+][ ]*${tab}"
-			reason='unwanted tabs in indentation';;
+		bad_character=$(unwanted $path)
+		case $bad_character in
+		spaces) pattern="^[+]${tab}*[ ]";;
+		tabs) pattern="^[+][ ]*${tab}";;
+		*) die "Cannot recognize file type $path";;
 		esac
 		if git diff --cached $path | grep -E "$pattern"; then
-			echo "$reason" >&2
+			echo "unwanted $bad_character in indent in $path" >&2
 			return 1
 		fi
 	done
