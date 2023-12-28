@@ -53,6 +53,10 @@ indentation_is_okay() {
 			echo "unwanted $bad_character in indent in $path" >&2
 			return 1
 		fi
+		if git diff --cached $path | grep -E "[^[+][^{$tab}]+${tab}"; then
+			echo "tab character found after indent in $path"
+			return 1
+		fi
 	done
 }
 
