@@ -60,7 +60,7 @@
 	sa = status -uall --ignored
 	sl = stash list
 	sp = stash pop --quiet
-	ss = !bash -c 'git stash push ${1:+-m} "${*}"' _
+	ss = !bash -c 'git stash push ${1:+-m} \"${*}\"' _
 	w = rev-parse --abbrev-ref HEAD
 [apply]
 	whitespace = error
