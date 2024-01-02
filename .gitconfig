@@ -42,7 +42,7 @@
 		git log \
 		--date=format:\"\" \
 		--format=tformat:\"$(echo \"\
-		%Cgreen%h%Cblue% ad\
+		%Cgreen%h%C(yellow)% ad\
 		%Cred%<($(($(tput cols)/10 - 2)),trunc)%an%Creset\
 		${a}\
 		%<($(($(tput cols) / 3)),trunc)%s \
