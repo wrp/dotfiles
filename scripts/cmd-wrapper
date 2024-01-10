@@ -1,10 +1,20 @@
 #!/bin/sh
 
-# Filter the stream, prepending timestamp and arguments to each line
-add_header() {
-	perl -mPOSIX -pe "\$s=length > 1 ? ' ' : ''; \$m='$*'; s/^/\$m:\$s/;
-		print POSIX::strftime '%y/%m/%d %H:%M:%S: ', gmtime"
+: ${stdout_prefix=stdout}
+: ${stderr_prefix=stderr}
+
+# Filter the stream, conditionally prepending timestamp and arguments to each line
+add_prefix() {
+	perl -mPOSIX -e '
+		while(<STDIN>) {
+		print POSIX::strftime "%y/%m/%d %H:%M:%S: ",
+			gmtime if ! $ENV{"no_timestamp"};
+		print "@ARGV" . ":";
+		print " " if length > 1;
+		print $_
+	}' -- "$@"
 }
 
 # Execute the command, adding timestamp and labels to output streams
-{ { $@ | add_header stdout >&3; } 2>&1 | add_header stderr >&2; } 3>&1
+{ { $@ | add_prefix "${stdout_prefix}" >&3; } 2>&1 |
+	add_prefix "${stderr_prefix}" >&2; } 3>&1
