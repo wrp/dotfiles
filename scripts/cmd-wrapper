@@ -1,7 +1,7 @@
 #!/bin/sh
 
-: ${stdout_prefix=stdout}
-: ${stderr_prefix=stderr}
+: ${stdout_prefix=${prefix-stdout}}
+: ${stderr_prefix=${prefix-stderr}}
 
 # Filter the stream, conditionally prepending timestamp and arguments to each line
 add_prefix() {
