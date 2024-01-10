@@ -9,10 +9,13 @@ add_prefix() {
 		while(<STDIN>) {
 		print POSIX::strftime "%y/%m/%d %H:%M:%S: ",
 			gmtime if ! $ENV{"no_timestamp"};
-		print "@ARGV" . ":";
-		print " " if length > 1;
+		print "@ARGV";
+		if (scalar @ARGV) {
+			print ":";
+			print " " if length > 1
+		}
 		print $_
-	}' -- "$@"
+	}' -- $*
 }
 
 # Execute the command, adding timestamp and labels to output streams
