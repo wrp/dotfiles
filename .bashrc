@@ -6,8 +6,8 @@
 #     input connected to a network connection, as when executed by the
 #     remote shell daemon, usually rshd, or the secure shell daemon sshd.
 #     If bash determines it is being run in this fashion, it reads  and
-#     executes  commands  from ~/.bashrc  and  ~/.bashrc,  if these files
-#     exist and are readable.  It will not do this if invoked as sh.  The
+#     executes commands from ~/.bashrc, if that file exists and is readable.
+#     It will not do this if invoked as sh.  The
 #     --norc option may be used to inhibit this behavior, and the --rcfile
 #     option may be used to force another file to be read, but neither
 #     rshd nor sshd  generally  invoke  the  shell  with those options
