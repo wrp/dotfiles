@@ -6,12 +6,11 @@
 # Filter the stream, conditionally prepending timestamp and arguments to each line
 add_prefix() {
 	perl -mPOSIX -e '
-		while(<STDIN>) {
+	while(<STDIN>) {
 		print POSIX::strftime "%y/%m/%d %H:%M:%S: ",
 			gmtime if ! $ENV{"no_timestamp"};
-		print "@ARGV";
 		if (scalar @ARGV) {
-			print ":";
+			print "@ARGV:";
 			print " " if length > 1
 		}
 		print $_
