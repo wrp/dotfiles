@@ -18,5 +18,5 @@ add_prefix() {
 }
 
 # Execute the command, adding timestamp and labels to output streams
-{ { $@ | add_prefix "${stdout_prefix}" >&3; } 2>&1 |
+{ { "$@" | add_prefix "${stdout_prefix}" >&3; } 2>&1 |
 	add_prefix "${stderr_prefix}" >&2; } 3>&1
