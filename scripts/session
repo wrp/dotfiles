@@ -7,8 +7,9 @@ name=${name%/}
 dir=$(realpath "${1-$PWD}" 2> /dev/null)
 
 if test -z "$TMUX"; then
-	tmux attach 2> /dev/null || tmux new-session -c "$dir" -s "$name"
-	exit 0
+	tmux attach -t "$name" 2> /dev/null \
+	|| tmux new-session -c "$dir" -s "$name"
+	exit
 fi
 
 if ! tmux has-session -t "${name}" 2> /dev/null; then
