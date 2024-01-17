@@ -1,10 +1,14 @@
 #!/bin/sh
 
-# scrape a tmux pane.  By default, this scrapes the current
-# pane, skipping the bottom few lines (the lines used to
-# invoke the script)
+# usage: $0 [target-pane] [line-count] [lines-at-end-to-skip]
 
-# for capture pane, zero is the first line of visible pane,
+# scrape a tmux pane.  With no args, scrape the currently
+# visible current pane.
+
+# To scrape 5 lines 3 up from the current bottom of visible pane,
+# use "$0 . 5 3"
+
+# For capture pane, zero is the first line of visible pane,
 # positive numbers go down the pane, negative numbers are
 # scrolled off top
 
