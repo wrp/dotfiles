@@ -1,16 +1,20 @@
 #!/bin/sh
 
 # usage: $0 [target-pane] [line-count] [lines-at-end-to-skip]
-
+#
 # scrape a tmux pane.  With no args, scrape the currently
 # visible current pane.
-
+#
 # To scrape 5 lines 3 up from the current bottom of visible pane,
 # use "$0 . 5 3"
 
 # For capture pane, zero is the first line of visible pane,
 # positive numbers go down the pane, negative numbers are
 # scrolled off top
+
+case "$1" in
+-h|--help|-?) sed -n -e '1,2d; /^$/q; s/^# *//; p' $0; exit 0;;
+esac
 
 if test $# = 0; then
 	end=$(( $(tmux display-message -pt "$target" -F '#{pane_height}') - 3))
