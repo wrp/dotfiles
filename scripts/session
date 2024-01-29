@@ -2,9 +2,8 @@
 
 test "$1" = . && set --
 
-name=${1-${PWD##*/}}
-name=${name%/}
 dir=$(realpath "${1-$PWD}" 2> /dev/null)
+name=$(basename "${1-$PWD}")
 
 if test -z "$TMUX"; then
 	tmux attach -t "$name" 2> /dev/null \
