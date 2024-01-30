@@ -52,8 +52,4 @@ trap : SIGWINCH
 
 PROMPT_COMMAND=after_cmd
 read_file $HOME/.bash-local
-
-if test -z "${TMUX}"; then
-	warn 'not running in TMUX'
-fi
 return 0

@@ -37,6 +37,9 @@ set_prompt() {
 	set_color
 	PS1+="${PS1_PREFIX}"
 	PS1+='\D{%T}'  # %T is passed to strftime for time
+	if test -z "$TMUX"; then
+		PS1+="${__RED} NO TMUX "
+	fi
 	if test "$(tput cols)" -le 80; then
 		return;
 	fi
