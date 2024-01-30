@@ -41,6 +41,7 @@ set_prompt() {
 		PS1+="${__RED} NO TMUX "
 	fi
 	if test "$(tput cols)" -le 80; then
+		PS1+='|'
 		return;
 	fi
 
