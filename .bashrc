@@ -48,7 +48,7 @@ shopt -s direxpand 2> /dev/null # prevent tab expand from expanding $D to \$D
 trap archive 0
 trap debug_trap DEBUG
 trap '. $HOME/.bashrc' SIGUSR1
-trap : SIGWINCH
+trap '. $HOME/.bashd/PS1' SIGWINCH
 
 PROMPT_COMMAND=after_cmd
 read_file $HOME/.bash-local
