@@ -10,7 +10,7 @@ main() {
 		return 0
 	fi
 
-	get_ticket || return 1
+	get_ticket "$1" || return 1
 	if test -n "$ticket"; then
 		git-interpret-trailers --in-place --if-exists addIfDifferent --trailer ticket="$ticket" "$1"
 	fi
@@ -20,8 +20,14 @@ main() {
 	fi
 }
 
+get_ticket_from_extant_message() {
+	git interpret-trailers --parse "$1" |
+	awk '$1 == "ticket" { print $2}' FS=': '
+}
+
 get_ticket() {
 	test -n "$ticket" && return
+
 	branch=$(git branch --show-current)
 	if test -z "$branch"; then
 		# Maybe we are rebasing; try to get the original branch name
@@ -39,6 +45,8 @@ get_ticket() {
 		git config branch."$branch".ticket ||
 		get-ticket-from-branch "$branch" 2> /dev/null
 	)
+	ticket=$(get_ticket_from_extant_message "$1")
+
 	if test -z "$ticket" \
 		&& test -z "$ALLOW_NO_TICKET" \
 		&& ! test "$(git config core.require-ticket)" = false \
