@@ -36,10 +36,10 @@ insert_text() { PS1+="$*"; }
 
 set_prompt() {
 	check_previous
-	PS1+="${PS1_PREFIX}"
-	PS1+='\D{%T}'  # %T is passed to strftime for time
+	insert_text "${PS1_PREFIX}"
+	insert_text '\D{%T}'  # %T is passed to strftime for time
 	if test -z "$TMUX"; then
-		PS1+="${__RED} NO TMUX "
+		insert_text "${__RED} NO TMUX "
 	fi
 	tput cols > /dev/null
 	local width=$(tput cols)
@@ -52,16 +52,16 @@ set_prompt() {
 
 	# Insert battery percentage
 	if battery > /dev/null 2>&1; then
-		PS1+="$__battery_check"
+		insert_text "$__battery_check"
 	fi
-	PS1+='$__MAGENTA'
+	insert_text '$__MAGENTA'
 
 	# project
-	PS1+='$(printf '%s' "${PROJECT:+(}${PROJECT%-[0-9]*}${PROJECT:+)}")'
+	insert_text '$(printf '%s' "${PROJECT:+(}${PROJECT%-[0-9]*}${PROJECT:+)}")'
 
 	# directory and git branch
 	if test "$width" -gt 100; then
-	PS1+='$(
+	insert_text '$(
 		printf "[%s%s%s]" \
 			"$PS1_LEADER${PS1_LEADER:+:}" \
 			"${PWD##*/}"\
