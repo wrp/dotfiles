@@ -48,8 +48,7 @@ set_prompt() {
 		battery > /dev/null 2>&1 && insert_text "$__battery_check"
 		insert_text '$__MAGENTA'
 
-		# project
-		insert_text '$(printf '%s' "${PROJECT:+(}${PROJECT%-[0-9]*}${PROJECT:+)}")'
+		test -n "$PROJECT" && insert_text "(${PROJECT%-[0-9]*})"
 
 		# directory and git branch
 		if test "$width" -gt 100; then
