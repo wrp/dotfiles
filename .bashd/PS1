@@ -43,9 +43,9 @@ set_prompt() {
 		PS1+="${__RED} NO TMUX "
 	fi
 	tput cols > /dev/null
-	if test "$(tput cols)" -le 80; then
-		insert_text $__GREEN
-		PS1+='|'
+	local width=$(tput cols)
+	if test "$width" -le 80; then
+		insert_text $__GREEN:
 		add_pid
 		add_prompt_char
 		return;
@@ -61,15 +61,18 @@ set_prompt() {
 	PS1+='$(printf '%s' "${PROJECT:+(}${PROJECT%-[0-9]*}${PROJECT:+)}")'
 
 	# directory and git branch
+	if test "$width" -gt 100; then
 	PS1+='$(
-		if test "$(tput cols)" -gt 100; then printf "[%s%s%s]" \
+		printf "[%s%s%s]" \
 			"$PS1_LEADER${PS1_LEADER:+:}" \
 			"${PWD##*/}"\
 			"$( git rev-parse --abbrev-ref HEAD 2> /dev/null \
-				| sed -E -e "s/^/@/" -e "s@^:heads/@:@" )"
-		else printf :
-		fi | tr \  .
+				| sed -E -e "s/^/@/" -e "s@^:heads/@:@" )" \
+		| tr \  .
 	)'
+	else
+		insert_text :
+	fi
 
 	# environment warnings
 	for name in ALLOW_NO_TICKET; do
