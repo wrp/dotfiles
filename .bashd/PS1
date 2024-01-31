@@ -32,7 +32,7 @@ check_variable() {
 check_previous() { PS1='$( { test $? -ne 0 && printf "%s" "$__RED" || printf "%s" "$__CYAN"; } )'; }
 add_pid() { PS1+="$(printf "%05d" "$$" )"; }
 add_prompt_char() { PS1+='\$ '; }
-insert_text() { PS1+=$(printf '\\\n%s' "$*"); }
+insert_text() { test -n "$*" && PS1+=$(printf '\\\n%s' "$*"); }
 
 set_prompt() {
 	check_previous
