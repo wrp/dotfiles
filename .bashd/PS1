@@ -31,9 +31,11 @@ check_variable() {
 
 # Add command to PS1 to set color based on $?
 set_color() { PS1='$( { test $? -ne 0 && printf "%s" "$__RED" || printf "%s" "$__CYAN"; } )'; }
+add_pid() { PS1+="$(printf "%05d" "$$" )"; }
+add_prompt_char() { PS1+='\$ '; }
+insert_text() { PS1+="$*"; }
+
 set_prompt() {
-	local trailer="$( printf "$__GREEN%05d" "$$" )\$ "
-	trap 'PS1+="$trailer"' RETURN
 	set_color
 	PS1+="${PS1_PREFIX}"
 	PS1+='\D{%T}'  # %T is passed to strftime for time
@@ -41,9 +43,11 @@ set_prompt() {
 		PS1+="${__RED} NO TMUX "
 	fi
 	tput cols > /dev/null
-	local width=$(tput cols)
-	if test "$width" -le 80; then
+	if test "$(tput cols)" -le 80; then
+		insert_text $__GREEN
 		PS1+='|'
+		add_pid
+		add_prompt_char
 		return;
 	fi
 
@@ -58,7 +62,7 @@ set_prompt() {
 
 	# directory and git branch
 	PS1+='$(
-		if test "$width" -gt 100; then printf "[%s%s%s]" \
+		if test "$(tput cols)" -gt 100; then printf "[%s%s%s]" \
 			"$PS1_LEADER${PS1_LEADER:+:}" \
 			"${PWD##*/}"\
 			"$( git rev-parse --abbrev-ref HEAD 2> /dev/null \
@@ -71,9 +75,15 @@ set_prompt() {
 	for name in ALLOW_NO_TICKET; do
 		check_variable $name
 	done
+	insert_text "$__GREEN"
+	add_pid
+	add_prompt_char
 
 }
 set_prompt
 unset set_prompt
 unset set_color
 unset __battery_check
+unset add_pid
+unset add_prompt_char
+unset insert_text
