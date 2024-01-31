@@ -30,5 +30,5 @@ _y_complete() {
 }
 
 
-complete -o filenames -F _git_complete git
+complete -o filenames -f _git_complete git
 complete -o default -F _y_complete y
