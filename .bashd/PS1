@@ -41,7 +41,8 @@ set_prompt() {
 		PS1+="${__RED} NO TMUX "
 	fi
 	tput cols > /dev/null
-	if test "$(tput cols)" -le 80; then
+	local width=$(tput cols)
+	if test "$width" -le 80; then
 		PS1+='|'
 		return;
 	fi
@@ -57,7 +58,7 @@ set_prompt() {
 
 	# directory and git branch
 	PS1+='$(
-		if test "${COLUMNS:-0}" -gt 100; then printf "[%s%s%s]" \
+		if test "$width" -gt 100; then printf "[%s%s%s]" \
 			"$PS1_LEADER${PS1_LEADER:+:}" \
 			"${PWD##*/}"\
 			"$( git rev-parse --abbrev-ref HEAD 2> /dev/null \
