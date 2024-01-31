@@ -40,6 +40,7 @@ set_prompt() {
 	if test -z "$TMUX"; then
 		PS1+="${__RED} NO TMUX "
 	fi
+	tput cols > /dev/null
 	if test "$(tput cols)" -le 80; then
 		PS1+='|'
 		return;
