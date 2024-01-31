@@ -76,6 +76,7 @@ set_prompt() {
 
 }
 set_prompt
+unset check_variable
 unset set_prompt
 unset set_color
 unset __battery_check
