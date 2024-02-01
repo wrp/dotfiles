@@ -92,9 +92,6 @@ debug_trap() {
 		;;
 	esac
 	tput sgr0
-	if test -n "${TERMINAL_AF}"; then
-		tput setaf "${TERMINAL_AF}"
-	fi
 } >&2
 
 report_cmd_status() {
