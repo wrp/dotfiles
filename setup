@@ -94,6 +94,7 @@ setup_local_files() {
 		EMAIL="$EMAIL"
 		UNAME="$UNAME"
 		export EMAIL UNAME
+		TERMINAL_AF=2
 	EOF
 
 	create_file "$HOME/.config/$USER/CONFIG_SITE" <<- 'EOF'

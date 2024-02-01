@@ -91,6 +91,7 @@ debug_trap() {
 		window-title "${BASH_COMMAND}"
 		;;
 	esac
+	tput setaf ${TERMINAL_AF:-9}
 } >&2
 
 report_cmd_status() {

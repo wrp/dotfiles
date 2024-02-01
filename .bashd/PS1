@@ -58,7 +58,7 @@ set_prompt() {
 	insert_text "$__GREEN"
 	add_pid
 	add_prompt_char
-
+	insert_text "$__YELLOW"
 }
 set_prompt
 unset set_prompt
