@@ -2,6 +2,7 @@
 __RED=$(printf '\x01'; tput setaf 1; printf '\x02')
 __GREEN=$(printf '\x01'; tput setaf 2; printf '\x02')
 __YELLOW=$(printf '\x01'; tput setaf 3; printf '\x02')
+__BOLD_YELLOW=$(printf '\x01'; tput bold; tput setaf 3; printf '\x02')
 __BLUE=$(printf '\x01'; tput setaf 4; printf '\x02')
 __MAGENTA=$(printf '\x01'; tput setaf 5; printf '\x02')
 __CYAN=$(printf '\x01'; tput setaf 6; printf '\x02')
@@ -58,7 +59,7 @@ set_prompt() {
 	insert_text "$__GREEN"
 	add_pid
 	add_prompt_char
-	insert_text "$__YELLOW"
+	insert_text "$__BOLD_YELLOW"
 }
 set_prompt
 unset set_prompt
