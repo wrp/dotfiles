@@ -15,7 +15,7 @@
 	cpx = cp -x
 	cr = ci -m 'Trivial refactor'
 	cra = cr -a
-	cs = ci -m 'Sanity Check'
+	cs = ci -m 'Sanity Check' --trailer type:wip
 	csa = cs -a
 	cw = ci -m 'Whitespace'
 	cwa = cw -a
