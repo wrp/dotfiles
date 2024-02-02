@@ -7,9 +7,20 @@ while read local_ref local_obj remote_ref remote_obj; do
 		echo "Bad remote branch name: $remote_ref"
 		echo "Branch names must match BRANCH_ERE_MATCH:'$BRANCH_ERE_MATCH'"
 		exit 1
-	fi >&2
+	fi
 
 	if git show --pretty=format:%s --no-patch "$local_ref" | grep AMEND; then
-		echo $0 is rejecting this push because of $ref
+		echo "$0 is rejecting this push because $ref contains 'AMEND'"
+		exit 1
 	fi
+
+	git rev-list ${remote_obj}..${local_obj} | while read oid; do
+		if git show -s --format=%B "$oid" \
+			| git interpret-trailers --only-trailers \
+			| grep '^type: wip'
+		then
+			echo "$0 is rejecting this push because $oid is wip"
+			exit 1
+		fi
+	done
 done >&2
