@@ -20,15 +20,6 @@ __battery_check='$(
 	fi
 )'
 
-check_variable() {
-	name=$1
-	PS1+='$(
-		if test -n "$(sh -c '"'"'echo ${'$name'}'"'"')"; then
-			printf "$__RED%s:" "'$name'"
-		fi
-	)'
-}
-
 check_previous() { PS1='$( { test $? -ne 0 && printf "%s" "$__RED" || printf "%s" "$__CYAN"; } )'; }
 add_pid() { PS1+="$(printf "%05d" "$$" )"; }
 add_prompt_char() { PS1+='\$ '; }
@@ -63,11 +54,6 @@ set_prompt() {
 		else
 			insert_text :
 		fi
-
-		# environment warnings
-		for name in ALLOW_NO_TICKET; do
-			check_variable $name
-		done
 	fi
 	insert_text "$__GREEN"
 	add_pid
@@ -75,7 +61,6 @@ set_prompt() {
 
 }
 set_prompt
-unset check_variable
 unset set_prompt
 unset set_color
 unset __battery_check
