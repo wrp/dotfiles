@@ -1,5 +1,6 @@
 #!/bin/sh
 
+warn() { printf "WARNING: %s${1:+\n}" "$@"; } >&2
 main() {
 	# Only check if the message was given by -m or -F
 	if test "$2" != message; then
@@ -47,13 +48,15 @@ get_ticket() {
 	)
 	ticket=$(get_ticket_from_extant_message "$1")
 
-	if test -z "$ticket" \
-		&& test -z "$ALLOW_NO_TICKET" \
-		&& ! test "$(git config core.require-ticket)" = false \
-		&& ! test "$(git config branch.$branch.require-ticket)" = false \
-	; then
-		echo "WARNING: setting ticket to None"
-		ticket=None
+	if test -z "$ticket"; then
+		if test "$(git config core.require-ticket)" = true \
+		|| test "$(git config branch.$branch.require-ticket)" = true
+		then
+			warn "setting ticket to None"
+			ticket=None
+		else
+			warn "Not inserting ticket trailer"
+		fi
 	fi >&2
 }
 
