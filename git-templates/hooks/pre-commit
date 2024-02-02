@@ -42,7 +42,7 @@ indentation_is_okay() {
 	# core.whitespace = indent-with-non-tab,tabwidth=4
 	local tab=$(printf '\t')
 	local pattern
-	git diff --name-only --cached | while read path; do
+	git status --porcelain | grep '^M' | while read m path; do
 		bad_character=$(unwanted $path)
 		case $bad_character in
 		spaces) pattern="^[+]${tab}*[ ]";;
