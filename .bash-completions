@@ -30,7 +30,7 @@ _git_complete() {
 
 	COMPREPLY=( $(compgen -W "${list}" -- ${cur_word}) )
 }
-	complete -o filenames -f _git_complete git
+	complete -o bashdefault -o default -o nospace -F _git_complete git
 fi
 
 _y_complete() {
