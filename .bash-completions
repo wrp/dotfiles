@@ -1,5 +1,13 @@
 GIT_COMPLETE_REVLIST_MAX=1500
 
+# Better to use __git_complete from
+# curl -O https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+# But let's leave this here for the times that may be unavailable
+if test -r $HOME/.config/$USER/git-completion.bash; then
+	source $HOME/.config/$USER/git-completion.bash
+	__git_complete g __git_main
+	__git_complete git __git_main
+else
 _git_complete() {
 	local cur_word="${COMP_WORDS[ COMP_CWORD ]}"
 	local dir=$(dirname $cur_word 2> /dev/null)
@@ -22,6 +30,8 @@ _git_complete() {
 
 	COMPREPLY=( $(compgen -W "${list}" -- ${cur_word}) )
 }
+	complete -o filenames -f _git_complete git
+fi
 
 _y_complete() {
 	cur_word="${COMP_WORDS[ COMP_CWORD ]}"
@@ -30,5 +40,4 @@ _y_complete() {
 }
 
 
-complete -o filenames -f _git_complete git
 complete -o default -F _y_complete y
