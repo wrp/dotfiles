@@ -100,6 +100,7 @@ au BufNewFile *.c r ~/.vim/skeleton.c
 au BufNewFile *.cc r ~/.vim/skeleton.cc
 au BufNewFile *.rs r ~/.vim/skeleton.rs
 au BufNewFile *.go r ~/.vim/skeleton.go
+au BufNewFile *.zig r ~/.vim/skeleton.zig
 
 set includeexpr=substitute(v:fname,'^//','','')
 
