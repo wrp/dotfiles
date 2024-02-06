@@ -40,4 +40,4 @@ _y_complete() {
 }
 
 
-complete -o default -F _y_complete y
+complete -o bashdefault -o default -o nospace -F _y_complete y
