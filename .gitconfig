@@ -71,8 +71,8 @@
 [apply]
 	whitespace = error
 [core]
-	whitespace = tab-in-indent
-	# whitespace = indent-with-non-tab
+	# whitespace = tab-in-indent
+	whitespace = indent-with-non-tab
 	editor = vim
 [push]
 	default = upstream
