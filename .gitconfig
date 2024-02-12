@@ -92,12 +92,12 @@
 	rebase = true
 [advice]
 	detachedHead = false
-[include]
-	path = ~/.gitconfig-local
 [tag]
 	gpgSign = true
 [commit]
 	gpgSign = true
+[include]
+	path = ~/.gitconfig-local
 [merge]
 	tool = vimdiff
 [status]
