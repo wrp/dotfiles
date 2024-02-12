@@ -30,11 +30,11 @@ unset_all_functions() {
 unset_all_functions
 unset PS1    # Set PS1 from ~.bashd/PS1
 read_file() { local f; for f; do if test -f "$f"; then . "$f"; fi; done; }
-read_file $HOME/.bashd/*
-read_file $HOME/.bash-functions $HOME/.bash-interactive-functions $HOME/.bash-completions
-read_file $HOME/.bash-env
+read_file "$HOME"/.bashd/*
+read_file "$HOME"/.bash-functions "$HOME"/.bash-interactive-functions "$HOME"/.bash-completions
+read_file "$HOME"/.bash-env
 
-make_hist_file $HOME/.bash-history-dir/.bash-history-$$
+make_hist_file "$HOME"/.bash-history-dir/.bash-history-$$
 set -o vi
 set -o physical # make pwd do the right thing w.r.t. symbolic links
 shopt -s histappend
@@ -47,9 +47,9 @@ shopt -s direxpand 2> /dev/null # prevent tab expand from expanding $D to \$D
 
 trap archive 0
 trap debug_trap DEBUG
-trap '. $HOME/.bashrc' SIGUSR1
-trap '. $HOME/.bashd/PS1' SIGWINCH
+trap '. "$HOME"/.bashrc' SIGUSR1
+trap '. "$HOME"/.bashd/PS1' SIGWINCH
 
 PROMPT_COMMAND=after_cmd
-read_file $HOME/.bash-local
+read_file "$HOME"/.bash-local
 return 0

@@ -32,7 +32,7 @@ prepend() {
 after_cmd() {
 	# Run after a command, and before a prompt is displayed
 	local _status=$?
-	report_cmd_status $HISTFILE $_status >> $HOME/.bash-history
+	report_cmd_status "$HISTFILE" "$_status" >> "$HOME"/.bash-history
 	window-title
 	return $_status
 }
@@ -45,7 +45,7 @@ make_hist_file() {
 	fi
 	printf ' begins in %s' "$PWD"
 	printf '\n'
-	} | tr -s ' ' >> $1
+	} | tr -s ' ' >> "$1"
 	export HISTFILE=$1
 }
 
@@ -139,4 +139,4 @@ window-title() {
 		t=1
 	fi
 	deactivate_is_defined=$t rename-tmux-window "$@";
-}
+} 2> /dev/null
