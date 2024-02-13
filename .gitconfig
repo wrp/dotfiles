@@ -64,6 +64,7 @@
 	no = show --name-only --pretty=format:
 	s = status
 	sa = status -uall --ignored
+	sk = !bash -c 'git stash push --keep-index ${1:+-m \"${*}\"}' _
 	sl = stash list
 	sp = stash pop --quiet
 	ss = !bash -c 'git stash push ${1:+-m \"${*}\"}' _
