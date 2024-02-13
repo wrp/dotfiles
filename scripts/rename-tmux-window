@@ -18,7 +18,7 @@ fi
 test -z "$*" && {
 	git_dir=$(realpath $(git rev-parse --git-dir))
 	if test "${git_dir##*/}" = .git; then
-		set -- "$(basename $(dirname "$git_dir"))"
+		set -- "$(basename "$(dirname "$git_dir")")"
 	elif work_dir=$(git rev-parse --show-toplevel); then
 		set -- "$(basename "$work_dir")"
 		if test "$1" = worktrees; then
@@ -28,7 +28,7 @@ test -z "$*" && {
 			set -- "$(basename $(git rev-parse --abbrev-ref HEAD))"
 		fi
 	else
-		set -- "$(basename "$(pwd -P)")"
+		set -- "$(basename "$(pwd -P | sed -e "s@$HOME@~@")")"
 	fi
 } 2> /dev/null
 
