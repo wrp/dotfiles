@@ -139,4 +139,4 @@ window-title() {
 		t=1
 	fi
 	deactivate_is_defined=$t rename-tmux-window "$@";
-} 2> /dev/null
+}
