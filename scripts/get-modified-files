@@ -4,11 +4,11 @@
 # is the amount of git history to explore in the current branch.
 
 if test -n "$FULL_PATH"; then
-	top=$(git rev-parse --show-toplevel)
+	top=$(git rev-parse --path-format=relative --show-toplevel)
 else
 	top=.
 fi
-: ${GIT_DIR=$(git rev-parse --git-dir)}
+: ${GIT_DIR=$(git rev-parse --path-format=relative --git-dir)}
 filter=${f:-.}
 
 if test $# = 0 || test "$1" -gt 0 2> /dev/null; then
