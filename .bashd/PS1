@@ -44,10 +44,9 @@ set_prompt() {
 
 		# directory and git branch
 		if test "$width" -gt 100; then
+		insert_text '[\W'
 		insert_text '$(
-			printf "[%s%s%s]" \
-				"$PS1_LEADER${PS1_LEADER:+:}" \
-				"${PWD##*/}"\
+			printf "%s]" \
 				"$( git rev-parse --abbrev-ref HEAD 2> /dev/null \
 					| sed -E -e "s/^/@/" -e "s@^:heads/@:@" )" \
 			| tr \  .
