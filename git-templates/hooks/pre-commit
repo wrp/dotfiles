@@ -60,12 +60,16 @@ indentation_is_okay() {
 	done
 }
 
+whitespace_ok() {
+	git diff-index --check --cached $against --
+}
+
 validate_whitespace() {
 	if test -n "$ALLOW_WHITESPACE_ERRORS"; then
 		return 0
 	fi
 
-	if ! indentation_is_okay; then
+	if ! { indentation_is_okay && whitespace_ok; } ; then
 		if git config apply.whitespace | grep -q error; then
 			func=die
 		else
