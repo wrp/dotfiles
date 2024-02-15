@@ -178,10 +178,10 @@ mon() { inotifywait -qmr "${@-.}" --exclude '^\./\.git'; }
 get_current_gcp_project() {
 	# This is faster than calling gcloud config get-value project,
 	# but very fragile
-	echo "searching $file to find current config" >&2
-	if awk '/^project =/ {print $3}' "$file" 2> /dev/null | grep .; then
-		return 0
-	fi
+	# echo "searching $file to find current config" >&2
+	# if awk '/^project =/ {print $3}' "$file" 2> /dev/null | grep .; then
+	# 	return 0
+	# fi
 	if ! gcloud config get-value project 2> /dev/null | grep . ; then
 		{
 		printf "\nNo currently configured project.  Please run"
