@@ -9,8 +9,8 @@ while read local_ref local_obj remote_ref remote_obj; do
 		exit 1
 	fi
 
-	if git show --pretty=format:%s --no-patch "$local_ref" | grep AMEND; then
-		echo "$0 is rejecting this push because $ref contains 'AMEND'"
+	if git show --pretty=format:%s --no-patch "$local_ref" | grep -w wip; then
+		echo "$0 is rejecting this push because $ref contains 'wip'"
 		exit 1
 	fi
 
