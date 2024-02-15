@@ -206,7 +206,8 @@ p() {
 	else
 		local CONFIGGED_PROJECT=$(get_current_gcp_project)
 		nl -s ') ' < "$cfg_file" \
-		| sed -e "/$CONFIGGED_PROJECT/s/^  / */" -e '/PROJECT_ID/d'
+		| sed -e "/$CONFIGGED_PROJECT/s/^  / */" -e '/PROJECT_ID/d' \
+		| less -E
 		read -p "#? " REPLY
 	fi
 
