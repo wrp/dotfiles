@@ -1,6 +1,6 @@
 #!/bin/sh
 
-warn() { printf "WARNING: %s${1:+\n}" "$@"; } >&2
+warn() { printf "WARNING(%7s): %s\n" "$@"; } >&2
 main() {
 	if # Succeed early on some common cases we do not want to check
 		test -n "$3" || # this is from an extant commit (-c, -C, or --amend)
@@ -50,10 +50,10 @@ get_ticket() {
 		if test "$(git config core.require-ticket)" = true \
 		|| test "$(git config branch.$branch.require-ticket)" = true
 		then
-			warn "setting ticket to None"
+			warn "$(git rev-parse --short HEAD)" "setting ticket to None"
 			ticket=None
 		else
-			warn "Not inserting ticket trailer"
+			warn "$(git rev-parse --short HEAD)" "not inserting ticket trailer"
 		fi
 	fi >&2
 }
