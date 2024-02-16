@@ -2,12 +2,10 @@
 
 warn() { printf "WARNING: %s${1:+\n}" "$@"; } >&2
 main() {
-	# Only check if the message was given by -m or -F
-	if test "$2" != message; then
-		return 0
-	fi
-	# Do not check if this is from an existing commit (-c, -C, or --amend)
-	if test -n "$3"; then
+	if # Succeed early on some common cases we do not want to check
+		test -n "$3" || # this is from an extant commit (-c, -C, or --amend)
+		test "$2" != message || # the message was given by -m or -F
+	false; then
 		return 0
 	fi
 
