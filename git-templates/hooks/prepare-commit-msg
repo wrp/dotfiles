@@ -47,14 +47,14 @@ get_ticket() {
 	ticket=$(get_ticket_from_extant_message "$1")
 
 	if test -z "$ticket"; then
+		msg="not inserting ticket trailer"
 		if test "$(git config core.require-ticket)" = true \
 		|| test "$(git config branch.$branch.require-ticket)" = true
 		then
-			warn "$(git rev-parse --short HEAD)" "setting ticket to None"
+			msg="setting ticket to None"
 			ticket=None
-		else
-			warn "$(git rev-parse --short HEAD)" "not inserting ticket trailer"
 		fi
+		warn "$(git rev-parse --short HEAD)" "$msg"
 	fi >&2
 }
 
