@@ -10,23 +10,23 @@ export prefix=$HOME/$(uname -m)/$(uname -s)
 
 unset command_not_found_handle
 
-export HISTCONTROL=ignoredups
-export IGNOREEOF=4
 export BASH_SILENCE_DEPRECATION_WARNING=1
-export VIRTUAL_ENV_DISABLE_PROMPT=1
-export HISTSIZE=1000
-export HISTFILE=$HOME/.bash-history-dir/$$
-export HISTFILESIZE=9999999999
-export HISTTIMEFORMAT='%H:%M:%S ' #%m/%d
-export EDITOR=vim
-export CONFIG_SITE=$HOME/.config/$USER/CONFIG_SITE
 export COLUMNS
-export LESS=FFiMQRSX#.95
-export GIT_PAGER=less
+export CONFIG_SITE=$HOME/.config/$USER/CONFIG_SITE
+export EDITOR=vim
 export GIT_CEILING_DIRECTORIES=$HOME
+export GIT_PAGER=less
 export GIT_TEMPLATE_DIR=$HOME/.git-template-links
 export GPG_TTY=$(tty)
+export HISTCONTROL=ignoredups
+export HISTFILE=$HOME/.bash-history-dir/$$
+export HISTFILESIZE=9999999999
+export HISTSIZE=1000
+export HISTTIMEFORMAT='%H:%M:%S ' #%m/%d
+export IGNOREEOF=4
+export LESS=FFiMQRSX#.95
 export PAGER=less
+export VIRTUAL_ENV_DISABLE_PROMPT=1
 # export CPATH=$HOME/$(uname -m)/$(uname -s)/include
 # export LDPATH=$HOME/$(uname -m)/$(uname -s)/lib
 
