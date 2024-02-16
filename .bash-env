@@ -13,6 +13,7 @@ unset command_not_found_handle
 export HISTCONTROL=ignoredups
 export IGNOREEOF=4
 export BASH_SILENCE_DEPRECATION_WARNING=1
+export VIRTUAL_ENV_DISABLE_PROMPT=1
 export HISTSIZE=1000
 export HISTFILE=$HOME/.bash-history-dir/$$
 export HISTFILESIZE=9999999999
