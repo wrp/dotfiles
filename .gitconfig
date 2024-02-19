@@ -36,9 +36,11 @@
 	# in the log, or use 't=ticket,style g l1' to show both
 	# the ticket adn the style trailer in the log, or 't= g l1'
 	# to show none.
-	l1 = !bash -c 'cd ${GIT_PREFIX:-.} && trailers=$(printf \"%s\" ${t-$(git config \
-		core.default-trailers)} | \
-		sed -E \"s/([^,]*)(\\$|,)/ [%<(${w:-11})% (trailers:key=\\1,separator=%x2C,valueonly)]/g\" \
+	l1 = !bash -c 'cd ${GIT_PREFIX:-.} && \
+		trailers=${t-$(git config core.default-trailers || :)} && \
+		width=${w-$(git config core.default-trailer-width || echo 11)} && \
+		trailer_fmt=$(printf \"%s\" "${trailers}" | \
+		sed -E \"s/([^,]*)(\\$|,)/ [%<(${width})%(trailers:key=\\1,separator=%x2C,valueonly)]/g\" \
 		) && \
 		git log \
 			--date=format:\"\" \
@@ -46,7 +48,7 @@
 				%C(green)%h\
 				%C(yellow)% ad\
 				%C(red)%<(12,trunc)% an\
-				%Creset${trailers}\
+				%Creset${trailer_fmt}\
 				%<($(($(tput cols) / 3)),trunc)% s \
 				%Cblue% D\
 				%Creset\
