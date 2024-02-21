@@ -1,6 +1,6 @@
 #!/bin/sh
 
-warn() { printf "WARNING(%7s): %s\n" "$@"; } >&2
+. "$(dirname $0)"/common-hook-functions
 main() {
 	if # Succeed early on some common cases we do not want to check
 		test -n "$3" || # this is from an extant commit (-c, -C, or --amend)
@@ -54,7 +54,7 @@ get_ticket() {
 			msg="setting ticket to None"
 			ticket=None
 		fi
-		warn "$(git rev-parse --short HEAD)" "$msg"
+		warn "($(git rev-parse --short HEAD)) $msg"
 	fi >&2
 }
 
