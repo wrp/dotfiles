@@ -83,6 +83,11 @@ validate_whitespace() {
 }
 
 run_local_hooks() {
+	# TODO: this should be common functionality in all the hooks
+	# need to factor this out to a library.  (indeed, the comment
+	# below about stdin indicates that I thought this was common
+	# functionality, since pre-commit does not care at all about
+	# stdin)
 	# If $GIT_DIR/local-hooks/ (a sibling of hooks/) exists, execute
 	# the same named script there.  Note that this does not attempt
 	# to duplicate stdin to the script, as that functionality has
