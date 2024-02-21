@@ -1,0 +1,19 @@
+
+
+run_local_hooks() {
+	# If $GIT_DIR/local-hooks/ (a sibling of hooks/) exists, execute
+	# the same named script there.  Note that this does not attempt
+	# to duplicate stdin to the script, as that functionality has
+	# not yet been necessary.
+	local hook_file="$(dirname $(dirname $0))/local-hooks/$(basename $0)"
+	local hook_dir="${hook_file}.d"
+	local hook
+
+	for hook in "$hook_file" "$hook_dir"/*; do
+		if test -x "$hook"; then
+			"$hook" "$@" || die "$hook failed"
+		elif test -e "$hook"; then
+			warn "$hook exists but is not executable"
+		fi
+	done
+}
