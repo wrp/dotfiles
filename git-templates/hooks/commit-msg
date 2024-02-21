@@ -14,10 +14,9 @@ check_subject() {
 	# Abort if the first line of the message is non-conforming
 	< "$1" >&2 awk '
 		NR == 1 && match($0, end) {
-			printf "Summary should not match %s. " \
-				"(Do not end with punctuation)\n", \
-				end
-			exit 1;
+			printf "Summary should not " \
+				"end with punctuation\n"
+			exit 1
 		}
 		NR == 1 && length > maxlen {
 			err = "Summary of commit message is too long"
