@@ -87,13 +87,14 @@ run_local_hooks() {
 	# the same named script there.  Note that this does not attempt
 	# to duplicate stdin to the script, as that functionality has
 	# not yet been necessary.
-	# TODO: perhaps instead look for a directory to execute multiple
-	# scripts from, eg allow chained scripts in
-	# $GIT_DIR/hooks/local-pre-commit/
-	local_hook="$(dirname $(dirname $0))/local-hooks/$(basename $0)"
-	if test -x "$local_hook"; then
-		"$local_hook" "$@" || die $local_hook failed
-	fi
+	local hook_file="$(dirname $(dirname $0))/local-hooks/$(basename $0)"
+	local hook_dir="${hook_file}.d"
+	local hook
+	for hook in "$hook_file" "$hook_dir"/*; do
+		if test -x "$hook"; then
+			"$hook" "$@" || die "$hook failed"
+		fi
+	done
 }
 
 main() {
