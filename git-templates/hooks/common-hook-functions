@@ -1,7 +1,7 @@
 
 die() {
 	printf '%s is rejecting this commit: ' "$0" # "$(basename $0)"
-	if test -n "$*"; then printf '%s\n' "$@"; fi
+	printf '%s\n' "$@"
 	printf 'Use --no-verify (-n) to ignore\n'
 	exit 1
 } >&2
