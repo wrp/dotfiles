@@ -5,14 +5,6 @@
 valid_chars='+:a-zA-Z0-9_./-'  # Characters that are acceptable in path names
 against=$(git rev-parse --verify HEAD 2>/dev/null || git hash-object -t tree /dev/null)
 
-die() {
-	printf 'Pre-commit hook is rejecting this commit: '
-	if test -n "$*"; then printf '%s\n' "$@"; fi
-	printf 'Use --no-verify (-n) to ignore\n'
-	exit 1
-} >&2
-
-warn() { printf 'WARNING from pre-commit hook: %s\n' "$@"; } >&2
 
 validate_pathnames() {
 	# Reject names with non standard characters
@@ -77,7 +69,7 @@ validate_whitespace() {
 		else
 			func=warn
 		fi
-		$func \
+		$func 'invalid whitespace' \
 			'To ignore, do one of:' \
 			'  * set "git config apply.whitespace warn"' \
 			'  * set ALLOW_WHITESPACE_ERRORS'

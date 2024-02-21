@@ -1,4 +1,12 @@
 
+die() {
+	printf '%s is rejecting this commit: ' "$0" # "$(basename $0)"
+	if test -n "$*"; then printf '%s\n' "$@"; fi
+	printf 'Use --no-verify (-n) to ignore\n'
+	exit 1
+} >&2
+
+warn() { printf 'WARNING from pre-commit hook: %s\n' "$@"; } >&2
 
 run_local_hooks() {
 	# If $GIT_DIR/local-hooks/ (a sibling of hooks/) exists, execute
