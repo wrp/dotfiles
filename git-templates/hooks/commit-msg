@@ -1,11 +1,10 @@
 #!/bin/sh
 
+. "$(dirname $0)"/common-hook-functions
+
 main() {
-	check_subject "$@" || return 1
-	local_hook="$(dirname $(dirname $0))/local-hooks/$(basename $0)"
-	if test -x "$local_hook"; then
-		"$local_hook" "$@" || die $local_hook failed
-	fi
+	check_subject "$@" || die 'bad commit subject'
+	run_local_hooks
 }
 
 
@@ -15,7 +14,7 @@ check_subject() {
 	# Abort if the first line of the message is non-conforming
 	< "$1" awk '
 		NR == 1 && match($0, end) {
-			printf "Summary cannot match %s. " \
+			printf "Summary should not match %s. " \
 				"(Do not end with punctuation)\n", \
 				end > "/dev/stderr"
 			exit 1;
@@ -30,7 +29,4 @@ check_subject() {
 }
 
 
-if ! main "$@"; then
-	echo "commit-msg hook is rejecting this commit" >&2
-	exit 1
-fi
+main "$@"
