@@ -34,8 +34,7 @@ if test $# = 0 && test -t 1 && ! test -t 0; then
 	fi
 fi
 
-TPANE=$(get-environ TMUX_PANE ${1?No pid given} | awk '{print $2}')
-
+TPANE=$(get-environ TMUX_PANE ${1?No pid given})
 test "${TPANE#%}" -ge 0 2> /dev/null && {
 	if test -n "$TMUX_PANE"; then # We are running in tmux
 		tmux switch-client -t $TPANE
