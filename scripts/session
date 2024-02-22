@@ -6,7 +6,7 @@ name=$(basename "${1-${PWD/$HOME/home}}" |tr '[:upper:].' '[:lower:]-')
 dir=$(realpath "${1-$PWD}") || exit
 
 if test -z "$TMUX"; then
-	tmux attach -t "$name" 2> /dev/null \
+	tmux attach 2> /dev/null \
 	|| tmux new-session -c "$dir" -s "$name"
 	exit
 fi
