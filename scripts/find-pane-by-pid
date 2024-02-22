@@ -8,7 +8,8 @@ die() { echo "$@" >&2; exit 1; }
 nl='
 '
 
-# reading from a pipe, outputting to tty, no argument given
+# reading from a pipe, outputting to tty, no argument given.  Try
+# to scrape pids from stdin.
 if test $# = 0 && test -t 1 && ! test -t 0; then
 	trap 'rm -f $TMP' 0
 	TMP=$(mktemp)
@@ -16,6 +17,7 @@ if test $# = 0 && test -t 1 && ! test -t 0; then
 	grep -woE '[0-9]{5,}' |
 		grep -v ^$PPID\$ | # Skip the shell used to invoke this script
 		sort -u | xargs get-environ TMUX_PANE  > $TMP
+
 	test -s $TMP || die "${ERRMSG-No processes from which to select}"
 	if test "$(wc -l < $TMP)" = 1; then
 		response=1
@@ -29,8 +31,7 @@ if test $# = 0 && test -t 1 && ! test -t 0; then
 		echo Jumping to pid $pid
 		set -- $pid
 	else
-		echo timeout >&2
-		exit
+		die timeout
 	fi
 fi
 
