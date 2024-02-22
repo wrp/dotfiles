@@ -13,6 +13,6 @@ if test -d /proc; then
 	done
 else
 	for pid; do
-		ps -Eww "$pid" | tr ' ' \\n | awk "\$1 == \"$var\"{print \$2}" FS==
+		ps eww "$pid" | tr ' ' \\n | awk "\$1 == \"$var\"{print \$2}" FS==
 	done
 fi | grep .
