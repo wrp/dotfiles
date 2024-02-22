@@ -17,16 +17,24 @@ clear_path() {
 append_path() { for x; do clear_path "$x"; PATH="$PATH${PATH:+:}$x"; done; }
 prepend_path() { for x; do clear_path "$x"; PATH="$x${PATH:+:}$PATH"; done; }
 prepend() {
+	# Add $2 to $1 (with delimiter $3) only if not already present
 	local name=${1}
 	local value=${2}
 	local delim=${3-:}
+
+	# Check if $2 is already in $1
+	case ":${!name}:" in
+	*=*) return 1;;
+	*:$value:*) return 0;;
+	esac
+
 	if test -z "$name" || test -z "$value"; then
 		return 1
 	fi
 	if test -z "${!name}"; then
 		delim=''
 	fi
-	eval ${name}="$value${delim}${!name}"
+	eval "${name}='$value${delim}${!name}'"
 }
 
 after_cmd() {
