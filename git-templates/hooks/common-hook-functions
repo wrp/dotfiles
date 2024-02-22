@@ -1,14 +1,16 @@
 
 die() {
-	header=FATAL warn "$@"
+	STFU= header=FATAL warn "$@"
 	printf 'Use --no-verify (-n) to ignore\n'
 	exit 1
 } >&2
 
 unset header
 warn() {
-	printf '%-8s: %s: ' "${header-WARNING}" "$0"
-	printf '%s\n' "$@"
+	if test -z "$STFU"; then
+		printf '%-8s: %s: ' "${header-WARNING}" "$0"
+		printf '%s\n' "$@"
+	fi
 } >&2
 
 _run_file() {
