@@ -1,13 +1,13 @@
 
 die() {
-	printf 'FATAL: %s: ' "$0"
-	printf '%s\n' "$@"
+	header=FATAL warn "$@"
 	printf 'Use --no-verify (-n) to ignore\n'
 	exit 1
 } >&2
 
+unset header
 warn() {
-	printf 'WARNING: %s: ' "$0"
+	printf '%-8s: %s: ' "${header-WARNING}" "$0"
 	printf '%s\n' "$@"
 } >&2
 
