@@ -1,9 +1,7 @@
 #!/bin/sh
 
-# Attach/switch to the pane running the pid given as $1
-# This is convenient when vim reports that another process has a file open, for example.
-
-# If data is passed in and no argument is given, read anything that looks like
+# Attach/switch to the pane running the pid given as $1.
+# If no argument is given and stdin is not a tty, read anything that looks like
 # a pid and present it to the user via select
 
 die() { echo "$@" >&2; exit 1; }
@@ -36,7 +34,6 @@ if test $# = 0 && test -t 1 && ! test -t 0; then
 	fi
 fi
 
-set -x
 TPANE=$(get-environ TMUX_PANE ${1?No pid given} | awk '{print $2}')
 
 test "${TPANE#%}" -ge 0 2> /dev/null && {
