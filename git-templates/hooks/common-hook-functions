@@ -13,8 +13,13 @@ warn() {
 
 _run_file() {
 	local hook=$1
+	local index_hash
 	if test -x "$hook"; then
+		index_hash=$(git ls-files -s | md5sum -)
 		"$hook" "$@" || die "$hook failed"
+		if test "$(git ls-files -s | md5sum -)" != "$index_hash"; then
+			die "$hook modified the index"
+		fi
 	elif test -e "$hook"; then
 		warn "$hook exists but is not executable"
 	fi
