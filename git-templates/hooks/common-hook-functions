@@ -11,6 +11,15 @@ warn() {
 	printf '%s\n' "$@"
 } >&2
 
+_run_file() {
+	local hook=$1
+	if test -x "$hook"; then
+		"$hook" "$@" || die "$hook failed"
+	elif test -e "$hook"; then
+		warn "$hook exists but is not executable"
+	fi
+}
+
 run_local_hooks() {
 	# If $GIT_DIR/local-hooks/ exists, execute scripts there.
 	# Note that this does not attempt to duplicate stdin to the
@@ -20,10 +29,6 @@ run_local_hooks() {
 	local hook
 
 	for hook in "$hook_file" "$hook_dir"/*; do
-		if test -x "$hook"; then
-			"$hook" "$@" || die "$hook failed"
-		elif test -e "$hook"; then
-			warn "$hook exists but is not executable"
-		fi
+		_run_file "$hook"
 	done
 }
