@@ -18,9 +18,8 @@ git_recurse() {
 	| ${GIT_PAGER-${PAGER-more}}
 }
 git_root() {
-	# TODO: make this work inside the .git dir of a working repo
 	local root
-	root=$(command git rev-parse --show-toplevel) \
+	root=$(command git rev-parse --absolute-git-dir)/.. \
 	&& root=$(cd "$root" && pwd 2> /dev/null)/ \
 	&& printf '%s\n' "${root}"
 }
