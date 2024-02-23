@@ -16,6 +16,7 @@ warn() {
 _run_file() {
 	local hook=$1
 	local index_hash
+	shift
 	if test -x "$hook"; then
 		index_hash=$(git ls-files -s | md5sum -)
 		"$hook" "$@" || die "$hook failed"
@@ -36,6 +37,6 @@ run_local_hooks() {
 	local hook
 
 	for hook in "$hook_file" "$hook_dir"/*; do
-		_run_file "$hook"
+		_run_file "$hook" "$@"
 	done
 }
