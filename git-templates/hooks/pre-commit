@@ -79,7 +79,7 @@ validate_whitespace() {
 main() {
 	validate_pathnames "$@"
 	validate_whitespace "$@"
-	run_local_hooks
+	run_local_hooks "$@"
 }
 
 main "$@"
