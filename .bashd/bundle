@@ -8,7 +8,7 @@ bundle() {
 	base=$(command git config core.name ||
 		awk 'NR==1 && $1 != "Unnamed" {print $1}' \
 			"$gitdir/description" 2> /dev/null | grep . ||
-		basename $(command git rev-parse --show-toplevel)
+		basename "$(command git rev-parse --show-toplevel)"
 	)
 	test -n "$base" || return
 	revs="${@-HEAD}"
