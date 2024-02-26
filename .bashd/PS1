@@ -28,7 +28,7 @@ insert_text() { test -n "$*" && PS1+=$(printf '\\\n%s' "$*"); }
 
 set_prompt() {
 	check_previous
-	insert_text "${PS1_PREFIX}"
+	insert_text "${PS1_PREFIX+$PS1_PREFIX:}"
 	insert_text '\D{%T}'  # %T is passed to strftime for time
 	test -z "$TMUX" && insert_text "${__RED} NO TMUX "
 	tput cols > /dev/null
