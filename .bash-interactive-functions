@@ -283,34 +283,6 @@ EOF
 fi
 rsync() { command rsync -e 'ssh -o LogLevel=error' "$@"; }
 s() { search-bash-history "$@"; }
-setup_vars() {
-	# Assign some variables for the shell
-	# git name-rev can be dog slow, so this is (mostly?) unused
-	local b
-	if b=$(V=0 git rev-parse --abbrev-ref HEAD 2> /dev/null ); then
-		if test "$branch" != "$b"; then
-			branch=$b
-			if test -n "$V"; then echo "Setting branch=$branch"; fi
-		else
-			if test -n "$V"; then echo "Variable branch unchanged: $branch"; fi
-		fi
-	else
-		unset branch
-		if test -n "$V"; then echo 'Unsetting branch'; fi
-	fi
-	local r
-	if { r=$(V=0 git config branch.$(V=0 git name-rev --name-only HEAD).remote); } 2> /dev/null; then
-		if test "$remote" != "$r"; then
-			remote=$r
-			if test -n "$V"; then echo "Setting remote=$remote"; fi
-		else
-			if test -n "$V"; then echo "Variable remote unchanged: $remote"; fi
-		fi
-	else
-		unset remote
-		if test "$V" = 1; then echo 'Unsetting remote'; fi
-	fi
-}
 ssh() { command ssh -o LogLevel=error "$@"; }
 
 
