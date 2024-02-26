@@ -1,5 +1,7 @@
 #!/bin/sh
 
+. "$(dirname $0)"/common-hook-functions
+
 get_remote() {
 	remote=$( {
 		git rev-parse --symbolic-full-name --abbrev-ref @{u} 2> /dev/null \
