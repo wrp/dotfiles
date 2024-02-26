@@ -2,7 +2,7 @@
 
 test "$1" = . && set --
 
-name=$(basename "${1-${PWD/$HOME/home}}" |tr '[:upper:].' '[:lower:]-')
+name=$(basename "${1-${PWD}}" | sed -e 's@$HOME@home@' | tr '[:upper:].' '[:lower:]-')
 dir=$(realpath "${1-$PWD}") || exit
 
 if test -z "$TMUX"; then
