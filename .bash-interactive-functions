@@ -311,7 +311,6 @@ setup_vars() {
 		if test "$V" = 1; then echo 'Unsetting remote'; fi
 	fi
 }
-sf() { V=1 search-bash-history "$@"; }
 ssh() { command ssh -o LogLevel=error "$@"; }
 
 
