@@ -56,6 +56,9 @@ if test -n "$TMUX"; then
 	| sed -e "s|@@EMAIL@@|$EMAIL|g" \
 	| tmux loadb -
 	exit
+else
+	echo This loads a tmux buffer.  Do not run outside of tmux >&2
+	exit 1
 fi
 ## UNIQUE_STRING
 
