@@ -6,5 +6,5 @@
 .tmux.conf.primary
 vim
 setup
-blacklist
+denylist
 git-templates
