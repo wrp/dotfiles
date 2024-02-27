@@ -115,9 +115,9 @@ main() {
 	setup_git
 	setup_local_files
 
-	ln -s "$base/scripts" scripts
-	mkdir "$HOME"/.git-template-links
-	(cd "$HOME"/.git-template-links; ln -s "$base"/git-templates/hooks)
+	ln -sf "$base/scripts" scripts
+	mkdir -p "$HOME"/.git-template-links
+	(cd "$HOME"/.git-template-links; ln -sf "$base"/git-templates/hooks)
 	(cd "$HOME"/.config/"$USER"
 	curl -O https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
 	)
