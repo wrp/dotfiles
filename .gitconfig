@@ -98,7 +98,7 @@
 [tag]
 	gpgSign = true
 [commit]
-	gpgSign = true
+	gpgSign = false
 [include]
 	path = ~/.gitconfig-local
 [merge]
