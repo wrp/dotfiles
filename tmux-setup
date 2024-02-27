@@ -62,6 +62,8 @@ else
 fi
 ## UNIQUE_STRING
 
+ln -s .bash_history $HOME/.bash-history
+
 # .bashrc
 grep -q '###$%&^@%$&###' $HOME/.bashrc ||
 cat << '-------------- EOF --------------' >> $HOME/.bashrc
@@ -102,9 +104,6 @@ complete -r gcloud 2> /dev/null
 complete -r bq 2> /dev/null
 read_file "$HOME"/.bash-local
 -------------- EOF --------------
-
-ln -s .bash_history $HOME/.bash-history
-
 
 # .bash_profile
 cat << '-------------- EOF --------------' > $HOME/.bash_profile
