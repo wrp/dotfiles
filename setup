@@ -70,10 +70,13 @@ create_file() {
 	elif diff "$1" - | grep .; then
 		warn "$1 already exists with above diffs from expected; not modifying"
 	fi
+	if test -n "$V"; then ( set -x; cat "$1" ) fi
 }
 
 setup_git() {
+	local verbose
 	if test -z "$UNAME"; then
+		verbose=1
 		UNAME=$(id -F "$USER")
 	fi
 	for n in EMAIL UNAME; do
@@ -85,7 +88,7 @@ setup_git() {
 	done
 
 	# Create files that should be local to this machine
-	create_file "$HOME/.gitconfig-local" <<- EOF
+	( V=$verbose create_file "$HOME/.gitconfig-local" ) <<- EOF
 	[user]
 		email = ${EMAIL?}
 		name = ${UNAME?}
