@@ -15,7 +15,7 @@ if (return 0 2>/dev/null); then
 fi
 
 available=$(
-	sed -e '1,/UNI[Q]UE_STRING/d' -e '/^# \./!d' -e 's/^# /    /' "$0"
+	sed -e '1,/__[D]ATA__/d' -e '/^# \./!d' -e 's/^# /    /' "$0"
 )
 
 unset text_only
@@ -55,12 +55,17 @@ if test -n "$TMUX"; then
 	| expand \
 	| sed -e "s|@@EMAIL@@|$EMAIL|g" \
 	| tmux loadb -
-	exit
 else
 	echo This loads a tmux buffer.  Do not run outside of tmux >&2
 	exit 1
 fi
-## UNIQUE_STRING
+
+exit
+
+# Everything below here is text that gets copied verbatim into the
+# tmux buffer
+
+## __DATA__
 
 ln -s .bash_history $HOME/.bash-history
 
