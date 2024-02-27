@@ -73,6 +73,9 @@ create_file() {
 }
 
 setup_git() {
+	if test -z "$UNAME"; then
+		UNAME=$(id -F "$USER")
+	fi
 	for n in EMAIL UNAME; do
 		eval v=\$$n;
 		if test -z "$v"; then
