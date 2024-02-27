@@ -15,7 +15,7 @@ if (return 0 2>/dev/null); then
 fi
 
 available=$(
-	sed -e '1,/UNI[Q]UE_STRING/d' -e '/^# \./!d' -e 's/^# /    /' $0
+	sed -e '1,/UNI[Q]UE_STRING/d' -e '/^# \./!d' -e 's/^# /    /' "$0"
 )
 
 unset text_only
@@ -36,7 +36,7 @@ esac
 
 if test -n "$TMUX"; then
 	for x; do
-		sed -n -E "/^# [.]?${x}$/,/^-* EOF -*/p" $0 \
+		sed -n -E "/^# [.]?${x}$/,/^-* EOF -*/p" "$0" \
 		| if test -n "$text_only"; then
 			sed -e 2d -e '$d'
 		else
