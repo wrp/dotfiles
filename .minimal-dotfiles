@@ -38,7 +38,7 @@ if test -n "$TMUX"; then
 	for x; do
 		sed -n -E "/^# [.]?${x}$/,/^-* EOF -*/p" "$0" \
 		| if test -n "$text_only"; then
-			sed -e 2d -e '$d'
+			sed -e '1,/^cat/d' -e '$d'
 		else
 			cat;
 		fi \
