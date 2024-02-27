@@ -67,8 +67,8 @@ create_file() {
 	mkdir -p "$(dirname "$1")" || return 1
 	if ! test -f "$1"; then
 		cat > "$1"
-	else
-		die "$1 already exists"
+	elif diff "$1" - | grep .; then
+		warn "$1 already exists with above diffs from expected; not modifying"
 	fi
 }
 
