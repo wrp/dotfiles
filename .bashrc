@@ -30,9 +30,11 @@ unset_all_functions() {
 unset_all_functions
 unset PS1    # Set PS1 from ~.bashd/PS1
 read_file() { local f; for f; do if test -f "$f"; then . "$f"; fi; done; }
+read_file "$HOME"/.bash-functions
 read_file "$HOME"/.bash-local
+read_file "$HOME"/.bash-interactive-functions
+read_file "$HOME"/.bash-completions
 read_file "$HOME"/.bashd/*
-read_file "$HOME"/.bash-functions "$HOME"/.bash-interactive-functions "$HOME"/.bash-completions
 read_file "$HOME"/.bash-env
 
 make_hist_file "$HOME"/.bash-history-dir/.bash-history-$$
