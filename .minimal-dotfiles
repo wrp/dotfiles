@@ -1,5 +1,5 @@
 #!/bin/sh
-# usage: @@name@@ [arg ...]
+# usage: @@name@@ [-h|--help|-?|-c] [arg ...]
 #
 # Execute this file to load up the tmux paste buffer with
 # commands to populate dotfiles.  Use `-c` to omit the commands
@@ -20,7 +20,7 @@ available=$(
 
 unset text_only
 case "$1" in
--h)
+-h|--help|-\?)
 	sed -e 1d -e "s|@@name@@|$(basename $0)|" -e '/^#/!q' -e 's/# *//' $0
 	printf "Available files:\n%s\n" "$available"
 	exit
