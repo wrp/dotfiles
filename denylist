@@ -1,10 +1,10 @@
 .
 ..
 .git
-.minimal-dotfiles
 .gitignore_global
 .tmux.conf.primary
 vim
 setup
+tmux-setup
 denylist
 git-templates
