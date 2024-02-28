@@ -72,7 +72,7 @@ exit
 # .bashrc
 grep -q '###$%&^@%$&###' $HOME/.bashrc ||
 cat << '-------------- EOF --------------' >> $HOME/.bashrc
-#################$%&^@%$&#######################################################
+#################$%&^@%$&########## content supplied from tmux-setup script#####
 read_file() { for f; do test -f "$f" && . "$f"; done; }
 unalias -a
 shopt -s histappend
