@@ -72,6 +72,24 @@ exit
 
 ## __DATA__
 
+
+# .gitignore
+cat << '-------------- EOF --------------' > $HOME/.hushlogin
+.kube/http-cache
+.kube/cache
+.kube/versions.lock
+-------------- EOF --------------
+
+
+# .commands
+cd "$HOME" &&
+ln -s .bash_history $HOME/.bash-history &&
+git init &&
+git add .bashrc .gitignore .kube &&
+git commit -m 'Save initial config'
+: << '-------------- EOF --------------'
+-------------- EOF --------------
+
 # .bashrc
 grep -q '###$%&^@%$&###' $HOME/.bashrc ||
 cat << '-------------- EOF --------------' >> $HOME/.bashrc
