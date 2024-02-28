@@ -3,7 +3,9 @@
 #
 # Execute this file to load up the tmux paste buffer with
 # commands to populate dotfiles.  Use `-c` to omit the commands
-# and just load the content into the paste buffer.
+# and just load the content into the paste buffer.  (This is not
+# intended to be precise, and some commands leave a bit of cruft
+# that may need to be edited.)
 # Unset TMUX if you really want to just execute the script.
 # Pass args such as bashrc or bash_profile to load just one file.
 
