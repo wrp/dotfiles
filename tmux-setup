@@ -63,7 +63,8 @@ fi
 exit
 
 # Everything below here is text that gets copied verbatim into the
-# tmux buffer
+# tmux buffer, including the commands.  The idea is that you can get
+# a shell on a new box and setup by pasting this buffer.
 
 ## __DATA__
 
