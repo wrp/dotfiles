@@ -219,16 +219,10 @@ cat << '-------------- EOF --------------' >> $HOME/.gitconfig
 	exec = "!exec "
 [core]
 	editor = vim
-[push]
-	default = current
-[pager]
-	status = true
 [color "branch"]
 	meta = red green bold
 [color]
 	branch = true
-[pull]
-	rebase = true
 -------------- EOF --------------
 
 
