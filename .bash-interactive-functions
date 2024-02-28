@@ -212,9 +212,9 @@ p() {
 	fi
 
 	if test "$REPLY" -ge 0 2> /dev/null; then
-		line=$(awk 'NR==c{print $0}' c="$REPLY" "$cfg_file");
+		line=$(awk 'NR>1 && NR==c{print $0}' c="$REPLY" "$cfg_file");
 	else
-		line=$(awk 'tolower($0) ~ tolower(c) {print $0}' c="$REPLY" "$cfg_file");
+		line=$(awk 'NR>1 && tolower($0) ~ tolower(c) {print $0}' c="$REPLY" "$cfg_file");
 	fi
 
 	test -z "$line" && return 1
