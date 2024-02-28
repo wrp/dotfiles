@@ -10,6 +10,7 @@
 # Use -h for help and a list of available files.
 
 if (return 0 2>/dev/null); then
+	# I used to source this file, and old habits die hard.
 	echo 'Do not source this.  Just execute it!' >&2
 	return 1
 fi
