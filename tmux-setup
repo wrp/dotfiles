@@ -68,8 +68,6 @@ exit
 
 ## __DATA__
 
-ln -s .bash_history $HOME/.bash-history
-
 # .bashrc
 grep -q '###$%&^@%$&###' $HOME/.bashrc ||
 cat << '-------------- EOF --------------' >> $HOME/.bashrc
