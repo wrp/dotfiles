@@ -44,20 +44,17 @@ esac
 
 
 for x; do
-	sed -n -E "/^# [.]?${x}$/,/^-* EOF -*/p" "$0" \
+	name=.${x#.}
+	sed -n -E "/^# ${name}$/,/^-* EOF -*/p" "$0" \
 	| if test -n "$text_only"; then
 		sed -e '1,/^cat/d' -e '$d'
 	else
 		cat;
 	fi \
 	| if grep .; then
-		if test -n "$text_only"; then
-			echo "copied text of $x to clipboard" >&2
-		else
-			echo "copied command to populate $x to clipboard" >&2
-		fi
+		echo "copied $name to clipboard" >&2
 	else
-		echo "No text copied to clipboard for $x!" >&2
+		echo "No text copied to clipboard for $name!" >&2
 	fi
 done \
 | expand \
