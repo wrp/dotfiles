@@ -227,7 +227,7 @@ p() {
 
 	file=${base}_${CLOUDSDK_ACTIVE_CONFIG_NAME}
 	if ! test -f "$file"; then
-		gcloud config configurations create "$CLOUDSDK_ACTIVE_CONFIG_NAME"
+		gcloud config configurations create "$CLOUDSDK_ACTIVE_CONFIG_NAME" || return 1
 	fi
 	gcloud config set project "$PROJECT" || return 1
 	echo "PROJECT=$PROJECT ($PROJECT_NAME)"
