@@ -17,6 +17,11 @@ if (return 0 2>/dev/null); then
 	return 1
 fi
 
+if test -z "$TMUX"; then
+	echo 'This loads a tmux buffer.  Do not run outside of tmux!!' >&2
+	exit 1
+fi
+
 available=$(
 	sed -e '1,/__[D]ATA__/d' -e '/^# \./!d' -e 's/^# /    /' "$0"
 )
@@ -37,31 +42,26 @@ case "$1" in
 esac
 
 
-if test -n "$TMUX"; then
-	for x; do
-		sed -n -E "/^# [.]?${x}$/,/^-* EOF -*/p" "$0" \
-		| if test -n "$text_only"; then
-			sed -e '1,/^cat/d' -e '$d'
+for x; do
+	sed -n -E "/^# [.]?${x}$/,/^-* EOF -*/p" "$0" \
+	| if test -n "$text_only"; then
+		sed -e '1,/^cat/d' -e '$d'
+	else
+		cat;
+	fi \
+	| if grep .; then
+		if test -n "$text_only"; then
+			echo "copied text of $x to clipboard" >&2
 		else
-			cat;
-		fi \
-		| if grep .; then
-			if test -n "$text_only"; then
-				echo "copied text of $x to clipboard" >&2
-			else
-				echo "copied command to populate $x to clipboard" >&2
-			fi
-		else
-			echo "No text copied to clipboard for $x!" >&2
+			echo "copied command to populate $x to clipboard" >&2
 		fi
-	done \
-	| expand \
-	| sed -e "s|@@EMAIL@@|$EMAIL|g" \
-	| tmux loadb -
-else
-	echo This loads a tmux buffer.  Do not run outside of tmux >&2
-	exit 1
-fi
+	else
+		echo "No text copied to clipboard for $x!" >&2
+	fi
+done \
+| expand \
+| sed -e "s|@@EMAIL@@|$EMAIL|g" \
+| tmux loadb -
 
 exit
 
