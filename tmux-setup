@@ -151,8 +151,8 @@ set keymap vi
 # .tmux.conf
 cat << '-------------- EOF --------------' > $HOME/.tmux.conf
 unbind C-b
-set -g prefix C-k
-bind C-k send-prefix
+set -g prefix C-l
+bind C-l send-prefix
 set -g window-status-current-style fg=yellow,bold,bg=black
 set -g window-status-current-format '#{?automatic-rename,#{pane_title},#{window_name}}'
 set -g window-status-format '#{?automatic-rename,#{pane_title},#{window_name}}'
