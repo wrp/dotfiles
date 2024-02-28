@@ -81,6 +81,36 @@ cat << '-------------- EOF --------------' > $HOME/.hushlogin
 -------------- EOF --------------
 
 
+# .gitconfig
+EMAIL=@@EMAIL@@
+cat << EOF > $HOME/.gitconfig &&
+[user]
+	email = ${EMAIL:?}
+	name = ${USER}
+EOF
+cat << '-------------- EOF --------------' >> $HOME/.gitconfig
+[alias]
+	ap = add --patch
+	csa = commit -a -m'Sanity Check'
+	ciam = commit -a -m
+	ci = commit
+	co = checkout
+	dc = diff --cached
+	l1 = log --format=format:'%Cgreen%h%Cred %<(10,trunc)%an%Creset %<(60,trunc)%s %Cblue%D%Creset'
+	l1h = l1 -n 10
+	s = status -uno
+	sp = stash pop
+	ss = stash save
+	exec = "!exec "
+[core]
+	editor = vim
+[color "branch"]
+	meta = red green bold
+[color]
+	branch = true
+-------------- EOF --------------
+
+
 # .commands
 cd "$HOME" &&
 ln -s .bash_history $HOME/.bash-history &&
@@ -193,36 +223,6 @@ bind-key '$' command-prompt "rename-session '%%'"
 # .editrc
 cat << '-------------- EOF --------------' > $HOME/.editrc
 bind -v
--------------- EOF --------------
-
-
-# .gitconfig
-EMAIL=@@EMAIL@@
-cat << EOF > $HOME/.gitconfig &&
-[user]
-        email = ${EMAIL:?}
-        name = ${USER}
-EOF
-cat << '-------------- EOF --------------' >> $HOME/.gitconfig
-[alias]
-	ap = add --patch
-	csa = commit -a -m'Sanity Check'
-	ciam = commit -a -m
-	ci = commit
-	co = checkout
-	dc = diff --cached
-	l1 = log --format=format:'%Cgreen%h%Cred %<(10,trunc)%an%Creset %<(60,trunc)%s %Cblue%D%Creset'
-	l1h = l1 -n 10
-	s = status -uno
-	sp = stash pop
-	ss = stash save
-	exec = "!exec "
-[core]
-	editor = vim
-[color "branch"]
-	meta = red green bold
-[color]
-	branch = true
 -------------- EOF --------------
 
 
