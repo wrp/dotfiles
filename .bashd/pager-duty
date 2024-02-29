@@ -2,6 +2,9 @@
 
 # Grab the timestamp and summary of the most recent pager duty incidents
 pd() {
+	# honors:
+	#  limit[25]         number of incidents to report
+	#  title_match['']   filter on contents of the title
 	local base url jqfilter
 
 	base=https://api.pagerduty.com
