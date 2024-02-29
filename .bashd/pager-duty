@@ -5,7 +5,7 @@ pd() {
 	# honors:
 	#  limit[25]         number of incidents to report
 	#  title_match['']   filter on contents of the title
-	local base url jqfilter
+	local base url jqfilter service_filter service
 
 	base=https://api.pagerduty.com
 
@@ -13,9 +13,13 @@ pd() {
 		url=$base/incidents/$1
 		jqfilter='.incident'
 	else
-		url="$( tr '\n' '&' <<- EOF | tr -d '[[:space:]]'
+		for service in ${PD_SERVICE:-}; do
+			service_filter+="${service_filter:+&}service_ids[]=$service"
+		done
+		url="$( tr '\n' '&' <<- EOF | tr -d '[:space:]'
 			$base/incidents?
 			time_zone=UTC
+			$service_filter
 			limit=${limit-25}
 			sort_by=created_at:desc
 			EOF
@@ -24,9 +28,6 @@ pd() {
 	fi
 	if test -n "$title_match"; then
 		jqfilter="$jqfilter | select( .title | contains(\"$title_match\") )"
-	fi
-	if test -n "$PD_SERVICE"; then
-		jqfilter+="| select (.service.id == \"$PD_SERVICE\")"
 	fi
 	jqfilter+='| (.created_at, .summary)'
 
