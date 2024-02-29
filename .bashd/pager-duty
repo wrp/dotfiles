@@ -23,7 +23,7 @@ pd() {
 		jqfilter='.incidents[]'
 	fi
 	if test -n "$title_match"; then
-		jqfilter="$jqfilter | select( .title | contains(\"$title_match\"))"
+		jqfilter="$jqfilter | select( .title | contains(\"$title_match\") )"
 	fi
 	jqfilter="$jqfilter | (.created_at, .summary)"
 
