@@ -29,7 +29,7 @@ pd() {
 	if test -n "$title_match"; then
 		jqfilter="$jqfilter | select( .title | contains(\"$title_match\") )"
 	fi
-	jqfilter+='| [.created_at, .summary] | @tsv'
+	jqfilter+='| [.created_at, .service.id, .summary] | @tsv'
 
 	if test -t 0; then
 		curl -X GET \
