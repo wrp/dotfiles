@@ -26,6 +26,9 @@ pd() {
 		jqfilter="$jqfilter | select( .title | contains(\"$title_match\") )"
 	fi
 	jqfilter="$jqfilter | (.created_at, .summary)"
+	if test -n "$PD_SERVICE"; then
+		jqfilter+="| select (.service.id == \"$PD_SERVICE\")"
+	fi
 
 	if test -t 0; then
 		curl -X GET \
