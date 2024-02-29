@@ -29,7 +29,7 @@ pd() {
 	if test -n "$title_match"; then
 		jqfilter="$jqfilter | select( .title | contains(\"$title_match\") )"
 	fi
-	jqfilter+='| (.created_at, .summary)'
+	jqfilter+='| [.created_at, .summary] | @tsv'
 
 	if test -t 0; then
 		curl -X GET \
@@ -40,6 +40,5 @@ pd() {
 		cat
 	fi \
 	| jq -r "$jqfilter" \
-	| awk '{printf("%s%s", $0, match($1, "^202[0-9]-") ? ": " : "\n")}' \
 	| ${PAGER-more}
 }
