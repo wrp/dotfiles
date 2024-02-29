@@ -31,7 +31,7 @@ pd() {
 		curl -X GET \
 			--header 'Accept: application/vnd.pagerduty+json;version=2' \
 			--header "Authorization: Token token=${PD_TOKEN?}" \
-			$url
+			"$url"
 	else
 		cat
 	fi \
