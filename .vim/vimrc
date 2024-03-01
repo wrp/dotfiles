@@ -104,6 +104,7 @@ au BufNewFile *.zig r ~/.vim/skeleton.zig
 
 set includeexpr=substitute(v:fname,'^//','','')
 
+let g:markdown_recommended_style=0
 filetype plugin on
 
 highlight Comment ctermfg=darkcyan
