@@ -16,11 +16,12 @@ validate_pathnames() {
 }
 
 unwanted() {
-	# Return tabs or spaces; whichever is unwanted for the name in $1
-	case $1 in
-	*.py) echo tabs;;
-	*) echo spaces;;
-	esac
+	# Return "tabs" or "spaces"; whichever is unwanted for the file named in $1
+	if file "$1" | grep -i python; then
+		echo tabs
+	else
+		echo spaces
+	fi
 }
 
 indentation_is_okay() {
