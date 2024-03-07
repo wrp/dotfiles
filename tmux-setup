@@ -112,7 +112,9 @@ cat << '-------------- EOF --------------' >> $HOME/.gitconfig
 cd "$HOME" &&
 ln -s .bash_history $HOME/.bash-history &&
 git init &&
-git add .bashrc .gitignore .kube &&
+if test -f .bashrc   ; then git add .bashrc; fi &&
+if test -f .gitignore; then git add .gitignore; fi &&
+if test -d .kube     ; then git add .kube; fi &&
 git commit -m 'Save initial config'
 : << '-------------- EOF --------------'
 -------------- EOF --------------
