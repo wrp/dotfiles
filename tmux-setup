@@ -71,7 +71,7 @@ exit
 
 
 # .gitignore
-cat << '-------------- EOF --------------' > $HOME/.hushlogin
+cat << '-------------- EOF --------------' > $HOME/.gitignore
 .kube/http-cache
 .kube/cache
 .kube/versions.lock
