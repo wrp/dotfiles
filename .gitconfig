@@ -77,6 +77,8 @@
 	# whitespace = tab-in-indent
 	whitespace = indent-with-non-tab
 	editor = vim
+	default-trailers = type
+	default-trailer-width = 3
 [push]
 	default = upstream
 	autoSetupRemote = true
