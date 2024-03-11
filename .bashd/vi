@@ -1,3 +1,19 @@
+_check_if_ignored_by_git() {
+	for x; do
+		local pause=no
+		if git check-ignore -q "$x"; then
+			pause=yes
+			echo "WARNING: $x is ignored by git" >&2
+		fi
+		if test "$pause" = yes; then
+			echo "Press enter to continue, q<enter> to abort" >&2
+			read k
+			if test "$k" = q; then
+				return 1
+			fi
+		fi
+	done
+}
 
 vi() {
 	: set h for depth, or f for filter
@@ -39,5 +55,6 @@ vi() {
 		fi
 		exec < /dev/tty
 	fi
+	_check_if_ignored_by_git "$@" || return 1
 	vim "$@"    # .vimrc sets tmux titles
 }
