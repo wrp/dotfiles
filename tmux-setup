@@ -139,7 +139,7 @@ set -o vi
 set -o physical   # make pwd do the right thing w.r.t. symbolic links
 PS1="\[$(tput rev)"'$( r=$(( $? != 0 )); tput setaf $((2 - r));
 	tput setab $(( r * 7 ));
-	)\]\D{%T}'"\[$( tput setaf 2)$(tput sgr0)\]"' $$ \h\$ '
+	)\]\D{%T}'"\[$( tput setaf 2)$(tput sgr0)\]"'-$$-\h\$ '
 
 c() { clear; }
 g() { git "$@"; }
