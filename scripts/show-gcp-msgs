@@ -1,0 +1,3 @@
+#!/bin/sh
+
+jq -rc '.[] | [ .timestamp, .jsonPayload.msg] | @tsv' "$@" | ${PAGER-more}
