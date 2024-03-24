@@ -162,7 +162,7 @@ _j_complete() {
 complete -o default -F _j_complete j
 k() { kubectl "$@"; }
 kx() { kubectx "$@"; }
-lb() { tr \\n \ | perl -pe 's/\s*$//' | tmux loadb - ; }
+lb() { tr \\n ${1:- } | perl -pe 's/\s*$//' | tmux loadb - ; }
 less() { if test -t 1; then command less "$@"; else cat "$@"; fi; }
 ls() { command ls -GF "$@"; }
 
