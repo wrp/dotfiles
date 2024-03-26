@@ -17,7 +17,7 @@ validate_pathnames() {
 
 unwanted() {
 	# Return "tab" or "space"; whichever is unwanted for the file named in $1
-	if file "$1" | grep -i python; then
+	if file "$1" | grep -qi python; then
 		echo tab
 	else
 		echo space
@@ -38,7 +38,7 @@ indentation_is_okay() {
 	local tab=$(printf '\t')
 	local pattern
 	git status --porcelain | grep '^M' | while read m path; do
-		bad_character=$(unwanted $path)
+		bad_character=$(unwanted "$path")
 		case $bad_character in
 		space) pattern="^[+]${tab}*[ ]";;
 		tab) pattern="^[+][ ]*${tab}";;
