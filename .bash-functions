@@ -102,18 +102,18 @@ debug_trap() {
 	tput sgr0
 } >&2
 
+#1698377918 (Fri Oct 27 03:38:38 GMT by pid:1121 in /Users/wrp/3rd-party/tmux) ok
 report_cmd_status() {
 	# Clean up the most recent command in HISTFILE and append it to global .bash-history.
 	# Note that the FAILED string is used in scripts/search-bash-history
 	test -f "$1" && tac "$1" | STATUS="$2" perl -MPOSIX -pe '
 		if( /^#[0-9]{10}$/ ) { # abort after adding the timestamp.
-			s@([0-9]{10})@sprintf "%s (%s by pid:%d in %s%s%s) %s",
+			s@([0-9]{10})@sprintf "%s (%s by pid:%d in %s:%s) %s",
 				$1,
 				POSIX::strftime("%a %b %d %H:%M:%S GMT", gmtime $1),
 				'"$$"',
+				"'"$(hostname)"'",
 				"'"${PWD}"'",
-				"'"${PROJECT:+:}${PROJECT}"'",
-				"'"${DOCKER:+ on }$DOCKER"'",
 				$ENV{STATUS} > 0 ? "FAILED" : "ok",
 				@ge;
 			print;  # Since about to skip auto print with -p
