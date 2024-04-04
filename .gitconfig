@@ -47,7 +47,8 @@
 			--format=tformat:\"$(printf \"%s\" \"\
 				%C(green)%h\
 				%C(yellow)% ad\
-				%C(red)%<(12,trunc)% an\
+				%C(red)%<(${GITLOG_AUTHOR_WIDTH:-$(git config log.author-width \
+					2> /dev/null || echo 12)},trunc)% an\
 				%Creset${trailer_fmt}\
 				%<($(($(tput cols) / 3)),trunc)% s \
 				%Cblue% D\
