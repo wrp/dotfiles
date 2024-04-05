@@ -51,6 +51,7 @@ main() {
 	get_branch
 	if test -n "${branch_email=$(git config branch.$branch.email)}"; then
 		EMAIL=$branch_email
+		UNAME=$(git config branch.$branch.name || echo "$UNAME")
 	else
 		get_names_for_remote
 	fi
