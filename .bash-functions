@@ -110,7 +110,7 @@ report_cmd_status() {
 		if( /^#[0-9]{10}$/ ) { # abort after adding the timestamp.
 			s@([0-9]{10})@sprintf "%s (%s pid:%d %s:%s) %s",
 				$1,
-				POSIX::strftime("%Y-%m-%dT%H:%M:%S+0", gmtime $1),
+				POSIX::strftime("%Y-%m-%dT%H:%M:%S%z", localtime $1),
 				'"$$"',
 				"'"$(hostname)"'",
 				"'"${PWD}"'",
