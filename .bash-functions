@@ -7,7 +7,6 @@ clear_path() {
 		-e "s@:$1\$@@" \
 	)
 }
-append_path() { for x; do clear_path "$x"; PATH="$PATH${PATH:+:}$x"; done; }
 prepend_path() { for x; do clear_path "$x"; PATH="$x${PATH:+:}$PATH"; done; }
 prepend() {
 	# Add $2 to $1 (with delimiter $3) only if not already present
