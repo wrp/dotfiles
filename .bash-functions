@@ -111,7 +111,7 @@ report_cmd_status() {
 			$ts = substr($_, 1, 10);
 			s@([0-9]{10})@sprintf "%s (%s pid:%d %s:%s) %s",
 				$ts,
-				POSIX::strftime("%Y-%m-%dT%H:%M:%S%z", localtime $ts),
+				POSIX::strftime("%FT%T%z", localtime $ts),
 				'"$$"',
 				"'"$(hostname)"'",
 				"'"${PWD}"'",
