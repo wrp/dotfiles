@@ -120,21 +120,7 @@ report_cmd_status() {
 			print;  # Since about to skip auto print with -p
 			exit 0; # Exit so we only process most recent command
 		}
-	' | tac | perl -ne '
-		$ts = $_ if $. == 1;
-		if( $. == 2 )  {
-			exit 0 if /^history/;     # ignore history
-			exit 0 if /^[a-z]{1,2}$/;   # 2 letter cmds w/no args
-			foreach $cmd (
-					"cal", "cat", "cd", "date", "echo", "exec bash",
-					"head", "less", "ls", "more", "pwd", "tail", "man"
-				) {
-				exit 0 if /^$cmd( |$)/ }
-			print $ts
-		}
-		s/[ \t]+$//;
-		print unless $. == 1; # Delay printing of timestamp
-	'
+	' | tac
 }
 
 die() { test -n "$*" && printf 'FATAL: %s\n' "$*" >&2; exit 1; }
