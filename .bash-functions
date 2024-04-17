@@ -108,13 +108,14 @@ report_cmd_status() {
 	# Note that the FAILED string is used in scripts/search-bash-history
 	test -f "$1" && tac "$1" | STATUS="$2" perl -MPOSIX -pe '
 		if( /^#[0-9]{10}$/ ) { # abort after adding the timestamp.
+			$ts = substr($_, 1, 10);
 			s@([0-9]{10})@sprintf "%s (%s pid:%d %s:%s) %s",
-				$1,
-				POSIX::strftime("%Y-%m-%dT%H:%M:%S%z", localtime $1),
+				$ts,
+				POSIX::strftime("%Y-%m-%dT%H:%M:%S%z", localtime $ts),
 				'"$$"',
 				"'"$(hostname)"'",
 				"'"${PWD}"'",
-				$ENV{STATUS} =~ "1" ? "FAILED" ." $ENV{STATUS}" : "ok",
+				$ENV{STATUS} =~ "1" ? "FAILED" . " $ENV{STATUS}" : "ok",
 				@ge;
 			print;  # Since about to skip auto print with -p
 			exit 0; # Exit so we only process most recent command
