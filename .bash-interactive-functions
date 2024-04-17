@@ -1,5 +1,6 @@
 
 c() { tput sc; clear; tput rc; } # save cursor/restore cursor  man terminfo
+cat() { if test -d "$1" && test $# = 1; then ls "$1"; else command cat "$@"; fi; }
 cdm() { cd $(FULL_PATH=1 get-modified-files | longest-common-prefix -d); }
 curl() { command curl -Ss "$@"; }
 clock() { watch -n 1 banner -C '$(date +%H:%M:%S)'; }
