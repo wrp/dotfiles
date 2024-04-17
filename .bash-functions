@@ -39,8 +39,8 @@ prepend() {
 
 after_cmd() {
 	# Run after a command, and before a prompt is displayed
-	local _status=$?
-	report_cmd_status "$HISTFILE" "$_status" >> "$HOME"/.bash-history
+	local _status=$? ps="${PIPESTATUS[@]}"
+	report_cmd_status "$HISTFILE" "$ps" >> "$HOME"/.bash-history
 	window-title
 	return $_status
 }
@@ -114,7 +114,7 @@ report_cmd_status() {
 				'"$$"',
 				"'"$(hostname)"'",
 				"'"${PWD}"'",
-				$ENV{STATUS} > 0 ? "FAILED" : "ok",
+				$ENV{STATUS} =~ "1" ? "FAILED" ." $ENV{STATUS}" : "ok",
 				@ge;
 			print;  # Since about to skip auto print with -p
 			exit 0; # Exit so we only process most recent command
