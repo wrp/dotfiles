@@ -1,11 +1,4 @@
 
-in_path() {
-	# Check if $1 is in PATH
-	case ":$PATH:" in
-	*:$1:*) return 0;;
-	*) return 1;;
-	esac
-}
 clear_path() {
 	# Ensure that $1 is not in PATH
 	PATH=$(echo "$PATH" | sed \
