@@ -5,6 +5,22 @@ GIT_COMPLETE_REVLIST_MAX=1500
 # But let's leave this here for the times that may be unavailable
 if test -r "$HOME/.config/$USER/git-completion.bash"; then
 	source "$HOME/.config/$USER/git-completion.bash"
+	# Sigh.  git-completion from that site is broken.  Apply:
+#  diff --git a/git-completion.bash b/git-completion.bash
+#  index 4262236..7a25df6 100644
+#  --- a/git-completion.bash
+#  +++ b/git-completion.bash
+#  @@ -3778,7 +3778,7 @@ __git_main ()
+#                          then
+#                                  __gitcomp "$GIT_TESTING_PORCELAIN_COMMAND_LIST"
+#                          else
+#  -                               local list_cmds=list-mainporcelain,others,nohelpers,alias,list-complete,config
+#  +                               local list_cmds=list-mainporcelain,others,nohelpers,alias,list-complete,config,main
+#
+#                                  if test "${GIT_COMPLETION_SHOW_ALL_COMMANDS-}" = "1"
+#                                  then
+#
+
 	__git_complete g __git_main
 	__git_complete git __git_main
 else
