@@ -17,6 +17,6 @@ bundle() {
 		END {print substr($0, 0, 7)}' | grep . || echo 'no-commits'
 	).bundle
 	test -e "$file" && { echo "$file already exists" >&2; return 1; }
-	command git bundle create "$file" "$revs" --tags \
+	command git bundle create "$file" "$revs" ${BUNDLE_TAGS+--tags} \
 	&& echo Created "$(pwd)/$file"
 }
