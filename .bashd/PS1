@@ -37,7 +37,7 @@ set_prompt() {
 	if test "$width" -le 80; then
 		insert_text \|
 	else
-		battery > /dev/null 2>&1 && insert_text "$__battery_check"
+		insert_text "$__battery_check"
 		insert_text '$__MAGENTA'
 
 		test -n "$PROJECT" && insert_text "(${PROJECT%-[0-9]*})"
