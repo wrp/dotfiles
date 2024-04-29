@@ -34,7 +34,7 @@ read_file "$HOME"/.bash-functions
 read_file "$HOME"/.bash-local
 read_file "$HOME"/.bash-interactive-functions
 read_file "$HOME"/.bash-completions
-read_file "$HOME"/.bashd/*
+read_file "$HOME"/.bashd/[a-z]* "$HOME"/.bashd/[A-Z]*
 read_file "$HOME"/.bash-env
 
 make_hist_file "$HOME"/.bash-history-dir/.bash-history-$$
