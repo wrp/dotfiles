@@ -19,6 +19,9 @@ unwanted() {
 	# Print "tab" or "space"; whichever is unwanted for the file named in $1
 	if file "$1" | grep -qi python; then
 		echo tab
+	elif
+		test "$1" = Makefile; then
+		echo space
 	else
 		case $(git config core.whitespace) in
 		tab-in-indent) echo tab;;
