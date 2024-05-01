@@ -28,8 +28,8 @@ insert_text() { test -n "$*" && PS1+=$(printf '\\\n%s' "$*"); }
 
 set_prompt() {
 	check_previous
-	insert_text "${PS1_PREFIX+$PS1_PREFIX:}"
 	insert_text '\D{%T%z}'  # Text in {} is passed to strftime for time
+	insert_text '${PS1_PREFIX+${__YELLOW}[$PS1_PREFIX]}'
 	test -z "$TMUX" && insert_text "${__RED}|NO_TMUX|"
 	tput cols > /dev/null
 	local width=$(tput cols)
