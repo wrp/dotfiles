@@ -18,7 +18,7 @@ after_cmd() {
 	local _status=$? ps="${PIPESTATUS[@]}"
 	report_cmd_status "$HISTFILE" "$ps" >> "$HOME"/.bash-history
 	window-title
-	local_post_cmd_hook 2> /dev/null  # optionally defined in ~/.bash-local
+	type -t local_post_cmd_hook > /dev/null && local_post_cmd_hook
 	return $_status
 }
 
