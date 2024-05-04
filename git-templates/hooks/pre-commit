@@ -59,8 +59,19 @@ indentation_is_okay() {
 	done
 }
 
-whitespace_ok() {
+trailing_whitespace_ok() {
+	# git diff index --check is completely useless for check indentation.
+	# We want python to always be idented with spaces, and go and Makefiles
+	# to always be indented with tabs, but core.whitespace does not give
+	# the necessary granularity.  But we do occasionally want to use
+	# core.whitespace with indent-with-non-tab or tab-in-indent
+	# to get highlighting in git diff.  So we either need to set the
+	# config to a reasonable value (race condition :( ) or just stop
+	# using git diff-index completely.
+	local v=$(git config core.whitespace)
+	test "$v" = trailing-space || git config core.whitespace trailing-space
 	git diff-index --check --cached $against --
+	test "$v" = trailing-space || git config core.whitespace "$v";
 }
 
 validate_whitespace() {
@@ -68,7 +79,7 @@ validate_whitespace() {
 		return 0
 	fi
 
-	if ! { indentation_is_okay && whitespace_ok; } ; then
+	if ! { indentation_is_okay && trailing_whitespace_ok; } ; then
 		if git config apply.whitespace | grep -q error; then
 			func=die
 		else

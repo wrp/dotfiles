@@ -3,14 +3,11 @@
 # whitespace = indent-with-non-tab
 # whitespace = tab-in-indent
 
-err() { printf "%s${1:+\n}" "$@"; } >&2
-die() { err "$@"; exit 1; } >&2
-
 v=$(git config core.whitespace)
 case $(git config core.whitespace) in
 indent-with-non-tab) git config core.whitespace tab-in-indent;;
-tab-in-indent) git config core.whitespace indent-with-non-tab;;
-*) die "core.whitespace has unexpected value: '$v'.  Aborting"
+trailing-space) git config core.whitespace indent-with-non-tab;;
+*) git config core.whitespace trailing-space;;
 esac
 
 printf 'New value of core.whitespace is: '
