@@ -4,7 +4,7 @@ setlocal expandtab
 set foldmethod=expr foldexpr=getline(v:lnum)=~'^\\s*'.&commentstring[0]
 set foldlevelstart=0
 
-let g:keep_white=1
+let g:keep_white=0
 
 syn region pythonString
       \ start=+[uU]\=\z('''\|"""\)+ end="\z1" keepend transparent fold
