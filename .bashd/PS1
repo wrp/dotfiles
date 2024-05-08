@@ -7,20 +7,6 @@ __BLUE=$(printf '\x01'; tput setaf 4; printf '\x02')
 __MAGENTA=$(printf '\x01'; tput setaf 5; printf '\x02')
 __CYAN=$(printf '\x01'; tput setaf 6; printf '\x02')
 
-__battery_check='$(
-	_battery_remaining=$( battery 2> /dev/null | tr -d % )
-	if test -n "$_battery_remaining"; then
-		if test "$_battery_remaining" -gt 30; then
-			printf "%s" "$__GREEN"
-		elif test "$_battery_remaining" -gt 15; then
-			printf "%s" "$__YELLOW";
-		else
-			printf "%s" "$__RED";
-		fi 2> /dev/null
-		printf "%s" "[${_battery_remaining}%]"
-	fi
-)'
-
 check_previous() { PS1='$( { test $? -ne 0 && printf "%s" "$__RED" || printf "%s" "$__CYAN"; } )'; }
 add_pid() { PS1+="$(printf "%05d" "$$" )"; }
 add_prompt_char() { PS1+='\$ '; }
@@ -37,7 +23,6 @@ set_prompt() {
 	if test "$width" -le 80; then
 		insert_text \|
 	else
-		insert_text "$__battery_check"
 		insert_text '$__MAGENTA'
 
 		test -n "$PROJECT" && insert_text "(${PROJECT%-[0-9]*})"
@@ -63,7 +48,6 @@ set_prompt() {
 set_prompt
 unset set_prompt
 unset set_color
-unset __battery_check
 unset add_pid
 unset add_prompt_char
 unset insert_text
