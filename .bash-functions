@@ -76,7 +76,6 @@ debug_trap() {
 		window-title "${BASH_COMMAND}"
 		;;
 	esac
-	tput sgr0
 } >&2
 
 #1698377918 (YYYY-MM-DDTHH:MM:SS+0 pid:1121 /Users/wrp/3rd-party/tmux) ok
