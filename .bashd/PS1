@@ -12,7 +12,7 @@ __CYAN=$(printf '\x01'; tput setaf 6; printf '\x02')
 check_previous() {
 	PS1='$( {
 		if test $? -ne 0; then
-			printf "%s" "$__BOLD$__RED";
+			printf "%s" "$__RESET$__BOLD$__RED";
 		else
 			printf "%s" "$__RESET$__CYAN";
 		fi
@@ -25,6 +25,7 @@ insert_text() { test -n "$*" && PS1+=$(printf '\\\n%s' "$*"); }
 set_prompt() {
 	check_previous
 	insert_text '\D{%T%z}'  # Text in {} is passed to strftime for time
+	insert_text "$__RESET"
 	insert_text '${PS1_PREFIX+${__YELLOW}[$PS1_PREFIX]}'
 	test -z "$TMUX" && insert_text "${__RED}|NO_TMUX|"
 	tput cols > /dev/null
