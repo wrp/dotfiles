@@ -137,7 +137,6 @@ get_dir_list() {
 j() {
 	local _dir
 	test -n "$DOCKER" && { echo "Running in DOCKER" >&2; return 1; }
-	local root="${USE_HOME:-$HOME}"
 	case "$1" in
 	.)
 		select-git-branch;;
@@ -145,10 +144,10 @@ j() {
 		wrpselect $(get_dir_list "$1")
 		_dir=$SELECTION
 		test -n "$_dir" || return
-		if ! test -d "$root/$_dir"; then
-			echo "$root/$_dir does not exist!" >&2
+		if ! test -d "$_dir"; then
+			echo "$_dir does not exist!" >&2
 		else
-			command cd "$root/$_dir"
+			command cd "$_dir"
 		fi
 	;;
 	esac
