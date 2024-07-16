@@ -103,9 +103,11 @@ setup_local_files() {
 	EOF
 
 	create_file "$HOME/.config/$USER/CONFIG_SITE" <<- 'EOF'
-		prefix="$HOME/$(uname -m)/$(uname -s)"
-		CFLAGS="-I${prefix}/include"
-		LDFLAGS="-L${prefix}/lib"
+		if test "${prefix}" = NONE; then
+			prefix="$HOME/$(uname -m)/$(uname -s)"
+			CPPFLAGS="-I${prefix}/include"
+			LDFLAGS="-L${prefix}/lib"
+		fi
 	EOF
 }
 
