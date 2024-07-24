@@ -3,7 +3,8 @@
 # usage: $0 [target-pane] [line-count] [lines-at-end-to-skip]
 #
 # scrape a tmux pane.  With no args, scrape the currently
-# visible current pane.
+# visible current pane.  Set target-pane to "." and line-count to "-"
+# to scrape full history of current pane.
 #
 # To scrape 5 lines 3 up from the current bottom of visible pane,
 # use "$0 . 5 3"
@@ -28,7 +29,7 @@ else
 	*    ) target=$1 ;;
 	esac
 
-	if test "${2-0}" -ne 0; then
+	if test "${2-0}" -ne 0 2> /dev/null; then
 		end=$(( $(tmux display-message -pt "$target" -F '#{pane_height}') - $adjust - 1))
 		start=$((end - $2 + 1))
 	else
