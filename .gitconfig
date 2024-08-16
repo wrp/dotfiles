@@ -115,3 +115,5 @@
 	recurse = true
 [color "diff"]
 	whitespace = red reverse
+[log]
+	follow = true
