@@ -3,9 +3,13 @@
 # compare to (defaulting to current) or an integer.  If it is an integer, it
 # is the amount of git history to explore in the current branch.
 
-if test -n "$FULL_PATH"; then
-	top=$(git rev-parse --path-format=relative --show-toplevel)
-else
+
+if ! top=$(git rev-parse --path-format=relative --show-toplevel 2> /dev/null); then
+	echo "Not in a git repo: can't find modified files" >&2
+	exit 1
+fi
+
+if test -z "$FULL_PATH"; then
 	top=.
 fi
 : ${GIT_DIR=$(git rev-parse --path-format=relative --git-dir)}
