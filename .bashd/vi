@@ -25,6 +25,7 @@ vi() {
 		local default=HEAD main_or_master
 
 		# If no arguments are given, try to find most recently changed files from git
+		# TODO: figure out how much of this logic belongs in the get-modified-files script
 		if test $# = 0 && test -z "$h" && ! git diff --name-only --ignore-submodules | grep -q .; then
 			main_or_master=$(
 				git config diff.base-branch | grep . ||
@@ -37,7 +38,7 @@ vi() {
 				default=1
 			fi
 		fi 2> /dev/null
-		test $# = 0 && set -- $(FULL_PATH=1 f="$f" get-modified-files ${h-$default})
+		test $# = 0 && set -- $(FULL_PATH=1 f="$f" get-modified-files ${h-$default} 2> /dev/null)
 	else
 		# Strip the input to valid filenames and uniquify.  This allows the raw
 		# output of `git grep` to be used as input, but will fail if any names contain
@@ -55,7 +56,7 @@ vi() {
 		fi
 		exec < /dev/tty
 	fi
-	if git rev-parse --git-dir > /dev/null; then
+	if git rev-parse --git-dir 2> /dev/null; then
 		_check_if_ignored_by_git "$@" || return 1
 	fi
 	vim "$@"    # .vimrc sets tmux titles
