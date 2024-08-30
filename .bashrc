@@ -51,7 +51,7 @@ shopt -s direxpand 2> /dev/null # prevent tab expand from expanding $D to \$D
 trap archive 0
 trap debug_trap DEBUG # Run before a command in an interactive shell
 trap '. "$HOME"/.bashrc' SIGUSR1
-trap '. "$HOME"/.bashd/PS1' SIGWINCH
+trap '. "$HOME"/.bashd/PS1; window-title' SIGWINCH
 
 PROMPT_COMMAND=after_cmd # Run after a command, before a prompt is displayed
 return 0
