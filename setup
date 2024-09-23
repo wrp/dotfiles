@@ -99,7 +99,10 @@ setup_local_files() {
 	create_file "$HOME/.bash-local" <<- EOF
 		EMAIL="$EMAIL"
 		UNAME="$UNAME"
-		export EMAIL UNAME
+		GIT_REMOTE_IDENTITY='
+		git@github.com:proj $EMAIL $UNAME
+		'
+		export EMAIL UNAME GIT_REMOTE_IDENTITY
 	EOF
 
 	create_file "$HOME/.config/$USER/CONFIG_SITE" <<- 'EOF'
