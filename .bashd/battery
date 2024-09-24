@@ -1,12 +1,13 @@
-# This should be defined in ~/.bash-local for each box. Here are some examples
-
-if upower -i /org/freedesktop/UPower/devices/battery_cw2015_battery > /dev/null 2>&1; then
+# battery() should be defined in ~/.bash-local for each box. Here are some examples
+if upower -i /org/freedesktop/UPower/devices/battery_cw2015_battery
+then
 	battery() {
 		{ upower -i /org/freedesktop/UPower/devices/battery_cw2015_battery || :; } |
 		awk '/percentage:/{printf "%02d%\n", $2; a=1} END {exit !a}'
 	}
-elif pmset -g ps > /dev/null 2>&1; then
+elif pmset -g ps
+then
 	battery() {
 		pmset -g ps | awk 'NR==2{print $3}' | tr -d \;
 	}
-fi
+fi > /dev/null 2>&1
