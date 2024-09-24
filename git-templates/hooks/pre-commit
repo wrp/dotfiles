@@ -15,12 +15,17 @@ validate_pathnames() {
 	fi
 }
 
+modeline_suggests_tabs() { grep -q '^# vim:.* noet' "$1"; }
+file_is_python() { file "$1" | grep -qi python; }
+file_is_makefile() { file "$1" | grep -qi makefile; }
+
 unwanted() {
 	# Print "tab" or "space"; whichever is unwanted for the file named in $1
-	if file "$1" | grep -qi python; then
+	if modeline_suggests_tabs "$1"; then
+		echo space
+	elif file_is_python "$1"; then
 		echo tab
-	elif
-		test "$1" = Makefile; then
+	elif file_is_makefile "$1"; then
 		echo space
 	else
 		case $(git config core.whitespace) in
