@@ -10,6 +10,8 @@
 	cfa = cf -a
 	ci = commit
 	ciam = ci -am
+	cl = cwip -m 'Fix lint issues'
+	cla = cl -a
 	co = checkout
 	cp = cherry-pick
 	cpx = cp -x
