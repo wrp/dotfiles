@@ -32,4 +32,10 @@ else
 	fi
 
 fi \
-| awk '!a[$0]++ && match($0, f) {print c, $0}' OFS=/ f="$filter" c="$top"
+| awk '!a[$0]++ && match($0, f) {print c, $0}' OFS=/ f="$filter" c="$top" \
+| python -c '
+import sys
+import os
+for x in sys.stdin:
+	print(os.path.relpath(x, os.getcwd()))
+'
