@@ -252,6 +252,7 @@ PUT() {
 		&& ACCESS_TOKEN="$(gcloud auth application-default print-access-token)"
 	curl -X PUT -H "Authorization: Bearer $ACCESS_TOKEN" "$@"
 }
+python() { if test $# = 0; then ipython; else command python "$@"; fi; }
 rh() { history -r $HOME/.bash-history; }
 ru () { tac | awk '!a[$0]++' | tac; } ## reverse-unique
 
