@@ -21,7 +21,8 @@ vi() {
 		echo 'Output is not to a terminal.  Aborting' >&2
 		return 1
 	fi
-	if test -t 0; then   # input is from a tty
+	if test -t 0; then
+		: input is from a tty
 		local default=HEAD main_or_master
 
 		# If no arguments are given, try to find most recently changed files from git
@@ -40,6 +41,7 @@ vi() {
 		fi 2> /dev/null
 		test $# = 0 && set -- $(FULL_PATH=1 f="$f" get-modified-files ${h-$default} 2> /dev/null)
 	else
+		: input is NOT from a tty.  Filter input and build a list of files to edit
 		# Strip the input to valid filenames and uniquify.  This allows the raw
 		# output of `git grep` to be used as input, but will fail if any names contain
 		# whitespace or a colon.  (So the user doesn't have to edit previous grep commands with a -l)
