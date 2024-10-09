@@ -1,6 +1,9 @@
 #!/bin/sh
 
-test "$1" = . && set --
+if test "$1" = .; then
+	TMUX= tmux -C attach -c $PWD -t $(tmux display-message -p '#{session_name}') </dev/null
+	exit
+fi
 
 name=$(basename "${1-${PWD}}" | sed -e 's@$HOME@home@' | tr '[:upper:].' '[:lower:]-')
 dir=$(realpath "${1-$PWD}") || exit
