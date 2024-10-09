@@ -94,9 +94,8 @@ validate_whitespace() {
 			func=warn
 		fi
 		$func 'invalid whitespace' \
-			'To ignore, do one of:' \
-			'  * set "git config apply.whitespace warn"' \
-			'  * set ALLOW_WHITESPACE_ERRORS'
+			'To ignore: ALLOW_WHITESPACE_ERRORS=1' \
+			'To allow: git config apply.whitespace warn'
 	fi
 }
 
