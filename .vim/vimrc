@@ -130,7 +130,7 @@ set undodir^=~/.vim/undo//
 
 
 autocmd BufWritePre * call ClearWhite()
-autocmd BufEnter,BufReadPost,FileReadPost,BufNewFile *
+autocmd BufEnter,BufReadPost,FileReadPost,BufNewFile,DirChanged *
 	\ call system("test -z \"$NORENAMEVIM\" && rename-tmux-window " .
 	\ expand("%"))
 
