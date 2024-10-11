@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# Set the title of the tmux or terminal window
+
 # The expectation is that we're running in TMUX or docker.  For the moment,
 # we can use terminal escape sequences from docker images I often
 # run.  Cannot use escape sequences from Apple terminal directly,
@@ -39,7 +41,7 @@ title="${DOCKER+$DOCKER:}${VIRTUAL_ENV+!}$( echo "$*" | sed '/.\{20\}/s/^'$patt'
 
 
 # This is now a poorly named script.  Instead of renaming the window,
-# we will change the title of the currnet pane, and rely on the
+# we will change the title of the current pane and rely on the
 # tmux configuration to set the string shown in the status bar via
 # the automatic-rename-format
 if test -n "$TMUX"; then
