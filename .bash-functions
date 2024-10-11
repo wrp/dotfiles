@@ -109,5 +109,5 @@ window-title() {
 	if type deactivate 2> /dev/null >&2; then
 		t=1
 	fi
-	deactivate_is_defined=$t rename-tmux-window "$@";
+	deactivate_is_defined=$t set-title "$@";
 }
