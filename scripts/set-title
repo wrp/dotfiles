@@ -40,9 +40,8 @@ fi
 title="${DOCKER+$DOCKER:}${VIRTUAL_ENV+!}$( echo "$*" | sed '/.\{20\}/s/^'$patt'$/'$repl/)"
 
 
-# This is now a poorly named script.  Instead of renaming the window,
-# we will change the title of the current pane and rely on the
-# tmux configuration to set the string shown in the status bar via
+# Instead of renaming the window,  we will change the title of the current pane and
+# rely on the tmux configuration to set the string shown in the status bar via
 # the automatic-rename-format
 if test -n "$TMUX"; then
 	if test -n "$FORCE"; then
