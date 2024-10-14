@@ -28,6 +28,7 @@ g() {
 	(.        ) git_dot;;
 	(base     ) command git worktree list --porcelain | awk '{print $2; exit}' ;;
 	(dm       ) shift; gdm "$@";;   # diff with main
+	(dmno     ) shift; gdm --name-only "$@";;
 	(clone    ) git_clone "$@" ;;
 	(no       ) shift; gno "$@";;   # name-only (diffs with main)
 	(r        ) shift; git_recurse "$@";;
@@ -90,6 +91,7 @@ gdm() { # Diff with the merge-base of the base branch
 	fi >&2
 	git diff "$@" "$(git merge-base "$branch" "$base")" "$branch"
 }
+gdmno() { gdm --name-only "$@"; }
 gno() { gdm --name-only "$@"; }
 git_unpack() {
 	local dir sha
