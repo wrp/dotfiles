@@ -16,6 +16,13 @@ _check_if_ignored_by_git() {
 }
 
 vi() {
+	: If no arguments are given and input is from a tty and we are
+	: in a git repo, build a file list based on currently modified
+	: files or the differences between the current branch and its
+	: merge-base with the primary branch.  If input is not from a tty,
+	: assume it comes from some program producing
+	: filenames followed by a colon and build a list from it.
+
 	: set h for depth, or f for filter
 	if ! test -t 1; then
 		echo 'Output is not to a terminal.  Aborting' >&2
