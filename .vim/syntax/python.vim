@@ -3,7 +3,7 @@ setlocal tabstop=4
 setlocal expandtab
 "set foldmethod=expr foldexpr=getline(v:lnum)=~'^\\s*'.&commentstring[0]
 set foldmethod=indent
-set foldlevelstart=0
+set foldlevelstart=99
 
 let g:keep_white=0
 
