@@ -28,6 +28,7 @@ g() {
 		echo "not in a git dir" >&2
 		return 1
 	fi
+	test $# = 0 && { g s; g b; return; }
 	case $1 in
 	(.        ) git_dot;;
 	(base     ) command git worktree list --porcelain | awk '{print $2; exit}' ;;
