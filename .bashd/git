@@ -83,18 +83,16 @@ ga() {
 }
 gdm() { # Diff with the merge-base of the base branch
 	local branch=${1-HEAD}
-	if git rev-parse --verify -q "$branch" > /dev/null; then
-		shift
-	else
-		branch=HEAD
+	if ! git rev-parse --verify "$branch" > /dev/null; then
+		return 1
 	fi
 	local base
-	if ! base=$(git config diff.base-branch); then
+	if ! base=${2-$(git config diff.base-branch)}; then
 		echo "Don't know which branch to diff against"
 		echo 'Please specify with "git config diff.base-branch $branch"'
 		return 1
 	fi >&2
-	git diff "$@" "$(git merge-base "$branch" "$base")" "$branch"
+	git diff "$(git merge-base "$branch" "$base")" "$branch"
 }
 gdmno() { gdm --name-only "$@"; }
 gno() { gdm --name-only "$@"; }
