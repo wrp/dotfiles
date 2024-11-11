@@ -32,8 +32,8 @@ g() {
 	case $1 in
 	(.        ) git_dot;;
 	(base     ) command git worktree list --porcelain | awk '{print $2; exit}' ;;
-	(dm       ) shift; gdm "" "" "$@";;   # diff with main
-	(dmno     ) shift; gdm "" "" --name-only "$@";;
+	(dm       ) shift; gdm "$@";;   # diff with main
+	(dmno     ) shift; gdm --name-only "$@";;
 	(clone    ) git_clone "$@" ;;
 	(no       ) shift; gno "$@";;   # name-only (diffs with main)
 	(r        ) shift; git_recurse "$@";;
@@ -82,22 +82,25 @@ ga() {
 	git commit ${force:+--no-verify} -m "$msg";
 }
 gdm() { # Diff with the merge-base of the base branch
-	local branch=${1:-HEAD}
-	if ! git rev-parse --verify "$branch" > /dev/null; then
-		return 1
+	local branch=HEAD
+	if test -n "$1" && git rev-parse --verify "$1" > /dev/null; then
+		branch=$1
+		shift
 	fi
-	local base
-	if ! base=${2:-$(git config diff.base-branch)}; then
+	local base=$(git config diff.base-branch)
+	if test -n "$1" && git rev-parse --verify "$1" > /dev/null; then
+		base=$1
+		shift
+	fi
+	if test -z "$base" || ! git rev-parse --verify "$base" > /dev/null; then
 		echo "Don't know which branch to diff against"
 		echo 'Please specify with "git config diff.base-branch $branch"'
 		return 1
 	fi >&2
-	test -z "$1" && shift
-	test -z "$1" && shift
 	git diff "$@" "$(git merge-base "$branch" "$base")" "$branch"
 }
-gdmno() { gdm '' '' --name-only "$@"; }
-gno() { gdm '' '' --name-only "$@"; }
+gdmno() { gdm --name-only "$@"; }
+gno() { gdm --name-only "$@"; }
 git_unpack() {
 	local dir sha
 	test $# = 0 && { echo 'Expected tarball arg' >&2; return 1; }
