@@ -83,12 +83,12 @@ ga() {
 }
 gdm() { # Diff with the merge-base of the base branch
 	local branch=HEAD
-	if test -n "$1" && git rev-parse --verify "$1" > /dev/null; then
+	if test -n "$1" && git rev-parse --verify "$1" > /dev/null 2>&1; then
 		branch=$1
 		shift
 	fi
 	local base=$(git config diff.base-branch)
-	if test -n "$1" && git rev-parse --verify "$1" > /dev/null; then
+	if test -n "$1" && git rev-parse --verify "$1" > /dev/null 2>&1; then
 		base=$1
 		shift
 	fi
