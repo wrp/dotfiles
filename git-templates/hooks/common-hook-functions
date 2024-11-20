@@ -9,7 +9,7 @@ unset header
 warn() {
 	local prefix
 	if test -z "$STFU"; then
-		prefix=$(printf '%-8s: %s: ' "${header-WARNING}" "$0")
+		prefix=$(printf '%-7s: %s: ' "${header-WARNING}" "$0")
 		printf '%s\n' "$@" | sed -e "s@^@$prefix@"
 	fi
 } >&2
