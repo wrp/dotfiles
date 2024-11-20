@@ -18,6 +18,7 @@ validate_pathnames() {
 modeline_suggests_tabs() { grep -q '^# vim:.* noet' "$1"; }
 file_is_python() { file "$1" | grep -qi python; }
 file_is_makefile() { file "$1" | grep -qi makefile; }
+file_is_tainted() { git diff --cached | grep 'DO NOT COMMIT'; }
 
 unwanted() {
 	# Print "tab" or "space"; whichever is unwanted for the file named in $1
@@ -102,6 +103,7 @@ main() {
 	validate_pathnames "$@"
 	validate_whitespace "$@"
 	run_local_hooks "$@"
+	file_is_tainted && die 'File is tainted!!  Stubbornly refusing to commit'
 }
 
 main "$@"
