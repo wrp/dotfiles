@@ -33,7 +33,6 @@ unwanted() {
 		*) echo space;;
 		esac
 	fi
-
 }
 
 indentation_is_okay() {
