@@ -103,7 +103,9 @@ main() {
 	validate_pathnames "$@"
 	validate_whitespace "$@"
 	run_local_hooks "$@"
-	file_is_tainted && die 'File is tainted!!  Stubbornly refusing to commit'
+	if file_is_tainted; then
+		die 'File is tainted!!  Stubbornly refusing to commit';
+	fi
 }
 
 main "$@"
