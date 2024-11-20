@@ -11,19 +11,24 @@ main() {
 check_subject() {
 	bad_end='.!?'  # Characters not allowed as final char of subject
 
-	# Abort if the first line of the message is non-conforming
 	< "$1" awk '
 		match($0, end) {
 			printf "Summary should not end with punctuation"
-			exit 1
+			status=1
 		}
-		length > maxlen {
+		NR==1 && length > max_summary {
 			printf "Summary is %d chars too long" \
-				" (MAX_GIT_SUMMARY == %d)", length - maxlen, maxlen
-			exit 1;
+				" (MAX_GIT_SUMMARY == %d)\n", length - max_summary, max_summary
+			status=1
 		}
-		{ exit 0 }
-	' maxlen=${MAX_GIT_SUMMARY-50} end="[${bad_end}]$"
+		NR > 1 && length > max_width {
+			printf "Line %d (%s...) is %d chars too long (MAX_GIT_WIDTH == %d)\n", \
+				NR - 2, substr($0, 1, 10), length - max_width, max_width
+			status=1
+		}
+		END {exit status}
+
+	' max_width=${MAX_GIT_WIDTH-72} max_summary=${MAX_GIT_SUMMARY-50} end="[${bad_end}]$"
 }
 
 
