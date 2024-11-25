@@ -12,7 +12,7 @@ check_subject() {
 	bad_end='.!?'  # Characters not allowed as final char of subject
 
 	< "$1" awk '
-		match($0, end) {
+		NR==1 && match($0, end) {
 			printf "Summary should not end with punctuation\n"
 			status=1
 		}
