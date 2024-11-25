@@ -24,7 +24,7 @@ git_root() {
 	&& printf '%s\n' "${root}"
 }
 g() {
-	if ! command git rev-parse --git-dir > /dev/null 2>&1; then
+	if test $1 != clone &&  ! command git rev-parse --git-dir > /dev/null 2>&1; then
 		echo "not in a git dir" >&2
 		return 1
 	fi
