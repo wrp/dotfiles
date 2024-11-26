@@ -1,5 +1,17 @@
 # Git related interactive functions
 
+git_checkout() {
+	# A wrapper around checkout that present a menu when invoked
+	# with no arguments.
+	if test $# = 0; then
+		branches=($(command ls $(command git rev-parse --absolute-git-dir)/refs/heads))
+		select branch in "${branches[@]}"; do
+			set -- "${branch}"
+			break
+		done
+	fi
+	command git checkout "$@"
+}
 git_dot() {
 	local remote
 	remote="$(command git rev-parse --symbolic-full-name @{upstream} 2> /dev/null)"
@@ -33,6 +45,7 @@ g() {
 	(.        ) git_dot;;
 	(base     ) command git worktree list --porcelain | awk '{print $2; exit}' ;;
 	(clone    ) git_clone "$@" ;;
+	(co       ) shift; git_checkout "$@";;
 	(dm       ) shift; gdm "$@";;   # diff with main
 	(dmno     ) shift; gno "$@";;
 	(no       ) shift; gno "$@";;   # name-only (diffs with main)
