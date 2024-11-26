@@ -1,0 +1,2 @@
+
+pr() ( unset GITHUB_TOKEN; gh pr list --author @me )
