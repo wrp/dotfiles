@@ -48,7 +48,7 @@ if test -n "$TMUX"; then
 		echo 'WARNING: window renamed.  Auto-rename is now disabled' >&2
 		tmux rename-window -- "$title"
 	else
-		tmux select-pane -T "$title"
+		tmux select-pane -t ${TMUX_PANE} -T "$title"
 	fi
 else
 	printf '\033k%s\033\' "$title"
