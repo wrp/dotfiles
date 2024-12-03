@@ -155,7 +155,6 @@ git_clone() {
 		fi
 	;;
 	*github*) origin=github;;
-	*bitbucket.devops.wepay-inc.*) origin=wepay;;
 	esac
 	test -n "$origin" && echo "Setting origin=$origin" >&2
 	set -- clone ${origin:+--origin="$origin"} "$url" "$@";
