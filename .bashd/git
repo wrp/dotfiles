@@ -85,9 +85,9 @@ ga() {
 		trap 'git reset' RETURN
 	fi
 	git add "$@";
-	preamble=$(perl -E 'say substr "@ARGV", 0, 56' "$@")
+	preamble=$(perl -E 'say substr join(", ", @ARGV), 0, 56' "${@##*/}")
 	msg=$(git diff --name-only --cached \
-		| perl -0000 -nE 'if(length > 56) {s@^@Add files: '"$preamble"'\n\n@} else {
+		| perl -0000 -nE 'if (tr/\n// > 1) {s@^@Add '"$preamble"'\n\n@} else {
 			s/\n/ /g; s/^/Add / }; say'
 	)
 	if test -z "$msg"; then
