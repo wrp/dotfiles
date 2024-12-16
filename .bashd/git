@@ -38,7 +38,8 @@ git_root() {
 	&& root=$(cd "$root" && pwd 2> /dev/null)/ \
 	&& printf '%s\n' "${root}"
 }
-g() {
+g() { git "$@"; }
+git() {
 	if test $1 != clone &&  ! command git rev-parse --git-dir > /dev/null 2>&1; then
 		echo "not in a git dir" >&2
 		return 1
@@ -161,7 +162,6 @@ git_clone() {
 	set -- clone ${origin:+--origin="$origin"} "$url" "$@";
 	command git "$@"
 }
-git() { g "$@"; }
 gr() { # Git recursive
 	echo 'Stop using gr.  Use "g r" instead and fix it as needed' >&2
 	return 1
