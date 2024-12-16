@@ -56,11 +56,13 @@ main() {
 		get_names_for_remote
 	fi
 
-	git config user.email "${EMAIL?}"
-	git config user.name "${UNAME?}"
+	if test $(git config user.email) != "${EMAIL?}"; then
+		git config user.email "${EMAIL?}"
+		git config user.name "${UNAME?}"
 
-	if ! git rev-parse --show-superproject-working-tree | grep -q .; then
-		warn "name/email set to ${UNAME}/${EMAIL}"
+		if ! git rev-parse --show-superproject-working-tree | grep -q .; then
+			warn "name/email set to ${UNAME}/${EMAIL}"
+		fi
 	fi
 }
 
