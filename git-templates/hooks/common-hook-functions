@@ -41,3 +41,7 @@ run_local_hooks() {
 		_run_file "$hook" "$@"
 	done
 }
+
+is_subproject() {
+	git rev-parse --show-superproject-working-tree | grep -q .
+}

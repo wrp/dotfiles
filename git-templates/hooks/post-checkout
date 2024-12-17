@@ -60,7 +60,7 @@ main() {
 		git config user.email "${EMAIL?}"
 		git config user.name "${UNAME?}"
 
-		if ! git rev-parse --show-superproject-working-tree | grep -q .; then
+		if ! is_subproject; then
 			warn "name/email set to ${UNAME}/${EMAIL}"
 		fi
 	fi
