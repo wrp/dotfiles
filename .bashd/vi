@@ -15,6 +15,9 @@ _check_if_ignored_by_git() {
 	fi
 }
 
+vg() { g grep "$@" | vi +/"$1"; }
+vw() { g grep "$@" | vi +/"\<$1\>"; }
+
 vi() {
 	: If no arguments are given and input is from a tty and we are
 	: in a git repo, build a file list based on currently modified
@@ -55,7 +58,7 @@ vi() {
 		# There is no sane way to pass names in a pipe without using a null terminator as a separator,
 		# and I do not want to accomodate the brain dead-practice of using whitespace in filenames.
 		# If there are names with whitespace or colons, construct the arguments manually.
-		set -- $(grep -v "${VIM_IGNORE_FILES:-^$}" |
+		set -- "$@" $(grep -v "${VIM_IGNORE_FILES:-^$}" |
 			awk '{gsub("[[:space:]]", "", $0)} 1' |  # remove leading whitespace
 			awk '!a[$1]++{print $1}' FS='[:[:space:]]'
 		)
