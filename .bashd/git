@@ -40,8 +40,7 @@ git_root() {
 }
 g() { git "$@"; }
 git() {
-	if test $1 != clone &&  ! command git rev-parse --git-dir > /dev/null 2>&1; then
-		echo "not in a git dir" >&2
+	if test $1 != clone &&  ! command git rev-parse --git-dir > /dev/null; then
 		return 1
 	fi
 	test $# = 0 && { git_dot; g s; g b; return; }
