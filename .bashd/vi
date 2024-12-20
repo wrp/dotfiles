@@ -15,8 +15,8 @@ _check_if_ignored_by_git() {
 	fi
 }
 
-vg() { g grep "$@" | vi +/"$1"; }
-vw() { g grep "$@" | vi +/"\<$1\>"; }
+vg() { local pat="+/$1"; if test "$1" = -w; then pat="+/\<$2\>"; fi
+	g grep "$@" | vi "$pat"; }
 
 vi() {
 	: If no arguments are given and input is from a tty and we are
