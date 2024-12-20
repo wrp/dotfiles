@@ -1,7 +1,8 @@
 
 [alias]
 	ap = add --patch
-	b = branch -vv
+	b = !bash -c 'test -z \"$*\" && test -t 1 && (git branch -vv --color=always | nl) \
+		|| git branch \"$@\"' _
 	caa = !bash -c 'git commit --amend -a -C HEAD --cleanup=strip \"$@\"' _
 	caan = caa -n
 	cd = ci -m Documentation
