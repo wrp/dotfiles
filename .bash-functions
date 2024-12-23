@@ -26,16 +26,7 @@ after_cmd() {
 	return $_status
 }
 
-make_hist_file() {
-	{
-	printf '#%s Shell %d' "$(date +%s)" "$$"
-	if test "$PPID" -gt 0 2> /dev/null; then
-		printf ', child of %s,' "$(ps -o pid=,comm= $PPID)"
-	fi
-	printf ' begins in %s' "$PWD"
-	printf '\n'
-	} | tr -s ' ' >> "${HISTFILE?}"
-}
+make_hist_file() { history -w; }
 
 debug_trap() {
 	# Runs before a command in an interactive shell
@@ -45,25 +36,8 @@ debug_trap() {
 		echo "WARNING: IFS contains unexpected characters"
 	fi
 
-	history -a || warn history -a failed
+	history -w || warn "history -w failed"
 	test -f "$HISTFILE" || warn HISTFILE does not exist
-
-	# Emit a warning if the history file is not updating
-	# When a shell starts up, the debug trap is being called multiple times
-	# before any commands have been executed.  In that case, fc emits no output
-	# and we do not want to emit a warning about the HISTFILE in that situation.
-	if ! {
-		local last  # last is the first word of the most recent command
-		last=$(fc -l -1 2> /dev/null | awk '{print $2; exit}')
-		# Check the last command to ensure that the HISTFILE is updating.
-		# Last command may be multi-line, hence the tac.
-		test -z "$last" || tac "$HISTFILE" |
-			awk '/^#/ && a++ > 2 {exit}
-			$1 == "rh" || $1 == last {b++} END{ exit !b }' last="$last";
-	} 2> /dev/null
-	then
-		: warn HISTFILE is not updating
-	fi
 
 	case ${BASH_COMMAND%% } in
 	:\
