@@ -30,8 +30,7 @@ make_hist_file() {
 	fi
 	printf ' begins in %s' "$PWD"
 	printf '\n'
-	} | tr -s ' ' >> "$1"
-	export HISTFILE=$1
+	} | tr -s ' ' >> "${HISTFILE?}"
 }
 
 debug_trap() {

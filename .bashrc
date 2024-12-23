@@ -37,7 +37,7 @@ read_file "$HOME"/.bash-completions
 read_file "$HOME"/.bashd/*
 read_file "$HOME"/.bash-local
 
-make_hist_file "$HOME"/.bash-history-dir/.bash-history-$$
+make_hist_file
 set -o vi
 set -o physical # make pwd do the right thing w.r.t. symbolic links
 shopt -s histappend
