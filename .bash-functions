@@ -16,7 +16,11 @@ prepend_path() { for x; do clear_path "$x"; PATH="$x${PATH:+:}$PATH"; done; }
 after_cmd() {
 	# Run after a command, and before a prompt is displayed
 	local _status=$? ps="${PIPESTATUS[@]}"
-	report_cmd_status "$HISTFILE" "$ps" >> "$HOME"/.bash-history
+	if ! test $(wc -l < "$HISTFILE") -gt 1 2>/dev/null; then
+		warn history is not being recorded
+	else
+		report_cmd_status "$HISTFILE" "$ps" >> "$HOME"/.bash-history
+	fi
 	window-title
 	type -t local_post_cmd_hook > /dev/null && local_post_cmd_hook
 	return $_status
