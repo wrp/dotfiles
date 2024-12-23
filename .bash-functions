@@ -57,7 +57,7 @@ debug_trap() {
 
 #1698377918 (YYYY-MM-DDTHH:MM:SS+0 pid:1121 /Users/wrp/3rd-party/tmux) ok
 report_cmd_status() {
-	# Clean up the most recent command in HISTFILE and append it to global .bash-history.
+	# Clean up the most recent command in $1 and append it to global .bash-history.
 	# Note that the FAILED string is used in scripts/search-bash-history
 	test -f "$1" && tac "$1" | STATUS="$2" perl -MPOSIX -pe '
 		if( /^#[0-9]{10}$/ ) { # abort after adding the timestamp.
@@ -70,7 +70,7 @@ report_cmd_status() {
 				"'"${PWD}"'",
 				$ENV{STATUS} =~ "1" ? "FAILED" . " $ENV{STATUS}" : "ok",
 				@ge;
-			print;  # Since about to skip auto print with -p
+			print;  # Since about to skip auto print by exiting
 			exit 0; # Exit so we only process most recent command
 		}
 	' | tac
