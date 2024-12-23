@@ -1,16 +1,23 @@
 # Git related interactive functions
 
+
 _select_git_branch() {
 	# Present a menu when invoked with no arguments,
 	# or select branch by number.
 	local branches branch
-	branches=($(command git show-ref --heads | sed -e 's@.*refs/heads/@@'))
-	if test $# = 0; then
-		select branch in "${branches[@]}"; do break; done
-	elif test "$1" -gt 0 2> /dev/null; then
-		branch=${branches[$(($1-1))]}
+
+	if test -n "$1" && git rev-parse --verify "$1" > /dev/null 2>&1; then
+		branch=$1
+	else
+		branches=($(command git show-ref --heads | sed -e 's@.*refs/heads/@@'))
+		if test $# = 0; then
+			select branch in "${branches[@]}"; do break; done
+		elif test "$1" -gt 0 2> /dev/null; then
+			branch=${branches[$(($1-1))]}
+		fi
 	fi
 	printf '%s' "$branch"
+	test -n "$branch"
 }
 
 git_checkout() {
@@ -107,13 +114,14 @@ ga() {
 }
 gdm() { # Diff with the merge-base of the base branch
 	local branch=HEAD
-	if test -n "$1" && git rev-parse --verify "$1" > /dev/null 2>&1; then
-		branch=$1
+	if tmp=$(_select_git_branch $1); then
+		branch=$tmp
 		shift
 	fi
+
 	local base=$(git config diff.base-branch)
-	if test -n "$1" && git rev-parse --verify "$1" > /dev/null 2>&1; then
-		base=$1
+	if tmp=$(_select_git_branch $1); then
+		base=$tmp
 		shift
 	fi
 	if test -z "$base" || ! git rev-parse --verify "$base" > /dev/null; then
