@@ -15,7 +15,9 @@ _check_if_ignored_by_git() {
 	fi
 }
 
-vg() { local pat="+/$1"; if test "$1" = -w; then pat="+/\<$2\>"; fi
+vg() {
+	if test "$1" = grep; then shift; fi
+	local pat="+/$1"; if test "$1" = -w; then pat="+/\<$2\>"; fi
 	g grep "$@" | vi "$pat"; }
 
 vi() {
