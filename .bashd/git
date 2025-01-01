@@ -22,12 +22,12 @@ _select_git_branch() {
 
 git_archive_branch() {
 	local branch
-	if test -z "$*"; then git show-ref | grep refs/archive; fi
 	for branch; do
 		branch=$(_select_git_branch "$branch")
 		command git update-ref refs/archive/"${branch}" "${branch}" '' \
 		&& command git branch -D "${branch}"
 	done
+	git show-ref | grep refs/archive
 }
 
 git_checkout() {
