@@ -69,6 +69,19 @@ git() {
 	*) command git rev-parse --git-dir > /dev/null || return 1
 	esac
 	test $# = 0 && { git_dot; g s; g b; return; }
+
+	# replace numeric args with branch name
+	local x prev
+	local -a args
+	for x; do
+		if test "$prev" != -n && test "$x" -gt 0 2> /dev/null; then
+			x=( $(_select_git_branch "$x") )
+		fi
+		args+=( "$x" )
+		prev=$x
+	done
+	set -- "${args[@]}"
+
 	case $1 in
 	(.        ) git_dot;;
 	(a        ) shift; git_archive_branch "$@";;
