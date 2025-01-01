@@ -48,7 +48,7 @@ shopt -s cdable_vars 2> /dev/null
 shopt -s direxpand 2> /dev/null # prevent tab expand from expanding $D to \$D
 # set +H      # disable history expansion
 
-trap archive 0
+trap archive-bash-history 0
 trap debug_trap DEBUG # Run before a command in an interactive shell
 trap '. "$HOME"/.bashrc' SIGUSR1
 trap '. "$HOME"/.bashd/PS1; window-title' SIGWINCH
