@@ -20,6 +20,15 @@ _select_git_branch() {
 	test -n "$branch"
 }
 
+git_archive_branch() {
+	local branch
+	for branch; do
+		branch=$(_select_git_branch "$branch")
+		command git update-ref refs/archive/"${branch}" "${branch}" '' \
+		&& command git branch -D "${branch}"
+	done
+}
+
 git_checkout() {
 	if test $# = 0 || test "$1" -gt 0 2> /dev/null; then
 		set -- "$(_select_git_branch $1)"
@@ -61,6 +70,7 @@ git() {
 	test $# = 0 && { git_dot; g s; g b; return; }
 	case $1 in
 	(.        ) git_dot;;
+	(a        ) shift; git_archive_branch "$@";;
 	(base     ) command git worktree list --porcelain | awk '{print $2; exit}' ;;
 	(clone    ) git_clone "$@" ;;
 	(co       ) shift; git_checkout "$@";;
