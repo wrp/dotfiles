@@ -6,7 +6,7 @@ _select_git_branch() {
 	# or select branch by number.
 	local branches branch
 
-	if test -n "$1" && git rev-parse --verify "$1" > /dev/null 2>&1; then
+	if test -n "$1" && command git rev-parse --verify "$1" > /dev/null 2>&1; then
 		branch=$1
 	else
 		branches=($(command git show-ref --heads | sed -e 's@.*refs/heads/@@'))
@@ -27,7 +27,7 @@ git_archive_branch() {
 		command git update-ref refs/archive/"${branch}" "${branch}" '' \
 		&& command git branch -D "${branch}"
 	done
-	git show-ref | grep refs/archive
+	command git show-ref | grep refs/archive
 }
 
 git_checkout() {
@@ -89,18 +89,18 @@ ga() {
 	# in such a way that `git status` cleans it up.  (That is, git diff-index
 	# will fail until `git status` is run in that environment.)  So run
 	# git status to "uncorrupt" the repo.  Terrible hack.
-	git status > /dev/null
+	command git status > /dev/null
 
 	local msg force against=HEAD preamble
 	if test "$1" = "-f"; then
 		force=1
 		shift
 	fi
-	if ! git rev-parse --verify HEAD >/dev/null 2>&1; then
+	if ! command git rev-parse --verify HEAD >/dev/null 2>&1; then
 		# Initial commit: diff against an empty tree object
-		against=$(git hash-object -t tree /dev/null)
+		against=$(command git hash-object -t tree /dev/null)
 	fi
-	if test -z "$force" && ! git diff-index --quiet $against; then
+	if test -z "$force" && ! command git diff-index --quiet $against; then
 		echo 'Repo is dirty.  -f to force (will also skip pre-commit check)' >&2
 		return 1
 	fi
@@ -109,11 +109,11 @@ ga() {
 		# If we abort, or git commit fails, we want to return to a clean state.
 		# If commit succeeds, doing reset should be a no-op.  But, if user
 		# asked to force, do not attempt to clean up.
-		trap 'git reset' RETURN
+		trap 'command git reset' RETURN
 	fi
-	git add "$@";
+	command git add "$@";
 	preamble=$(perl -E 'say substr join(", ", @ARGV), 0, 56' "${@##*/}")
-	msg=$(git diff --name-only --cached \
+	msg=$(command git diff --name-only --cached \
 		| perl -0000 -nE 'if (tr/\n// > 1) {s@^@Add '"$preamble"'\n\n@} else {
 			s/\n/ /g; s/^/Add / }; say'
 	)
@@ -121,7 +121,7 @@ ga() {
 		echo "Unable to generate commit message!" >&2
 		return 1;
 	fi
-	git commit ${force:+--no-verify} -m "$msg";
+	command git commit ${force:+--no-verify} -m "$msg";
 }
 gdm() { # Diff with the merge-base of the base branch
 	local branch=HEAD
@@ -130,17 +130,17 @@ gdm() { # Diff with the merge-base of the base branch
 		shift
 	fi
 
-	local base=$(git config diff.base-branch)
+	local base=$(command git config diff.base-branch)
 	if test -n "$1" && tmp=$(_select_git_branch "$1"); then
 		base=$tmp
 		shift
 	fi
-	if test -z "$base" || ! git rev-parse --verify "$base" > /dev/null; then
+	if test -z "$base" || ! command git rev-parse --verify "$base" > /dev/null; then
 		echo "Don't know which branch to diff against"
 		echo 'Please specify with "git config diff.base-branch $branch"'
 		return 1
 	fi >&2
-	git diff "$@" "$(git merge-base "$branch" "$base")" "$branch"
+	command git diff "$@" "$(command git merge-base "$branch" "$base")" "$branch"
 }
 gdmno() { gno "$@"; }
 gno() { gdm "$@" --name-only; }
@@ -161,9 +161,9 @@ git_unpack() {
 		sha=$(md5sum "$x" | cut -d\  -f 1)
 		tar -${zip}xf "$x" \
 		&& cd "$dir" \
-		&& git init \
-		&& git add . \
-		&& git commit -n -m "Initial unpack: $sha $(basename $x)"
+		&& command git init \
+		&& command git add . \
+		&& command git commit -n -m "Initial unpack: $sha $(basename $x)"
 	done
 }
 git_clone() {
