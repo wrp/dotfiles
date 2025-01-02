@@ -29,7 +29,6 @@ after_cmd() {
 }
 
 make_hist_file() {
-	history -w;
 	test -s "$HISTFILE" || { printf '# '; date; } >> $HISTFILE
 }
 
@@ -41,7 +40,7 @@ debug_trap() {
 		echo "WARNING: IFS contains unexpected characters"
 	fi
 
-	history -a || warn "history -w failed"
+	history -a || warn "history -a failed"
 	test -f "$HISTFILE" || warn HISTFILE does not exist
 
 	case ${BASH_COMMAND%% } in
