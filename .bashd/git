@@ -65,11 +65,15 @@ git() {
 	test $# = 0 && { git_dot; g s; g b; return; }
 
 	# replace numeric args with branch name
-	local x prev
+	local x prev tmp
 	local -a args
 	for x; do
 		if test "$prev" != -n && test "$x" -gt 0 2> /dev/null; then
-			x=( $(_select_git_branch "$x") )
+			tmp=( $(_select_git_branch "$x") )
+			if test -n "$tmp"; then
+				echo "$x --> $tmp" >&2
+				x=$tmp
+			fi
 		fi
 		args+=( "$x" )
 		prev=$x
