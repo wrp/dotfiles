@@ -27,7 +27,8 @@ git_archive_branch() {
 		command git update-ref refs/archive/"${branch}" "${branch}" '' \
 		&& command git branch -D "${branch}"
 	done
-	if ! command git show-ref | grep refs/archive; then
+	if test $# = 0 && ! command git show-ref |
+		grep refs/archive --color=never; then
 		echo "There are no archived refs in $(
 			command git rev-parse --absolute-git-dir)"
 	fi
