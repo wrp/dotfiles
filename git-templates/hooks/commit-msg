@@ -2,11 +2,17 @@
 
 . "$(dirname $0)"/common-hook-functions
 
+
 main() {
+	if test -z "$MAX_GIT_WIDTH"; then
+		MAX_GIT_WIDTH=$(git config core.max-message-width 2> /dev/null)
+	fi
+	if test -z "$MAX_GIT_SUMMARY"; then
+		MAX_GIT_SUMMARY=$(git config core.max-summary-width 2> /dev/null)
+	fi
 	msg=$(check_subject "$@") || die "$msg"
 	run_local_hooks "$@"
 }
-
 
 check_subject() {
 	bad_end='.!?'  # Characters not allowed as final char of subject
@@ -18,17 +24,17 @@ check_subject() {
 		}
 		NR==1 && length > max_summary {
 			printf "Summary is %d chars too long" \
-				" (MAX_GIT_SUMMARY == %d)\n", length - max_summary, max_summary
+				" (max width is %d)\n", length - max_summary, max_summary
 			status=1
 		}
 		NR > 1 && length > max_width {
-			printf "Line %d (%s...) is %d chars too long (MAX_GIT_WIDTH == %d)\n", \
+			printf "Line %d (%s...) is %d chars too long (max width is %d)\n", \
 				NR - 2, substr($0, 1, 10), length - max_width, max_width
 			status=1
 		}
 		END {exit status}
 
-	' max_width=${MAX_GIT_WIDTH-72} max_summary=${MAX_GIT_SUMMARY-50} end="[${bad_end}]$"
+	' max_width=${MAX_GIT_WIDTH:-72} max_summary=${MAX_GIT_SUMMARY:-50} end="[${bad_end}]$"
 }
 
 
