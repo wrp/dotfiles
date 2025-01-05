@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# Set t to a comma separated list of trailers to be
+# displayed in the log output The idea here is that you can
+# specify trailers with 'git config core.default-trailers'
+# or override with t at the command line.  eg, set 'git
+# config core.default-trailers ticket' to show the ticket
+# in the log, or use 't=ticket,style g l1' to show both
+# the ticket adn the style trailer in the log, or 't= g l1'
+# to show none.
+
+cd ${GIT_PREFIX:-.} || exit
+trailers=${t-$(git config core.default-trailers || :)} || exit
+width=${w-$(git config core.default-trailer-width || echo 11)} || exit
+trailer_fmt=$(printf '%s' "${trailers}" |
+	sed -E "s/([^,]*)(\$|,)/ [%<(${width})%(trailers:key=\1,separator=%x2C,valueonly)]/g"
+)
+git log \
+	--date=format:"" \
+	--format=tformat:"$(printf '%s' "$(:
+		)%C(green)%h$(:
+		)%C(yellow)% ad$(:
+		)%C(red)%<(${GITLOG_AUTHOR_WIDTH:-$( \
+			git config log.author-width 2> /dev/null || echo 12
+			)},trunc)% an %Creset${trailer_fmt}$(:
+		)%<($(($(tput cols) / 3)),trunc)% s$( :
+		)%Cblue% D$(:
+		)%Creset" | sed -E 's/  +//g' )" "$@"
