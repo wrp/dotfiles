@@ -12,6 +12,10 @@ _select_git_branch() {
 		branches=($(command git show-ref --heads | sed -e 's@.*refs/heads/@@'))
 		if test $# = 0; then
 			select branch in "${branches[@]}"; do break; done
+		elif test "$1" -eq 0 2> /dev/null; then
+			branch=$( git config diff.base-branch | grep . ||
+				{ git show-ref -q refs/heads/main \
+				&& echo main || echo master; } )
 		elif test "$1" -gt 0 2> /dev/null; then
 			branch=${branches[$(($1-1))]}
 		fi
@@ -69,7 +73,7 @@ git() {
 	local x prev tmp
 	local -a args
 	for x; do
-		if test "$prev" != -n && test "$x" -gt 0 2> /dev/null; then
+		if test "$prev" != -n && test "$x" -ge 0 2> /dev/null; then
 			tmp=( $(_select_git_branch "$x") )
 			if test -n "$tmp"; then
 				echo "$x --> $tmp" >&2
