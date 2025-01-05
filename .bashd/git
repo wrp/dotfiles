@@ -45,14 +45,6 @@ git_archive_branch() {
 			command git rev-parse --absolute-git-dir)"
 	fi
 }
-git_dot() {
-	local remote
-	remote="$(command git rev-parse --symbolic-full-name @{upstream} 2> /dev/null)"
-	printf '%s: %s%s\n' \
-		"$(tput setaf 4; pwd)" \
-		"$(tput setaf 3; command git rev-parse --abbrev-ref HEAD)" \
-		"$(tput setaf 2)${remote:+ (${remote#refs/remotes/})}"
-}
 git_recurse() {
 	# run git recursively and prepend path to output
 	local delim=': '
@@ -75,7 +67,7 @@ git() {
 	clone|init) ;;
 	*) command git rev-parse --git-dir > /dev/null || return 1
 	esac
-	test $# = 0 && { git_dot; g s; g b; return; }
+	test $# = 0 && { git .; g s; g b; return; }
 
 	# replace numeric args with branch name
 	local x prev tmp
@@ -94,7 +86,6 @@ git() {
 	set -- "${args[@]}"
 
 	case $1 in
-	(.        ) git_dot;;
 	(a        ) shift; git_archive_branch "$@";;
 	(base     ) command git worktree list --porcelain | awk '{print $2; exit}' ;;
 	(clone    ) git_clone "$@" ;;
