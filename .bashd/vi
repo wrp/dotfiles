@@ -42,7 +42,7 @@ vi() {
 		if test $# = 0 && test -z "$h" && ! git diff --name-only --ignore-submodules | grep -q .; then
 			main_or_master=$(
 				git config diff.base-branch | grep . ||
-				{ git for-each-ref refs/heads | grep -q main \
+				{ git show-ref -q refs/heads/main \
 				&& echo main || echo master; } )
 			default=$(git merge-base HEAD "$main_or_master")
 			# If the current HEAD is no different than the merge base,
