@@ -102,7 +102,6 @@ git() {
 	(dmno     ) shift; gno "$@";;
 	(no       ) shift; gno "$@";;   # name-only (diffs with main)
 	(r        ) shift; git_recurse "$@";;
-	(refresh  ) shift; git_refresh "$@";;
 	(root     ) git_root;;
 	(*        ) command git "$@" ;;
 	esac
@@ -215,14 +214,4 @@ git_clone() {
 gr() { # Git recursive
 	echo 'Stop using gr.  Use "g r" instead and fix it as needed' >&2
 	return 1
-}
-git_refresh() {
-	local branch=${1-$(git_get_base_branch)}
-	local remote=$(git config branch.${branch}.remote)
-	if test -z "$remote"; then
-		echo "Can't find remote for $branch" >&2
-		return 1
-	fi
-	git fetch "$remote" || return 1
-	git update-ref refs/heads/$branch $remote/$branch || return 1
 }

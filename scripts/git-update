@@ -1,0 +1,13 @@
+#!/bin/sh
+
+
+. $HOME/.bashd/git
+
+branch=${1-$(git_get_base_branch)}
+remote=$(git config branch.${branch}.remote)
+if test -z "$remote"; then
+	echo "Can't find remote for $branch" >&2
+	exit 1
+fi
+git fetch "$remote" || exit 1
+git update-ref refs/heads/$branch $remote/$branch || exit 1
