@@ -72,7 +72,6 @@ git() {
 	set -- "${args[@]}"
 
 	case $1 in
-	(base     ) command git worktree list --porcelain | awk '{print $2; exit}' ;;
 	(clone    ) git_clone "$@" ;;
 	(dm       ) shift; gdm "$@";;   # diff with main
 	(dmno     ) shift; gno "$@";;

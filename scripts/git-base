@@ -1,0 +1,3 @@
+#!/bin/sh
+
+git worktree list --porcelain | awk '{print $2; exit}'
