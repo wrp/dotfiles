@@ -40,10 +40,7 @@ vi() {
 		# If no arguments are given, try to find most recently changed files from git
 		# TODO: figure out how much of this logic belongs in the get-modified-files script
 		if test $# = 0 && test -z "$h" && ! git diff --name-only --ignore-submodules | grep -q .; then
-			main_or_master=$(
-				git config diff.base-branch | grep . ||
-				{ git show-ref -q refs/heads/main \
-				&& echo main || echo master; } )
+			main_or_master=$(git_get_base_branch)
 			default=$(git merge-base HEAD "$main_or_master")
 			# If the current HEAD is no different than the merge base,
 			# set default to 1 so we edit the files changed in the last commit
