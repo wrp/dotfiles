@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if test -z "$*" && test -t 1; then
+	git branch -vv --color=always | nl
+else
+	git branch "$@"
+fi
