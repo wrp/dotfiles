@@ -31,20 +31,6 @@ _select_git_branch() {
 	printf '%s' "$branch"
 	test -n "$branch"
 }
-
-git_archive_branch() {
-	local branch
-	for branch; do
-		branch=$(_select_git_branch "$branch")
-		command git update-ref refs/archive/"${branch}" "${branch}" '' \
-		&& command git branch -D "${branch}"
-	done
-	if test $# = 0 && ! command git show-ref |
-		grep refs/archive --color=never; then
-		echo "There are no archived refs in $(
-			command git rev-parse --absolute-git-dir)"
-	fi
-}
 git_recurse() {
 	# run git recursively and prepend path to output
 	local delim=': '
@@ -86,7 +72,6 @@ git() {
 	set -- "${args[@]}"
 
 	case $1 in
-	(a        ) shift; git_archive_branch "$@";;
 	(base     ) command git worktree list --porcelain | awk '{print $2; exit}' ;;
 	(clone    ) git_clone "$@" ;;
 	(dm       ) shift; gdm "$@";;   # diff with main
