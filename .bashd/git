@@ -1,6 +1,16 @@
 # Git related interactive functions
 
 
+git_get_base_branch() {
+	if ! git config diff.base-branch | grep .; then
+		if git show-ref -q refs/heads/main; then
+			echo main
+		else
+			echo master
+		fi
+	fi
+}
+
 _select_git_branch() {
 	# Present a menu when invoked with no arguments,
 	# or select branch by number.
@@ -13,9 +23,7 @@ _select_git_branch() {
 		if test $# = 0; then
 			select branch in "${branches[@]}"; do break; done
 		elif test "$1" -eq 0 2> /dev/null; then
-			branch=$( git config diff.base-branch | grep . ||
-				{ git show-ref -q refs/heads/main \
-				&& echo main || echo master; } )
+			branch=$(git_get_base_branch)
 		elif test "$1" -gt 0 2> /dev/null; then
 			branch=${branches[$(($1-1))]}
 		fi
@@ -94,6 +102,7 @@ git() {
 	(dmno     ) shift; gno "$@";;
 	(no       ) shift; gno "$@";;   # name-only (diffs with main)
 	(r        ) shift; git_recurse "$@";;
+	(refresh  ) shift; git_refresh "$@";;
 	(root     ) git_root;;
 	(*        ) command git "$@" ;;
 	esac
@@ -206,4 +215,14 @@ git_clone() {
 gr() { # Git recursive
 	echo 'Stop using gr.  Use "g r" instead and fix it as needed' >&2
 	return 1
+}
+git_refresh() {
+	local branch=${1-$(git_get_base_branch)}
+	local remote=$(git config branch.${branch}.remote)
+	if test -z "$remote"; then
+		echo "Can't find remote for $branch" >&2
+		return 1
+	fi
+	git fetch "$remote" || return 1
+	git update-ref refs/heads/$branch $remote/$branch || return 1
 }
