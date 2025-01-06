@@ -31,15 +31,6 @@ _select_git_branch() {
 	printf '%s' "$branch"
 	test -n "$branch"
 }
-git_recurse() {
-	# run git recursively and prepend path to output
-	local delim=': '
-	if test "$1" = grep; then delim=''; fi
-	find . -type d -name .git -exec sh -c '
-		command git -C "${0%.git}" "$@" |
-		perl -pe "print \"${0%.git}'"$delim"'\""' {} "$@" \; \
-	| ${GIT_PAGER-${PAGER-more}}
-}
 git_root() {
 	local root
 	root=$(command git rev-parse --absolute-git-dir)/.. \
@@ -76,7 +67,6 @@ git() {
 	(dm       ) shift; gdm "$@";;   # diff with main
 	(dmno     ) shift; gno "$@";;
 	(no       ) shift; gno "$@";;   # name-only (diffs with main)
-	(r        ) shift; git_recurse "$@";;
 	(root     ) git_root;;
 	(*        ) command git "$@" ;;
 	esac

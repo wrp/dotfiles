@@ -39,6 +39,7 @@
 	ldh = ld -n 10
 	ls = l1 --show-signature
 	no = show --name-only --pretty=format:
+	r = recurse
 	s = status
 	sa = status -uall --ignored
 	sk = !bash -c 'git stash push --keep-index ${1:+-m \"${*}\"}' _

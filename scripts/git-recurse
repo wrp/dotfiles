@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# run git recursively and prepend path to output
+
+delim=': '
+if test "$1" = grep; then delim=''; fi
+find . -type d -name .git | while read git_dir; do
+	dir="${git_dir%/.git}"
+	git -C "$dir" "$@" |
+	perl -pe 'print "'"${dir}$delim"'"'
+done | ${GIT_PAGER-${PAGER-more}}
