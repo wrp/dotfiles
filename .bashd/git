@@ -34,8 +34,6 @@ git() {
 
 	case $1 in
 	(clone    ) git_clone "$@" ;;
-	(dmno     ) shift; gno "$@";;
-	(no       ) shift; gno "$@";;   # name-only (diffs with main)
 	(root     ) git_root;;
 	(*        ) command git "$@" ;;
 	esac
@@ -80,8 +78,6 @@ ga() {
 	fi
 	command git commit ${force:+--no-verify} -m "$msg";
 }
-gdmno() { gno "$@"; }
-gno() { gdm "$@" --name-only; }
 git_unpack() {
 	local dir sha
 	test $# = 0 && { echo 'Expected tarball arg' >&2; return 1; }
