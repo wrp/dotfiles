@@ -81,25 +81,7 @@ ga() {
 	fi
 	command git commit ${force:+--no-verify} -m "$msg";
 }
-gdm() { # Diff with the merge-base of the base branch
-	local branch=HEAD
-	if test -n "$1" && tmp=$(command git select-branch "$1"); then
-		branch=$tmp
-		shift
-	fi
-
-	local base=$(command git config diff.base-branch)
-	if test -n "$1" && tmp=$(command git select-branch "$1"); then
-		base=$tmp
-		shift
-	fi
-	if test -z "$base" || ! command git rev-parse --verify "$base" > /dev/null; then
-		echo "Don't know which branch to diff against"
-		echo 'Please specify with "git config diff.base-branch $branch"'
-		return 1
-	fi >&2
-	command git diff "$@" "$(command git merge-base "$branch" "$base")" "$branch"
-}
+gdm() { command git diff-base "$@"; }
 gdmno() { gno "$@"; }
 gno() { gdm "$@" --name-only; }
 git_unpack() {

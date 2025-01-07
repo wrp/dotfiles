@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# Diff with the merge-base of the base branch
+branch=HEAD
+if test -n "$1" && tmp=$(git select-branch "$1"); then
+	branch=$tmp
+	shift
+fi
+
+base=$(git config diff.base-branch)
+if test -n "$1" && tmp=$(git select-branch "$1"); then
+	base=$tmp
+	shift
+fi
+
+if test -z "$base" || ! git rev-parse --verify "$base" > /dev/null; then
+	echo "Don't know which branch to diff against"
+	echo 'Please specify with "git config diff.base-branch $branch"'
+	return 1
+fi >&2
+git diff "$@" "$(git merge-base "$branch" "$base")" "$branch"
