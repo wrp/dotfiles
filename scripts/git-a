@@ -3,7 +3,7 @@
 . $HOME/.bashd/git
 
 for branch; do
-	branch=$(_select_git_branch "$branch")
+	branch=$(command git select-branch "$branch")
 	command git update-ref refs/archive/"${branch}" "${branch}" '' \
 	&& command git branch -D "${branch}"
 done

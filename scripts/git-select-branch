@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# Present a menu when invoked with no arguments,
+# or select branch by number.  Write the branch
+# name to stdout
+
+if test -n "$1" && git rev-parse --verify "$1" > /dev/null 2>&1; then
+	branch=$1
+else
+	branches=$(git show-ref --heads | sed -e 's@.*refs/heads/@@')
+	if test $# = 0; then
+		select branch in ${branches}; do break; done
+	elif test "$1" -eq 0 2> /dev/null; then
+		branch=$(git base-branch)
+	elif test "$1" -gt 0 2> /dev/null; then
+		branch=$(printf '%s' "$branches" |
+			tr ' ' '\n' | sed -n "${1}p")
+	fi
+fi
+if test -n "$branch"; then
+	printf '%s' "$branch"
+else
+	>&2 echo "$1" cannot be converted to a branch name
+	exit 1
+fi
