@@ -1,16 +1,6 @@
 # Git related interactive functions
 
 
-git_get_base_branch() {
-	if ! git config diff.base-branch | grep .; then
-		if git show-ref -q refs/heads/main; then
-			echo main
-		else
-			echo master
-		fi
-	fi
-}
-
 _select_git_branch() {
 	# Present a menu when invoked with no arguments,
 	# or select branch by number.
@@ -23,7 +13,7 @@ _select_git_branch() {
 		if test $# = 0; then
 			select branch in "${branches[@]}"; do break; done
 		elif test "$1" -eq 0 2> /dev/null; then
-			branch=$(git_get_base_branch)
+			branch=$(git base-branch)
 		elif test "$1" -gt 0 2> /dev/null; then
 			branch=${branches[$(($1-1))]}
 		fi
