@@ -34,7 +34,6 @@ git() {
 
 	case $1 in
 	(clone    ) git_clone "$@" ;;
-	(dm       ) shift; gdm "$@";;   # diff with main
 	(dmno     ) shift; gno "$@";;
 	(no       ) shift; gno "$@";;   # name-only (diffs with main)
 	(root     ) git_root;;
@@ -81,7 +80,6 @@ ga() {
 	fi
 	command git commit ${force:+--no-verify} -m "$msg";
 }
-gdm() { command git diff-base "$@"; }
 gdmno() { gno "$@"; }
 gno() { gdm "$@" --name-only; }
 git_unpack() {
