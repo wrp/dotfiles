@@ -1,16 +1,14 @@
 #!/bin/sh
 
-. $HOME/.bashd/git
-
 for branch; do
-	branch=$(command git select-branch "$branch")
-	command git update-ref refs/archive/"${branch}" "${branch}" '' \
-	&& command git branch -D "${branch}"
+	branch=$(git select-branch "$branch")
+	git update-ref refs/archive/"${branch}" "${branch}" '' \
+	&& git branch -D "${branch}"
 done
-if test $# = 0 && ! command git show-ref \
+if test $# = 0 && ! git show-ref \
 	| grep refs/archive --color=never
 then
-	base=$(command git rev-parse --absolute-git-dir)
+	base=$(git rev-parse --absolute-git-dir)
 	echo "There are no archived refs in $base" >&2
 	exit 1
 fi
