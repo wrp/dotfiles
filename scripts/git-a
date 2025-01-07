@@ -7,8 +7,10 @@ for branch; do
 	command git update-ref refs/archive/"${branch}" "${branch}" '' \
 	&& command git branch -D "${branch}"
 done
-if test $# = 0 && ! command git show-ref |
-	grep refs/archive --color=never; then
-	echo "There are no archived refs in $(
-		command git rev-parse --absolute-git-dir)"
+if test $# = 0 && ! command git show-ref \
+	| grep refs/archive --color=never
+then
+	base=$(command git rev-parse --absolute-git-dir)
+	echo "There are no archived refs in $base" >&2
+	exit 1
 fi
