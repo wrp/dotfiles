@@ -9,6 +9,11 @@ git_root() {
 }
 g() { git "$@"; }
 git() {
+	local v=$(command git --version)
+	if test "$v" != "git version 2.48.0.rc2.30.gbf0d3122e9"; then
+		warn Unexpected git version: $v
+	fi
+
 	test $# = 0 && { git .; g s; g b; return; }
 
 	# replace numeric args with branch name
