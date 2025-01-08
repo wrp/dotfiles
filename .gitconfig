@@ -1,6 +1,6 @@
 
 [alias]
-	# a See ~/scripts/git-a
+	a = archive-branch
 	ap = add --patch
 	# b See ~/scripts/git-b
 	caa = !bash -c 'git commit --amend -a -C HEAD --cleanup=strip \"$@\"' _
