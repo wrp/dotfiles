@@ -1,7 +1,6 @@
 #!/bin/sh
 
 for branch; do
-	branch=$(git select-branch "$branch") || exit
 	git update-ref refs/archive/"${branch}" "${branch}" '' \
 	&& git branch -D "${branch}"
 done
