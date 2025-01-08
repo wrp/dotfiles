@@ -1,10 +1,11 @@
 #!/bin/sh
 
 for branch; do
-	branch=$(git select-branch "$branch")
+	branch=$(git select-branch "$branch") || exit
 	git update-ref refs/archive/"${branch}" "${branch}" '' \
 	&& git branch -D "${branch}"
 done
+
 if test $# = 0 && ! git show-ref \
 	| grep refs/archive --color=never
 then
