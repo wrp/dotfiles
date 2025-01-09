@@ -5,7 +5,8 @@ g() { git "$@"; }
 git() {
 	local v
 	v=$(command git --version) || return
-	if test "$v" != "git version 2.48.0.rc2.30.gbf0d3122e9"; then
+	if test -n "$EXPECTED_GIT_VERSION" &&
+		test "$v" != "$EXPECTED_GIT_VERSION"; then
 		warn Unexpected git version: $v
 	fi
 
