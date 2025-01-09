@@ -6,8 +6,10 @@ git() {
 	local v
 	v=$(command git --version) || return
 	if test -n "$EXPECTED_GIT_VERSION" &&
-		test "$v" != "$EXPECTED_GIT_VERSION"; then
+		test "$v" != "$EXPECTED_GIT_VERSION"
+	then
 		warn Unexpected git version: $v
+		which git
 	fi
 
 	test $# = 0 && { status=1 branch=1 git info; return; }
