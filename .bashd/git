@@ -15,8 +15,7 @@ git() {
 	test $# = 0 && { status=1 branch=1 command git info; return; }
 
 	# replace numeric args with branch name
-	local x prev tmp
-	local -a args
+	local i x prev tmp count=$#
 	for x; do
 		if test "$prev" != -n && test "$x" -ge 0 2> /dev/null; then
 			tmp=( $(command git select-branch "$x") )
@@ -25,10 +24,10 @@ git() {
 				x=$tmp
 			fi
 		fi
-		args+=( "$x" )
+		set -- "$@" "$x"
 		prev=$x
 	done
-	set -- "${args[@]}"
+	for ((i=0; i < count; i+=1)); do shift; done
 
 	case $1 in
 	(clone    ) git_clone "$@" ;;
