@@ -31,6 +31,7 @@ git() {
 
 	case $1 in
 	(clone    ) git_clone "$@" ;;
+	(dm       ) if test "$#" = 1; then g dm 0; return ; fi; command git "$@";;
 	(.        ) git info;;
 	(*        ) command git "$@" ;;
 	esac
