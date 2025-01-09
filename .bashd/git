@@ -18,7 +18,7 @@ git() {
 	local i x prev tmp count=$#
 	for x; do
 		if test "$prev" != -n && test "$x" -ge 0 2> /dev/null; then
-			tmp=( $(command git select-branch "$x") )
+			tmp=$(command git select-branch "$x")
 			if test -n "$tmp"; then
 				echo "$x --> $tmp" >&2
 				x=$tmp
