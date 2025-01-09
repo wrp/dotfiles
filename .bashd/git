@@ -9,7 +9,7 @@ git() {
 		warn Unexpected git version: $v
 	fi
 
-	test $# = 0 && { git .; g s; g b; return; }
+	test $# = 0 && { status=1 branch=1 git info; return; }
 
 	# replace numeric args with branch name
 	local x prev tmp
@@ -29,6 +29,7 @@ git() {
 
 	case $1 in
 	(clone    ) git_clone "$@" ;;
+	(.        ) git info;;
 	(*        ) command git "$@" ;;
 	esac
 

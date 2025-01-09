@@ -1,20 +1,26 @@
 #!/bin/sh
 
 top=$(git rev-parse --show-toplevel)
-printf '%s' "$top"
+cwd=$(pwd | sed "s@${top}@@")
 
-if test -n "$COLOR"; then
+if test -t 1; then
+	white() { tput setaf 7; }
 	blue() { tput setaf 4; }
 	yellow() { tput setaf 3; }
 	green() { tput setaf 2; }
 else
+	white() { :; }
 	blue() { :; }
 	yellow() { :; }
 	green() { :; }
 fi
 
 remote="$(command git rev-parse --symbolic-full-name @{upstream} 2> /dev/null)"
-printf '%s: %s%s\n' \
-	"$(blue; pwd | sed "s@${top}@@")" \
+printf '%s%s: %s%s\n' \
+	"$(white)$top" \
+	"$(blue)$cwd" \
 	"$(yellow; git rev-parse --abbrev-ref HEAD)" \
 	"$(green)${remote:+ (${remote#refs/remotes/})}"
+
+if test -n "$status"; then git s; fi
+if test -n "$branch"; then git b; fi
