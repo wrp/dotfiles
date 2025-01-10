@@ -32,7 +32,7 @@ git() {
 	case $1 in
 	(clone    ) git_clone "$@"; return;;
 	(dm       ) test "$#" = 1 && set -- dm $(git-base-branch);;
-	(.        ) git info; return;;
+	(.        ) set -- info;;
 	esac
 	command git "$@"
 
