@@ -19,7 +19,7 @@ fi
 
 remote="$(command git rev-parse --symbolic-full-name @{upstream} 2> /dev/null)"
 branch="$(git rev-parse --abbrev-ref HEAD)"
-printf '%s%s: %s%s\n' \
+printf 'cwd=%s%s %s%s\n' \
 	"$(white)$top/" \
 	"$(cyan)${cwd#/}" \
 	"$(yellow)branch=${branch}" \
