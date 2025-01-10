@@ -17,8 +17,8 @@ fi
 
 remote="$(command git rev-parse --symbolic-full-name @{upstream} 2> /dev/null)"
 printf '%s%s: %s%s\n' \
-	"$(white)$top" \
-	"$(blue)$cwd" \
+	"$(white)$top/" \
+	"$(blue)${cwd#/}" \
 	"$(yellow; git rev-parse --abbrev-ref HEAD)" \
 	"$(green)${remote:+ (${remote#refs/remotes/})}"
 
