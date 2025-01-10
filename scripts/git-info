@@ -6,11 +6,13 @@ cwd=$(pwd | sed "s@${top}@@")
 if test -t 1; then
 	white() { tput setaf 7; }
 	blue() { tput setaf 4; }
+	cyan() { tput setaf 6; }
 	yellow() { tput setaf 3; }
 	green() { tput setaf 2; }
 else
 	white() { :; }
 	blue() { :; }
+	cyan() { :; }
 	yellow() { :; }
 	green() { :; }
 fi
@@ -18,7 +20,7 @@ fi
 remote="$(command git rev-parse --symbolic-full-name @{upstream} 2> /dev/null)"
 printf '%s%s: %s%s\n' \
 	"$(white)$top/" \
-	"$(blue)${cwd#/}" \
+	"$(cyan)${cwd#/}" \
 	"$(yellow; git rev-parse --abbrev-ref HEAD)" \
 	"$(green)${remote:+ (${remote#refs/remotes/})}"
 
