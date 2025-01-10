@@ -30,11 +30,11 @@ git() {
 	for ((i=0; i < count; i+=1)); do shift; done
 
 	case $1 in
-	(clone    ) git_clone "$@" ;;
-	(dm       ) if test "$#" = 1; then g dm 0; return ; fi; command git "$@";;
-	(.        ) git info;;
-	(*        ) command git "$@" ;;
+	(clone    ) git_clone "$@"; return;;
+	(dm       ) test "$#" = 1 && set -- dm $(git-base-branch);;
+	(.        ) git info; return;;
 	esac
+	command git "$@"
 
 }
 ga() {
