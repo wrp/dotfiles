@@ -3,6 +3,16 @@ auth() {
 	gcloud auth application-default login
 }
 
+check_config_dirs() {
+	local cfg d
+	for cfg; do
+		d=$HOME/.config/$cfg
+		if ! test -d "$d"; then
+			warn "$d does not exist"
+		fi
+	done
+}
+
 clear_path() {
 	# Ensure that $1 is not in PATH
 	PATH=$(echo "$PATH" | sed \

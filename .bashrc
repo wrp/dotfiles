@@ -52,6 +52,6 @@ trap archive-bash-history 0
 trap debug_trap DEBUG # Run before a command in an interactive shell
 trap '. "$HOME"/.bashrc' SIGUSR1
 trap '. "$HOME"/.bashd/PS1; window-title' SIGWINCH
-
+check_config_dirs git vim
 PROMPT_COMMAND=after_cmd # Run after a command, before a prompt is displayed
 return 0
