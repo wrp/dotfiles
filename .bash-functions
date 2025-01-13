@@ -3,10 +3,12 @@ auth() {
 	gcloud auth application-default login
 }
 
-check_config_dirs() {
-	local cfg d
+check_directory_existence() {
+	local cfg dir d
+	dir=$1
+	shift
 	for cfg; do
-		d=$HOME/.config/$cfg
+		d=${dir%/}/$cfg
 		if ! test -d "$d"; then
 			if test -e "$d"; then
 				warn "$d exists but is not a directory"
