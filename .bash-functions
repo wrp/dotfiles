@@ -8,7 +8,11 @@ check_config_dirs() {
 	for cfg; do
 		d=$HOME/.config/$cfg
 		if ! test -d "$d"; then
-			warn "$d does not exist"
+			if test -e "$d"; then
+				warn "$d exists but is not a directory"
+			else
+				warn "The directory $d/ does not exist"
+			fi
 		fi
 	done
 }
