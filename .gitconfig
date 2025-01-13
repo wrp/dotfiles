@@ -95,3 +95,5 @@
 	whitespace = red reverse
 [log]
 	follow = true
+[help]
+	autocorrect = 0
