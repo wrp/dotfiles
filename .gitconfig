@@ -96,4 +96,4 @@
 [log]
 	follow = true
 [help]
-	autocorrect = 0
+	autocorrect = never
