@@ -10,7 +10,9 @@
 # to show none.
 
 cd ${GIT_PREFIX:-.} || exit
-trailers=${t-$(git config core.default-trailers | tr \\n ,; git config core.required-trailers; )}
+trailers=${t-$( git config core.default-trailers | tr \\n ,;
+	git config core.required-trailers; )}
+trailers=${trailers#,}
 width=${w-$(git config core.default-trailer-width || echo 11)}
 trailer_fmt=$(printf '%s' "${trailers}" |
 	sed -E "s/([^,]*)(\$|,)/ [%<(${width})%(trailers:key=\1,separator=%x2C,valueonly)]/g"
