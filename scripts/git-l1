@@ -32,7 +32,8 @@ if test -n "$trailers"; then
 			printf "%-$((width + 2))s " "$t";
 		done
 	)
-	GIT_PAGER="sh -c 'printf \"%s\\\n\" \"$header\"; cat' | ${GIT_PAGER:-more}"
+	GIT_PAGER="sh -c 'printf \"%s\\\n\" \"$header\"; cat -u' |
+		${GIT_PAGER:-more}"
 fi
 
 git log \
