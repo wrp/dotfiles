@@ -26,11 +26,13 @@ author_width=${GITLOG_AUTHOR_WIDTH:-$( \
 )}
 
 if test -n "$trailers"; then
-	printf "%$((oid_width+1))s%$((author_width+2))s" ' '
-	echo "$trailers" | tr , '\n' | cut -b 1-$((width + 2)) | while read t; do
-		printf "%-$((width + 2))s " "$t";
-	done
-	printf '\n'
+	header=$(
+		printf "%$((oid_width+1))s%$((author_width+2))s" ' '
+		echo "$trailers" | tr , '\n' | cut -b 1-$((width + 2)) | while read t; do
+			printf "%-$((width + 2))s " "$t";
+		done
+	)
+	GIT_PAGER="sh -c 'printf \"%s\\\n\" \"$header\"; cat' | ${GIT_PAGER:-more}"
 fi
 
 git log \
