@@ -10,6 +10,9 @@
 # to show none.
 
 cd ${GIT_PREFIX:-.} || exit
+
+oid_width=8
+
 trailers=${t-$( git config core.default-trailers | tr \\n ,;
 	git config core.required-trailers; )}
 trailers=${trailers#,}
@@ -23,7 +26,7 @@ author_width=${GITLOG_AUTHOR_WIDTH:-$( \
 )}
 
 if test -n "$trailers"; then
-	printf "%8s%${author_width}s  " ' '
+	printf "%$((oid_width+1))s%${author_width}s  " ' '
 	echo "$trailers" | tr , '\n' | cut -b 1-$((width + 2)) | while read t; do
 		printf "%-$((width + 2))s " "$t";
 	done
@@ -32,6 +35,7 @@ fi
 
 git log \
 	--date=format:"" \
+	--abbrev=${oid_width} \
 	--format=tformat:"$(printf '%s' "$(:
 		)%C(green)%h$(:
 		)%C(yellow)% ad$(:
