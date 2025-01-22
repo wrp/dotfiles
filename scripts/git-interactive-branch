@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# In interactive use with no arguments, show an enumerated listing
+# of all branches.
+
 if test -z "$*" && test -t 1; then
 	git branch -vv --color=always | nl
 else
