@@ -37,7 +37,7 @@ fi
 
 if test -n "$trailers"; then
 	header=$(
-		printf "%$((oid_width+1))s%$((author_width+2))s" ' '
+		printf "%$((oid_width+1))s%-$((author_width+2))s" ' ' trailers:
 		echo "$trailers" | tr , '\n' | cut -b 1-$((width + 2)) | while read t; do
 			printf "%-$((width + 2))s " "$t";
 		done
