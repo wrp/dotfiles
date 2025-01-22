@@ -2,11 +2,11 @@
 
 # Set t to a comma separated list of trailers to be displayed in the
 # log output The idea here is that you can specify trailers with 'git
-# config log.default-trailers' (a comma-separated list of trailer
-# keys) or override with t at the command line.  eg, set 'git config
-# diff.default-trailers ticket' to show the ticket in the log, or use
-# 't=ticket,style g l1' to show both the ticket and the style trailer
-# in the log, or 't= g l1' to show none.
+# config --add log.default-trailer' or override with t at the command
+# line.  eg, set 'git config --add log.default-trailers ticket' to
+# show the ticket in the log, or use 't=ticket,style g l1' to show
+# both the ticket and the style trailer in the log, or 't= g l1' to
+# show none.
 
 # Any trailer keys listed in commit.required-trailers are also
 # listed if t is unspecified.
@@ -15,10 +15,11 @@ cd ${GIT_PREFIX:-.} || exit
 
 oid_width=8
 
-trailers=${t-$( git config log.default-trailers | tr \\n ,;
-	git config commit.required-trailers; )}
-trailers=${trailers#,}
-width=${w-$(git config log.trailer-width || echo 11)}
+trailers=${t-"$( {
+	git config --get-all log.default-trailer
+	git config --get-all commit.required-trailer
+	} | tr \\n , )"}
+width=${w-"$(git config log.trailer-width || echo 11)"}
 trailer_fmt=$(printf '%s' "${trailers}" |
 	sed -E "s/([^,]*)(\$|,)/ [%<(${width})%(trailers:key=\1,separator=%x2C,valueonly)]/g"
 )
