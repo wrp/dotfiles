@@ -1,12 +1,15 @@
 #!/bin/sh
 
-# Set t to a comma separated list of trailers to be displayed in the
-# log output The idea here is that you can specify trailers with 'git
+# Print log in brief format (one line per commit)
+
+# You may set t to a comma separated list of trailers to be displayed in the
+# log output, and set w to an integer value giving the width of the field in
+# which the trailer is displayed. The idea here is that you can specify trailers with 'git
 # config --add log.default-trailer' or override with t at the command
 # line.  eg, set 'git config --add log.default-trailers ticket' to
 # show the ticket in the log, or use 't=ticket,style g l1' to show
 # both the ticket and the style trailer in the log, or 't= g l1' to
-# show none.
+# show no trailers.
 
 # Any trailer keys listed in commit.required-trailers are also
 # listed if t is unspecified.
