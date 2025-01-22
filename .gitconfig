@@ -2,7 +2,7 @@
 [alias]
 	a = archive-branch
 	ap = add --patch
-	# b See ~/scripts/git-b
+	b = interactive-branch
 	caa = !bash -c 'git commit --amend -a -C HEAD --cleanup=strip \"$@\"' _
 	caan = caa -n
 	cd = ci -m Documentation
