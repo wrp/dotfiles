@@ -16,7 +16,7 @@
 
 cd ${GIT_PREFIX:-.} || exit
 
-oid_width=8
+oid_width=8  # display length of commit ids
 
 trailers=${t-"$( {
 	git config --get-all log.default-trailer
