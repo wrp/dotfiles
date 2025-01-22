@@ -1,13 +1,15 @@
 #!/bin/sh
 
-# Set t to a comma separated list of trailers to be
-# displayed in the log output The idea here is that you can
-# specify trailers with 'git config core.default-trailers'
-# or override with t at the command line.  eg, set 'git
-# config core.default-trailers ticket' to show the ticket
-# in the log, or use 't=ticket,style g l1' to show both
-# the ticket adn the style trailer in the log, or 't= g l1'
-# to show none.
+# Set t to a comma separated list of trailers to be displayed in the
+# log output The idea here is that you can specify trailers with 'git
+# config log.default-trailers' (a comma-separated list of trailer
+# keys) or override with t at the command line.  eg, set 'git config
+# diff.default-trailers ticket' to show the ticket in the log, or use
+# 't=ticket,style g l1' to show both the ticket and the style trailer
+# in the log, or 't= g l1' to show none.
+
+# Any trailer keys listed in commit.required-trailers are also
+# listed if t is unspecified.
 
 cd ${GIT_PREFIX:-.} || exit
 
