@@ -118,14 +118,14 @@ set formatoptions=cq
 set comments=
 
 set swapfile
-set directory^=~/.vim/swap//
+set directory^=~/.run/vim/swap//
 set writebackup
 set backupcopy=auto
 if has("patch-8.1.0251")
-        set backupdir^=~/.vim/backup//
+        set backupdir^=~/.run/vim/backup//
 end
 set undofile
-set undodir^=~/.vim/undo//
+set undodir^=~/.run/vim/undo//
 
 
 
