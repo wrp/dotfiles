@@ -10,6 +10,7 @@ git() {
 	then
 		warn Unexpected git version: $v
 		which git
+		return 1
 	fi
 
 	test $# = 0 && { status=1 branch=1 command git info; return; }
