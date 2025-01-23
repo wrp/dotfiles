@@ -31,14 +31,15 @@ author_width=${GITLOG_AUTHOR_WIDTH:-$( \
 	git config log.author-width 2> /dev/null || echo 12
 )}
 
-if test "${GIT_PAGER%% *}" = less; then
+if test "${GIT_PAGER%% *}" = less &&
 	# Check if this version of less supports --header
 	# Grrr.  less does not return a reasonable status for a bad argument
-	k=$(echo foo | command less --header 1 2> /dev/null)
-	if test "$k" = foo; then
-		LESS="$LESS --header 1"
-		export LESS
-	fi
+	test "$(echo foo | command less --header 1 2> /dev/null)" = foo
+then
+	LESS="$LESS --header 1,$((oid_width+1)) --no-number-headers"
+	export LESS
+else
+	truncate="%<($(($(tput cols) / 3)),trunc)"
 fi
 
 if test -n "$trailers"; then
@@ -52,6 +53,9 @@ if test -n "$trailers"; then
 		${GIT_PAGER:-more}"
 fi
 
+# Warning: if git is too old and does not support the
+# %trailer format, those directives will appear verbatim
+# in the log.  Upgrade git.
 git log \
 	--date=format:"" \
 	--abbrev=${oid_width} \
@@ -59,6 +63,6 @@ git log \
 		)%C(green)%h$(:
 		)%C(yellow)% ad$(:
 		)%C(red)%<(${author_width},trunc)% an %Creset${trailer_fmt}$(:
-		)%<($(($(tput cols) / 3)),trunc)% s$( :
+		)${truncate}% s$( :
 		)%Cblue% D$(:
 		)%Creset" | sed -E 's/  +//g' )" "$@"
