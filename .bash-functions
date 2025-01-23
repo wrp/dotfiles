@@ -13,7 +13,8 @@ check_directory_existence() {
 			if test -e "$d"; then
 				warn "$d exists but is not a directory"
 			else
-				warn "The directory $d/ does not exist"
+				warn "The directory $d/ does not exist; creating..."
+				mkdir -p "$d"
 			fi
 		fi
 	done
