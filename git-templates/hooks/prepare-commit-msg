@@ -62,7 +62,7 @@ get_ticket() {
 			msg="setting ticket to None"
 			ticket=None
 		fi
-		if test "$(git config advice.warn-if-no-ticket)" != false; then
+		if test "$(git config advice.warn-if-no-ticket)" = true; then
 			warn "($(git rev-parse --short HEAD)) $msg"
 		fi
 	fi >&2
