@@ -17,7 +17,7 @@
 initialize() {
 	cd ${GIT_PREFIX:-.} || exit
 
-	local _cfg_author_width _cfg_trailer_width
+	local _cfg_author_width _cfg_trailer_width _fmt
 
 	oid_width=8  # display length of commit ids
 
@@ -27,8 +27,9 @@ initialize() {
 		} | tr \\n , )"}
 	_cfg_trailer_width="$(git config log.trailer-width)"
 	trailer_width=${w-${_cfg_trailer_width:-11}}
+	_fmt='%(trailers:key=\1,separator=%x2C,valueonly)'
 	trailer_fmt=$(printf '%s' "${trailers}" |
-		sed -E "s/([^,]*)(\$|,)/ [%<(${trailer_width})%(trailers:key=\1,separator=%x2C,valueonly)]/g"
+		sed -E "s/([^,]*)(\$|,)/ [%<(${trailer_width})${_fmt}]/g"
 	)
 	_cfg_author_width="$(git config log.author-width)"
 	author_width=${GITLOG_AUTHOR_WIDTH:-${_cfg_author_width:-12}}
