@@ -17,18 +17,21 @@
 initialize() {
 	cd ${GIT_PREFIX:-.} || exit
 
+	local _cfg_author_width _cfg_trailer_width
+
 	oid_width=8  # display length of commit ids
 
 	trailers=${t-"$( {
 		git config --get-all log.default-trailer
 		git config --get-all commit.required-trailer
 		} | tr \\n , )"}
-	width=${w-"$(git config log.trailer-width || echo 11)"}
+	_cfg_trailer_width="$(git config log.trailer-width)"
+	trailer_width=${w-${_cfg_trailer_width:-11}}
 	trailer_fmt=$(printf '%s' "${trailers}" |
-		sed -E "s/([^,]*)(\$|,)/ [%<(${width})%(trailers:key=\1,separator=%x2C,valueonly)]/g"
+		sed -E "s/([^,]*)(\$|,)/ [%<(${trailer_width})%(trailers:key=\1,separator=%x2C,valueonly)]/g"
 	)
-	configged_width="$(git config log.author-width)"
-	author_width=${GITLOG_AUTHOR_WIDTH:-${configged_width:-12}}
+	_cfg_author_width="$(git config log.author-width)"
+	author_width=${GITLOG_AUTHOR_WIDTH:-${_cfg_author_width:-12}}
 }
 initialize
 
@@ -56,8 +59,8 @@ fi
 if test -n "$trailers"; then
 	header=$(
 		printf "%$((oid_width+1))s%-$((author_width+2))s" ' ' trailers:
-		echo "$trailers" | tr , '\n' | cut -b 1-$((width + 2)) | while read t; do
-			printf "%-$((width + 2))s " "$t";
+		echo "$trailers" | tr , '\n' | cut -b 1-$((trailer_width + 2)) | while read t; do
+			printf "%-$((trailer_width + 2))s " "$t";
 		done
 	)
 	GIT_PAGER="sh -c 'printf \"%s\\\n\" \"$header\"; cat -u' |
