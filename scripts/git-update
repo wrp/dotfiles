@@ -2,6 +2,13 @@
 
 
 branch=${1-$(git base-branch)} || exit
+current=$(git rev-parse --abbrev-ref HEAD)
+
+if test "$current" = "$branch"; then
+	git pull
+	exit
+fi
+
 remote=$(git config branch.${branch}.remote)
 if test -z "$remote"; then
 	echo "Can't find remote for $branch" >&2
