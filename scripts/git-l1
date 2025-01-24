@@ -16,6 +16,7 @@
 
 initialize() {
 	cd ${GIT_PREFIX:-.} || exit
+	: ${GIT_PAGER=$PAGER}
 
 	local _cfg_author_width _cfg_trailer_width _fmt
 
