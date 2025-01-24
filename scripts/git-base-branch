@@ -1,7 +1,8 @@
 #!/bin/sh
 
-# Write the name of the base branch to stdout
+git rev-parse || exit
 
+# Write the name of the base branch to stdout
 if ! git config diff.base-branch | grep .; then
 	if git show-ref -q refs/heads/main; then
 		echo main
