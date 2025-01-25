@@ -34,7 +34,8 @@
 	dw = diff --word-diff
 	dwa = diff --word-diff-regex=.
 	exec = "!exec "  # execute a shell command in the top level
-	l = l1  # See ~/scripts/git-l1
+	l1 = log-oneline
+	l = l1
 	l1a = l1 --graph --decorate
 	l1ah = l1 -n 10 --graph --decorate
 	l1h = l1 -n 10
