@@ -1,0 +1,32 @@
+#!/bin/sh
+
+if test $# = 0; then
+	echo 'Expected tarball arg' >&2
+	exit 1;
+fi
+
+for x; do
+	test "${x%.tar.gz}" = "$x" || zip=z
+	dir="$(tar -${zip}tf "$x" | awk '{print $1}' FS=/ | sort -u)"
+	if ! test "$(echo "$dir" | wc -l | tr -d ' ')" = 1; then
+		echo "$x has more than 1 dir or contains newlines:"
+		echo "$dir"
+		exit 1
+	fi >&2
+
+	if test -e "$dir"; then
+		echo "$dir exists" >&2
+		exit 1
+	fi
+	sha=$(md5sum "$x" | cut -d\  -f 1)
+	tar -${zip}xf "$x" \
+	&& cd "$dir" \
+	&& git init \
+	&& git add . \
+	&& git commit --quiet -n -m "Initial unpack: $(basename "$x")
+
+This is the content of the files freshly unpacked from
+$(basename "$x") (md5sum: $sha)
+"
+
+done

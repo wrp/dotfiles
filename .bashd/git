@@ -77,28 +77,6 @@ ga() {
 	fi
 	command git commit ${force:+--no-verify} -m "$msg";
 }
-git_unpack() {
-	local dir sha
-	test $# = 0 && { echo 'Expected tarball arg' >&2; return 1; }
-	for x; do
-		local zip
-		test "${x%.tar.gz}" = "$x" || zip=z
-		dir="$(set -x; tar -${zip}tf "$x" | awk '{print $1}' FS=/ | sort -u)"
-		if ! test "$(echo "$dir" | wc -l | tr -d ' ')" = 1; then
-			echo "$x has more than 1 dir or contains newlines:"
-			echo "$dir"
-			return 1
-		fi >&2
-
-		test -e "$dir" && { echo $dir exists; return 1; }
-		sha=$(md5sum "$x" | cut -d\  -f 1)
-		tar -${zip}xf "$x" \
-		&& cd "$dir" \
-		&& command git init \
-		&& command git add . \
-		&& command git commit -n -m "Initial unpack: $sha $(basename $x)"
-	done
-}
 git_clone() {
 	local origin url
 	shift    # discard 'clone'
