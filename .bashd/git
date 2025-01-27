@@ -31,9 +31,9 @@ git() {
 	for ((i=0; i < count; i+=1)); do shift; done
 
 	case $1 in
-	(clone    ) git_clone "$@"; return;;
-	(dm       ) test "$#" = 1 && set -- dm $(git-base-branch);;
-	(.        ) set -- info;;
+	(clone ) git_clone "$@"; return;;
+	(dm    ) test "$#" = 1 && set -- dm $(git-base-branch);;
+	(.     ) set -- info;;
 	esac
 	command git "$@"
 
