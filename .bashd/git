@@ -40,7 +40,6 @@ git() {
 
 	case $1 in
 	(clone ) v=$1; shift; set -- "$v"-wrapper "$@";;
-	(dm    ) test "$#" = 1 && set -- dm $(git-base-branch);;
 	(.     ) set -- info;;
 	esac
 	command git "$@"
