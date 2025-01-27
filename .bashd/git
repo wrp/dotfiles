@@ -99,7 +99,3 @@ git_clone() {
 	set -- clone ${origin:+--origin="$origin"} "$url" "$@";
 	command git "$@"
 }
-gr() { # Git recursive
-	echo 'Stop using gr.  Use "g r" instead and fix it as needed' >&2
-	return 1
-}
