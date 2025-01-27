@@ -31,7 +31,7 @@ git() {
 	for ((i=0; i < count; i+=1)); do shift; done
 
 	case $1 in
-	(clone ) git_clone "$@"; return;;
+	(clone ) v=$1; shift; set -- "$v"-wrapper "$@";;
 	(dm    ) test "$#" = 1 && set -- dm $(git-base-branch);;
 	(.     ) set -- info;;
 	esac
@@ -41,28 +41,4 @@ git() {
 ga() {
 	echo 'Use g a instead of ga' >&2
 	return 1
-}
-git_clone() {
-	local origin url
-	shift    # discard 'clone'
-	url=$1
-	shift
-
-	# Parse the url to specify a name for origin
-	case $url in
-	http*)
-		# By default, remap name to use ssh
-		if test -z "$HTTP_OK"; then
-			echo 'Remapping http target to git@ to use ssh.  To force http, set HTTP_OK' >&2
-			url=$(printf '%s\n' "$url" | sed -e 's|.*://|git@|' -e 's@/@:@')
-			shift
-		fi
-	;;
-	esac
-	case $url in
-	*github*) origin=github;;
-	esac
-	test -n "$origin" && echo "Setting origin=$origin" >&2
-	set -- clone ${origin:+--origin="$origin"} "$url" "$@";
-	command git "$@"
 }
