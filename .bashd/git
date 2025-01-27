@@ -16,8 +16,10 @@ git() {
 	test $# = 0 && { status=1 branch=1 command git info; return; }
 
 	# Do aliasing on arguments
-	local i old_arg prev new_arg count=$#
+	local old_arg prev new_arg
 	for old_arg; do
+		shift
+
 		# replace numeric args with branch name
 		if test "$prev" != -n && test "$old_arg" -ge 0 2> /dev/null; then
 			new_arg=$(command git select-branch "$old_arg")
@@ -36,14 +38,12 @@ git() {
 		set -- "$@" "$old_arg"
 		prev=$old_arg
 	done
-	for ((i=0; i < count; i+=1)); do shift; done
 
 	case $1 in
 	(clone ) v=$1; shift; set -- "$v"-wrapper "$@";;
 	(.     ) set -- info;;
 	esac
 	command git "$@"
-
 }
 ga() {
 	echo 'Use g a instead of ga' >&2
