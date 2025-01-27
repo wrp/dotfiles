@@ -11,9 +11,15 @@ cleanup_docker_corruption() {
 	git status > /dev/null
 }
 
+validate_args() {
+	if test $# = 0; then
+		echo No paths specified >&2
+		exit 1
+	fi
+}
 
 main() {
-
+	validate_args "$@"
 	cleanup_docker_corruption
 
 	local msg force against=HEAD preamble
