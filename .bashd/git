@@ -58,6 +58,8 @@ git_clone() {
 			shift
 		fi
 	;;
+	esac
+	case $url in
 	*github*) origin=github;;
 	esac
 	test -n "$origin" && echo "Setting origin=$origin" >&2
