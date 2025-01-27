@@ -16,25 +16,25 @@ git() {
 	test $# = 0 && { status=1 branch=1 command git info; return; }
 
 	# Do aliasing on arguments
-	local i x prev tmp count=$#
-	for x; do
+	local i old_arg prev new_arg count=$#
+	for old_arg; do
 		# replace numeric args with branch name
-		if test "$prev" != -n && test "$x" -ge 0 2> /dev/null; then
-			tmp=$(command git select-branch "$x")
+		if test "$prev" != -n && test "$old_arg" -ge 0 2> /dev/null; then
+			new_arg=$(command git select-branch "$old_arg")
 		fi
-		case $x in
-		(mb    ) tmp=--merge-base;;
-		(no    ) tmp=--name-only;;
-		(bb    ) tmp=$(git-base-branch) || return 1;;
+		case $old_arg in
+		(mb    ) new_arg=--merge-base;;
+		(no    ) new_arg=--name-only;;
+		(bb    ) new_arg=$(git-base-branch) || return 1;;
 		esac
 
-		if test -n "$tmp"; then
-			echo "$x --> $tmp" >&2
-			x=$tmp
+		if test -n "$new_arg"; then
+			echo "$old_arg --> $new_arg" >&2
+			old_arg=$new_arg
 		fi
 
-		set -- "$@" "$x"
-		prev=$x
+		set -- "$@" "$old_arg"
+		prev=$old_arg
 	done
 	for ((i=0; i < count; i+=1)); do shift; done
 
