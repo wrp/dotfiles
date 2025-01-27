@@ -1,0 +1,51 @@
+#!/bin/sh
+
+# Add each file listed on the command line with auto-generated
+# commit messages.
+
+cleanup_docker_corruption() {
+	# When running on both docker and outside, the repos seem to get corrupt
+	# in such a way that `git status` cleans it up.  (That is, git diff-index
+	# will fail until `git status` is run in that environment.)  So run
+	# git status to "uncorrupt" the repo.  Terrible hack.
+	git status > /dev/null
+}
+
+
+main() {
+
+	cleanup_docker_corruption
+
+	local msg force against=HEAD preamble
+	if test "$1" = "-f"; then
+		force=1
+		shift
+	fi
+	if ! git rev-parse --verify HEAD >/dev/null 2>&1; then
+		# Initial commit: diff against an empty tree object
+		against=$(git hash-object -t tree /dev/null)
+	fi
+	if test -z "$force" && ! git diff-index --quiet "$against"; then
+		echo 'Repo is dirty.  -f to force (will also skip pre-commit check)' >&2
+		exit 1
+	fi
+	if test -z "$force"; then
+		# If we abort, or git commit fails, we want to return to a clean state.
+		# If commit succeeds, doing reset should be a no-op.  But, if user
+		# asked to force, do not attempt to clean up.
+		trap 'command git reset' 0
+	fi
+	git add "$@" || exit
+	preamble=$(perl -E 'say substr join(", ", @ARGV), 0, 56' "${@##*/}")
+	msg=$(git diff --name-only --cached \
+		| perl -0000 -nE 'if (tr/\n// > 1) {s@^@Add '"$preamble"'\n\n@} else {
+			s/\n/ /g; s/^/Add / }; say'
+	)
+	if test -z "$msg"; then
+		echo "Unable to generate commit message!" >&2
+		exit 1
+	fi
+	git commit ${force:+--no-verify} -m "$msg"
+}
+
+main "$@"

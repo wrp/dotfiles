@@ -1,6 +1,7 @@
 
 [alias]
-	a = archive-branch
+	a = add-files
+	ab = archive-branch
 	ap = add --patch
 	b = interactive-branch
 	caa = !bash -c 'git commit --amend -a -C HEAD --cleanup=strip \"$@\"' _
