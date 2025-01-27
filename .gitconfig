@@ -27,7 +27,7 @@
 	d = diff
 	dc = diff --cached
 	dcno = diff --cached --name-only
-	dm = !bash -c 'git diff --merge-base "${1-$(git-base-branch)}"' _
+	dm = !git diff --merge-base "$(git-base-branch)"
 	dmno = dm --name-only
 	dn = diff --numstat
 	dno = diff --name-only
