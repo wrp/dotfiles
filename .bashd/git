@@ -15,16 +15,24 @@ git() {
 
 	test $# = 0 && { status=1 branch=1 command git info; return; }
 
-	# replace numeric args with branch name
+	# Do aliasing on arguments
 	local i x prev tmp count=$#
 	for x; do
+		# replace numeric args with branch name
 		if test "$prev" != -n && test "$x" -ge 0 2> /dev/null; then
 			tmp=$(command git select-branch "$x")
-			if test -n "$tmp"; then
-				echo "$x --> $tmp" >&2
-				x=$tmp
-			fi
 		fi
+		case $x in
+		(mb    ) tmp=--merge-base;;
+		(no    ) tmp=--name-only;;
+		(bb    ) tmp=$(git-base-branch) || return 1;;
+		esac
+
+		if test -n "$tmp"; then
+			echo "$x --> $tmp" >&2
+			x=$tmp
+		fi
+
 		set -- "$@" "$x"
 		prev=$x
 	done
