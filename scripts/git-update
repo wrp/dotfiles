@@ -24,5 +24,6 @@ if test "${old% *}" = "${new% *}"; then
 else
 	echo "Updating: $old"
 	echo "  -->     $new"
+	printf '(%d commits)' $(git rev-list "$old".."$new" | wc -l)
 	git update-ref refs/heads/$branch $upstream || exit 1
 fi
