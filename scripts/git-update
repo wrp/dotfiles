@@ -22,7 +22,7 @@ new=$(git show-ref refs/heads/$branch | cut -b 1-40)
 if test "${old}" = "${new}"; then
 	echo No changes
 else
-	echo "Updated: $old"
-	echo "  -->     $new"
+	printf "Updated: %s\n" "$(git log -n 1 --format='%H    %s' "$old")"
+	printf "  -->    %s\n" "$(git log -n 1 --format='%H    %s' "$new")"
 	printf '(%d commits)\n' "$(git rev-list "$old".."$new" | wc -l)"
 fi
