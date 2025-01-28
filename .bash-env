@@ -26,6 +26,7 @@ export HISTTIMEFORMAT='%H:%M:%S ' #%m/%d
 export IGNOREEOF=4
 export LESS=FFiMQRSX#.95
 export PAGER=less
+export PYTHONSTARTUP=$HOME/.pystartup
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 # export CPATH=$HOME/$(uname -m)/$(uname -s)/include
 # export LDPATH=$HOME/$(uname -m)/$(uname -s)/lib
