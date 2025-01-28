@@ -8,15 +8,14 @@ old=$(git show-ref refs/heads/$branch | cut -b 1-40)
 if test "$current" = "$branch"; then
 	git pull --quiet
 else
-
-remote=$(git config branch.${branch}.remote)
-upstream=$(git rev-parse --abbrev-ref --symbolic-full-name ${branch}@{u})
-if test -z "$remote" || test -z "$upstream"; then
-	echo "Can't find remote for $branch" >&2
-	exit 1
-fi
-git fetch --quiet "$remote" || exit 1
-git update-ref refs/heads/$branch $upstream || exit 1
+	remote=$(git config branch.${branch}.remote)
+	upstream=$(git rev-parse --abbrev-ref --symbolic-full-name ${branch}@{u})
+	if test -z "$remote" || test -z "$upstream"; then
+		echo "Can't find remote for $branch" >&2
+		exit 1
+	fi
+	git fetch --quiet "$remote" || exit 1
+	git update-ref refs/heads/$branch $upstream || exit 1
 fi
 
 new=$(git show-ref refs/heads/$branch | cut -b 1-40)
