@@ -1,0 +1,5 @@
+#!/bin/sh
+
+for pkg in autoconf automake libtool binutils ncurses-utils; do
+	pkg install $pkg
+done
