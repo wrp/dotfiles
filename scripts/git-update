@@ -5,7 +5,7 @@ branch=${1-$(git base-branch)} || exit
 current=$(git rev-parse --abbrev-ref HEAD)
 
 if test "$current" = "$branch"; then
-	git pull
+	git pull --quiet
 	exit
 fi
 
