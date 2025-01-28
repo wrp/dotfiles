@@ -13,7 +13,7 @@ test -z "$TMUX$DOCKER" && exit
 # In a worktree, use the basename of the branch.  If not in a git repo,
 # use the output of pwd -P
 test -z "$*" && {
-	git_dir=$(realpath $(git rev-parse --git-dir))
+	git_dir=$(git rev-parse --absolute-git-dir)
 	if test "${git_dir##*/}" = .git; then
 		set -- "$(basename "$(dirname "$git_dir")")"
 	elif work_dir=$(git rev-parse --show-toplevel); then

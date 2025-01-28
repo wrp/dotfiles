@@ -7,8 +7,9 @@ if test "$1" = .; then
 	exit
 fi
 
-name=$(basename "${1-${PWD}}" | sed -e 's@$HOME@home@' | tr '[:upper:].' '[:lower:]-')
-dir=$(realpath "${1-$PWD}") || exit
+dir=${1-$PWD}
+name=$(basename "$dir" | sed -e 's@$HOME@home@' | tr '[:upper:].' '[:lower:]-')
+dir=$(realpath "$dir" 2> /dev/null || readlink -f "$dir") || exit
 
 if test -z "$TMUX"; then
 	tmux attach 2> /dev/null \

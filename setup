@@ -13,7 +13,7 @@ find_md5_executable() {
 }
 
 establish_context() {
-	base=$(dirname "$(realpath "$0")")
+	base=$(dirname "$(realpath "$0" 2> /dev/null || readlink -f "$0")")
 	cd "$HOME" || die
 }
 
