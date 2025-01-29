@@ -20,7 +20,8 @@ initialize() {
 
 	local _cfg_author_width _cfg_trailer_width _fmt
 
-	oid_width=8  # display length of commit ids
+	# *_width is the number of characters used in the display
+	oid_width=$(git config log.oid-width || echo 8)
 
 	trailers=${t-"$( {
 		git config --get-all log.default-trailer
