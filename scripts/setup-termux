@@ -1,5 +1,13 @@
 #!/bin/sh
 
-for pkg in autoconf automake libtool binutils ncurses-utils; do
+for pkg in \
+	autoconf \
+	automake \
+	binutils \
+	libtool \
+	ncurses-utils \
+	tmux \
+	vim \
+; do
 	pkg install $pkg
 done
