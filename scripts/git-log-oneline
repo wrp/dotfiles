@@ -74,7 +74,7 @@ check_pager() {
 
 	if test -n "$trailers"; then
 		header=$(
-			printf "%$((oid_width+1))s%-$((author_width+1))s" ' ' trailers:
+			printf "%-$((oid_width+1))s%-$((author_width+1))s" oid author
 			echo "$trailers" | tr , '\n' | cut -b 1-$((trailer_width + 2)) | while read t; do
 				printf "%-$((trailer_width + 2))s " "$t";
 			done
