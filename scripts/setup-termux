@@ -4,8 +4,11 @@ for pkg in \
 	autoconf \
 	automake \
 	binutils \
+	gnupg \
 	libtool \
 	ncurses-utils \
+	perl \
+	texinfo \
 	tmux \
 	vim \
 ; do
