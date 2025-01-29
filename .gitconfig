@@ -58,8 +58,6 @@
 	# whitespace = tab-in-indent
 	whitespace = indent-with-non-tab
 	editor = vim
-[log]
-	trailer-width = 3
 [push]
 	default = upstream
 	autoSetupRemote = true
@@ -99,5 +97,6 @@
 [log]
 	follow = true
 	default-trailer = type
+	trailer-width = 3
 [help]
 	autocorrect = never
