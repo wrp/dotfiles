@@ -1,3 +1,9 @@
 
 
 Make tab-expansion for vi ignore files that are ignored by git.
+
+Allow trailer width to be dynamic.  eg, rather than w=5, allow
+something like w=5,3,4 to specify differing widths for
+each tab.  Perhaps make the width depend on the name
+of the trailer, or (more computational) check the values
+in the log to determine the width.
