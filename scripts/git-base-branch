@@ -3,13 +3,11 @@
 git rev-parse || exit
 
 # Write the name of the base branch to stdout
-if ! git config diff.base-branch | grep .; then
-	if git show-ref -q refs/heads/main; then
-		echo main
-	elif git show-ref -q refs/heads/master; then
-		echo master
-	else
-		echo >&2 diff.base-branch unset and no main/master ref
-		exit 1
-	fi
+if ! ( \
+	git config diff.base-branch \
+	|| git rev-parse --abbrev-ref --verify -q main \
+	|| git rev-parse --abbrev-ref --verify -q master )
+then
+	echo >&2 diff.base-branch unset and no main/master ref
+	exit 1
 fi
