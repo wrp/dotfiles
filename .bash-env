@@ -9,6 +9,7 @@ export prefix=$HOME/$(uname -m)/$(uname -s)
 # export ACLOCAL_PATH=${prefix}/share/aclocal/
 
 unset command_not_found_handle
+DOTFILE_VERSION=$(cd $HOME/dotfiles && git rev-parse HEAD)
 
 export BASH_SILENCE_DEPRECATION_WARNING=1
 export COLUMNS
