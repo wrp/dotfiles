@@ -22,7 +22,9 @@ new=$(git show-ref refs/heads/$branch | cut -b 1-40)
 if test "${old}" = "${new}"; then
 	echo No changes
 else
-	printf "Updated $branch by %d commits\n" "$(git rev-list "$old".."$new" | wc -l)"
+	count="$(git rev-list "$old".."$new" | wc -l)"
+	if ! test "$count" -eq 1; then s=s; fi
+	printf "Updated $branch by %d commit$s\n" "$count"
 	printf "  from: %s\n" "$(git log -n 1 --format='%H    %s' "$old")"
 	printf "    to: %s\n" "$(git log -n 1 --format='%H    %s' "$new")"
 fi
