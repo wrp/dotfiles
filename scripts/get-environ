@@ -1,6 +1,10 @@
-#!/bin/sh
+#!/bin/sh -x
 
 # Get the value of the environment variable $1 in a list of pids
+
+echo >&2 "This script is broken on macos, as it is no longer possible to
+get environment envariables from another process."
+exit 1
 
 var=${1?No variable given}
 shift

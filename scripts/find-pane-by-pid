@@ -8,6 +8,9 @@ die() { echo "$@" >&2; exit 1; }
 nl='
 '
 
+die "This script is broken on macos, as it is no longer possible to
+get environment envariables from another process."
+
 # reading from a pipe, outputting to tty, no argument given.  Try
 # to scrape pids from stdin.
 if test $# = 0 && test -t 1 && ! test -t 0; then
