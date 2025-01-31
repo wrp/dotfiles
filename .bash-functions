@@ -30,6 +30,14 @@ clear_path() {
 }
 prepend_path() { for x; do clear_path "$x"; PATH="$x${PATH:+:}$PATH"; done; }
 
+# Do a sanity check on shell variables, mostly to ensure
+# that variables that I intend for use interactively in
+# helper functions are not inadvertenly set
+check_global_variables() {
+	test -n "$f" && warn "shell variable f is set (used in vi)"
+	test -n "$h" && warn "shell variable h is set (used in vi)"
+}
+
 after_cmd() {
 	# Run after a command, and before a prompt is displayed
 	# In  3.2.57(1)-release (arm64-apple-darwin23), PIPESTATUS
@@ -40,6 +48,7 @@ after_cmd() {
 	else
 		report_cmd_status "$HISTFILE" "$ps" >> "$HOME"/.bash-history
 	fi
+	check_global_variables
 	window-title
 	type -t local_post_cmd_hook > /dev/null && local_post_cmd_hook
 	return $_status
