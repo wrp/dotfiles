@@ -75,9 +75,13 @@ check_pager() {
 	if test -n "$trailers"; then
 		header=$(
 			printf "%-$((oid_width+1))s%-$((author_width+1))s" oid author
-			echo "$trailers" | tr , '\n' | cut -b 1-$((trailer_width + 2)) \
+			echo "$trailers" | tr , '\n' \
 			| while read t; do
-				printf "%-$((trailer_width + 2))s " "$t"
+				width=${trailer_width%%,*}
+				width=$((${width} + 2))
+				printf "%-${width}s" "$t" | cut -b 1-$width | tr -d \\n
+				printf ' '
+				trailer_width=${trailer_width#*,}
 			done
 			printf summary
 		)
@@ -103,10 +107,10 @@ main() {
 }
 
 build_trailer_fmt() {
-	awk 'BEGIN {split(ARGV[1], f, ","); split(ARGV[2], g, ",");
+	awk 'BEGIN {split(ARGV[1], f, ","); n=split(ARGV[2], g, ",");
 		for(i=1; i <= length(f); i++)
 			printf(" [%%<(%s)%%(trailers:key=%s,separator=%%x2C,valueonly)]",
-				g[i] ? g[i] : g[1], f[i])}' \
+				g[i] ? g[i] : g[n], f[i])}' \
 			"${trailers}" "${trailer_width}"
 
 
