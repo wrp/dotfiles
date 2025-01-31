@@ -18,7 +18,7 @@ initialize() {
 	cd ${GIT_PREFIX:-.} || exit
 	: ${GIT_PAGER=$PAGER}
 
-	local _cfg_author_width _cfg_trailer_width _fmt
+	local _cfg_author_width _cfg_trailer_width
 
 	# *_width is the number of characters used in the display
 	oid_width=$(git config log.oid-width || echo 8)
@@ -29,10 +29,9 @@ initialize() {
 		} | tr \\n , | sed -e 's/,$//')"}
 	_cfg_trailer_width="$(git config log.trailer-width)"
 	trailer_width=${w-${_cfg_trailer_width:-11}}
-	_fmt='%(trailers:key=\1,separator=%x2C,valueonly)'
-	trailer_fmt=$(printf '%s' "${trailers}" |
-		sed -E "s/([^,]*)(\$|,)/ [%<(${trailer_width})${_fmt}]/g"
-	)
+
+	trailer_fmt=$(build_trailer_fmt)
+
 	_cfg_author_width="$(git config log.author-width)"
 	author_width=${GITLOG_AUTHOR_WIDTH:-${_cfg_author_width:-12}}
 
@@ -101,6 +100,16 @@ main() {
 			)${truncate}% s$( :
 			)${blue}% D$(:
 			)${reset}" | sed -E 's/  +//g' )" "$@"
+}
+
+build_trailer_fmt() {
+	awk 'BEGIN {split(ARGV[1], f, ","); split(ARGV[2], g, ",");
+		for(i=1; i <= length(f); i++)
+			printf(" [%%<(%s)%%(trailers:key=%s,separator=%%x2C,valueonly)]",
+				g[i] ? g[i] : g[1], f[i])}' \
+			"${trailers}" "${trailer_width}"
+
+
 }
 
 main "$@"
