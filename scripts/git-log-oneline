@@ -8,11 +8,11 @@
 # displayed.  The final value is w is used for all subsequent fields
 # if the lengths of t and w do not match.  The idea here is
 # that you can specify trailers with 'git config --add log.default-trailer'
-# or override with t at the command line.  eg, set 'git config --add
-# log.default-trailers ticket' to show the ticket in the log, or use
-# 't=ticket,style g l1' to show both the ticket and the style trailer
-# in the log, or 't= g l1' to show no trailers.
-
+# or override with t at the command line.   For example, to
+# always show the "language" and "type" trailers, use:
+#
+# w=8,4 t=language,type g l1
+#
 # Any trailer keys listed in commit.required-trailers are also
 # listed if t is unspecified.
 
