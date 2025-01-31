@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# Scrape the current tmux pane to find a pid for vim
+# and switch to that pane.
+
+# The input is expected to look something like:
+# E325: ATTENTION
+# Found a swap file by the name "..."
+#           owned by: xxx   dated: Fri Jan 31 08:27:27 2025
+#          file name: /p/a/t/h
+#           modified: no
+#          user name: xxx   host name: xxxxxxxxxxxxxxx
+#         process ID: 64510 (STILL RUNNING)
+# While opening file "/p/a/t/h"
+#              dated: Fri Jan 31 08:29:35 2025
+#       NEWER than swap file!
+
+die() { echo "$@" >&2; exit 1; }
+
+if ! test -t 1 || ! test -t 0; then
+	die "Expected to be run interactively"
+fi
+
+vim_pid=$(tmux capture-pane -p | awk '/^ *process ID: [0-9]{4,}/ {print $3}')
+vim_ppid=$(ps -oppid= $vim_pid | tr -d ' ')
+tmux_pane=$(tmux list-panes -s -F "#{pane_id} #{pane_current_command} #{pane_pid}" |
+	awk '$3 == p && $2 == "vim" {print $1}' p=$vim_ppid)
+
+tmux switch-client -t "$tmux_pane"
