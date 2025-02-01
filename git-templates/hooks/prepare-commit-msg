@@ -19,7 +19,7 @@ main() {
 
 # Ensure that all requested trailers are present
 validate_trailers() {
-	for value in $(git config --get-all core.required-trailers); do
+	for value in $(git config --get-all commit.required-trailers); do
 		if ! git interpret-trailers --parse "$1" |
 		awk '$1 == "'"$value"'" {print $2}' FS=': ' | grep -q .; then
 			die "Required trailer '$value' is missing"
