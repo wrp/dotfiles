@@ -41,12 +41,12 @@ initialize() {
 	# -F, and I get a screen full of ~ when the input is short.  As
 	# a workaround, just omit --headers if -n is specified.
 	for x; do
-		if test "$x" = -n; then
-			NO_HEADERS=1
-		fi
-		if test "$x" = "--date=format:%FT%T%z"; then
-			date_width=25
-		fi
+		case $x in
+		-n) NO_HEADERS=1;;
+		--date=format:%FT%T%z) date_width=24;;
+		--date=iso) date_width=25;;
+		--date=rfc) date_width=38; tab=%x09;;
+		esac
 	done
 }
 
@@ -81,7 +81,11 @@ check_pager() {
 
 	if test -n "$trailers"; then
 		header=$(
-			printf "%-$((oid_width+1+date_width))s%-$((author_width+1))s" oid author
+			printf "%-$((oid_width+1))s" oid
+			if test "${date_width:-0}" -gt 11; then
+				printf "%-$((date_width+1))s" 'author date'
+			fi
+			printf "%-$((author_width+1))s" author
 			echo "$trailers" | tr , '\n' \
 			| while read t; do
 				width=${trailer_width%%,*}
@@ -102,10 +106,11 @@ main() {
 	check_pager
 	git log \
 		--date=format:"" \
+		${tab+--expand-tabs} \
 		--abbrev=${oid_width} \
 		--format=tformat:"$(printf '%s' "$(:
 			)${green}%h$(:
-			)${yellow}% ad$(:
+			)${yellow}% ad${tab}$(:
 			)${red}%<(${author_width},trunc)% an$(:
 			)${reset}${trailer_fmt}$(:
 			)${truncate}% s$( :
