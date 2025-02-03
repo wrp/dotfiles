@@ -1,5 +1,12 @@
 #!/bin/sh
 
+# This currently validates trailers.  We occasionally
+# insert trailer information into the commit message
+# from git config, but we are only doing that for
+# the ticket trailer via git config branch.$branch.ticket.
+# TODO: we should probably move most of the validation out
+# of here and put it in pre-commit.
+#
 . "$(dirname $0)"/common-hook-functions
 main() {
 	if # Succeed early on some common cases we do not want to check
