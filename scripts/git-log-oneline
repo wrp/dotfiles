@@ -40,9 +40,11 @@ initialize() {
 	# Current versions of less with --header do not behave well with
 	# -F, and I get a screen full of ~ when the input is short.  As
 	# a workaround, just omit --headers if -n is specified.
-	if test "$1" = -n; then
-		NO_HEADERS=1
-	fi
+	for x; do
+		if test "$x" = -n; then
+			NO_HEADERS=1
+		fi
+	done
 }
 
 use_color() {
