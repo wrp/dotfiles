@@ -1,3 +1,8 @@
 
 
 Make tab-expansion for vi ignore files that are ignored by git.
+
+Figure out a reasonable way to make the headers line up in
+git-log-online with --date is applied.  Currently, setting
+--date causes text to be inserted, and we need a reasonable
+way to compute where the headers belong.
