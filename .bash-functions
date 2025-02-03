@@ -36,6 +36,7 @@ prepend_path() { for x; do clear_path "$x"; PATH="$x${PATH:+:}$PATH"; done; }
 check_global_variables() {
 	test -n "$f" && warn "shell variable f is set (used in vi)"
 	test -n "$h" && warn "shell variable h is set (used in vi)"
+	test -n "$t" && warn "shell variable t is set (used in git hooks)"
 }
 
 after_cmd() {
