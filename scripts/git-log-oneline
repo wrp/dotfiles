@@ -13,7 +13,7 @@
 #
 # w=8,4 t=language,type g l1
 #
-# Any trailer keys listed in commit.required-trailers are also
+# Any trailer keys listed in commit.required-trailer are also
 # listed if t is unspecified.
 
 initialize() {
