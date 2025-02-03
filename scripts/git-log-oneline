@@ -28,7 +28,7 @@ initialize() {
 	trailers=${t-"$( {
 		git config --get-all log.default-trailer
 		git config --get-all commit.required-trailer
-		} | tr \\n , | sed -e 's/,$//')"}
+		} | tr , \\n | sort -u | tr \\n , | sed -e 's/,$//')"}
 	_cfg_trailer_width="$(git config log.trailer-width)"
 	trailer_width=${w-${_cfg_trailer_width:-11}}
 
