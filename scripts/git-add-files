@@ -51,7 +51,7 @@ main() {
 		echo "Unable to generate commit message!" >&2
 		exit 1
 	fi
-	git commit ${force:+--no-verify} -m "$msg"
+	git commit ${t:+--trailer "$t"} ${force:+--no-verify} -m "$msg"
 }
 
 main "$@"
