@@ -5,9 +5,9 @@
 # archive the current branch after detaching
 
 if test $# = 0; then
-	set -- $(git rev-parse --abbrev-ref HEAD)
-	# base=$(git base-branch) || exit
-	# git symbolic-ref HEAD refs/heads/$base
+	branch=$(git rev-parse --abbrev-ref HEAD)
+	set -- "$branch"
+	echo "Detaching and archiving the current branch: $branch"
 	git checkout --detach
 fi
 
