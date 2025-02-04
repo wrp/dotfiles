@@ -16,6 +16,34 @@ validate_args() {
 		echo No paths specified >&2
 		exit 1
 	fi
+	reset_trailer_args "$@"
+}
+
+reset_trailer_args() {
+	# We pass arguments directly to git add, but git-add does not
+	# recognize --trailer.  So we look for --trailer arguments
+	# and pass them through the environment in t via exec
+	unset get_next need_to_exec
+	for x; do
+		shift
+		if test -n "${get_next+set}"; then
+			t=${t+$t,}$x
+			unset get_next
+			continue
+		fi
+		case $x in
+		--trailer=*)
+			t=${t+$t,}${x#--trailer=};
+			need_to_exec=1;;
+		--trailer)
+			get_next=1;
+			need_to_exec=1;;
+		*) set -- "$@" "$x"
+		esac
+	done
+	if test -n "$need_to_exec"; then
+		t=$t exec "$0" "$@"
+	fi
 }
 
 main() {
@@ -51,7 +79,7 @@ main() {
 		echo "Unable to generate commit message!" >&2
 		exit 1
 	fi
-	git commit ${t:+--trailer "$t"} ${force:+--no-verify} -m "$msg"
+	git commit ${force:+--no-verify} -m "$msg"
 }
 
 main "$@"
