@@ -26,6 +26,7 @@ main() {
 # trailer-value pairs in the form name:value.  Insert them as
 # trailers into the commit message
 check_t_for_trailers() {
+	test -z "$t" && return
 	printf '%s\n' "$t" | tr , \\n |
 	while IFS=: read name value; do
 		git-interpret-trailers --in-place --if-exists addIfDifferent --trailer "$name=$value" "$1"
