@@ -35,9 +35,9 @@ check_t_for_trailers() {
 
 # Ensure that all required trailers are present
 validate_trailers() {
+	local present_trailers=$(git interpret-trailers --parse "$1")
 	for value in $(git config --get-all commit.required-trailer); do
-		if ! git interpret-trailers --parse "$1" |
-		awk '$1 == "'"$value"'" {print $2}' FS=': ' | grep -q .; then
+		if ! echo "$present_trailers" | grep -q "^${value}:"; then
 			die "Required trailer '$value' is missing"
 		fi
 	done
