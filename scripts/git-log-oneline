@@ -89,9 +89,11 @@ check_pager() {
 			echo "$trailers" | tr , '\n' \
 			| while read t; do
 				width=${trailer_width%%,*}
-				width=$((${width} + 2))
-				printf "%-${width}s" "$t" | cut -b 1-$width | tr -d \\n
-				printf ' '
+				if test "$width" -gt 0; then
+					width=$((${width} + 2))
+					printf "%-${width}s" "$t" | cut -b 1-$width | tr -d \\n
+					printf ' '
+				fi
 				trailer_width=${trailer_width#*,}
 			done
 			printf summary
@@ -119,11 +121,17 @@ main() {
 }
 
 build_trailer_fmt() {
-	awk 'BEGIN {split(ARGV[1], f, ","); n=split(ARGV[2], g, ",");
-		for(i=1; i <= length(f); i++)
-			printf(" [%%<(%s)%%(trailers:key=%s,separator=%%x2C,valueonly)]",
-				g[i] ? g[i] : g[n], f[i])}' \
-			"${trailers}" "${trailer_width}"
+	awk -v fmt=" [%%<(%s)%%(trailers:key=%s,separator=%%x2C,valueonly)]" '
+		BEGIN {
+			split(ARGV[1], f, ",");
+			n=split(ARGV[2], g, ",");
+			for (i=1; i <= length(f); i++) {
+				width = i < n ? g[i] : g[n]
+				if (width) {
+					printf(fmt, width, f[i])
+				}
+			}
+		}' "${trailers}" "${trailer_width}"
 
 
 }
