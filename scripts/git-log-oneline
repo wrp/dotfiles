@@ -46,6 +46,7 @@ initialize() {
 		--date=format:%FT%T%z) date_width=24;;
 		--date=iso) date_width=25;;
 		--date=rfc) date_width=38; tab=%x09;;
+		--graph) NO_HEADERS=1;;
 		esac
 	done
 }
@@ -79,7 +80,7 @@ check_pager() {
 		truncate="%<($(($(tput cols) / 3)),trunc)"
 	fi
 
-	if test -n "$trailers"; then
+	if test -z "$NO_HEADERS"; then
 		header=$(
 			printf "%-$((oid_width+1))s" oid
 			if test "${date_width:-0}" -gt 11; then
