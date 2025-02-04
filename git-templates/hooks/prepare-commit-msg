@@ -1,12 +1,9 @@
 #!/bin/sh
 
-# This currently validates trailers.  We occasionally
-# insert trailer information into the commit message
-# from git config, but we are only doing that for
-# the ticket trailer via git config branch.$branch.ticket.
-# TODO: we should probably move most of the validation out
-# of here and put it in pre-commit.
-#
+# Parse the $t variable and use it to apply trailers
+# to the commit message.  Also, check the branch.$branch.ticket
+# config to attempt to auto-insert a ticket trailer.
+
 . "$(dirname $0)"/common-hook-functions
 main() {
 	if # Succeed early on some common cases we do not want to check
@@ -20,8 +17,19 @@ main() {
 	if test -n "$ticket"; then
 		git-interpret-trailers --in-place --if-exists addIfDifferent --trailer ticket="$ticket" "$1"
 	fi
+	check_t_for_trailers "$@"
 	validate_trailers "$@"
 	run_local_hooks "$@"
+}
+
+# The environment variable t can be a comma-separated list of
+# trailer-value pairs in the form name:value.  Insert them as
+# trailers into the commit message
+check_t_for_trailers() {
+	printf '%s\n' "$t" | tr , \\n |
+	while IFS=: read name value; do
+		git-interpret-trailers --in-place --if-exists addIfDifferent --trailer "$name=$value" "$1"
+	done
 }
 
 # Ensure that all requested trailers are present
