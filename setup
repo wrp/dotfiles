@@ -58,7 +58,7 @@ init() {
 	mkdir -p "$HOME"/.bash-history-dir
 	mkdir -p "$HOME"/.config/git
 	mkdir -p "$HOME"/.config/vim
-	ln -fs ../../"$base"/.gitignore_global "$HOME"/.config/git/ignore || die
+	ln -fs "$base"/.gitignore_global "$HOME"/.config/git/ignore || die
 }
 
 create_symlinks() {
