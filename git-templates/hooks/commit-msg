@@ -10,11 +10,11 @@ main() {
 	if test -z "$MAX_GIT_SUMMARY"; then
 		MAX_GIT_SUMMARY=$(git config core.max-summary-width 2> /dev/null)
 	fi
-	msg=$(check_subject "$@") || die "$msg"
+	msg=$(check_message "$@") || die "$msg"
 	run_local_hooks "$@"
 }
 
-check_subject() {
+check_message() {
 	bad_end='.!?'  # Characters not allowed as final char of subject
 
 	< "$1" awk '
