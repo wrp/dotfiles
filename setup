@@ -58,7 +58,9 @@ init() {
 	mkdir -p "$HOME"/.bash-history-dir
 	mkdir -p "$HOME"/.config/git
 	mkdir -p "$HOME"/.config/vim
+	mkdir -p "$HOME"/.config/ctags
 	ln -fs "$base"/.gitignore_global "$HOME"/.config/git/ignore || die
+	ln -fs "$HOME"/.ctags "$HOME"/.config/ctags/base.ctags || die
 }
 
 create_symlinks() {
