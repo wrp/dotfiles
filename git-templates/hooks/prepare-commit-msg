@@ -6,6 +6,13 @@
 
 . "$(dirname $0)"/common-hook-functions
 main() {
+	if # Succeed early on some common cases we do not want to check
+		test -n "$3" || # this is from an extant commit (-c, -C, or --amend)
+		test "$2" != message || # the message was given by -m or -F
+	false; then
+		return 0
+	fi
+
 	get_ticket "$1" || return 1
 	if test -n "$ticket"; then
 		git-interpret-trailers --in-place --if-exists addIfDifferent --trailer ticket="$ticket" "$1"
