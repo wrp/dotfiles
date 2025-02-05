@@ -13,13 +13,16 @@ main() {
 	if ! test -n "$3"; then
 		# This is not from an extant commit (-c, -C, or --amend)
 		get_ticket "$1" || return 1
-		if test -n "$ticket"; then
-			git-interpret-trailers --in-place --if-exists addIfDifferent --trailer ticket="$ticket" "$1"
-		fi
+		add_trailer "$1" ticket "$ticket"
 	fi
 
 	check_t_for_trailers "$@"
 	run_local_hooks "$@"
+}
+
+add_trailer() {
+	test -z "$3" && return
+	git-interpret-trailers --in-place --if-exists addIfDifferent --trailer "$2=$3" "$1"
 }
 
 # The environment variable t can be a comma-separated list of
@@ -29,7 +32,7 @@ check_t_for_trailers() {
 	test -z "$t" && return
 	printf '%s\n' "$t" | tr , \\n |
 	while IFS=: read name value; do
-		git-interpret-trailers --in-place --if-exists addIfDifferent --trailer "$name=$value" "$1"
+		add_trailer "$1" "$name" "$value"
 	done
 }
 
