@@ -10,18 +10,14 @@
 
 . "$(dirname $0)"/common-hook-functions
 main() {
-	# Succeed early on some common cases where we do not want to insert trailers
-	if
-		test -n "$3" || # this is from an extant commit (-c, -C, or --amend)
-		test "$2" != message # the message was not given by -m or -F
-	then
-		return 0
+	if ! test -n "$3"; then
+		# This is not from an extant commit (-c, -C, or --amend)
+		get_ticket "$1" || return 1
+		if test -n "$ticket"; then
+			git-interpret-trailers --in-place --if-exists addIfDifferent --trailer ticket="$ticket" "$1"
+		fi
 	fi
 
-	get_ticket "$1" || return 1
-	if test -n "$ticket"; then
-		git-interpret-trailers --in-place --if-exists addIfDifferent --trailer ticket="$ticket" "$1"
-	fi
 	check_t_for_trailers "$@"
 	run_local_hooks "$@"
 }
