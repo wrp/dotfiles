@@ -6,10 +6,11 @@
 
 . "$(dirname $0)"/common-hook-functions
 main() {
-	if # Succeed early on some common cases we do not want to check
+	# Succeed early on some common cases where we do not want to insert trailers
+	if
 		test -n "$3" || # this is from an extant commit (-c, -C, or --amend)
-		test "$2" != message || # the message was given by -m or -F
-	false; then
+		test "$2" != message # the message was not given by -m or -F
+	then
 		return 0
 	fi
 
