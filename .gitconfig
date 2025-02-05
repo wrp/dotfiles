@@ -10,7 +10,7 @@
 	cda = cd -a
 	cf = cwip -m 'Trivial reformat'
 	cfa = cf -a
-	ci = !bash -c 'git commit ${t:+--trailer \"$t\"} \"$@\"' _
+	ci = commit
 	ciam = ci -am
 	cl = cwip -m 'Fix lint issues'
 	cla = cl -a
