@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# This script is invoked before GIT_EDITOR and takes the name
+# of a file containing the proposed commit message as $1
+
 # Parse the $t variable and use it to apply trailers
 # to the commit message.  Also, check the branch.$branch.ticket
 # config to attempt to auto-insert a ticket trailer.
