@@ -37,8 +37,9 @@ check_t_for_trailers() {
 }
 
 get_ticket_from_extant_message() {
-	git interpret-trailers --parse "$1" |
-	awk '$1 == "ticket" { print $2}' FS=': '
+	git interpret-trailers --parse "$1" \
+	| awk '$1 == "ticket" {print $2}' FS=': ' \
+	| grep .
 }
 
 get_ticket() {
@@ -58,10 +59,10 @@ get_ticket() {
 	ticket=$(
 		# get-ticket-from-branch is expected to be a local
 		# script that may not exist
+		get_ticket_from_extant_message "$1" ||
 		git config branch."$branch".ticket ||
 		get-ticket-from-branch "$branch" 2> /dev/null
 	)
-	ticket=$(get_ticket_from_extant_message "$1")
 
 	if test -z "$ticket"; then
 		msg="not inserting ticket trailer"
