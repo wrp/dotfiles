@@ -81,6 +81,7 @@
 [tag]
 	gpgSign = true
 [commit]
+	status = false
 	gpgSign = false
 [include]
 	path = ~/.gitconfig-local
