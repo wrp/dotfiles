@@ -11,6 +11,7 @@ main() {
 		MAX_GIT_SUMMARY=$(git config core.max-summary-width 2> /dev/null)
 	fi
 	msg=$(check_message "$@") || die "$msg"
+	validate_trailers "$@"
 	run_local_hooks "$@"
 }
 
@@ -42,5 +43,18 @@ check_message() {
 	' max_width=${MAX_GIT_WIDTH:-72} max_summary=${MAX_GIT_SUMMARY:-50} end="[${bad_end}]$"
 }
 
+# Ensure that all required trailers are present
+validate_trailers() {
+	local fail
+	local present_trailers=$(git interpret-trailers --parse "$1")
+	for value in $(git config --get-all commit.required-trailer); do
+		if ! echo "$present_trailers" |
+		awk '$1 == "'"$value"'" {print $2}' FS=': ' | grep -q .; then
+			fail=${fail:+$fail, }$value
+			echo "Required trailer '$value' is missing" >&2
+		fi
+	done
+	if test -n "$fail"; then die "Trailers missing: $fail"; fi
+}
 
 main "$@"
