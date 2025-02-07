@@ -95,15 +95,6 @@ unuse() {
 	content=$( grep -v "^$d$" "$file" ) \
 	&& echo "$content" > $file
 }
-
-get_dir_list() {
-	local root="${USE_HOME:-$HOME}"
-	if test "$1" -gt 0 2> /dev/null; then
-		sed -n -e "${1}p"
-	else
-		sed -n -e "\@${1:-.}@p"
-	fi < $root/.config/$USER/usage-list
-}
 jq() { command jq --tab "$@"; }
 k() { kubectl "$@"; }
 kx() { kubectx "$@"; }
