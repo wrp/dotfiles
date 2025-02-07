@@ -105,12 +105,6 @@ get_dir_list() {
 	fi < $root/.config/$USER/usage-list
 }
 jq() { command jq --tab "$@"; }
-_j_complete() {
-	local curr_word=${COMP_WORDS[$COMP_CWORD]}
-	list=$(get_dir_list "$curr_word")
-	COMPREPLY=($(echo "$list" | tr -s ' ' \\n | grep -- "/$curr_word"))
-}
-complete -o default -F _j_complete j
 k() { kubectl "$@"; }
 kx() { kubectx "$@"; }
 lb() { tr \\n ${1:-\ } | perl -pe 's/\s*$//' | tmux loadb - ; }
