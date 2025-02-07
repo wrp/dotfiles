@@ -19,6 +19,7 @@ for branch; do
 	extant_ref=$(git show-ref -s "$archive_name" || true)
 
 	git update-ref "$archive_name" "${branch}" "$extant_ref" || exit
+	git show-ref "$archive_name" || exit
 	git branch -D "${branch}" || exit
 done
 
