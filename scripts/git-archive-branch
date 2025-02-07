@@ -4,14 +4,16 @@
 # and deleting the branch.  If no arguments are given,
 # archive the current branch after detaching
 
+current_branch=$(git rev-parse --abbrev-ref HEAD)
 if test $# = 0; then
-	branch=$(git rev-parse --abbrev-ref HEAD)
-	set -- "$branch"
-	echo "Detaching and archiving the current branch: $branch"
-	git checkout --detach
+	set -- "$current_branch"
 fi
 
 for branch; do
+	if test "$branch" = "$current_branch"; then
+		echo "Detaching and archiving the current branch: $branch"
+		git checkout --detach
+	fi
 	git update-ref refs/archive/"${branch}" "${branch}" '' \
 	&& git branch -D "${branch}"
 done
