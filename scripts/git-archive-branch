@@ -14,7 +14,11 @@ for branch; do
 		echo "Detaching and archiving the current branch: $branch"
 		git checkout --detach
 	fi
-	git update-ref refs/archive/"${branch}" "${branch}" '' \
+
+	archive_name=refs/archive/"${branch}"
+	extant_ref=$(git show-ref -s "$archive_name")
+
+	git update-ref "$archive_name" "${branch}" "$extant_ref" \
 	&& git branch -D "${branch}"
 done
 
