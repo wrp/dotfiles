@@ -58,36 +58,6 @@ grep() {
 		command grep --color=auto "$@"
 	fi
 }
-
-wrpselect() {
-	local -a args
-	unset REPLY
-	unset SELECTION
-	REPLY=$#
-	case $# in
-	1)
-		SELECTION=$1
-		;;
-	0)
-		;;
-	*)
-		for x; do echo "$x"; done | expand -t 8 | nl -ba -s ') ' -w 2 | column >&2
-		read -p "#? " REPLY
-		if test "$REPLY" -ge 0 2> /dev/null; then
-			eval SELECTION=\${${REPLY}}
-		elif test -z "$REPLY"; then
-			return;
-		else
-			for x; do
-				if echo "$x" | grep -q "$REPLY"; then
-					args+=("$x")
-				fi
-			done
-			wrpselect "${args[@]}"
-		fi
-		;;
-	esac
-}
 irssi() { dtach -A /tmp/irssi.dtach irssi; }
 use() {
 	# Put the top level git dir of the cwd in the usage file list
@@ -133,25 +103,6 @@ get_dir_list() {
 	else
 		sed -n -e "\@${1:-.}@p"
 	fi < $root/.config/$USER/usage-list
-}
-j() {
-	local _dir
-	test -n "$DOCKER" && { echo "Running in DOCKER" >&2; return 1; }
-	case "$1" in
-	.)
-		select-git-branch;;
-	*)
-		wrpselect $(get_dir_list "$1")
-		_dir=$SELECTION
-		test -n "$_dir" || return
-		if ! test -d "$_dir"; then
-			echo "$_dir does not exist!" >&2
-		else
-			command cd "$_dir"
-		fi
-	;;
-	esac
-	g .
 }
 jq() { command jq --tab "$@"; }
 _j_complete() {
@@ -370,4 +321,3 @@ xclip() {
 	fi
 	command xclip -selection clipboard "$@";
 }
-y() { select-git-branch "$@"; }
