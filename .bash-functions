@@ -33,7 +33,7 @@ prepend_path() { for x; do clear_path "$x"; PATH="$x${PATH:+:}$PATH"; done; }
 # Do a sanity check on shell variables, mostly to ensure
 # that variables that I intend for use interactively in
 # helper functions are not inadvertenly set
-check_global_variables() {
+check_environment() {
 	test -n "$f" && warn "shell variable f is set (used in vi)"
 	test -n "$h" && warn "shell variable h is set (used in vi)"
 	test -n "$t" && warn "shell variable t is set (used in git hooks)"
@@ -52,7 +52,7 @@ after_cmd() {
 	else
 		report_cmd_status "$HISTFILE" "$ps" >> "$HOME"/.bash-history
 	fi
-	check_global_variables
+	check_environment
 	window-title
 	type -t local_post_cmd_hook > /dev/null && local_post_cmd_hook
 	return $_status
