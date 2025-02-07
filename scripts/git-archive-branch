@@ -12,13 +12,13 @@ fi
 for branch; do
 	if test "$branch" = "$current_branch"; then
 		echo "Detaching and archiving the current branch: $branch"
-		git checkout --detach
+		git checkout --detach || exit
 	fi
 
 	archive_name=refs/archive/"${branch}"
-	extant_ref=$(git show-ref -s "$archive_name")
+	extant_ref=$(git show-ref -s "$archive_name" || true)
 
-	git update-ref "$archive_name" "${branch}" "$extant_ref" \
-	&& git branch -D "${branch}"
+	git update-ref "$archive_name" "${branch}" "$extant_ref" || exit
+	git branch -D "${branch}" || exit
 done
 
