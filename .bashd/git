@@ -8,8 +8,7 @@ git() {
 	if test -n "$EXPECTED_GIT_VERSION" &&
 		test "$v" != "$EXPECTED_GIT_VERSION"
 	then
-		warn Unexpected git version: $v
-		which git
+		(die Unexpected git version: $v)
 		return 1
 	fi
 
