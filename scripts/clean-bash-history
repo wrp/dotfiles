@@ -2,7 +2,7 @@
 
 # Filter $1 (or ~/.bash-history) and purge all simple commands
 < ${1-$HOME/.bash-history} \
-perl -wne '
+perl -wnE 'no warnings "experimental::smartmatch";
 	if( /^#[0-9]{10}/ ){
 		$ts = $_;
 		$state = "cmd";
@@ -16,7 +16,7 @@ perl -wne '
 		} elsif( /^[a-z]{2}$/ ) {
 			$state = "skip"
 		} else {
-			foreach $cmd ( qw(
+			@skip = qw (
 				airflow
 				cal
 				cat
@@ -51,12 +51,10 @@ perl -wne '
 				vim
 				virtualenv
 				which
-				)
-			){
-				if (/^$cmd( |$)/) {
-					$state = "skip";
-					last
-				}
+			);
+			($cmd, ) = split " ";
+			if ($cmd ~~ @skip) {
+				$state = "skip";
 			}
 		}
 	}
