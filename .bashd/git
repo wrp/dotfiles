@@ -30,7 +30,7 @@ git() {
 		esac
 
 		if test -n "$new_arg"; then
-			echo "$old_arg --> $new_arg" >&2
+			V=1
 			old_arg=$new_arg
 		fi
 
@@ -42,6 +42,7 @@ git() {
 	(clone ) v=$1; shift; set -- "$v"-wrapper "$@";;
 	(.     ) set -- info;;
 	esac
+	test "${V-0}" -gt 0 && echo "git $*"
 	command git "$@"
 }
 for cmd in ga gdm; do
