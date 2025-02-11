@@ -3,6 +3,43 @@
 # Filter $1 (or ~/.bash-history) and purge all simple commands
 < ${1-$HOME/.bash-history} \
 perl -wnE 'no warnings "experimental::smartmatch";
+	# Commands which will be removed
+	my @skip = qw (
+		airflow
+		cal
+		cat
+		cd
+		date
+		echo
+		env
+		exec bash
+		git
+		gitk
+		grep
+		head
+		history
+		kill
+		less
+		ls
+		man
+		mkdir
+		more
+		mv
+		pip
+		pwd
+		rm
+		ssh
+		tail
+		tmux
+		touch
+		type
+		unset
+		unzip
+		vi
+		vim
+		virtualenv
+		which
+	);
 	if( /^#[0-9]{10}/ ){
 		$ts = $_;
 		$state = "cmd";
@@ -16,42 +53,6 @@ perl -wnE 'no warnings "experimental::smartmatch";
 		} elsif( /^[a-z]{2}$/ ) {
 			$state = "skip"
 		} else {
-			@skip = qw (
-				airflow
-				cal
-				cat
-				cd
-				date
-				echo
-				env
-				exec bash
-				git
-				gitk
-				grep
-				head
-				history
-				kill
-				less
-				ls
-				man
-				mkdir
-				more
-				mv
-				pip
-				pwd
-				rm
-				ssh
-				tail
-				tmux
-				touch
-				type
-				unset
-				unzip
-				vi
-				vim
-				virtualenv
-				which
-			);
 			($cmd, ) = split " ";
 			if ($cmd ~~ @skip) {
 				$state = "skip";
