@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Print log in brief format (one line per commit)
-
+#
 # You may set t to a comma separated list of trailers to be displayed
 # in the log output, and set w to a comma separated list of integer
 # values giving the width of the fields in which the trailer is
@@ -22,6 +22,8 @@
 #  log.trailer-width       number of characters to use for trailer
 #  log.default-trailer     comma-separated list of trailers to display
 #  commit.required-trailer multi-value list of trailers to display
+
+usage() { sed -E -e 1,2d -e '/^$/q' -e 's/#.?//' "$0";}
 
 initialize() {
 	cd ${GIT_PREFIX:-.} || exit
@@ -49,6 +51,7 @@ initialize() {
 	# a workaround, just omit --headers if -n is specified.
 	for x; do
 		case $x in
+		-h) usage; exit 0;;
 		-n) NO_LESS_HEADERS=1;;
 		--date=format:%FT%T%z) date_width=24;;
 		--date=iso) date_width=25;;
