@@ -24,6 +24,3 @@ printf 'cwd=%s%s %s%s\n' \
 	"$(cyan)${cwd#/}" \
 	"$(yellow)branch=${branch}" \
 	"$(green)${remote:+ remote=${remote#refs/remotes/}}"
-
-if test -n "$status"; then git s; fi
-if test -n "$branch"; then git b; fi

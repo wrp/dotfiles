@@ -12,7 +12,7 @@ git() {
 		return 1
 	fi
 
-	test $# = 0 && { status=1 branch=1 command git info; return; }
+	test $# = 0 && { set -- .; }
 
 	# Do aliasing on arguments
 	local old_arg prev new_arg
