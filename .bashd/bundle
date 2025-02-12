@@ -1,18 +1,18 @@
 bundle() {
-	local file base revs gitdir
+	local file name revs gitdir
 	gitdir=$(command git rev-parse --git-dir) || return 1
 	if ! command git diff-index --quiet HEAD; then
 		echo "Repo is dirty.  Stubbornly refusing to create bundle" >&2
 		return 1
 	fi
-	base=$(command git config core.name ||
+	name=$(command git config core.name ||
 		awk 'NR==1 && $1 != "Unnamed" {print $1}' \
 			"$gitdir/description" 2> /dev/null | grep . ||
 		basename "$(command git rev-parse --show-toplevel)"
 	)
-	test -n "$base" || return
+	test -n "$name" || return
 	revs="${@-HEAD}"
-	file="$base"-$(command git rev-list --reverse --parents "$revs" |
+	file="$name"-$(command git rev-list --reverse --parents "$revs" |
 		awk 'NR==1 && NF > 1 { printf "%s..", substr($0, 0, 7)}
 		END {print substr($0, 0, 7)}' | grep . || echo 'no-commits'
 	).bundle
