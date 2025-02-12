@@ -37,9 +37,7 @@ check_environment() {
 	test -n "$f" && warn "shell variable f is set (used in vi)"
 	test -n "$h" && warn "shell variable h is set (used in vi)"
 	test -n "$t" && warn "shell variable t is set (used in git hooks)"
-	if test -n "$V" && ! test "$V" -ge 0 2> /dev/null; then
-		warn "shell variable V is set but not a positive integer"
-	fi
+	test -n "$V" && warn "shell variable V is set"
 	if test "$IFS" != $' \t\n'; then
 		echo "WARNING: IFS contains unexpected characters"
 	fi
