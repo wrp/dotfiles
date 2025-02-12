@@ -18,6 +18,7 @@ git() {
 	local old_arg prev new_arg
 	for old_arg; do
 		shift
+		unset new_arg
 
 		# replace numeric args with branch name
 		if test "$prev" != -n && test "$old_arg" -ge 0 2> /dev/null; then
