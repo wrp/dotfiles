@@ -15,6 +15,13 @@
 #
 # Any trailer keys listed in commit.required-trailer are also
 # listed if t is unspecified.
+#
+# Configs:
+#  log.oid-width           number of characters used for oid
+#  log.author-width        number of characters used for author
+#  log.trailer-width       number of characters to use for trailer
+#  log.default-trailer     comma-separated list of trailers to display
+#  commit.required-trailer multi-value list of trailers to display
 
 initialize() {
 	cd ${GIT_PREFIX:-.} || exit
