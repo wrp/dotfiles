@@ -1,5 +1,10 @@
 #!/bin/sh
 
+# Fetch from the remote associated with the base branch
+# (diff.base-branch/main/master/) and update the local ref.
+# If the base branch is already checked out, this is
+# just git-pull --quiet follwed by a summary of the update.
+
 
 branch=${1-$(git base-branch)} || exit
 current=$(git rev-parse --abbrev-ref HEAD)
