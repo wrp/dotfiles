@@ -25,7 +25,7 @@ fi
 
 new=$(git show-ref refs/heads/$branch | cut -b 1-40)
 if test "${old}" = "${new}"; then
-	echo No changes
+	echo No changes to "$branch ($new)"
 else
 	count="$(git rev-list "$old".."$new" | wc -l)"
 	if ! test "$count" -eq 1; then s=s; fi
