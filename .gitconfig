@@ -4,7 +4,7 @@
 	ab = archive-branch
 	ap = add --patch
 	b = interactive-branch
-	caa = !bash -c 'git commit --amend -a -C HEAD --cleanup=strip \"$@\"' _
+	caa = commit --amend -a -C HEAD --cleanup=strip
 	caan = caa -n
 	cd = ci -m Documentation
 	cda = cd -a
