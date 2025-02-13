@@ -1,26 +1,11 @@
 #!/bin/sh
 
 top=$(git rev-parse --show-toplevel)
-
-if test -t 1; then
-	white() { tput setaf 7; }
-	blue() { tput setaf 4; }
-	cyan() { tput setaf 6; }
-	yellow() { tput setaf 3; }
-	green() { tput setaf 2; }
-else
-	white() { :; }
-	blue() { :; }
-	cyan() { :; }
-	yellow() { :; }
-	green() { :; }
-fi
-
 remote="$(command git rev-parse --symbolic-full-name @{upstream} 2> /dev/null)"
 branch="$(git rev-parse --abbrev-ref HEAD)"
 cat <<- EOF
-	$(green)top:      $(white)$top
-	$(green)cwd:      $(cyan)$(pwd)
-	$(green)branch:   $(yellow)${branch}
-	$(green)upstream: ${remote:-none}
+	top:      $top
+	cwd:      $(pwd)
+	branch:   ${branch}
+	upstream: ${remote:-none}
 EOF
