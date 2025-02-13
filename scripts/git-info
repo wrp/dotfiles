@@ -6,11 +6,10 @@ then
 	remote_oid=" ($(git rev-parse --short "$remote"))"
 fi
 branch="$(git rev-parse --abbrev-ref HEAD)"
-summary=$(git for-each-ref --format=" (%(objectname:short)) %(push:track)" refs/heads/"$branch")
+summary=$(git for-each-ref --format="(%(objectname:short)) %(push:track)" refs/heads/"$branch")
 
-
-cat <<- EOF
-	branch:   ${branch}$summary
+sed -e 's/ *$//' <<- EOF
+	branch:   ${branch} $summary
 	upstream: ${remote:-none}$remote_oid
 	top:      $top
 	cwd:      $(pwd)
