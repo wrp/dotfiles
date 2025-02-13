@@ -1,7 +1,6 @@
 #!/bin/sh
 
 top=$(git rev-parse --show-toplevel)
-cwd=$(pwd | sed "s@${top}@@")
 
 if test -t 1; then
 	white() { tput setaf 7; }
@@ -19,8 +18,9 @@ fi
 
 remote="$(command git rev-parse --symbolic-full-name @{upstream} 2> /dev/null)"
 branch="$(git rev-parse --abbrev-ref HEAD)"
-printf 'cwd=%s%s %s%s\n' \
-	"$(white)$top/" \
-	"$(cyan)${cwd#/}" \
-	"$(yellow)branch=${branch}" \
-	"$(green)${remote:+ remote=${remote#refs/remotes/}}"
+cat <<- EOF
+	$(green)top:      $(white)$top
+	$(green)cwd:      $(cyan)$(pwd)
+	$(green)branch:   $(yellow)${branch}
+	$(green)upstream: ${remote:-none}
+EOF
