@@ -1,11 +1,15 @@
 #!/bin/sh
 
 top=$(git rev-parse --show-toplevel)
-remote="$(command git rev-parse --symbolic-full-name @{upstream} 2> /dev/null)"
+if remote="$(command git rev-parse --symbolic-full-name @{upstream} 2> /dev/null)"
+then
+	remote_oid=" ($(git rev-parse --short "$remote"))"
+fi
 branch="$(git rev-parse --abbrev-ref HEAD)"
 cat <<- EOF
+	$(git describe --dirty)
 	top:      $top
 	cwd:      $(pwd)
-	branch:   ${branch}
-	upstream: ${remote:-none}
+	branch:   ${branch} ($(git rev-parse --short "$branch"))
+	upstream: ${remote:-none}$remote_oid
 EOF
