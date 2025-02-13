@@ -10,9 +10,9 @@ summary=$(git for-each-ref --format=" (%(objectname:short)) %(push:track)" refs/
 
 
 cat <<- EOF
-	$(git describe --dirty)
-	top:      $top
-	cwd:      $(pwd)
 	branch:   ${branch}$summary
 	upstream: ${remote:-none}$remote_oid
+	top:      $top
+	cwd:      $(pwd)
+	describe: $(git describe --dirty)
 EOF
