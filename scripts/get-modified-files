@@ -25,8 +25,8 @@ else
 	commit=${1-$(git rev-parse --abbrev-ref HEAD)} || exit
 
 	if test -d "$GIT_DIR"/rebase-merge; then
-		# rebase in progress.  Only report files with merge conflict
-		git diff --ignore-submodules --name-only --diff-filter=U
+		# rebase in progress.
+		git diff --ignore-submodules --name-only --diff-filter=UM
 	else
 		git diff --ignore-submodules --name-only "${commit}" --
 	fi
