@@ -26,8 +26,12 @@ if test -z "$old"; then
 	exit 1
 fi
 
+if ! test "$V" -ge 0 2> /dev/null; then
+	quiet=--quiet
+fi
+
 if test "$current" = "$branch"; then
-	git pull --quiet
+	git pull $quiet
 else
 	remote=$(git config branch.${branch}.remote)
 	upstream=$(git rev-parse --abbrev-ref --symbolic-full-name ${branch}@{u})
@@ -37,7 +41,7 @@ else
 			exit 1
 		fi
 	done
-	git fetch --quiet "$remote" || exit 1
+	git fetch $quiet "$remote" || exit 1
 	git update-ref refs/heads/$branch $upstream || exit 1
 fi
 
