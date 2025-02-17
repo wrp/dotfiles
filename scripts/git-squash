@@ -1,0 +1,35 @@
+#!/bin/sh
+#
+# Usage: $0 commitish
+#
+# Create a new commit which squashes HEAD into $1.
+
+if ! git rev-parse --verify HEAD >/dev/null 2>&1; then
+	echo FATAL: There is no current HEAD >&2
+	exit 1
+fi
+
+if ! git diff-index --quiet HEAD; then
+	echo 'FATAL: Repo is dirty' >&2
+	exit 1
+fi
+
+current=$(git rev-parse --short HEAD) || exit
+base=$(git rev-parse --short "$1") || exit
+format='# ---- %h -- %ai%n%B%n%N'
+msg=$(
+	printf 'This commit squashes from %s to %s:\n\n' "$current" "$base"
+	git log --format="$format" $1.. &&
+	git log -n 1 --format="$format" $1
+) || exit
+
+git reset --quiet --hard "$1" || exit
+
+trap 'echo >&2 Aborting and resetting to $current
+git reset --hard $current' 0
+
+# Grrr.  Even with --quiet, git merge is spewing messages
+git merge --quiet --squash "$current" > /dev/null || exit
+git commit --quiet --amend -m "$msg" -e || exit
+
+trap : 0
