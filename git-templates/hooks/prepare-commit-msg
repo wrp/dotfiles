@@ -4,26 +4,15 @@
 # of a file containing the proposed commit message as $1.  See
 # githooks(5) for 2nd and 3rd argument.
 
-# Parse the $t variable and use it to apply trailers
-# to the commit message.  Also, check the branch.$branch.ticket
-# config to attempt to auto-insert a ticket trailer.
+# Parse t and trailer from the environment to apply trailers
+# to the commit message.
 
 . "$(dirname $0)"/common-hook-functions
 main() {
-	if ! test -n "$3"; then
-		# This is not from an extant commit (-c, -C, or --amend)
-		get_ticket "$1" || return 1
-		add_trailer "$1" ticket "$ticket"
-	fi
-
-	check_t_for_trailers "$@"
+	check_t_for_trailers "$@" || return 1
 	run_local_hooks "$@"
 }
 
-add_trailer() {
-	test -z "$3" && return
-	git-interpret-trailers --in-place --if-exists addIfDifferent --trailer "$2=$3" "$1"
-}
 
 # The environment variable t (or "trailer") can be a comma-separated list of
 # trailer-value pairs in the form name:value.  Insert them as
@@ -31,51 +20,10 @@ add_trailer() {
 check_t_for_trailers() {
 	test -z "${t-$trailer}" && return
 	printf '%s\n' "${t-$trailer}" | tr , \\n |
-	while IFS=: read name value; do
-		add_trailer "$1" "$name" "$value"
+	while read line; do
+		git-interpret-trailers --in-place --if-exists addIfDifferent \
+			--trailer "$line" "$1" || return 1
 	done
-}
-
-get_ticket_from_extant_message() {
-	git interpret-trailers --parse "$1" \
-	| awk '$1 == "ticket" {print $2}' FS=': ' \
-	| grep .
-}
-
-get_ticket() {
-	test -n "$ticket" && return
-
-	branch=$(git branch --show-current)
-	if test -z "$branch"; then
-		# Maybe we are rebasing; try to get the original branch name
-		for i in rebase-merge rebase-apply; do
-			p=$(git rev-parse --git-path $i)
-			if test -d "$p"; then
-				branch=$(sed -e 's@refs/heads/@@' "$p"/head-name)
-				break;
-			fi
-		done
-	fi
-	ticket=$(
-		# get-ticket-from-branch is expected to be a local
-		# script that may not exist
-		get_ticket_from_extant_message "$1" ||
-		git config branch."$branch".ticket ||
-		get-ticket-from-branch "$branch" 2> /dev/null
-	)
-
-	if test -z "$ticket"; then
-		msg="not inserting ticket trailer"
-		if test "$(git config core.require-ticket)" = true \
-		|| test "$(git config branch.$branch.require-ticket)" = true
-		then
-			msg="setting ticket to None"
-			ticket=None
-		fi
-		if test "$(git config advice.warn-if-no-ticket)" = true; then
-			warn "($(git rev-parse --short HEAD)) $msg"
-		fi
-	fi >&2
 }
 
 main "$@"
