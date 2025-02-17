@@ -3,7 +3,7 @@
 
 g() { git "$@"; }
 git() {
-	local v
+	local arg orig prev v verbose=$V
 	v=$(command git --version) || return
 	if test -n "$EXPECTED_GIT_VERSION" &&
 		test "$v" != "$EXPECTED_GIT_VERSION"
@@ -15,7 +15,6 @@ git() {
 	test $# = 0 && { set -- .; }
 
 	# Do aliasing on arguments
-	local arg orig prev
 	for arg; do
 		shift
 		orig=$arg
@@ -29,7 +28,7 @@ git() {
 				arg=$(command git select-branch "$arg")
 			fi
 		esac
-		test "$arg" != "$orig" && V=1
+		test "$arg" != "$orig" && verbose=1
 		set -- "$@" "$arg"
 		prev=$orig
 	done
@@ -38,7 +37,7 @@ git() {
 	(clone ) v=$1; shift; set -- "$v"-wrapper "$@";;
 	(.     ) set -- info;;
 	esac
-	test "${V-0}" -gt 0 && echo "git $*"
+	test "${verbose-0}" -gt 0 && echo "git $*"
 	command git "$@"
 }
 for cmd in ga gdm; do
