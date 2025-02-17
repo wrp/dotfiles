@@ -25,12 +25,12 @@ add_trailer() {
 	git-interpret-trailers --in-place --if-exists addIfDifferent --trailer "$2=$3" "$1"
 }
 
-# The environment variable t can be a comma-separated list of
+# The environment variable t (or "trailer") can be a comma-separated list of
 # trailer-value pairs in the form name:value.  Insert them as
 # trailers into the commit message
 check_t_for_trailers() {
-	test -z "$t" && return
-	printf '%s\n' "$t" | tr , \\n |
+	test -z "${t-$trailer}" && return
+	printf '%s\n' "${t-$trailer}" | tr , \\n |
 	while IFS=: read name value; do
 		add_trailer "$1" "$name" "$value"
 	done
