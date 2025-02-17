@@ -15,28 +15,23 @@ git() {
 	test $# = 0 && { set -- .; }
 
 	# Do aliasing on arguments
-	local old_arg prev new_arg
-	for old_arg; do
+	local arg orig prev
+	for arg; do
 		shift
-		unset new_arg
+		orig=$arg
 
-		# replace numeric args with branch name
-		if test "$prev" != -n && test "$old_arg" -ge 0 2> /dev/null; then
-			new_arg=$(command git select-branch "$old_arg")
-		fi
-		case $old_arg in
-		(mb    ) new_arg=--merge-base;;
-		(no    ) new_arg=--name-only;;
-		(bb    ) new_arg=$(git-base-branch) || return 1;;
+		case $arg in
+		(mb    ) arg=--merge-base;;
+		(no    ) arg=--name-only;;
+		(bb    ) arg=$(git-base-branch) || return 1;;
+		([0-9]*) # replace numeric args with branch name
+			if test "$prev" != -n && test "$arg" -ge 0 2> /dev/null; then
+				arg=$(command git select-branch "$arg")
+			fi
 		esac
-
-		if test -n "$new_arg"; then
-			V=1
-			old_arg=$new_arg
-		fi
-
-		set -- "$@" "$old_arg"
-		prev=$old_arg
+		test "$arg" != "$orig" && V=1
+		set -- "$@" "$arg"
+		prev=$orig
 	done
 
 	case $1 in
