@@ -25,7 +25,7 @@ git() {
 		(bb    ) arg=$(git-base-branch) || return 1;;
 		([0-9]*) # replace numeric args with branch name
 			if test "$prev" != -n && test "$arg" -ge 0 2> /dev/null; then
-				arg=$(command git select-branch "$arg")
+				arg=$(command git select-branch "$arg") || return 1
 			fi
 		esac
 		test "$arg" != "$orig" && verbose=1
