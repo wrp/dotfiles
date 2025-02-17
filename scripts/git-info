@@ -13,5 +13,5 @@ sed -e 's/ *$//' <<- EOF
 	upstream: ${remote:-none}$remote_oid
 	top:      $top
 	cwd:      $(pwd)
-	describe: $(git describe --dirty)
+	describe: $(git describe --dirty 2>&1)
 EOF
