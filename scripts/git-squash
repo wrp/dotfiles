@@ -3,7 +3,16 @@
 # Create a new commit which squashes HEAD into $1.
 
 usage() { sed -nE -e 1,2d -e '/^$/q' -e 's/#.?//p' "$0";}
-
+cleanup() {
+	echo >&2 Aborting and resetting to "$current"
+	git reset --hard "$current"
+}
+generate_log_msg() {
+	local format='# ---- %h -- %ai%n%B%n%N'
+	printf 'This commit squashes from %s to %s:\n\n' "$current" "$base"
+	git log --format="$format" "$1".. &&
+	git log -n 1 --format="$format" $1
+}
 test "$1" = -h && usage && exit 0
 
 if ! git rev-parse --verify HEAD >/dev/null 2>&1; then
@@ -18,17 +27,11 @@ fi
 
 current=$(git rev-parse --short HEAD) || exit
 base=$(git rev-parse --short "$1") || exit
-format='# ---- %h -- %ai%n%B%n%N'
-msg=$(
-	printf 'This commit squashes from %s to %s:\n\n' "$current" "$base"
-	git log --format="$format" $1.. &&
-	git log -n 1 --format="$format" $1
-) || exit
+msg=$(generate_log_msg "$1") || exit
 
 git reset --quiet --hard "$1" || exit
 
-trap 'echo >&2 Aborting and resetting to $current
-git reset --hard $current' 0
+trap cleanup 0
 
 # Grrr.  Even with --quiet, git merge is spewing messages
 git merge --quiet --squash "$current" > /dev/null || exit
