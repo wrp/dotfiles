@@ -3,12 +3,12 @@
 
 g() { git "$@"; }
 git() {
-	local arg orig prev v verbose=$V
-	v=$(command git --version) || return
+	local arg orig prev version verbose=$V
+	version=$(command git --version) || return
 	if test -n "$EXPECTED_GIT_VERSION" &&
-		test "$v" != "$EXPECTED_GIT_VERSION"
+		test "$version" != "$EXPECTED_GIT_VERSION"
 	then
-		(die Unexpected git version: $v)
+		(die Unexpected git version: $version)
 		return 1
 	fi
 
@@ -34,7 +34,7 @@ git() {
 	done
 
 	case $1 in
-	(clone ) v=$1; shift; set -- "$v"-wrapper "$@";;
+	(clone ) shift; set -- clone-wrapper "$@";;
 	(.     ) set -- info;;
 	esac
 	test "${verbose:-0}" -eq 0 2> /dev/null || echo "git $*"
