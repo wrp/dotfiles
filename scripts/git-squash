@@ -1,8 +1,10 @@
 #!/bin/sh
-#
-# Usage: $0 commitish
-#
+
 # Create a new commit which squashes HEAD into $1.
+
+usage() { sed -nE -e 1,2d -e '/^$/q' -e 's/#.?//p' "$0";}
+
+test "$1" = -h && usage && exit 0
 
 if ! git rev-parse --verify HEAD >/dev/null 2>&1; then
 	echo FATAL: There is no current HEAD >&2
