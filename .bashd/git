@@ -37,7 +37,7 @@ git() {
 	(clone ) v=$1; shift; set -- "$v"-wrapper "$@";;
 	(.     ) set -- info;;
 	esac
-	test "${verbose-0}" -gt 0 && echo "git $*"
+	test "${verbose:-0}" -eq 0 2> /dev/null || echo "git $*"
 	command git "$@"
 }
 for cmd in ga gdm; do
