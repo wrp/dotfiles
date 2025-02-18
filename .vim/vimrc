@@ -50,6 +50,7 @@ let b:match_words = '<<<<<<<:=======:>>>>>>>'
 
 
 " inoremap jk <esc>
+set colorcolumn=+1,+2,+3
 let loaded_matchparen=1
 set foldopen-=search
 set iskeyword=@,48-57,_,192-255,-
@@ -67,6 +68,7 @@ set autoindent
 " set smartindent
 " set cindent
 set scrolloff=0
+set textwidth=80
 set tildeop
 set t_ti= t_te=  " Disable clear screen on exit
 set novisualbell
