@@ -9,7 +9,7 @@
 main() {
 	: ${MAX_GIT_WIDTH:=$(git config core.max-message-width 2> /dev/null)}
 	: ${MAX_GIT_SUMMARY:=$(git config core.max-summary-width 2> /dev/null)}
-	msg=$(check_message "$@") || die "$msg"
+	check_message "$@" || die
 	validate_trailers "$@"
 	run_local_hooks "$@"
 }
@@ -17,10 +17,10 @@ main() {
 check_message() {
 	bad_end='.!?'  # Characters not allowed as final char of subject
 
-	< "$1" awk '
+	< "$1" >&2 awk '
 		/^#/ { next }
 		NR==1 && match($0, end) {
-			printf "Summary should not end with punctuation\n"
+			print "Summary should not end with punctuation"
 			status=1
 		}
 		NR==1 && length > max_summary {
@@ -29,7 +29,7 @@ check_message() {
 			status=1
 		}
 		NR==1 && ! match($0, "^[A-Z]") {
-			printf "Summary should start with a capital letter"
+			print "Summary should start with a capital letter"
 			status=1
 		}
 		NR > 1 && length > max_width {
