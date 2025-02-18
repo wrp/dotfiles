@@ -55,4 +55,5 @@ trap '. "$HOME"/.bashd/PS1; window-title' SIGWINCH
 check_directory_existence $HOME/.config git vim
 check_directory_existence $HOME/.run vim/{swap,backup,undo}
 PROMPT_COMMAND=after_cmd # Run after a command, before a prompt is displayed
+window-title
 return 0

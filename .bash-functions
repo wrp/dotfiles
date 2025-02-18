@@ -79,6 +79,7 @@ debug_trap() {
 	|debug_trap\
 	|less\
 	|ls\
+	|return\
 	)
 		: Do not set window title for these commands ;;
 	cd)
