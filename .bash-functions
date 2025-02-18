@@ -77,7 +77,6 @@ debug_trap() {
 	:\
 	|after_cmd\
 	|debug_trap\
-	|less\
 	|ls\
 	|return\
 	)
