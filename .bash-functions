@@ -53,8 +53,12 @@ after_cmd() {
 		report_cmd_status "$HISTFILE" "$ps" >> "$HOME"/.bash-history
 	fi
 	check_environment
-	window-title
+	if test -n "$RESET_TITLE"; then
+		window-title
+		unset RESET_TITLE
+	fi
 	type -t local_post_cmd_hook > /dev/null && local_post_cmd_hook
+
 	return $_status
 }
 
@@ -69,19 +73,18 @@ debug_trap() {
 	history -a || warn "history -a failed"
 	test -f "$HISTFILE" || warn HISTFILE does not exist
 
-	case ${BASH_COMMAND%% } in
+	case ${BASH_COMMAND%% *} in
 	:\
 	|after_cmd\
 	|debug_trap\
 	|less\
 	|ls\
-	|cd\
 	)
-		# Do not set window title for these commands
-		;;
+		: Do not set window title for these commands ;;
+	cd)
+		RESET_TITLE=1;;
 	*)
-		window-title "${BASH_COMMAND}"
-		;;
+		window-title "${BASH_COMMAND}";;
 	esac
 } >&2
 
