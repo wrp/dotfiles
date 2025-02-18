@@ -7,12 +7,8 @@
 
 
 main() {
-	if test -z "$MAX_GIT_WIDTH"; then
-		MAX_GIT_WIDTH=$(git config core.max-message-width 2> /dev/null)
-	fi
-	if test -z "$MAX_GIT_SUMMARY"; then
-		MAX_GIT_SUMMARY=$(git config core.max-summary-width 2> /dev/null)
-	fi
+	: ${MAX_GIT_WIDTH:=$(git config core.max-message-width 2> /dev/null)}
+	: ${MAX_GIT_SUMMARY:=$(git config core.max-summary-width 2> /dev/null)}
 	msg=$(check_message "$@") || die "$msg"
 	validate_trailers "$@"
 	run_local_hooks "$@"
