@@ -10,7 +10,7 @@ warn() {
 	local prefix
 	if test -z "$STFU"; then
 		prefix=$(printf '%7s: %s: ' "${header-WARNING}" "$0")
-		printf '%s\n' "$@" | sed -e "s@^@$prefix@"
+		printf "${prefix}%s\n" "$@"
 	fi
 } >&2
 
