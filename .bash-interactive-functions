@@ -51,7 +51,11 @@ gpu() {
 		| sed -e '/^remote:/d' >&2; } 3>&1
 }
 grep() {
-	if test -t 1; then
+	if test -t 0 && test -z "$GREP_FROM_TTY"; then
+		echo Input is from a tty.  Set GREP_FROM_TTY if this is intentional >&2
+		return 1
+	fi
+	if ! test -t 0 && test -t 1; then
 		command grep --color=always "$@" | ${PAGER-more}
 		return ${PIPESTATUS[0]}
 	else
