@@ -7,11 +7,9 @@ die() {
 
 unset header
 warn() {
-	local prefix
-	if test -z "$STFU"; then
-		prefix=$(printf '%7s: %s: ' "${header-WARNING}" "$0")
-		printf "${prefix}%s\n" "$@"
-	fi
+	test -n "$STFU" && return
+	local prefix=$(printf '%7s: %s: ' "${header-WARNING}" "$0")
+	printf "${prefix}%s\n" "$@"
 } >&2
 
 _run_file() {
