@@ -17,10 +17,11 @@ for x; do case "$x" in
 -h|--help|-?) sed -nE '1,2d; /^$/q; s@\$0@'"${0##*/}@g; s/#.?//p" $0; exit 0;;
 esac; done
 
+pane_height=$(tmux display-message -pt "$target" -F '#{pane_height}')
 
 if test $# = 0; then
-	end=$(( $(tmux display-message -pt "$target" -F '#{pane_height}') - 3))
-	start=-1 # After user hits return, the current top of pane will scroll up to -1
+	end=$(($pane_height - 3))
+	start=-1 # After user hits return, the top of pane will scroll up to -1
 	target=$TMUX_PANE
 else
 	adjust=$((${3-0}))
@@ -31,7 +32,7 @@ else
 	esac
 
 	if test "${2-0}" -ne 0 2> /dev/null; then
-		end=$(( $(tmux display-message -pt "$target" -F '#{pane_height}') - $adjust - 1))
+		end=$(($pane_height - $adjust - 1))
 		start=$((end - $2 + 1))
 	else
 		start=-
