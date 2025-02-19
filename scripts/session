@@ -1,12 +1,5 @@
 #!/bin/sh
 
-if test "$1" = .; then
-	# Reset session_path of current session to $PWD
-	TMUX= tmux -C attach -c $PWD -t $(tmux display-message -p '#{session_name}') </dev/null
-	tmux rename-session "$(basename ${PWD})"
-	exit
-fi
-
 dir=${1-$PWD}
 name=$(basename "$dir" | sed -e 's@$HOME@home@' | tr '[:upper:].' '[:lower:]-')
 dir=$(realpath "$dir" 2> /dev/null || readlink -f "$dir") || exit
@@ -14,6 +7,13 @@ dir=$(realpath "$dir" 2> /dev/null || readlink -f "$dir") || exit
 if test -z "$TMUX"; then
 	tmux attach 2> /dev/null \
 	|| tmux new-session -c "$dir" -s "$name"
+	exit
+fi
+
+if test "$1" = .; then
+	# Reset session_path of current session to $PWD
+	TMUX= tmux -C attach -c $PWD -t $(tmux display-message -p '#{session_name}') </dev/null
+	tmux rename-session "$(basename ${PWD})"
 	exit
 fi
 
