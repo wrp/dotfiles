@@ -51,10 +51,13 @@ gpu() {
 		| sed -e '/^remote:/d' >&2; } 3>&1
 }
 grep() {
-	if test -t 0 && test -z "$GREP_FROM_TTY"; then
-		echo Input is from a tty.  Set GREP_FROM_TTY if this is intentional >&2
+	local count=0
+	for arg; do test "${arg#-}" = "$arg" && : $((count += 1)); done
+	if test "$count" -lt 2 && test -t 0 && test -z "$GREP_FROM_TTY"; then
+		printf '%s.  ' 'Input is from a tty'
+		echo Set GREP_FROM_TTY if this is intentional
 		return 1
-	fi
+	fi >&2
 	if ! test -t 0 && test -t 1; then
 		command grep --color=always "$@" | ${PAGER-more}
 		return ${PIPESTATUS[0]}
