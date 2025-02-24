@@ -18,7 +18,7 @@ report_from_inside_gitdir() {
 			echo "Cannot locate workdir" >&2
 			exit 1
 		fi
-	fi;;
+	fi
 }
 
 main() {
