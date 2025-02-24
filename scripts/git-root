@@ -1,3 +1,22 @@
 #!/bin/sh
 
-git rev-parse --show-toplevel
+case "$(git rev-parse --is-inside-git-dir)" in
+(  true)
+	path=$(git rev-parse --absolute-git-dir)
+	if test "$(git rev-parse --is-bare-repository)" = true; then
+		printf '%s\n' "$path"
+	else
+		path=${path%/.git}
+		# If we are in the simple case where absolute git dir
+		# is named .git in a non-bare repo, then emit the path
+		# of the working dir.  Otherwise, this is an error.
+		if test "${PWD#$path}" != "${PWD}"; then
+			printf '%s\n' "$path"
+		else
+			echo "Cannot locate workdir" >&2
+			exit 1
+		fi
+	fi;;
+( false) git rev-parse --show-toplevel;;
+(     *)     exit 1;;
+esac
