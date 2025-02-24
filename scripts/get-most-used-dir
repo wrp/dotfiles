@@ -8,7 +8,7 @@ awk '{ $NF="" }
 	++a[$0] > max {
 		max=a[$0];
 		res=$0
-	}	
+	}
 	END {print res}
 ' FS=/ OFS=/
-	
+
