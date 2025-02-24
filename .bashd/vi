@@ -70,5 +70,7 @@ vi() {
 	if git rev-parse --git-dir > /dev/null 2>&1; then
 		_check_if_ignored_by_git "$@" || return 1
 	fi
+	MAX_GIT_WIDTH=$(command git config commit.max-message-width) \
+	MAX_GIT_SUMMARY=$(command git config commit.max-summary-width) \
 	vim "$@"    # .vimrc sets tmux titles
 }
