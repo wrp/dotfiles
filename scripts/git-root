@@ -1,7 +1,9 @@
 #!/bin/sh
 
-case "$(git rev-parse --is-inside-git-dir)" in
-(  true)
+# Print the absolute path of the top level of the working directory.
+
+report_from_inside_gitdir() {
+	# When cwd is in a git dir, try to guess the workdir.
 	path=$(git rev-parse --absolute-git-dir)
 	if test "$(git rev-parse --is-bare-repository)" = true; then
 		printf '%s\n' "$path"
@@ -9,7 +11,7 @@ case "$(git rev-parse --is-inside-git-dir)" in
 		path=${path%/.git}
 		# If we are in the simple case where absolute git dir
 		# is named .git in a non-bare repo, then emit the path
-		# of the working dir.  Otherwise, this is an error.
+		# of the working dir.  Otherwise, treat this as an error.
 		if test "${PWD#$path}" != "${PWD}"; then
 			printf '%s\n' "$path"
 		else
@@ -17,6 +19,13 @@ case "$(git rev-parse --is-inside-git-dir)" in
 			exit 1
 		fi
 	fi;;
-( false) git rev-parse --show-toplevel;;
-(     *)     exit 1;;
-esac
+}
+
+main() {
+	case "$(git rev-parse --is-inside-git-dir)" in
+	(  true) report_from_inside_gitdir;;
+	( false) git rev-parse --show-toplevel;;
+	(     *) exit 1;;
+	esac
+}
+main
