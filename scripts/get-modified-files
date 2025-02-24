@@ -4,7 +4,8 @@
 # is the amount of git history to explore in the current branch.
 
 
-if ! top=$(git rev-parse --path-format=relative --show-toplevel 2> /dev/null); then
+if ! top=$(git rev-parse --path-format=relative --show-toplevel 2> /dev/null)
+then
 	echo "Not in a git repo: can't find modified files" >&2
 	exit 1
 fi
