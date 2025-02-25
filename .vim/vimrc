@@ -72,7 +72,7 @@ set novisualbell
 set nowrap
 set nowrapscan
 set scrolloff=0
-set statusline=%f\ -\ FileType:\ %y
+set statusline=%n\ %f\ %l/%L\ %y
 set t_ti= t_te=  " Disable clear screen on exit
 set tildeop
 set viminfofile=$HOME/.config/vim/viminfo
