@@ -64,6 +64,7 @@ set matchpairs+=<:>
 set nowrap
 " set sidescroll=1
 set nowrapscan
+set statusline=%f\ -\ FileType:\ %y
 set autoindent
 " set smartindent
 " set cindent
