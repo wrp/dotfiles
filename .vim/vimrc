@@ -50,32 +50,32 @@ let b:match_words = '<<<<<<<:=======:>>>>>>>'
 
 
 " inoremap jk <esc>
-set colorcolumn=80
-let loaded_matchparen=1
-set foldopen-=search
-set iskeyword=@,48-57,_,192-255,-
-set modelines=10
-set modeline
-set viminfofile=$HOME/.config/vim/viminfo
-set hlsearch
-set listchars=extends:%,precedes:%,eol:$,tab:>-,trail:$
-set laststatus=2   " Always show status line
-set matchpairs+=<:>
-set nowrap
-" set sidescroll=1
-set nowrapscan
-set statusline=%f\ -\ FileType:\ %y
-set autoindent
-" set smartindent
 " set cindent
 " set relativenumber  numberwidth=8
-set scrolloff=0
+" set sidescroll=1
+" set smartindent
 " set textwidth=80 " Auto-inserts newlines to preserve width
-set tildeop
-set t_ti= t_te=  " Disable clear screen on exit
-set novisualbell
-set noerrorbells
 " set virtualedit=all
+let loaded_matchparen=1
+set autoindent
+set colorcolumn=80
+set foldopen-=search
+set hlsearch
+set iskeyword=@,48-57,_,192-255,-
+set laststatus=2   " Always show status line
+set listchars=extends:%,precedes:%,eol:$,tab:>-,trail:$
+set matchpairs+=<:>
+set modeline
+set modelines=10
+set noerrorbells
+set novisualbell
+set nowrap
+set nowrapscan
+set scrolloff=0
+set statusline=%f\ -\ FileType:\ %y
+set t_ti= t_te=  " Disable clear screen on exit
+set tildeop
+set viminfofile=$HOME/.config/vim/viminfo
 set wildmenu
 set wildmode=longest,list,full
 highlight ColorColumn ctermbg=green
