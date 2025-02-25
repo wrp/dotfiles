@@ -1,6 +1,6 @@
 #!/bin/sh
 
-top=$(git rev-parse --show-toplevel)
+top=$(git rev-parse --show-toplevel) || exit
 if remote="$(command git rev-parse --symbolic-full-name @{upstream} 2> /dev/null)"
 then
 	remote_oid=" ($(git rev-parse --short "$remote"))"
