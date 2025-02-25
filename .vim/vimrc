@@ -67,6 +67,7 @@ set nowrapscan
 set autoindent
 " set smartindent
 " set cindent
+" set relativenumber  numberwidth=8
 set scrolloff=0
 " set textwidth=80 " Auto-inserts newlines to preserve width
 set tildeop
