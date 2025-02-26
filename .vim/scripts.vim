@@ -11,3 +11,7 @@ endif
 if getline(1) =~ '^#!.*\<python\>'
   setfiletype python
 endif
+
+if getline(line('$')) =~ '^-->$'
+	setfiletype gitcommit
+endif
