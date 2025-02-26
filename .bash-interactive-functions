@@ -167,6 +167,7 @@ if ! which run > /dev/null 2>&1 && test -n "$TMUX"; then
 run() { # Create two new panes, run a command with stderr in one, stdout in the other
 	# For some reason, bash is spawning too many panes, so run this through dash
 	echo 'CAUTION: this is the shell wrapper, not the version from wrp-utils' >&2
+	mkdir -p "$HOME"/.bash-run-output
 	pid=$$ dash -s "$@" << \EOF
 		st_split() {  # "stamp-tee split"
 			perl -pe '$|=1; print localtime . ": "' \
