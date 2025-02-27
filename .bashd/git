@@ -46,6 +46,7 @@ git() {
 	(.     ) set -- info;;
 	esac
 	test "${verbose:-0}" -eq 0 2> /dev/null || echo "git $*"
+	test "${verbose:-0}" -eq 0 2> /dev/null || command git "$1" -h
 
 	command git "$@"
 }
