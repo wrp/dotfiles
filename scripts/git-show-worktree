@@ -15,7 +15,7 @@ git show-ref --quiet --verify -- "refs/heads/$1" || {
 
 git worktree list --porcelain | {
 dir=$(awk '{gsub("refs/heads/", "")}
-	NR=1 {dir=$2}
+	NR == 1 {dir=$2}
 	$6 == branch {dir=$2; exit}
 	END {print dir}
 	' branch="$1" RS=)
