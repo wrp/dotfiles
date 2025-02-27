@@ -88,7 +88,7 @@ debug_trap() {
 	cd|ls)
 		RESET_TITLE=1;;
 	*)
-		window-title "${BASH_COMMAND}";;
+		window-title "${BASH_COMMAND%% *}";;
 	esac
 } >&2
 
