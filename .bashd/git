@@ -33,6 +33,8 @@ git() {
 		prev=$orig
 	done
 
+	tput sgr0
+
 	case $1 in
 	(cd    )
 		shift
