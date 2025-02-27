@@ -6,8 +6,6 @@
 	b = interactive-branch
 	caa = commit --amend -a -C HEAD --cleanup=strip
 	caan = caa -n
-	cd = ci -m Documentation
-	cda = cd -a
 	cf = cwip -m 'Trivial reformat'
 	cfa = cf -a
 	ci = commit
