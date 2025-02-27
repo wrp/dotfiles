@@ -9,7 +9,7 @@ if test $# -ne 1; then
 	exit 1
 fi
 
-git worktree list --porcelain |
+git worktree list --porcelain | {
 dir=$(awk '{gsub("refs/heads/", "")} $6 == branch {print $2; exit}' \
 	branch="$1" RS=)
 
@@ -19,3 +19,4 @@ if test -z "$dir"; then
 fi
 
 printf '%s' "$dir"
+}
