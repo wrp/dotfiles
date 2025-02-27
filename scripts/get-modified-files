@@ -38,5 +38,5 @@ fi \
 import sys
 import os
 for x in sys.stdin:
-	print(os.path.relpath(x, os.getcwd()))
+	print(os.path.relpath(x, os.getcwd()), end="")
 '
