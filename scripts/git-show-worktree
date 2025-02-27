@@ -8,6 +8,10 @@ if test $# -ne 1; then
 	echo 'Must give branch name as only argument' >&2
 	exit 1
 fi
+git show-ref --quiet --verify -- "refs/heads/$1" || {
+	echo 'First argument must be a valid branch' >&2
+	exit 1
+}
 
 git worktree list --porcelain | {
 dir=$(awk '{gsub("refs/heads/", "")} $6 == branch {print $2; exit}' \
