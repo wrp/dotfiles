@@ -69,6 +69,7 @@
 	prereleaseSuffix = .rc
 [color "branch"]
 	meta = red green bold
+	current = yellow
 [color]
 	branch = true
 [pull]
