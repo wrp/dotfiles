@@ -67,9 +67,11 @@ make_hist_file() {
 }
 
 debug_trap() {
-	# Runs before a command in an interactive shell
+	: Runs before a command in an interactive shell
 	# warning: if you execute a loop, this will run for every iteration
+	# It also runs for every command in a pipeline
 	# TODO: figure out how to suppress that behavior
+
 	history -a || warn "history -a failed"
 	test -f "$HISTFILE" || warn HISTFILE does not exist
 
