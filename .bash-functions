@@ -80,6 +80,7 @@ debug_trap() {
 	|after_cmd\
 	|debug_trap\
 	|echo\
+	|exec\
 	|g|git\
 	|head\
 	|return\
