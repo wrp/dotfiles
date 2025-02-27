@@ -79,7 +79,10 @@ debug_trap() {
 	:\
 	|after_cmd\
 	|debug_trap\
+	|g|git\
+	|head\
 	|return\
+	|sed\
 	)
 		: Do not set window title for these commands ;;
 	cd|ls)
