@@ -33,7 +33,7 @@ git() {
 		prev=$orig
 	done
 
-	tput sgr0
+	test -t -1 && tput sgr0
 
 	case $1 in
 	(cd    )
