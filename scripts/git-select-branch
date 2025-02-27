@@ -4,6 +4,8 @@
 # or select branch by number.  Write the branch
 # name to stdout
 
+git rev-parse > /dev/null || exit
+
 if test -n "$1" && git rev-parse --verify "$1" > /dev/null 2>&1; then
 	branch=$1
 else
