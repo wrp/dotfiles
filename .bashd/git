@@ -3,7 +3,7 @@
 
 g() { git "$@"; }
 git() {
-	local arg orig prev version verbose=$V
+	local arg orig prev version verbose=$V tmp
 	version=$(command git --version) || return
 	if test -n "$EXPECTED_GIT_VERSION" &&
 		test "$version" != "$EXPECTED_GIT_VERSION"
@@ -34,6 +34,12 @@ git() {
 	done
 
 	case $1 in
+	(cd    )
+		shift
+		tmp=$(command git show-worktree "$@") \
+		&& echo "Changing directory to $tmp" \
+		&& cd "$tmp"
+		return;;
 	(clone ) shift; set -- clone-wrapper "$@";;
 	(.     ) set -- info;;
 	esac

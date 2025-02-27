@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# Given a branch as $1, print the full path of the work-tree
+# that houses it.  Fail if not such worktree exists.
+
+if test $# -ne 1; then
+	echo 'Must give branch name as only argument' >&2
+	exit 1
+fi
+git rev-parse HEAD > /dev/null || exit
+branch=$1
+
+git worktree list --porcelain |
+awk '{gsub("refs/heads/", "")} $6 == branch {print $2; exit}' \
+	branch="$1" RS=
