@@ -79,11 +79,10 @@ debug_trap() {
 	:\
 	|after_cmd\
 	|debug_trap\
-	|ls\
 	|return\
 	)
 		: Do not set window title for these commands ;;
-	cd)
+	cd|ls)
 		RESET_TITLE=1;;
 	*)
 		window-title "${BASH_COMMAND}";;
