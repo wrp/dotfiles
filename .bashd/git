@@ -4,6 +4,11 @@
 g() { git "$@"; }
 git() {
 	local arg orig prev version verbose=$V tmp
+
+	if ! test -t 1; then
+		command git "$@"
+		return
+	fi
 	version=$(command git --version) || return
 	if test -n "$EXPECTED_GIT_VERSION" &&
 		test "$version" != "$EXPECTED_GIT_VERSION"
@@ -33,12 +38,12 @@ git() {
 		prev=$orig
 	done
 
-	test -t -1 && tput sgr0
+	tput sgr0
 
 	case $1 in
 	(cd    )
 		shift
-		tmp=$(command git show-worktree "$@") \
+		tmp=$(git show-worktree "$@") \
 		&& tmp=${tmp}/${PWD#$(git rev-parse --show-toplevel)/} \
 		&& cd "$tmp" \
 		&& echo "Changed directory to $tmp"  \
