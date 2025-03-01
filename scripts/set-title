@@ -13,10 +13,14 @@ test -z "$TMUX$DOCKER" && exit
 # If not in a git repo, use the output of pwd -P
 test -z "$*" && {
 	if branch_name=$(git rev-parse --abbrev-ref HEAD); then
-		set -- "$(basename "$branch_name")"
+		case $branch_name in
+		main|master) t="$(git rev-parse --show-toplevel)";;
+		*) t="$branch_name";;
+		esac
 	else
-		set -- "$(basename "$(pwd -P | sed -e "s@$HOME@~@")")"
+		t="$(pwd -P | sed -e "s@$HOME@~@")"
 	fi
+	set -- "$(basename "$t")"
 } 2> /dev/null
 
 if test -n "$truncate_left"; then
