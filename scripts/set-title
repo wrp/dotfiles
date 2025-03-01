@@ -9,21 +9,11 @@
 # if we aren't in one of the expected environments.
 test -z "$TMUX$DOCKER" && exit
 
-# If no argument is given, default to the basename of the git dir.
-# In a worktree, use the basename of the branch.  If not in a git repo,
-# use the output of pwd -P
+# If no argument is given, use the branch name of the current HEAD.
+# If not in a git repo, use the output of pwd -P
 test -z "$*" && {
-	git_dir=$(git rev-parse --absolute-git-dir)
-	if test "${git_dir##*/}" = .git; then
-		set -- "$(basename "$(dirname "$git_dir")")"
-	elif work_dir=$(git rev-parse --show-toplevel); then
-		set -- "$(basename "$work_dir")"
-		if test "$1" = worktrees; then
-			# Grrr.  After a git worktree move, the absolute-git-dir
-			# retains its old name.  So let's use the currently
-			# checked out branch
-			set -- "$(basename $(git rev-parse --abbrev-ref HEAD))"
-		fi
+	if branch_name=$(git rev-parse --abbrev-ref HEAD); then
+		set -- "$(basename "$branch_name")"
 	else
 		set -- "$(basename "$(pwd -P | sed -e "s@$HOME@~@")")"
 	fi
