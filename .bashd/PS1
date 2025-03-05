@@ -27,7 +27,6 @@ set_prompt() {
 	insert_text "$__RESET"
 	insert_text '${PS1_PREFIX+${__YELLOW}[$PS1_PREFIX]}'
 	test -z "$TMUX" && insert_text "${__RED}|NO_TMUX|"
-	# TODO: only call tput cols after SIGWINCH
 	tput cols > /dev/null
 	local width=$(tput cols)
 
