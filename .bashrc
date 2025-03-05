@@ -30,6 +30,7 @@ unset_all_functions() {
 unset_all_functions
 unset PS1    # Set PS1 from ~.bashd/PS1
 read_file() { local f; for f; do if test -f "$f"; then . "$f"; fi; done; }
+read_file "$HOME"/.bashd/colors
 read_file "$HOME"/.bash-functions
 read_file "$HOME"/.bash-env
 read_file "$HOME"/.bash-interactive-functions

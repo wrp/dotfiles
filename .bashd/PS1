@@ -1,13 +1,13 @@
 
-__RESET=$(tput sgr0)
-__BOLD=$(tput bold)
-__RED=$(printf '\x01'; tput setaf 1; printf '\x02')
-__GREEN=$(printf '\x01'; tput setaf 2; printf '\x02')
-__YELLOW=$(printf '\x01'; tput setaf 3; printf '\x02')
-__BOLD_YELLOW=$(printf '\x01'; tput bold; tput setaf 3; printf '\x02')
-__BLUE=$(printf '\x01'; tput setaf 4; printf '\x02')
-__MAGENTA=$(printf '\x01'; tput setaf 5; printf '\x02')
-__CYAN=$(printf '\x01'; tput setaf 6; printf '\x02')
+__RESET=${RESET}
+__BOLD=$BOLD
+__RED=$(printf '\x01%s\x02' "$RED")
+__GREEN=$(printf '\x01%s\x02' "$GREEN")
+__YELLOW=$(printf '\x01%s\x02' "$YELLOW")
+__BOLD_YELLOW=$(printf '\x01%s%s\x02' "$(tput bold)" "$YELLOW")
+__BLUE=$(printf '\x01%s\x02' "$BLUE")
+__MAGENTA=$(printf '\x01%s\x02' "$MAGENTA")
+__CYAN=$(printf '\x01%s\x02' "$CYAN")
 
 check_previous() {
 	PS1='$( {
@@ -28,6 +28,7 @@ set_prompt() {
 	insert_text "$__RESET"
 	insert_text '${PS1_PREFIX+${__YELLOW}[$PS1_PREFIX]}'
 	test -z "$TMUX" && insert_text "${__RED}|NO_TMUX|"
+	# TODO: only call tput cols after SIGWINCH
 	tput cols > /dev/null
 	local width=$(tput cols)
 

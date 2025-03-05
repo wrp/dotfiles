@@ -38,7 +38,7 @@ git() {
 		prev=$orig
 	done
 
-	tput sgr0
+	printf '%s' "$RESET"
 
 	case $1 in
 	(cd    )
@@ -46,7 +46,7 @@ git() {
 		tmp=$(git show-worktree "$@") \
 		&& arg=${PWD#$(git rev-parse --show-toplevel)} \
 		&& cd "$tmp$arg" \
-		&& echo "Changed directory to $tmp$(tput setaf 6)$arg"  \
+		&& echo "Changed directory to $tmp$CYAN$arg"  \
 		;
 		return;;
 	(clone ) shift; set -- clone-wrapper "$@";;
