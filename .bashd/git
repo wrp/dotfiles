@@ -44,7 +44,7 @@ git() {
 	(cd    )
 		shift
 		tmp=$(git show-worktree "$@") \
-		&& tmp=${tmp}/${PWD#$(git rev-parse --show-toplevel)/} \
+		&& tmp=${tmp}${PWD#$(git rev-parse --show-toplevel)} \
 		&& cd "$tmp" \
 		&& echo "Changed directory to $tmp"  \
 		;
