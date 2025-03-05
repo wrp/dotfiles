@@ -1,10 +1,9 @@
 
-__RESET=${RESET}
-__BOLD=$BOLD
+__RESET=$(printf '\x01%s\x02' "$RESET")
 __RED=$(printf '\x01%s\x02' "$RED")
 __GREEN=$(printf '\x01%s\x02' "$GREEN")
 __YELLOW=$(printf '\x01%s\x02' "$YELLOW")
-__BOLD_YELLOW=$(printf '\x01%s%s\x02' "$(tput bold)" "$YELLOW")
+__BOLD_YELLOW=$(printf '\x01%s%s\x02' "$BOLD" "$YELLOW")
 __BLUE=$(printf '\x01%s\x02' "$BLUE")
 __MAGENTA=$(printf '\x01%s\x02' "$MAGENTA")
 __CYAN=$(printf '\x01%s\x02' "$CYAN")
@@ -12,9 +11,9 @@ __CYAN=$(printf '\x01%s\x02' "$CYAN")
 check_previous() {
 	PS1='$( {
 		if test $? -ne 0; then
-			printf "%s" "$__RESET$__BOLD$__RED";
+			printf "\x01%s\x02" "$RESET$BOLD$RED";
 		else
-			printf "%s" "$__RESET$__CYAN";
+			printf "\x01%s\x02" "$RESET$CYAN";
 		fi
 	} )';
 }
