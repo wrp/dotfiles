@@ -44,9 +44,9 @@ git() {
 	(cd    )
 		shift
 		tmp=$(git show-worktree "$@") \
-		&& tmp=${tmp}${PWD#$(git rev-parse --show-toplevel)} \
-		&& cd "$tmp" \
-		&& echo "Changed directory to $tmp"  \
+		&& arg=${PWD#$(git rev-parse --show-toplevel)} \
+		&& cd "$tmp$arg" \
+		&& echo "Changed directory to $tmp$(tput setaf 6)$arg"  \
 		;
 		return;;
 	(clone ) shift; set -- clone-wrapper "$@";;
