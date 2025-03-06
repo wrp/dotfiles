@@ -1,8 +1,3 @@
 
 
 Make tab-expansion for vi ignore files that are ignored by git.
-
-Figure out how to change the color of worktree paths in the
-output of git-branch.  It looks like cyan is hard-coded,
-so we should either change the color by patching git, or
-submit a patch to allow the color to be configured.

@@ -70,6 +70,7 @@
 [color "branch"]
 	meta = red green bold
 	current = black cyan
+	worktree = red yellow
 [color]
 	branch = true
 [pull]
