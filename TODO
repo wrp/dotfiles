@@ -2,7 +2,7 @@
 
 Make tab-expansion for vi ignore files that are ignored by git.
 
-Figure out a reasonable way to make the headers line up in
-git-log-online with --date is applied.  Currently, setting
---date causes text to be inserted, and we need a reasonable
-way to compute where the headers belong.
+Figure out how to change the color of worktree paths in the
+output of git-branch.  It looks like cyan is hard-coded,
+so we should either change the color by patching git, or
+submit a patch to allow the color to be configured.
