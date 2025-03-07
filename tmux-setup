@@ -50,11 +50,6 @@ for x; do
 		sed -e '1,/^cat/d' -e '$d'
 	else
 		cat;
-	fi \
-	| if grep .; then
-		echo "copied $name to clipboard" >&2
-	else
-		echo "No text copied to clipboard for $name!" >&2
 	fi
 done \
 | expand \
