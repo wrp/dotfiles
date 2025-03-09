@@ -62,8 +62,20 @@ after_cmd() {
 	return $_status
 }
 
-make_hist_file() {
+write_hist_file() {
+	local now
+	test -z "$HISTFILE" && { warn HISTFILE unset; return 1; }
 	test -s "$HISTFILE" || { printf '# '; date; } >> $HISTFILE
+	now=$(date +%s) || return 1
+	history -a || warn "history -a failed"
+	if test $(stat -f %m "$HISTFILE") -ne "$now"; then
+		history -w
+		if test $(wc -l < "$HISTFILE") -lt 2; then
+			warn HISTFILE is not updating
+		fi
+	fi
+
+	test -f "$HISTFILE" || warn HISTFILE does not exist
 }
 
 debug_trap() {
@@ -72,8 +84,7 @@ debug_trap() {
 	# It also runs for every command in a pipeline
 	# TODO: figure out how to suppress that behavior
 
-	history -a || warn "history -a failed"
-	test -f "$HISTFILE" || warn HISTFILE does not exist
+	write_hist_file
 
 	case ${BASH_COMMAND%% *} in
 	:\
