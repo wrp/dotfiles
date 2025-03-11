@@ -65,15 +65,15 @@ after_cmd() {
 write_hist_file() {
 	local now updated
 	test -z "$HISTFILE" && { warn HISTFILE unset; return 1; }
-	test -s "$HISTFILE" || { printf '# '; date; } >> $HISTFILE
 	now=$(date +%s) || return 1
-	history -a || warn "history -a failed"
+	if ! test -s "$HISTFILE"; then
+		history -w || warn 'history -w failed'
+	else
+		history -a || warn 'history -a failed'
+	fi
 	updated=$(stat -f %m "$HISTFILE")
 	if ! test "$updated" -ge "$((now - 1))"; then
 		warn "HISTFILE not updated for $((now - updated)) seconds"
-		if test $(wc -l < "$HISTFILE") -lt 2; then
-			history -w
-		fi
 	fi
 
 	test -f "$HISTFILE" || warn HISTFILE does not exist
