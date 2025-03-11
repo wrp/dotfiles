@@ -68,10 +68,10 @@ write_hist_file() {
 	test -s "$HISTFILE" || { printf '# '; date; } >> $HISTFILE
 	now=$(date +%s) || return 1
 	history -a || warn "history -a failed"
-	if test $(stat -f %m "$HISTFILE") -ne "$now"; then
-		history -w
+	if test $(stat -f %m "$HISTFILE") -lt "$now"; then
+		warn HISTFILE is not updating
 		if test $(wc -l < "$HISTFILE") -lt 2; then
-			warn HISTFILE is not updating
+			history -w
 		fi
 	fi
 
