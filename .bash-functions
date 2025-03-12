@@ -73,7 +73,7 @@ write_hist_file() {
 	fi
 	updated=$(stat -f %m "$HISTFILE")
 	if ! test "$updated" -ge "$((now - 1))"; then
-		warn "HISTFILE not updated for $((now - updated)) seconds"
+		warn -c HISTFILE not updated for $((now - updated)) seconds
 	fi
 
 	test -f "$HISTFILE" || warn HISTFILE does not exist
@@ -129,7 +129,21 @@ report_cmd_status() {
 }
 
 die() { test -n "$*" && printf 'FATAL: %s\n' "$*" >&2; exit 1; }
-warn() { test -z "$NOWARN" && printf 'WARNING: %s\n' "$*" >&2; }
+check_cache() {
+	local now
+	local then
+	eval "then=\${WARN_CACHE_$1-0}"
+	now=$(date +%s)
+	eval "WARN_CACHE_$1"=$now
+	test "$((now - then))" -lt 5
+}
+warn() {
+	if test "$1" = -c; then
+		shift
+		check_cache "$@" && return
+	fi
+	test -z "$NOWARN" && printf 'WARNING: %s\n' "$*" >&2
+}
 
 window-title() {
 	test -t 1 || return;
