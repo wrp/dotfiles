@@ -146,7 +146,7 @@ _p_complete() {
 }
 complete -o default -F _p_complete p
 ps() { COLUMNS=${CO:-15000} command ps "$@"; }
-push() { kill -s SIGUSR1 $(ls $HOME/.bash-history-dir | sed 's/shell-pid-//g'); }
+push() { kill -s SIGUSR1 $(ls $HOME/.bash-history-dir); }
 POST() {
 	# ACCESS_TOKEN will need be refreshed periodically.  Just unset it.
 	test -z "$ACCESS_TOKEN" \
