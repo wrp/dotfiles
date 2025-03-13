@@ -63,6 +63,7 @@ after_cmd() {
 }
 
 write_hist_file() {
+	test "$BASH_COMMAND" = after_cmd && return
 	local now updated
 	test -z "$HISTFILE" && { warn HISTFILE unset; return 1; }
 	now=$(date +%s) || return 1
