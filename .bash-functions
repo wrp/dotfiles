@@ -63,6 +63,12 @@ after_cmd() {
 	return $_status
 }
 
+if stat -f %m / > /dev/null 2>&1; then
+	get_mtime() { stat -f %m "$1"; }
+else
+	get_mtime() { stat --format %Y "$1"; }
+fi
+
 write_hist_file() {
 	test "$BASH_COMMAND" = after_cmd && return
 	local now updated
@@ -73,7 +79,7 @@ write_hist_file() {
 	else
 		history -a || warn 'history -a failed'
 	fi
-	updated=$(stat -f %m "$HISTFILE")
+	updated=$(get_mtime "$HISTFILE")
 	if ! test "$updated" -ge "$((now - 1))"; then
 		warn -c HISTFILE not updated for $((now - updated)) seconds
 	fi
