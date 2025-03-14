@@ -63,10 +63,15 @@ after_cmd() {
 	return $_status
 }
 
-if stat -f %m / > /dev/null 2>&1; then
-	get_mtime() { stat -f %m "$1"; }
-else
-	get_mtime() { stat --format %Y "$1"; }
+for args in '-f %m' '--format %Y'; do
+	if eval stat $args / > /dev/null 2>&1; then
+		eval "get_mtime() { stat $args \"\$1\"; }"
+		break;
+	fi
+done
+if ! type get_mtime > /dev/null 2>&1; then
+	warn Unable to figure out how to get mtime using stat. Please fix.
+	get_mtime() { echo 0; }
 fi
 
 write_hist_file() {
