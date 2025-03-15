@@ -147,7 +147,7 @@ check_cache() {
 	local then
 	eval "then=\${WARN_CACHE_$1-0}"
 	now=$(date +%s)
-	eval "WARN_CACHE_$1"=$now
+	eval "export WARN_CACHE_$1=$now"
 	test "$((now - then))" -lt 5
 }
 warn() {
