@@ -57,4 +57,8 @@ check_directory_existence $HOME/.config git vim
 check_directory_existence $HOME/.run vim/{swap,backup,undo}
 PROMPT_COMMAND=after_cmd # Run after a command, before a prompt is displayed
 window-title
+
+if test "${BASH_VERSINFO[0]}" -lt 5; then
+	warn "You are using bash version $BASH_VERSION.  It is obsolete!"
+fi
 return 0
