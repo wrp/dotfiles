@@ -48,9 +48,7 @@ after_cmd() {
 	# In  3.2.57(1)-release (arm64-apple-darwin23), PIPESTATUS
 	# seems to be completely broken and is always 0.
 	local _status=$? ps="${PIPESTATUS[@]}"
-	if ! test -s "$HISTFILE"; then
-		warn $HISTFILE is empty
-	else
+	if test -s "$HISTFILE"; then
 		report_cmd_status "$HISTFILE" "$ps" >> "$HOME"/.bash-history
 	fi
 	check_environment
