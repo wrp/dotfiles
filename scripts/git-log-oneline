@@ -24,6 +24,7 @@
 #  commit.required-trailer multi-value list of trailers to display
 
 usage() { sed -E -e 1,2d -e '/^$/q' -e 's/#.?//' "$0";}
+die() { echo "$*" >&2; exit 1; }
 
 initialize() {
 	cd ${GIT_PREFIX:-.} || exit
@@ -40,7 +41,7 @@ initialize() {
 		} | tr , \\n | sort -u | tr \\n , | sed -e 's/,$//')"}
 	_cfg_trailer_width="$(git config log.trailer-width)"
 	trailer_width=${w-${_cfg_trailer_width:-11}}
-
+	test "$trailer_width" -ge 0 || die "width must be an integer"
 	trailer_fmt=$(build_trailer_fmt)
 
 	_cfg_author_width="$(git config log.author-width)"
