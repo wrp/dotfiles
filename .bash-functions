@@ -74,7 +74,7 @@ fi
 
 write_hist_file() {
 	test "$BASH_COMMAND" = after_cmd && return
-	local now updated
+	local now updated delta
 	test -z "$HISTFILE" && { warn HISTFILE unset; return 1; }
 	now=$(date +%s) || return 1
 	if ! test -s "$HISTFILE"; then
@@ -83,8 +83,9 @@ write_hist_file() {
 		history -a || warn 'history -a failed'
 	fi
 	updated=$(get_mtime "$HISTFILE")
-	if ! test "$updated" -ge "$((now - 1))"; then
-		warn -c HISTFILE not updated for $((now - updated)) seconds
+	delta=$((now - updated))
+	if test "$delta" -ge 60; then
+		warn -c "HISTFILE not updated for $delta seconds"
 	fi
 
 	test -f "$HISTFILE" || warn HISTFILE does not exist
