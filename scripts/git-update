@@ -1,9 +1,19 @@
 #!/bin/sh
+#
+# usage: @NAME@ [branch]
+#
+# Fetch from the remote associated with the specified branch
+# (or diff.base-branch or main or master) and update the local ref.
+# If the branch is already checked out, this is
+# just git-pull --quiet followed by a summary of the update.
 
-# Fetch from the remote associated with the base branch
-# (diff.base-branch/main/master/) and update the local ref.
-# If the base branch is already checked out, this is
-# just git-pull --quiet follwed by a summary of the update.
+case "$1" in
+--)
+	shift;;
+-h|-?|--help)
+	sed -E -e 1d -e "/^#/!q; s/# ?//; s|@NAME@|$(basename $0)|" "$0"
+	exit;;
+esac
 
 
 branch=${1-$(git base-branch)} || exit
