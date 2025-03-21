@@ -169,6 +169,7 @@ noremap ; :
 noremap , ;
 syntax on
 let loaded_matchparen = 1
+set hlsearch
 set includeexpr=substitute(v:fname,'$DAEMON_PATH/','','g')
 set noerrorbells
 set novisualbell
