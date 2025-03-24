@@ -155,6 +155,13 @@ _p_complete() {
 complete -o default -F _p_complete p
 ps() { COLUMNS=${CO:-15000} command ps "$@"; }
 push() { kill -s SIGUSR1 $(ls $HOME/.bash-history-dir); }
+pytest() {
+	if git rev-parse --git-dir | grep -q /worktrees/; then
+		echo "Do not run pytest in a worktree" >&2
+		return 1;
+	fi
+	command pytest "$@"
+}
 POST() {
 	# ACCESS_TOKEN will need be refreshed periodically.  Just unset it.
 	test -z "$ACCESS_TOKEN" \
