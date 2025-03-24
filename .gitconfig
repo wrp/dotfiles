@@ -37,6 +37,10 @@
 	l1a = l1 --graph --decorate
 	l1ah = l1 -n 10 --graph --decorate
 	l1h = l1 -n 10
+	l11 = l1 --first-parent
+	l11a = l1a --first-parent
+	l11ah = l1ah --first-parent
+	l11h = l1h --first-parent
 	la = l1 --graph --decorate  # same as l1a
 	ld = l1 --date=format:'%FT%T%z'
 	ldh = ld -n 10
