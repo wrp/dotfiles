@@ -155,9 +155,8 @@ build_trailer_fmt() {
 					printf(fmt, width, f[i])
 				}
 			}
-		}' "${trailers}" "${trailer_width}"
-
-
+		}
+	' "${trailers}" "${trailer_width}"
 }
 
 main "$@"
