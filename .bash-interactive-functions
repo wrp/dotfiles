@@ -251,7 +251,7 @@ ts() {
 }
 typeof() { for e; do which "$e" && file $( which $e ); done }
 up() {
-	if test "$1" -ge 0; then
+	if test "$1" -ge 0 2> /dev/null; then
 		local c=$1
 		while((c--)); do cd ..; done
 	else
