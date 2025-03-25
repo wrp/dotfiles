@@ -251,11 +251,17 @@ ts() {
 }
 typeof() { for e; do which "$e" && file $( which $e ); done }
 up() {
-	local _dir=$(g root)
-	test -d "$_dir" && cd "$_dir"
-	while _dir=$( git rev-parse --show-superproject-working-tree | grep .); do
+	if test "$1" -ge 0; then
+		local c=$1
+		while((c--)); do cd ..; done
+	else
+		local _dir=$(g root)
 		test -d "$_dir" && cd "$_dir"
-	done
+		while _dir=$(git rev-parse --show-superproject-working-tree |
+				grep .); do
+			test -d "$_dir" && cd "$_dir"
+		done
+	fi
 }
 update() {
 	local cmd=update
