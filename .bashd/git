@@ -3,7 +3,7 @@
 
 g() { git "$@"; }
 git() {
-	local arg orig prev version verbose=$V tmp
+	local arg cwd orig prev version verbose=$V top
 
 	if ! test -t 1; then
 		command git "$@"
@@ -46,10 +46,10 @@ git() {
 	case $1 in
 	(cd    )
 		shift
-		tmp=$(git show-worktree "$@") \
-		&& arg=${PWD#$(git rev-parse --show-toplevel)} \
-		&& cd "$tmp$arg" \
-		&& echo "Changed directory to $tmp$CYAN$arg"  \
+		top=$(git show-worktree "$@") \
+		&& cwd=${PWD#$(git rev-parse --show-toplevel)} \
+		&& cd "$top$cwd" \
+		&& echo "Changed directory to $top$CYAN$cwd"  \
 		;
 		return;;
 	(clone ) shift; set -- clone-wrapper "$@";;
