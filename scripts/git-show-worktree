@@ -1,12 +1,14 @@
 #!/bin/sh
 
 # Given a branch as $1, print the full path of the work-tree
-# that houses it.
+# that houses it.  If no argument given, repot path of the
+# main repo.
 
 git rev-parse HEAD > /dev/null || exit
 if test $# -ne 1; then
-	echo 'Must give branch name as only argument' >&2
-	exit 1
+	git rev-parse --path-format=absolute --git-common-dir |
+	sed -e 's/.git$//'
+	exit
 fi
 git show-ref --quiet --verify -- "refs/heads/$1" || {
 	echo 'First argument must be a valid branch' >&2
