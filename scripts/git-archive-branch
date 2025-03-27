@@ -1,12 +1,18 @@
 #!/bin/sh
 
-# Archive branches by creating a ref in refs/archive
-# and deleting the branch.  If no arguments are given,
-# archive the current branch after detaching
+# usage: @NAME@ branch [branch...]
+#
+# Archive branches by creating a ref in refs/${a-archive}
+# and deleting the branch.
+#
+##
+
+archive=${a:-archive}
 
 current_branch=$(git rev-parse --abbrev-ref HEAD)
 if test $# = 0; then
-	set -- "$current_branch"
+	sed -nE "/^##/q; s|@NAME@|$(basename $0)|; 1!s/# ?//p;" "$0"
+	exit
 fi
 
 export GIT_CONFIG_COUNT=1
@@ -19,15 +25,15 @@ for branch; do
 		git checkout --detach || exit
 	fi
 
-	extant_ref=$(git show-ref -s "refs/archive/$branch" || true)
+	extant_ref=$(git show-ref -s "refs/$archive/$branch" || true)
 	this=$(git show-ref -s "refs/heads/${branch}") || exit
 
-	git update-ref "refs/archive/${branch}" "refs/heads/${branch}" || exit
-	git show-ref "refs/archive/${branch}" || exit
+	git update-ref "refs/$archive/${branch}" "refs/heads/${branch}" || exit
+	git show-ref "refs/$archive/${branch}" || exit
 	git branch -D "${branch}" || exit
 
 	if test -n "$extant_ref" && test "$extant_ref" != "$this"; then
 		printf 'WARNING: re-writing archive.  '
-		echo For details: git reflog refs/archive/$branch
+		echo For details: git reflog refs/$archive/$branch
 	fi >&2
 done
