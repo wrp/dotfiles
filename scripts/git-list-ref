@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Semi-sane wrapper around for-each-ref
+
+
+test $# = 0 && set -- archive
+
+for ref; do
+	git for-each-ref "refs/$ref"
+done
