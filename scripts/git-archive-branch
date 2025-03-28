@@ -15,15 +15,16 @@ if test $# = 0; then
 	exit
 fi
 
+if test "$1" = -l; then
+	git for-each-ref refs/"${2-archive}"
+	exit
+fi
+
 export GIT_CONFIG_COUNT=1
 export GIT_CONFIG_KEY_0=core.logAllRefUpdates
 export GIT_CONFIG_VALUE_0=always
 
 for branch; do
-	if test "$branch" = -l; then
-		git for-each-ref refs/archive
-		continue
-	fi
 	if test "$branch" = "$current_branch"; then
 		echo "Detaching and archiving the current branch: $branch"
 		git checkout --detach || exit
