@@ -25,7 +25,7 @@ check_taint() {
 }
 
 unwanted() {
-	# Print "tab" or "space"; whichever is unwanted for the file named in $1
+	# Write "tab" or "space"; whichever is unwanted for the file in $1
 	if modeline_suggests_tabs "$1"; then
 		echo space
 	elif file_is_python "$1"; then
@@ -56,7 +56,7 @@ indentation_is_okay() {
 	git status --porcelain | grep '^M' | while read m path; do
 		bad_character=$(unwanted "$path")
 		case $bad_character in
-		space) pattern="^[+]${tab}*[ ]";;
+		space) pattern="^[+]${tab}*[ ][^*]";;
 		tab) pattern="^[+][ ]*${tab}";;
 		*) die "Cannot recognize file type $path";;
 		esac
