@@ -10,7 +10,7 @@ if test -n "$1" && git rev-parse --verify "$1" > /dev/null 2>&1; then
 	branch=$1
 else
 	branches=$(git show-ref --heads | sed -e 's@.*refs/heads/@@')
-	if test $# = 0; then
+	if test $# = 0 && test -n "$branches"; then
 		select branch in ${branches}; do break; done
 	elif test "$1" -eq 0 2> /dev/null; then
 		branch=$(git base-branch)
