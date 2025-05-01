@@ -58,7 +58,6 @@ let b:match_words = '<<<<<<<:=======:>>>>>>>'
 " set virtualedit=all
 let loaded_matchparen=1
 set autoindent
-set colorcolumn=80
 set foldopen-=search
 set hlsearch
 set iskeyword=@,48-57,_,192-255,-
