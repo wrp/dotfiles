@@ -21,7 +21,7 @@ current=$(git rev-parse --abbrev-ref HEAD)
 old=$(git show-ref refs/heads/$branch | cut -b 1-40)
 
 if test -z "$old"; then
-	echo >&2 "Invalid branch: $branch.  Use 'git show-ref --heads' for options"
+	echo >&2 "Invalid branch: $branch.  Use 'git show-ref --heads' for valid refs"
 	exit 1
 fi
 
