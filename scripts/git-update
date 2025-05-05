@@ -17,6 +17,7 @@ esac
 
 
 branch=${1-$(git base-branch)} || exit
+branch=${branch#refs/heads/}
 current=$(git rev-parse --abbrev-ref HEAD)
 old=$(git show-ref refs/heads/$branch | cut -b 1-40)
 
