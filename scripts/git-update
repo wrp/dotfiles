@@ -18,6 +18,14 @@ esac
 
 branch=${1-$(git base-branch)} || exit
 current=$(git rev-parse --abbrev-ref HEAD)
+
+# Convert "HEAD" to a branch name since refs/heads/HEAD does not make sense.
+# Grr.  We should just do 'branch=$(git rev-parse --abbref-ref "$1")',
+# but the error messages from git are so horrible that special casing
+# HEAD makes more sense.  (Or, we should abort with an error, but this
+# is probably the intended behavior.)
+if test "$branch" = HEAD; then branch=$current; fi
+
 old=$(git show-ref refs/heads/$branch | cut -b 1-40)
 
 if test "$current" = "$branch"; then
