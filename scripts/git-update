@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# usage: @NAME@ [branch]
+# usage: @NAME@ [--|-h|--help|-?] [branch]
 #
 # Fetch from the remote associated with the specified branch
 # (or diff.base-branch or main or master) and update the local ref.
