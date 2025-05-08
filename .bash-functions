@@ -57,6 +57,7 @@ after_cmd() {
 		unset RESET_TITLE
 	fi
 	type -t local_post_cmd_hook > /dev/null && local_post_cmd_hook
+	unset running_in_debug_trap
 
 	return $_status
 }
@@ -93,10 +94,11 @@ write_hist_file() {
 
 debug_trap() {
 	: Runs before a command in an interactive shell
-	# warning: if you execute a loop, this will run for every iteration
-	# It also runs for every command in a pipeline
-	# TODO: figure out how to suppress that behavior
 
+	if test -n "$running_in_debug_trap"; then
+		return
+	fi
+	running_in_debug_trap=1 # Unset via PROMPT_COMMAND
 	write_hist_file
 
 	case ${BASH_COMMAND%% *} in
