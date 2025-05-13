@@ -1,4 +1,5 @@
 _check_if_ignored_by_git() {
+	local x
 	local pause=no
 	for x; do
 		if git check-ignore -q "$x"; then

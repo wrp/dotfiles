@@ -29,12 +29,13 @@ clear_path() {
 		-e "s@:$1\$@@" \
 	)
 }
-prepend_path() { for x; do clear_path "$x"; PATH="$x${PATH:+:}$PATH"; done; }
+prepend_path() { local x; for x; do clear_path "$x"; PATH="$x${PATH:+:}$PATH"; done; }
 
 # Do a sanity check on shell variables, mostly to ensure
 # that variables that I intend for use interactively in
 # helper functions are not inadvertenly set
 check_environment() {
+	local x
 	for x in f h t V; do
 		eval "test -n \"\$$x\"" && warn "shell variable $x is set"
 	done

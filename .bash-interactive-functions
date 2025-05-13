@@ -235,7 +235,7 @@ if ! which tac; then
 	if which gtac; then
 		tac() { gtac "$@"; }
 	else
-		tac() { for x; do awk '{a[NR] = $0 }
+		tac() { local x; for x; do awk '{a[NR] = $0 }
 			END {for(c=NR; c>0; c--) print a[c]}' "$x"; done; }
 	fi
 fi > /dev/null 2>&1
