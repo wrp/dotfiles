@@ -15,12 +15,12 @@ main() {
 }
 
 check_message() {
-	bad_end='.!?'  # Characters not allowed as final char of subject
+	good_end='a-z"'"'"  # Characters allowed as final char of summary
 
 	< "$1" >&2 awk '
 		/^#/ { next }
-		NR==1 && match($0, end) {
-			print "Summary should not end with punctuation"
+		NR==1 && ! match($0, "[" end "]$") {
+			print "Summary should end with one of [" end "]"
 			status=1
 		}
 		NR==1 && length > max_summary {
@@ -39,7 +39,7 @@ check_message() {
 		}
 		END {exit status}
 
-	' max_width=${MAX_GIT_WIDTH:-72} max_summary=${MAX_GIT_SUMMARY:-50} end="[${bad_end}]$"
+	' max_width=${MAX_GIT_WIDTH:-72} max_summary=${MAX_GIT_SUMMARY:-50} end="${good_end}"
 }
 
 # Ensure that all required trailers are present
