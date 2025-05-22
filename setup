@@ -77,6 +77,7 @@ create_file() {
 		warn "$1 already exists; not modifying"
 	fi
 	if test -n "$V"; then ( set -x; cat "$1" ) fi
+	git add "$1"
 }
 
 setup_git() {
@@ -138,6 +139,8 @@ main() {
 	(cd "$HOME"/.config/"$USER"
 	curl -s -O https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
 	)
+
+	git ciam 'Setup script modified dotfiles in $HOME'
 }
 
 main "$@"
