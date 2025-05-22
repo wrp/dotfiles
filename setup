@@ -35,8 +35,8 @@ validate_md5_sums() {
 	for file in $targets; do
 		if test -f "$file" && test "$($MD5 < "$HOME/$file")" != \
 				"$($MD5 < "$base/$file")"; then
-			warn "$file is different, set V=1 to see diff"
-			test -n "$V" && diff -u "$HOME/$file" "$base/$file"
+			warn "$file is different; staging in \$HOME"
+			git add "$file"
 			abort=1
 		fi
 	done
@@ -52,6 +52,7 @@ init() {
 	find_md5_executable
 	establish_context
 	parse_arguments "$@"
+	setup_git
 	targets=$(ls -a "$base" | awk 'NR==FNR {a[$0] = 1; next} ! ($0 in a)' "$base/denylist" -)
 	validate_md5_sums
 	mkdir -p "$HOME"/.bash-history-dir
@@ -98,6 +99,13 @@ setup_git() {
 		email = ${EMAIL?}
 		name = ${UNAME?}
 	EOF
+	if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+		if ! git diff-index --quiet HEAD --; then
+			die '$HOME is a dirty git repo.  Aborting'
+		fi
+	else
+		git init
+	fi
 }
 
 setup_local_files() {
@@ -122,7 +130,6 @@ setup_local_files() {
 main() {
 	init "$@"
 	create_symlinks
-	setup_git
 	setup_local_files
 
 	ln -sf "$base/scripts" scripts
