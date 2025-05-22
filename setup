@@ -4,8 +4,7 @@
 # those listed in denylist.  All links created in $HOME will have a .
 # prepended if the name here does not contain a leading .
 
-# This script relies on having an internet connection to get
-# bash-completions from github.
+# This script attempts to get bash-completions from github.
 
 err() { printf "%s${1:+\n}" "$@"; } >&2
 die() { err "$@"; exit 1; }
