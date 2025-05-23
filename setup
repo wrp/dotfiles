@@ -70,14 +70,14 @@ create_symlinks() {
 }
 
 create_file() {
+	# Create files that should be local to this machine
 	mkdir -p "$(dirname "$1")" || return 1
 	if ! test -f "$1"; then
 		cat > "$1"
 	elif diff "$1" - | grep -q .; then
 		warn "$1 already exists; not modifying"
 	fi
-	if test -n "$V"; then ( set -x; cat "$1" ) fi
-	git add "$1"
+	test -z "$NO_GIT" && git add "$1"
 }
 
 setup_git() {
@@ -94,8 +94,7 @@ setup_git() {
 		fi
 	done
 
-	# Create files that should be local to this machine
-	( V=$verbose create_file "$HOME/.gitconfig-local" ) <<- EOF
+	( NO_GIT=1 create_file .gitconfig-local ) <<- EOF
 	[user]
 		email = ${EMAIL?}
 		name = ${UNAME?}
@@ -107,6 +106,7 @@ setup_git() {
 	else
 		git init -b main
 	fi
+	git add .gitconfig-local
 }
 
 setup_local_files() {
