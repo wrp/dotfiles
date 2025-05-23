@@ -50,7 +50,7 @@ validate_md5_sums() {
 
 init() {
 	find_md5_executable
-	establish_context
+	establish_context  # Changes directory to $HOME
 	parse_arguments "$@"
 	setup_git
 	targets=$(ls -a "$base" | awk 'NR==FNR {a[$0] = 1; next} ! ($0 in a)' "$base/denylist" -)
