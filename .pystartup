@@ -9,8 +9,9 @@ import sys
 import os
 
 if sys.version_info >= (3, 13):
-    print(f'Reading history from {os.environ.get("PYTHON_HISTORY",
-        os.path.expanduser("~/.python_history"))}')
+    default_path = os.path.expanduser("~/.python_history")
+    historyPath = os.environ.get("PYTHON_HISTORY", default_path)
+    print(f'Reading history from {historyPath}')
 else:
 
     import atexit
@@ -24,9 +25,10 @@ else:
         readline.write_history_file(historyPath)
 
     if os.path.exists(historyPath):
+        print(f'Reading history from {historyPath}')
         readline.read_history_file(historyPath)
 
     atexit.register(save_history)
-    del atexit, readline, rlcompleter, save_history, historyPath
+    del atexit, readline, rlcompleter, save_history
 
-del os, sys
+del os, sys, historyPath
