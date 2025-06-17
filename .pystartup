@@ -9,11 +9,14 @@
 # to it:  "export PYTHONSTARTUP=~/.pystartup" in bash.
 
 import sys
+import os
 
-if sys.version_info < (3, 13):
+if sys.version_info >= (3, 13):
+    print(f'Reading history from {os.environ.get("PYTHON_HISTORY",
+        os.path.expanduser("~/.python_history"))}')
+else:
 
     import atexit
-    import os
     import readline
     import rlcompleter
 
@@ -27,4 +30,6 @@ if sys.version_info < (3, 13):
         readline.read_history_file(historyPath)
 
     atexit.register(save_history)
-    del os, atexit, readline, rlcompleter, save_history, historyPath
+    del atexit, readline, rlcompleter, save_history, historyPath
+
+del os, sys
