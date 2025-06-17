@@ -1,12 +1,9 @@
-# In python 3.13+, this is completely obsolete and
-# history will come from ${PYTHON_HISTORY-~/.python_history}
+# This script is expected to be named in PYTHONSTARTUP and
+# as such will be invoked at the start of interactive python
+# sessions.
 
-# Add auto-completion and a stored history file of commands to your Python
-# interactive interpreter. Requires Python 2.0+, readline. Autocomplete is
-# bound to the Esc key by default (you can change it - see readline docs).
-#
-# Store the file in ~/.pystartup, and set an environment variable to point
-# to it:  "export PYTHONSTARTUP=~/.pystartup" in bash.
+# In python 3.13+, the history loading is completely obsolete and
+# history will come from ${PYTHON_HISTORY-~/.python_history}
 
 import sys
 import os
