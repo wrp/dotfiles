@@ -17,6 +17,7 @@
 	cpx = cp -x
 	cr = cwip -m 'Trivial refactor'
 	cra = cr -a
+	credit = annotate
 	cs = cwip -m 'Sanity Check'
 	csa = cs -a
 	cw = cwip -m 'Whitespace'
