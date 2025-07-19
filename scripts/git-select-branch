@@ -4,10 +4,6 @@
 # or select branch by number.  Write the branch
 # name to stdout
 
-# TODO the current implementation uses git-show-ref to get
-# the branch list which is inconsistent with git-branch if
-# we are in a detached HEAD state.  Resolve.
-
 git rev-parse > /dev/null || exit
 
 if test -n "$1" && git rev-parse --verify "$1" > /dev/null 2>&1; then
@@ -19,8 +15,13 @@ else
 	elif test "$1" -eq 0 2> /dev/null; then
 		branch=$(git base-branch)
 	elif test "$1" -gt 0 2> /dev/null; then
-		branch=$(printf '%s' "$branches" |
-			tr ' ' '\n' | sed -n "${1}p")
+		branch=$(
+			{
+				git symbolic-ref -q HEAD > /dev/null ||
+					printf 'HEAD\n'
+				printf '%s' "$branches"
+			} | tr ' ' '\n' | sed -n "${1}p"
+		)
 	fi
 fi
 if test -n "$branch"; then
