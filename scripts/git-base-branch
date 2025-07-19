@@ -5,8 +5,11 @@ git rev-parse || exit
 # Write the name of the base branch to stdout
 if ! ( \
 	git config diff.base-branch \
-	|| git rev-parse --abbrev-ref --verify -q main \
-	|| git rev-parse --abbrev-ref --verify -q master )
+	|| for b in main master "$(git config init.defaultBranch)"
+		do
+			git rev-parse --abbrev-ref --verify -q "$b" && exit
+		done
+)
 then
 	echo >&2 diff.base-branch unset and no main/master ref
 	exit 1
