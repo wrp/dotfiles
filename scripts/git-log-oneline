@@ -43,7 +43,7 @@ initialize() {
 		} | tr , \\n | sort -u | tr \\n , | sed -e 's/,$//')"}
 	_cfg_trailer_width="$(git config log.trailer-width)"
 	trailer_width=${w-${_cfg_trailer_width:-11}}
-	check_csl "$trailer_width" || die "width must be an integer"
+	check_csl "$trailer_width" || die "log.trailer-width: $trailer_width"
 	trailer_fmt=$(build_trailer_fmt)
 
 	_cfg_author_width="$(git config log.author-width)"
@@ -70,7 +70,9 @@ check_csl() {
 	local x
 	for x; do
 		printf '%s\n' "$x" | tr , \\n | while read val; do
-			test "$val" -ge 0 2> /dev/null || exit 1
+			if ! test "$val" -ge 0 2> /dev/null; then
+				die "'$x' is not an integer"
+			fi
 		done || return 1
 	done
 	return 0
