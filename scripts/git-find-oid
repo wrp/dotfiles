@@ -1,0 +1,19 @@
+#!/bin/sh
+
+if test $# != 3; then
+	echo "missing arguments: need path, string, and line_number" >&2
+	exit 1
+fi
+
+: ${path=${1}}     # File to match (relative to git base dir)
+: ${match=${2}}    # string to match in the file
+: ${target=${3}}   # Line number to match
+
+printf "The following commits modify %s so that line %s\n" "$path" "$target"
+printf "matches '%s':\n\n" "$match"
+
+git rev-list --all -- "$path" | while read oid; do
+	git show "${oid}:$path" 2> /dev/null | fgrep -n "$match" |
+		awk -F: '$1 == target{print oid}' target=$target oid="$oid"
+done
+
