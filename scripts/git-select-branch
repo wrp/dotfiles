@@ -2,7 +2,13 @@
 
 # Present a menu when invoked with no arguments,
 # or select branch by number.  Write the branch
-# name to stdout
+# name to stdout.  If the number cannot be converted
+# to a branch (eg, an integer like 1024 when there are
+# only 5 branches), just emit the number.  This is
+# convenient for interactive use when numbers are
+# not intended to be used as a branch.  (Note, currently
+# the expected way to suppress substitutions is to
+# run "command git ....")
 
 git rev-parse > /dev/null || exit
 
@@ -27,6 +33,5 @@ fi
 if test -n "$branch"; then
 	printf '%s' "$branch"
 else
-	>&2 echo "$1" cannot be converted to a branch name
-	exit 1
+	printf '%s' "$1"
 fi
