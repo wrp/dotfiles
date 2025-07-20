@@ -12,7 +12,10 @@ fi
 
 if test "$1" = .; then
 	# Reset session_path of current session to $PWD
-	TMUX= tmux -C attach -c $PWD -t $(tmux display-message -p '#{session_name}') </dev/null
+	TMUX= </dev/null tmux -C attach -c $PWD -t $(
+		tmux display-message -p '#{session_name}'
+	) 2>&1 | tr \\n ' ' >&2
+	echo
 	tmux rename-session "$(basename ${PWD})"
 	exit
 fi
