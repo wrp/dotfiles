@@ -13,15 +13,14 @@ test -z "$TMUX$DOCKER" && exit
 # or the name of the branch that is currently checked out.
 # If not in a git repo, use the output of pwd -P
 test -z "$*" && {
-	if branch_name=$(git rev-parse --abbrev-ref HEAD); then
-		case $branch_name in
-		main|master) t="$(git rev-parse --show-toplevel)";;
-		*) t="$branch_name";;
-		esac
+	if test "$(pwd -P)" = "$HOME"; then
+		d=${HOME_PANE_TITLE-~}
+	elif branch_name=$(git rev-parse --abbrev-ref HEAD); then
+		d="$(git rev-parse --show-toplevel)"
 	else
-		t="$(pwd -P | sed -e "s@$HOME@~@")"
+		d="$(pwd -P | sed -e "s@$HOME@~@")"
 	fi
-	set -- "$(basename "$t")"
+	set -- "$(basename "$d")${branch_name+@}${branch_name:0:10}"
 } 2> /dev/null
 
 if test -n "$truncate_left"; then
