@@ -2,7 +2,8 @@
 
 dir=${1-$PWD}
 name=$(basename "$dir" | sed -e 's@$HOME@home@' | tr '[:upper:].' '[:lower:]-')
-dir=$(realpath "$dir" 2> /dev/null || readlink -f "$dir") || exit
+dir=$(realpath "$dir" || readlink -f "$dir" ||
+	cd "$(dirname "$dir")" && pwd -P  ) 2> /dev/null|| exit
 
 if test -z "$TMUX"; then
 	tmux attach 2> /dev/null \

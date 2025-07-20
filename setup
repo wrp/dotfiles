@@ -15,7 +15,11 @@ find_md5_executable() {
 }
 
 establish_context() {
-	base=$(dirname "$(realpath "$0" 2> /dev/null || readlink -f "$0")")
+	{
+		base=$(dirname "$(realpath "$0" || readlink -f "$0" ||
+		cd "$(dirname "$0")" && pwd -P | sed -e 's@$@/foo@' )");
+	} 2> /dev/null
+
 	cd "$HOME" || die
 }
 
