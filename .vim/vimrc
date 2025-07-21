@@ -67,7 +67,7 @@ set matchpairs+=<:>
 set modeline
 set modelines=10
 set noerrorbells
-set novisualbell
+set visualbell
 set nowrap
 set nowrapscan
 set scrolloff=0
