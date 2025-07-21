@@ -20,7 +20,7 @@ test -z "$*" && {
 	else
 		d="$(pwd -P | sed -e "s@$HOME@~@")"
 	fi
-	set -- "$(basename "$d")${branch_name+@}${branch_name:0:10}"
+	set -- "$(basename "$d")${branch_name:+@}${branch_name:0:10}"
 } 2> /dev/null
 
 if test -n "$truncate_left"; then
