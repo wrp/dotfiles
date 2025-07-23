@@ -16,7 +16,7 @@ main() {
 }
 
 check_message() {
-	good_end=")0-9a-zA-Z/\"'"  # Characters allowed as final char of summary
+	good_end=")_0-9a-zA-Z/\"'"  # Characters allowed as final char of summary
 
 	< "$1" >&2 awk '
 		/^#/ { next }
