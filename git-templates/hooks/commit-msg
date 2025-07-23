@@ -50,10 +50,9 @@ validate_trailers() {
 		if ! echo "$present_trailers" |
 		awk '$1 == "'"$value"'" {print $2}' FS=': ' | grep -q .; then
 			fail=${fail:+$fail, }$value
-			echo "Required trailer '$value' is missing" >&2
 		fi
 	done
-	if test -n "$fail"; then die "Trailers missing: $fail"; fi
+	if test -n "$fail"; then die "Required trailers missing: $fail"; fi
 }
 
 main "$@"
