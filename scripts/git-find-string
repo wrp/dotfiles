@@ -14,6 +14,7 @@ printf "matches '%s':\n\n" "$match"
 
 git rev-list --all -- "$path" | while read oid; do
 	git show "${oid}:$path" 2> /dev/null | fgrep -n "$match" |
-		awk -F: '$1 == target{print oid}' target=$target oid="$oid"
+		awk -F: '$1 == target{print oid}' target=$target oid="$oid" |
+		{ read matched_oid && git log "$matched_oid" --format='%H %ad' -n 1; }
 done
 
