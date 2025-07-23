@@ -12,3 +12,6 @@ esac
 
 printf 'New value of core.whitespace is: '
 git config core.whitespace
+
+printf '\nTry setting apply.whitespace to any of:\n'
+printf 'nowarn|warn|fix|error|error-all (see git-apply(1))\n'
