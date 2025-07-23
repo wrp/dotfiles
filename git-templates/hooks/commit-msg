@@ -1,7 +1,8 @@
 #!/bin/sh
 
 # This script is invoked after GIT_EDITOR and takes the name
-# of a file containing the proposed commit message as $1
+# of a file containing the proposed commit message as $1.
+# It may change the content of the file.
 
 . "$(dirname $0)"/common-hook-functions
 
