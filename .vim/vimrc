@@ -137,7 +137,7 @@ set undodir^=~/.run/vim/undo//
 autocmd BufWritePre * call ClearWhite()
 autocmd BufEnter,BufReadPost,FileReadPost,BufNewFile,DirChanged *
 	\ call system("test -z \"$NORENAMEVIM\" && truncate_left=1 set-title " .
-	\ expand("%"))
+	\ expand("%:t"))
 
 " Grrr.  I occasionally get ft set to things that change my formatoptions
 " eg, if vim sets ft=conf, it add 'r' and 'o'.  Get rid of them!
