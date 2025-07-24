@@ -1,4 +1,4 @@
 #!/bin/sh
 
 # Find commits which contain the blob in $1
-git log --format='%H %ai' --all --find-object="$1"
+git log --format='%H %ai %s' --all --find-object="$1"
