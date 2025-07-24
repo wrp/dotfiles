@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if test -n "$1"; then
+	echo git checkout -f "$1" || exit
+fi
+git reset --hard || exit
+git clean -xd -ff || exit
