@@ -3,5 +3,5 @@
 if test -n "$1"; then
 	echo git checkout -f "$1" || exit
 fi
-git reset --hard || exit
+git reset --hard $1 || exit
 git clean -xd -ff || exit
