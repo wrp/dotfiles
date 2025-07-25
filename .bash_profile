@@ -3,3 +3,4 @@
 case $- in
 *i*) test -n "$BASH" && test -f "$HOME"/.bashrc && . "$HOME"/.bashrc;;
 esac
+return 0
