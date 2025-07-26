@@ -70,7 +70,7 @@ set noerrorbells
 set visualbell
 set nowrap
 set nowrapscan
-set scrolloff=0
+set scrolloff=10
 
 " :m=modified, %r=read-only, %f=path, %y=filetype, %=break
 set statusline=%m%r%f\ %y%=line:%l/%L(%p%%)\ column:%c\ buffer:%n
