@@ -1,17 +1,33 @@
 #!/bin/sh
 
-# whitespace = indent-with-non-tab
-# whitespace = tab-in-indent
+# possible values of core.whitespace:
+# indent-with-non-tab  # treat non-tab indents as an error
+# tab-in-indent        # treat tab in indent as an error
+# trailing-space       # treat trailing spaces as an error
 
-v=$(git config core.whitespace)
-case $(git config core.whitespace) in
-indent-with-non-tab) git config core.whitespace tab-in-indent;;
-trailing-space) git config core.whitespace indent-with-non-tab;;
-*) git config core.whitespace trailing-space;;
+v=$(git config core.whitespace) || exit
+
+case $1 in
+off) git config apply.whitespace nowarn; exit ;;
+on)  git config apply.whitespace error-all; exit ;;
+tab) nv=indent-with-non-tab;;
+space) nv=tab-in-indent;;
 esac
+
+if test -z "$nv"; then
+	case $v in
+	indent-with-non-tab) nv=tab-in-indent;;
+	tab-in-indent) nv=trailing-space;;
+	trailing-space) nv=indent-with-non-tab;;
+	*) echo "Unknown value in core.whitespace: $v" >&2; exit 1;;
+	esac
+fi
+
+git config core.whitespace "$nv"
 
 printf 'New value of core.whitespace is: '
 git config core.whitespace
 
 printf '\nTry setting apply.whitespace to any of:\n'
 printf 'nowarn|warn|fix|error|error-all (see git-apply(1))\n'
+printf 'Or use toggle [on|off]'
