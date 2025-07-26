@@ -87,7 +87,9 @@ trailing_whitespace_ok() {
 }
 
 validate_whitespace() {
-	if test -n "$ALLOW_WHITESPACE_ERRORS"; then
+	if test -n "$ALLOW_WHITESPACE_ERRORS" \
+		|| test "$(git config apply.whitespace)" = nowarn
+	then
 		return 0
 	fi
 
