@@ -33,7 +33,7 @@ b() {
 		: $((c += $b))
 	done
 	if test -n "$cmd"; then
-		test -t 1 && printf "%${COLUMNS}s\t%3d\r" "$cmd" "$c"
+		test -t 1 && printf "%${COLUMNS}s\r" "${cmd}: $(printf '%3d' "$c")"
 		eval "$cmd"
 	fi
 }
