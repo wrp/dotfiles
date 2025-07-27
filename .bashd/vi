@@ -49,7 +49,9 @@ vi() {
 				default=1
 			fi
 		fi 2> /dev/null
-		test $# = 0 && set -- $(FULL_PATH=1 f="$f" get-modified-files ${h-$default})
+		local file_list
+		file_list=$(FULL_PATH=1 f="$f" get-modified-files ${h-$default}) || return 1
+		test $# = 0 && set -- $file_list
 	else
 		: input is NOT from a tty.  Filter input and build a list of files to edit
 		# Strip the input to valid filenames and uniquify.  This allows the raw
