@@ -36,7 +36,7 @@ prepend_path() { local x; for x; do clear_path "$x"; PATH="$x${PATH:+:}$PATH"; d
 # helper functions are not inadvertenly set
 check_environment() {
 	local x
-	for x in f h t V; do
+	for x in f h t; do
 		eval "test -n \"\$$x\"" && warn "shell variable $x is set"
 	done
 	if test "$IFS" != $' \t\n'; then
