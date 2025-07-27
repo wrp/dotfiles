@@ -3,15 +3,24 @@ get_previous_command() {
 	local cmd="$(fc -ln -$1 -$1)"
 	printf '%s' "$cmd" | sed -E $'s/[\t ]*//'
 }
+show_history_in_reverse() {
+	local count=${1-20}
+	{ fc -nl -${count}; echo "${FUNCNAME[0]}"; } | tac | nl | tac
+}
 b() {
 	# "back": run the command $1 back in history
+	if test -z "$1"; then
+		show_history_in_reverse
+		return
+	fi
 	test "$1" -gt 0 || return 1;
 	local cmd b c=$1
 
 	# Recursively apply previous b commands
 	while
 		cmd="$(get_previous_command $c)" \
-		&& ! b=$(printf '%s' "$cmd" | awk '$1 == "b" { print $2; exit 1 }')
+		&& ! b=$(printf '%s' "$cmd" | awk '$1 == "b" { print $2; exit 1 }') \
+		&& test "$b" -gt 0 2> /dev/null
 	do
 		: $((c += $b))
 	done
