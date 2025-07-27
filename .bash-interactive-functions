@@ -26,7 +26,7 @@ b() {
 		: $((c += $b))
 	done
 	if test -n "$cmd"; then
-		test -t 1 && printf "%${COLUMNS}s\r" "$cmd"
+		test -t 1 && printf "%${COLUMNS}s\t%3d\r" "$cmd" "$c"
 		eval "$cmd"
 	fi
 }
