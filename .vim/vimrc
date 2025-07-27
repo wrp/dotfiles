@@ -58,6 +58,7 @@ let b:match_words = '<<<<<<<:=======:>>>>>>>'
 " set virtualedit=all
 let loaded_matchparen=1
 set autoindent
+set exrc    " Enable loading .vimrc from $CWD
 set foldopen-=search
 set hlsearch
 set iskeyword=@,48-57,_,192-255,-
