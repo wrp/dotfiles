@@ -6,17 +6,19 @@ get_previous_command() {
 b() {
 	# "back": run the command $1 back in history
 	test "$1" -gt 0 || return 1;
-	local b c=$1
-	local cmd="$(get_previous_command $c)"
+	local cmd b c=$1
 
 	# Recursively apply previous b commands
-	while ! printf '%s' "$cmd" | awk '$1 == "b" { exit 1 }'; do
-		read _ b <<< "$cmd"
+	while
+		cmd="$(get_previous_command $c)" \
+		&& ! b=$(printf '%s' "$cmd" | awk '$1 == "b" { print $2; exit 1 }')
+	do
 		: $((c += $b))
-		cmd="$(get_previous_command $c)"
 	done
-	test -t 1 && printf '%s\n' "$cmd"
-	eval "$cmd"
+	if test -n "$cmd"; then
+		test "$V" -gt 0 2> /dev/nul && test -t 1 && printf '%s\n' "$cmd"
+		eval "$cmd"
+	fi
 }
 c() { tput sc; clear; tput rc; } # save cursor/restore cursor  man terminfo
 cat() { if test -d "$1" && test $# = 1; then ls "$1"; else command cat "$@"; fi; }
