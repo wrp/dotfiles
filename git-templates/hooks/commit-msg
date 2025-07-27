@@ -56,7 +56,7 @@ validate_trailers() {
 		fi
 	done
 	if test -n "$fail"; then
-		die "Required trailers missing: $fail" \
+		die "Missing required trailers: $fail" \
 			"You can add trailers to \$t, a comma separated list of k:v pairs"
 	fi
 }
