@@ -13,7 +13,7 @@ b() {
 	: The idea of this function is that the user can type
 	: "b 4" instead of hitting up-arrow 4 times.  Often,
 	: there will be a sequence of several commands that will
-	: be repeated; instead of repeatedly having to count and
+	: be repeated.  Instead of repeatedly having to count and
 	: hit up-arrow the correct number of times, you can use "b 4"
 	: and subsequently up-arrow once.  Similar to "!-4", but
 	: fewer keystrokes.
