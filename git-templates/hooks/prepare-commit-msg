@@ -21,6 +21,7 @@ check_t_for_trailers() {
 	test -z "${t-$trailer}" && return
 	printf '%s\n' "${t-$trailer}" | tr , \\n |
 	while read line; do
+		if test "${line#.*:}" = "$line"; then line="type:$line"; fi
 		git-interpret-trailers --in-place --if-exists addIfDifferent \
 			--trailer "$line" "$1" || return 1
 	done
