@@ -9,7 +9,14 @@ show_history_in_reverse() {
 	awk '/\t/{v++; a=1} {printf "%6s %s\n", a ? v : "", $0; a=0}' | tac
 }
 b() {
-	# "back": run the command $1 back in history
+	: "back": run the command $1 back in history
+	: The idea of this function is that the user can type
+	: "b 4" instead of hitting up-arrow 4 times.  Often,
+	: there will be a sequence of several commands that will
+	: be repeated; instead of repeatedly having to count and
+	: hit up-arrow the correct number of times, you can use "b 4"
+	: and subsequently up-arrow once.  Similar to "!-4", but
+	: fewer keystrokes.
 	if test -z "$1"; then
 		show_history_in_reverse
 		return
