@@ -1,9 +1,11 @@
 
 get_previous_command() {
+	# Helper function for b()
 	local cmd="$(fc -ln -$1 -$1)"
 	printf '%s' "$cmd" | sed -E $'s/[\t ]*//'
 }
 show_history_in_reverse() {
+	# Helper function for b()
 	local count=${1-20}
 	{ fc -nl -${count}; printf '\t %s\n' "${FUNCNAME[0]}"; } | tac |
 	awk '/\t/{v++; a=1} {printf "%6s %s\n", a ? v : "", $0; a=0}' | tac
