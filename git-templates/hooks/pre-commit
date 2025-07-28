@@ -15,7 +15,7 @@ validate_pathnames() {
 	fi
 }
 
-modeline_suggests_tabs() { grep -q '^# vim:.* noet' "$1"; }
+modeline_suggests_tabs() { grep -q 'vim:.* noet' "$1"; }
 file_is_python() { file "$1" | grep -qi python; }
 file_is_makefile() { file "$1" | grep -qi makefile; }
 check_taint() {
