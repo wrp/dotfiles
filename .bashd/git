@@ -5,10 +5,6 @@ g() { git "$@"; }
 git() {
 	local arg cwd orig prev version verbose=$V top
 
-	if ! test -t 1; then
-		command git "$@"
-		return
-	fi
 	version=$(command git --version) || return
 	if test -n "$EXPECTED_GIT_VERSION" &&
 		test "$version" != "$EXPECTED_GIT_VERSION"
@@ -47,8 +43,8 @@ git() {
 	case $1 in
 	(cd    )
 		shift
-		top=$(git show-worktree "$@") \
-		&& cwd=${PWD#$(git rev-parse --show-toplevel)} \
+		top=$(command git show-worktree "$@") \
+		&& cwd=${PWD#$(command git rev-parse --show-toplevel)} \
 		&& cd "$top$cwd" \
 		&& echo "Changed directory to $top$CYAN$cwd"  \
 		;
