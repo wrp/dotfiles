@@ -1,11 +1,11 @@
 #!/bin/sh
 
-name=$(basename "$dir" | sed -e 's@$HOME@home@' | tr '[:upper:].' '[:lower:]-')
 {
 dir=${1-$PWD}
 dir=$(realpath "$dir" || readlink -f "$dir" ||
 	cd "$(dirname "$dir")" && pwd -P ) || exit
 } 2> /dev/null
+name=$(basename "$dir" | sed -e 's@$HOME@home@' | tr '[:upper:].' '[:lower:]-')
 
 if test -z "$TMUX"; then
 	tmux attach 2> /dev/null \
