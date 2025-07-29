@@ -162,4 +162,4 @@ endfunction
 
 runtime local/all.vim
 
-" vim: fen:sw=4 fdm=indent fdl=1
+" vim: foldenable:sw=4 fdm=indent fdl=1
