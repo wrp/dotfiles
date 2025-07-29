@@ -1,4 +1,5 @@
 
+get_current_history_number(){ fc -l -1 -1 | awk '{print $1}'; }
 get_previous_command() {
 	# Helper function for b()
 	local cmd="$(fc -ln -$1 -$1)"
@@ -11,8 +12,6 @@ show_history_in_reverse() {
 	awk '/\t/{v++; a=1} {printf "%6s %s\n", a ? v : "", $0; a=0}' | tac
 }
 b() {
-	# TODO: stop printing relative numbers (they change with every
-	# command!).  Instead of "!-28", print the absolute index in history
 	: "back": run the command $1 back in history
 	: The idea of this function is that the user can type
 	: "b 4" instead of hitting up-arrow 4 times.  Often,
@@ -37,7 +36,8 @@ b() {
 		: $((c += $b))
 	done
 	if test -n "$cmd"; then
-		test -t 1 && printf "%${COLUMNS}s\r" "${cmd}: $(printf '%-5s' "!-$c")"
+		local b=$(get_current_history_number)
+		test -t 1 && printf "%${COLUMNS}s\r" "${cmd}: $(printf '%-5s' "!$((b-c))")"
 		eval "$cmd"
 	fi
 }
