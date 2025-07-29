@@ -11,6 +11,8 @@ show_history_in_reverse() {
 	awk '/\t/{v++; a=1} {printf "%6s %s\n", a ? v : "", $0; a=0}' | tac
 }
 b() {
+	# TODO: stop printing relative numbers (they change with every
+	# command!).  Instead of "!-28", print the absolute index in history
 	: "back": run the command $1 back in history
 	: The idea of this function is that the user can type
 	: "b 4" instead of hitting up-arrow 4 times.  Often,
