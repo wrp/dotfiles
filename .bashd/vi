@@ -40,7 +40,7 @@ vi() {
 
 		# If no arguments are given, try to find most recently changed files from git
 		# TODO: figure out how much of this logic belongs in the get-modified-files script
-		if test $# = 0 && test -z "$h" && ! git diff --name-only --ignore-submodules | grep -q .; then
+		if test -z "$h" && ! git diff --name-only --ignore-submodules | grep -q .; then
 			main_or_master=$(git base-branch)
 			default=$(git merge-base HEAD "$main_or_master")
 			# If the current HEAD is no different than the merge base,
@@ -52,7 +52,7 @@ vi() {
 
 		local file_list
 		file_list=$(FULL_PATH=1 f="$f" get-modified-files ${h-$default}) || return 1
-		test $# = 0 && set -- $file_list
+		set -- $file_list
 	elif ! test -t 0; then
 		: input is NOT from a tty.  Filter input and build a list of files to edit
 		# Strip the input to valid filenames and uniquify.  This allows the raw
