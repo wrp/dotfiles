@@ -1,5 +1,8 @@
 # Git related interactive functions
 
+# TODO: Stop using the monstrosity of completions that is
+# https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+# and get something functional that will do the branch number-to-name conversions
 
 g() { git "$@"; }
 git() {
