@@ -25,6 +25,8 @@
 #
 #  Note: (1) the length of default-trailer and trailer-width should match
 
+# TODO: after clone, configure log.trailer-width and maybe others
+
 usage() { sed -E -e 1,2d -e '/^$/q' -e 's/#.?//' "$0";}
 die() { echo "$*" >&2; exit 1; }
 
