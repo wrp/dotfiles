@@ -4,6 +4,10 @@
 # contain the given blobs
 branch=${b-$(git-base-branch)}
 
+#TODO: rather than grouping the output by blob, sort all of
+# the commits by the correct timestamp.  Also, decide if the
+# correct timestamp is author date or committer date
+
 for x;  do
 	if test $# -gt 1; then
 		echo "Blob $x:"
