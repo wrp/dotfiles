@@ -25,4 +25,4 @@ highlight Todo       ctermfg=4  ctermbg=3
 highlight Directory  ctermfg=2
 highlight StatusLine ctermfg=11 ctermbg=12 cterm=none
 " highlight Normal
-highlight Search                ctermbg=3
+highlight Search                ctermbg=LightBlue
