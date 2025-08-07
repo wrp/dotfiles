@@ -1,7 +1,12 @@
 #!/bin/sh
 
 # Find commits in the main branch (or the branch given in b) which
-# contain the blob in $1
+# contain the given blobs
 branch=${b-$(git-base-branch)}
 
-git log --format='%H %ai %s' --find-object="$1" $branch
+for x;  do
+	if test $# -gt 1; then
+		echo "Blob $x:"
+	fi
+	git log --format='%H %ai %s' --find-object="$x" $branch
+done
