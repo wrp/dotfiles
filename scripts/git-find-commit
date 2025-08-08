@@ -6,7 +6,7 @@ branch=${b-$(git-base-branch)}
 
 
 process_blob() {
-	git log --format="%at %H ${1:0:8} %s" --find-object="$1" $branch
+	git log --format="%at %h ${1:0:8} %s" --find-object="$1" $branch
 }
 
 for x; do
