@@ -5,6 +5,17 @@
 branch=${b-$(git-base-branch)}
 
 
-for x;  do
-	git log --format="%at %H ${x:0:8} %s" --find-object="$x" $branch
+process_blob() {
+	git log --format="%at %H ${1:0:8} %s" --find-object="$1" $branch
+}
+
+for x; do
+	if test -f "$x"; then
+		awk '/^index/{print substr($1,7,8)}' FS=. "$x"
+	else
+		echo "$x"
+	fi
+done | sort -u |
+while read b; do
+	process_blob "$b"
 done | sort -n
