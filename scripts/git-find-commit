@@ -18,4 +18,6 @@ for x; do
 done | sort -u |
 while read b; do
 	process_blob "$b"
-done | sort -n
+done \
+| sort -n \
+| perl -MTime::Piece -pe 's/^([0-9]{9,10})//; my $t=gmtime($1); print $t->strftime("%Y-%m-%d@%T")'
