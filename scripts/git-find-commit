@@ -17,9 +17,10 @@ for x; do
 	else
 		echo "$x"
 	fi
-done | sort -k 3,3 -u |
+done |
+sort -u |
 while read b; do
 	process_blob "$b"
 done \
-| sort -n \
+| sort -k 3,3n \
 | perl -MTime::Piece -pe 's/([0-9]{9,10})/gmtime($1)->strftime("%Y-%m-%d@%T")/e'
