@@ -7,7 +7,7 @@ branch=${b-$(git-base-branch)}
 
 process_blob() {
 	test "$1" -eq 00000000 2>/dev/null && return
-	git log --format="%at %h ${1:0:8} %s" --find-object="$1" $branch
+	git log --format="%h ${1:0:8} %at %s" --find-object="$1" $branch
 }
 
 for x; do
@@ -16,9 +16,9 @@ for x; do
 	else
 		echo "$x"
 	fi
-done | sort -u |
+done | sort -k 3,3 -u |
 while read b; do
 	process_blob "$b"
 done \
 | sort -n \
-| perl -MTime::Piece -pe 's/^([0-9]{9,10})//; my $t=gmtime($1); print $t->strftime("%Y-%m-%d@%T")'
+| perl -MTime::Piece -pe 's/([0-9]{9,10})/gmtime($1)->strftime("%Y-%m-%d@%T")/e'
