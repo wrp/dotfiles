@@ -299,7 +299,7 @@ up() {
 		local c=$1
 		while((c--)); do cd ..; done
 	else
-		local _dir=$(g root)
+		local _dir=$(git root)
 		test -d "$_dir" && cd "$_dir"
 		while _dir=$(git rev-parse --show-superproject-working-tree |
 				grep .); do
