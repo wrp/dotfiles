@@ -41,8 +41,6 @@ git() {
 		prev=$orig
 	done
 
-	printf '%s' "$RESET"
-
 	case $1 in
 	(cd    )
 		shift
