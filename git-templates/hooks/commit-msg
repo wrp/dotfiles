@@ -26,7 +26,7 @@ check_message() {
 		}
 		NR==1 && length > max_summary {
 			printf "Summary is %d chars too long" \
-				" (max width is %d)\n", length - max_summary, max_summary
+				" (max width is ${MAX_GIT_SUMMARY-%d})\n", length - max_summary, max_summary
 			status=1
 		}
 		NR==1 && ! match($0, "^[A-Z]") {
@@ -34,7 +34,7 @@ check_message() {
 			status=1
 		}
 		NR > 1 && length > max_width {
-			printf "Line %d (%s...) is %d chars too long (max width is %d)\n", \
+			printf "Line %d (%s...) is %d chars too long (max width is ${MAX_GIT_WIDTH-%d})\n", \
 				NR - 2, substr($0, 1, 10), length - max_width, max_width
 			status=1
 		}
