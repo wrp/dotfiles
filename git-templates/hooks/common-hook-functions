@@ -8,7 +8,9 @@ die() {
 unset header
 warn() {
 	test -n "$STFU" && return
-	local prefix=$(printf '%7s: %s: ' "${header-WARNING}" "$0")
+	local delim
+	if test $# = 0; then delim=''; else delim=': '; fi
+	local prefix=$(printf '%7s: %s%s' "${header-WARNING}" "$0" "$delim")
 	printf "${prefix}%s\n" "$@"
 } >&2
 
