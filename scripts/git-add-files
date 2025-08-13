@@ -70,10 +70,10 @@ main() {
 		trap 'command git reset' 0
 	fi
 	git add "$@" || exit
-	preamble=$(perl -E 'say substr join(", ", @ARGV), 0, 56' "${@##*/}")
-	msg=$(git diff --name-only --cached \
-		| perl -0000 -nE 'if (tr/\n// > 1) {s@^@Add '"$preamble"'\n\n@} else {
-			s/\n/ /g; s/^/Add / }; say'
+	msg=$(printf 'Add '
+		perl -E 'say substr join(", ", @ARGV), 0, 46' "${@##*/}"
+		printf '\n'
+		git diff --name-only --cached
 	)
 	if test -z "$msg"; then
 		echo "Unable to generate commit message!" >&2
