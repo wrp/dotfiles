@@ -21,7 +21,8 @@ check_message() {
 	< "$1" >&2 awk '
 		/^#/ { next }
 		NR==1 && ! match($0, "[" end "]$") {
-			print "Summary should end with one of [" end "]"
+			printf "Summary should end with one of [" end "], not "
+			print substr($0, length)
 			status=1
 		}
 		NR==1 && length > max_summary {
