@@ -2,8 +2,8 @@
 
 # Find commits in the main branch (or the branch given in b) which
 # contain the given blobs
+git-rev-parse HEAD > /dev/null || exit
 branch=${b-$(git-base-branch)}
-
 
 process_blob() {
 	test "$1" -eq 00000000 2>/dev/null && return
