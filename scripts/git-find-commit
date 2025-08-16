@@ -7,7 +7,6 @@ init() {
 	git-rev-parse HEAD > /dev/null || exit
 	branch=${b-$(git-base-branch)}
 	fmt='%Y-%m-%d@%T'
-	print_header
 }
 
 process_blob() {
@@ -15,9 +14,6 @@ process_blob() {
 	git log --format="%h ${1:0:8} %at %s" --find-object="$1" $branch
 }
 
-print_header() {
-	printf '%-8s %-8s %-19s %s\n' commit blob timestamp summary
-}
 
 main() {
 	init
@@ -33,7 +29,11 @@ main() {
 		process_blob "$b"
 	done \
 	| sort -k 3,3n \
-	| perl -MTime::Piece -pe "s/([0-9]{9,10})/gmtime(\$1)->strftime('$fmt')/e"
+	| perl -MTime::Piece -pe "\$v='$fmt';"'
+		printf "%-8s %-8s %-19s %s\n", "commit", "blob",
+			"timestamp", "summary" if $.==1;
+		s/([0-9]{9,10})/gmtime($1)->strftime($v)/e
+	'
 }
 
 main "$@"
