@@ -11,6 +11,7 @@ init() {
 
 process_blob() {
 	test "$1" -eq 00000000 2>/dev/null && return
+	printf "searching for ${1:0:8}\r" >&2
 	git log --format="%h ${1:0:8} %at %s" --find-object="$1" $branch
 }
 
