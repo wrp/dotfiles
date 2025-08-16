@@ -6,6 +6,7 @@
 init() {
 	git-rev-parse HEAD > /dev/null || exit
 	branch=${b-$(git-base-branch)}
+	fmt='%Y-%m-%d@%T'
 	print_header
 }
 
@@ -32,7 +33,7 @@ main() {
 		process_blob "$b"
 	done \
 	| sort -k 3,3n \
-	| perl -MTime::Piece -pe 's/([0-9]{9,10})/gmtime($1)->strftime("%Y-%m-%d@%T")/e'
+	| perl -MTime::Piece -pe "s/([0-9]{9,10})/gmtime(\$1)->strftime('$fmt')/e"
 }
 
 main "$@"
