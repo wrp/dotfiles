@@ -2,6 +2,7 @@
 # host specific settings belong in ~/.bash-local
 
 export prefix=$HOME/$(uname -m)/$(uname -s)
+export CARGO_TARGET_DIR=$HOME/$(uname -m)/$(uname -s)
 
 # It only makes sense to define ACLOCAL_PATH if we have
 # installed libtool in $HOME, so this really belongs in

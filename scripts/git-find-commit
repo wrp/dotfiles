@@ -18,7 +18,7 @@ for x; do
 		echo "$x"
 	fi
 done |
-sort -u |
+awk '!a[$0]++' |
 while read b; do
 	process_blob "$b"
 done \
