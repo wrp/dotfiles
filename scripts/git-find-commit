@@ -2,25 +2,37 @@
 
 # Find commits in the main branch (or the branch given in b) which
 # contain the given blobs
-git-rev-parse HEAD > /dev/null || exit
-branch=${b-$(git-base-branch)}
+
+init() {
+	git-rev-parse HEAD > /dev/null || exit
+	branch=${b-$(git-base-branch)}
+	print_header
+}
 
 process_blob() {
 	test "$1" -eq 00000000 2>/dev/null && return
 	git log --format="%h ${1:0:8} %at %s" --find-object="$1" $branch
 }
 
-printf '%-8s %-8s %-19s %s\n' commit blob timestamp summary
-for x; do
-	if test -f "$x"; then
-		awk '/^index/{print substr($1,7,8)}' FS=. "$x"
-	else
-		echo "$x"
-	fi
-done |
-awk '!a[$0]++' |
-while read b; do
-	process_blob "$b"
-done \
-| sort -k 3,3n \
-| perl -MTime::Piece -pe 's/([0-9]{9,10})/gmtime($1)->strftime("%Y-%m-%d@%T")/e'
+print_header() {
+	printf '%-8s %-8s %-19s %s\n' commit blob timestamp summary
+}
+
+main() {
+	init
+	for x; do
+		if test -f "$x"; then
+			awk '/^index/{print substr($1,7,8)}' FS=. "$x"
+		else
+			echo "$x"
+		fi
+	done |
+	awk '!a[$0]++' |
+	while read b; do
+		process_blob "$b"
+	done \
+	| sort -k 3,3n \
+	| perl -MTime::Piece -pe 's/([0-9]{9,10})/gmtime($1)->strftime("%Y-%m-%d@%T")/e'
+}
+
+main "$@"
