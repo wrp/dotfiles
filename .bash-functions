@@ -107,6 +107,7 @@ debug_trap() {
 		# Do not reset window title after these commands
 		;;
 	:\
+	|c\
 	|echo\
 	|exec\
 	|g|git\
