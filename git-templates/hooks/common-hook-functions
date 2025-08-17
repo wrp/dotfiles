@@ -1,6 +1,40 @@
+color() {
+	# Output sequences to print "$*" in the color specified in $1.
+	# Most terminals do not allow us to restore only the attributes, but
+	# we can restore position and attributes.  This function emits a
+	# string which saves position/attributes, changes color, writes the
+	# string, restores position/attributes, and then moves to the end
+	# of the string.
+
+	local length msg color
+	color=${1}
+	shift
+	msg="$*"
+	case $color in
+	black)    color=0;;
+	red)      color=1;;
+	green)    color=2;;
+	yellow)   color=3;;
+	blue)     color=4;;
+	magenta)  color=5;;
+	cyan)     color=6;;
+	white)    color=7;;
+	*)        color=9;;
+	esac
+	length=$(printf '%s' "$msg" | wc -c)
+	tput sc
+	tput setaf "$color"
+	printf '%s' "$msg"
+	tput rc
+	tput cuf "$length"
+}
 
 die() {
-	STFU= header=FATAL warn "$@"
+	local header=FATAL
+	if test -t 1; then
+		header=$(color red $header)
+	fi
+	STFU= header=$header warn "$@"
 	printf 'Use --no-verify (-n) to ignore\n'
 	exit 1
 } >&2
