@@ -16,6 +16,7 @@
 # But this should only be used in interactive shells, so make it explicit.
 case "$-" in *i*) : ;; *) return 0 ;; esac
 
+if test -n "$V"; then date | tr -d '\n'; echo ': Re-reading .bashrc'; fi
 unalias -a   # Remove all existing aliases
 complete -r  # Remove all existing completion specs
 
@@ -51,7 +52,7 @@ shopt -s direxpand 2> /dev/null # prevent tab expand from expanding $D to \$D
 
 trap archive-bash-history 0
 trap debug_trap DEBUG # Run before a command in an interactive shell
-trap '. "$HOME"/.bashrc' SIGUSR1
+trap 'V=1 . "$HOME"/.bashrc' SIGUSR1
 trap '. "$HOME"/.bashd/PS1; window-title' SIGWINCH
 check_directory_existence $HOME/.config git vim
 check_directory_existence $HOME/.run vim/{swap,backup,undo}
