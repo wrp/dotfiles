@@ -20,10 +20,10 @@ main() {
 check_t_for_trailers() {
 	test -z "${t-$trailer}" && return
 	printf '%s\n' "${t-$trailer}" | tr , \\n |
-	while read line; do
-		if test "${line#.*:}" = "$line"; then line="type:$line"; fi
+	while IFS=: read k v; do
+		if test -z "$v"; then v=$k; k=type; fi
 		git-interpret-trailers --in-place --if-exists addIfDifferent \
-			--trailer "$line" "$1" || return 1
+			--trailer "$k=$v" "$1" || return 1
 	done
 }
 
