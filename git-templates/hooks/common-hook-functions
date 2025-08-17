@@ -11,7 +11,7 @@ warn() {
 	test -n "$STFU" && return
 	local delim
 	if test $# = 0; then delim=''; else delim=': '; fi
-	local prefix=$(printf '%7s: %s%s' "${header-WARNING}" "$name" "$delim")
+	local prefix=$(printf '[%7s] %s%s' "${header-WARNING}" "$name" "$delim")
 	printf "${prefix}%s\n" "$@"
 } >&2
 
