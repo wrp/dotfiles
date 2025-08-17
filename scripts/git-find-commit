@@ -5,7 +5,7 @@
 
 init() {
 	git-rev-parse HEAD > /dev/null || exit
-	branch=${b-$(git-base-branch)^0}
+	branch=${b-HEAD^0}
 	fmt='%Y-%m-%d@%T'
 }
 
