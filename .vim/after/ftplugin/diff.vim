@@ -6,10 +6,10 @@ setlocal foldexpr=DiffFold(v:lnum)
 function! DiffFold(lnum)
     let line = getline(a:lnum)
     if line =~ '^diff'
-        return 0
+        return '>1'
     elseif line =~ '^@@'
-        return 1
+        return '>2'
     else
-        return 2
+        return '='
     endif
 endfunction
