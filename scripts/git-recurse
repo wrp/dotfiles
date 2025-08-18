@@ -5,7 +5,7 @@
 delim=': '
 if test "$1" = grep; then delim=''; fi
 find . -type d -name .git | while read git_dir; do
-	dir="${git_dir%/.git}"
+	dir="${git_dir%.git}"
 	git -C "$dir" "$@" |
 		sed -e "s@^@${dir}${delim}@"
 done | ${GIT_PAGER-${PAGER-more}}
