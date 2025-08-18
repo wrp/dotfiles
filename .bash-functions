@@ -53,10 +53,10 @@ after_cmd() {
 		report_cmd_status "$HISTFILE" "$ps" >> "$HOME"/.bash-history
 	fi
 	check_environment
-	if test "$RESET_TITLE" = 1; then
+	if test -z "$NO_RESET_TITLE"; then
 		window-title
-		unset RESET_TITLE
 	fi
+	unset NO_RESET_TITLE
 	type -t local_post_cmd_hook > /dev/null && local_post_cmd_hook
 	unset running_in_debug_trap
 
@@ -105,19 +105,7 @@ debug_trap() {
 	case ${BASH_COMMAND%% *} in
 	after_cmd|debug_trap)
 		# Do not reset window title after these commands
-		;;
-	:\
-	|c\
-	|echo\
-	|exec\
-	|g|git\
-	|head\
-	|pwd\
-	|return\
-	|sed\
-	|cd\
-	|ls)
-		RESET_TITLE=1
+		NO_RESET_TITLE=1
 		;;
 	*)
 		window-title "${BASH_COMMAND%% *}"
