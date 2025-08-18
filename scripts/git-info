@@ -15,3 +15,5 @@ sed -e 's/ *$//' <<- EOF
 	cwd:      $(pwd)
 	describe: $(git describe --tags --dirty 2>&1)
 EOF
+
+git status --short
