@@ -87,7 +87,7 @@ write_hist_file() {
 	updated=$(get_mtime "$HISTFILE")
 	delta=$((now - updated))
 	if test "$delta" -ge 60; then
-		warn -c -r HISTFILE not updated for $delta seconds
+		warn -c HISTFILE not updated for $delta seconds
 	fi
 
 	test -f "$HISTFILE" || warn HISTFILE does not exist
@@ -147,9 +147,9 @@ warn() {
 	local eol='\n'
 	if test "$1" = -c; then
 		shift
+		eol='\r'
 		check_cache "$@" && return
 	fi
-	if test "$1" = -r; then shift; eol='\r'; fi
 	test -z "$NOWARN" && printf "WARNING: %s${eol}" "$*" >&2
 }
 
