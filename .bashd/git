@@ -12,7 +12,7 @@ git() {
 		return 1
 	fi
 
-	test $# = 0 && { set -- .; }
+	test $# = 0 && { set -- info; }
 
 	# Do aliasing on arguments, but not for config.
 	# It is common to set integer values, and those should not
