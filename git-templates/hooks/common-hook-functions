@@ -35,7 +35,6 @@ die() {
 		header=$(color red $header)
 	fi
 	STFU= header=$header warn "$@"
-	printf 'Use --no-verify (-n) to ignore\n'
 	exit 1
 } >&2
 
