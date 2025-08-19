@@ -5,12 +5,13 @@ setlocal foldexpr=DiffFold(v:lnum)
 
 function! DiffFold(lnum)
     let line = getline(a:lnum)
+    let pline = getline(a:lnum - 2)
     if line =~ '^diff'
         return '>1'
-    elseif line =~ '^---'
-        return '>2'
+    elseif line =~ '^---' && pline !~ '^diff'
+        return '>1'
     elseif line =~ '^@@'
-        return '>3'
+        return '>2'
     else
         return '='
     endif
