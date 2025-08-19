@@ -29,6 +29,10 @@ function! MyFoldText()
     if line =~ '^diff'
         let fold_info = split(line)[2][2:]
     elseif line =~ '^---'
+        let w = split(line)
+        if w[1] ==# "/dev/null"
+            let line = getline(v:foldstart + 1)
+        endif
         let fold_info = split(line)[1]
     endif
 
