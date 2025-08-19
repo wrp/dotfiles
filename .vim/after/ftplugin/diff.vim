@@ -26,6 +26,6 @@ function! MyFoldText()
         let fold_info = word[2][2:]
     endif
 
-    return printf("%d: %s", folded_line_count, fold_info)
+    return printf("%4d: %s", folded_line_count, fold_info)
 endfunction
 set foldtext=MyFoldText()
