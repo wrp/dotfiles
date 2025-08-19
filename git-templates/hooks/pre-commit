@@ -90,6 +90,7 @@ validate_whitespace() {
 	if test -n "$ALLOW_WHITESPACE_ERRORS" \
 		|| test "$(git config apply.whitespace)" = nowarn
 	then
+		warn 'allowing all whitespace errors'
 		return 0
 	fi
 
