@@ -16,6 +16,7 @@ validate_pathnames() {
 }
 
 modeline_suggests_tabs() { grep -q 'vim:.* noet' "$1"; }
+modeline_suggests_variable() { grep -q 'vim:.* vartabstop' "$1"; }
 file_is_python() { file "$1" | grep -qi python; }
 file_is_makefile() { file "$1" | grep -qi makefile; }
 check_taint() {
@@ -25,9 +26,11 @@ check_taint() {
 }
 
 unwanted() {
-	# Write "tab" or "space"; whichever is unwanted for the file in $1
+	# Write "tab", "space", or "none"; whichever is unwanted for the file in $1
 	if modeline_suggests_tabs "$1"; then
 		echo space
+	elif modeline_suggests_variable "$1"; then
+		echo none
 	elif file_is_python "$1"; then
 		echo tab
 	elif file_is_makefile "$1"; then
@@ -58,6 +61,7 @@ indentation_is_okay() {
 		case $bad_character in
 		space) pattern="^[+]${tab}*[ ][^*]";;
 		tab) pattern="^[+][ ]*${tab}";;
+		none) return 0;;
 		*) die "Cannot recognize file type $path";;
 		esac
 		if git diff --cached $path | grep -E "$pattern"; then
