@@ -29,6 +29,10 @@ git config core.whitespace "$nv"
 printf 'New value of core.whitespace is: '
 git config core.whitespace
 
-printf '\nTry setting apply.whitespace to any of:\n'
-printf 'nowarn|warn|fix|error|error-all (see git-apply(1))\n'
-printf 'Or use toggle [on|off]\n'
+cat << EOF
+
+Try setting apply.whitespace to any of (see git-apply(1)):
+	nowarn|warn|fix|error|error-all
+toggle on sets "error-all"
+toggle off sets "nowarn"
+EOF
