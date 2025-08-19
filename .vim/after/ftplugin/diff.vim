@@ -23,17 +23,22 @@ endfunction
 
 function! MyFoldText()
     let line = getline(v:foldstart)
+    let next_line = getline(v:foldstart + 1)
     let folded_line_count = v:foldend - v:foldstart + 1
 
     let fold_info = line
     if line =~ '^diff'
         let fold_info = split(line)[2][2:]
+        if next_line =~ "new file"
+            let fold_info = "New file: " . fold_info
+        endif
     elseif line =~ '^---'
         let w = split(line)
         if w[1] ==# "/dev/null"
-            let line = getline(v:foldstart + 1)
+            let fold_info = "New file: " . split(next_line)[1]
+        else
+            let fold_info = split(line)[1]
         endif
-        let fold_info = split(line)[1]
     endif
 
     return printf("%4d %s: %s",
