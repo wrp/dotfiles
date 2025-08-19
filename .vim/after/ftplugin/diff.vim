@@ -23,11 +23,15 @@ function! MyFoldText()
 
     let fold_info = line
     if line =~ '^diff'
-        let word = split(line)
-        let fold_info = word[2][2:]
+        let fold_info = split(line)[2][2:]
+    elseif line =~ '^---'
+        let fold_info = split(line)[1]
     endif
 
-    return printf("%4s%4d: %s", repeat("-", foldlevel(v:foldstart)),
-        \ folded_line_count, fold_info)
+    return printf("%4d %s: %s",
+        \ folded_line_count,
+        \ repeat(">>>>", foldlevel(v:foldstart)),
+        \ fold_info
+    \)
 endfunction
 set foldtext=MyFoldText()
