@@ -12,6 +12,7 @@ off) git config apply.whitespace nowarn; exit ;;
 on)  git config apply.whitespace error-all; exit ;;
 tab) nv=indent-with-non-tab;;
 space) nv=tab-in-indent;;
+nowarn|warn|fix|error|error-all) git config apply.whitespace "$1"; exit ;;
 esac
 
 if test -z "$nv"; then
