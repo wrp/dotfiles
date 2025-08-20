@@ -1,9 +1,11 @@
 #!/bin/sh
 
-test -n "$V" && set -x
+if test "$V" -gt 3 2> /dev/null; then set -x; fi
 
 cd $HOME/.bash-history-dir || exit
 mkdir -p .old || exit
+
+test -n "$V" && echo "Archiving history for shells:"
 
 for pid in *; do
 	if ! test "$pid" -gt 0 2> /dev/null; then
