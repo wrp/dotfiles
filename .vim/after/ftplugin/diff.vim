@@ -2,6 +2,7 @@
 setlocal foldmethod=expr
 setlocal foldexpr=DiffFold(v:lnum)
 " setlocal foldlevel=1
+let b:keep_white=1
 
 function! DiffFold(lnum)
     let line = getline(a:lnum)
