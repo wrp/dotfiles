@@ -16,6 +16,8 @@ function! DiffFold(lnum)
         return '>1'
     elseif line =~ '^@@'
         return '>2'
+    elseif line =~ '^$'
+        return 0
     else
         return '='
     endif
