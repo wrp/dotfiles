@@ -8,6 +8,8 @@ then
 elif pmset -g ps
 then
 	battery() {
-		pmset -g ps | awk 'NR==2{print $3}' | tr -d \;
+		pmset -g ps |
+			awk '$6=="charging" {printf "+";}
+				NR==2{print $4}'  FS='[ \t;]'
 	}
 fi > /dev/null 2>&1
