@@ -12,7 +12,7 @@ init() {
 process_blob() {
 	test "$1" -eq 00000000 2>/dev/null && return
 	printf "searching for ${1:0:8}\r" >&2
-	git log --format="%h ${1:0:8} %at %s" --find-object="$1" $branch
+	git log --format="%<(10,trunc)%h ${1:0:8} %at %s" --find-object="$1" $branch
 }
 
 
@@ -31,7 +31,7 @@ main() {
 	done \
 	| sort -k 3,3n \
 	| perl -MTime::Piece -pe "\$v='$fmt';"'
-		printf "%-8s %-8s %-19s %s\n", "commit", "blob",
+		printf "%-10s %-8s %-19s %s\n", "commit", "blob",
 			"timestamp", "summary" if $.==1;
 		s/([0-9]{9,10})/gmtime($1)->strftime($v)/e
 	'
