@@ -44,6 +44,10 @@ check_environment() {
 	fi
 }
 
+this_shell_is_running_in_current_pane() {
+	test "$(tmux display -p "#{pane_id}")" = "$TMUX_PANE"
+}
+
 after_cmd() {
 	# Run after a command, and before a prompt is displayed
 	# In  3.2.57(1)-release (arm64-apple-darwin23), PIPESTATUS
@@ -54,7 +58,11 @@ after_cmd() {
 	fi
 	check_environment
 	if test -z "$NO_RESET_TITLE"; then
-		window-title
+		if this_shell_is_running_in_current_pane; then
+			window-title
+		else
+			window-title "** $WRP_TITLE"
+		fi
 	fi
 	unset NO_RESET_TITLE
 	type -t local_post_cmd_hook > /dev/null && local_post_cmd_hook
@@ -160,5 +168,6 @@ window-title() {
 	if type deactivate 2> /dev/null >&2; then
 		t=1
 	fi
+	WRP_TITLE="$@"
 	deactivate_is_defined=$t set-title "$@";
 }
