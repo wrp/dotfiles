@@ -40,7 +40,7 @@ main() {
 		printf "%-10s %-8s %-19s %s\n", "commit", "blob",
 			"timestamp", "summary" if $.==1;
 		$F[2] =~ s/([0-9]{9,10})/gmtime($1)->strftime($v)/e;
-		say join " ", @F
+		say substr join(" ", @F), 0, $ENV{"COLUMNS"} // 80;
 	'
 }
 
