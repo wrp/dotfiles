@@ -60,8 +60,10 @@ after_cmd() {
 	if test -z "$NO_RESET_TITLE"; then
 		if this_shell_is_running_in_current_pane; then
 			window-title
+		elif test $_status = 0; then
+			window-title "** $WRP_TITLE **"
 		else
-			window-title "** $WRP_TITLE"
+			window-title "!! $WRP_TITLE !!"
 		fi
 	fi
 	unset NO_RESET_TITLE
