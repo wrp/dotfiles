@@ -145,22 +145,8 @@ report_cmd_status() {
 }
 
 die() { test -n "$*" && printf 'FATAL: %s\n' "$*" >&2; exit 1; }
-check_cache() {
-	local now
-	local then
-	eval "then=\${WARN_CACHE_$1-0}"
-	now=$(date +%s)
-	eval "export WARN_CACHE_$1=$now"
-	test "$((now - then))" -lt 5
-}
 warn() {
-	local eol='\n'
-	if test "$1" = -c; then
-		shift
-		eol='\r'
-		check_cache "$@" && return
-	fi
-	test -z "$NOWARN" && printf "WARNING: %s${eol}" "$*" >&2
+	test -z "$NOWARN" && printf "WARNING: %s\n" "$*" >&2
 }
 
 window-title() {
