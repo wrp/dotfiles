@@ -1,7 +1,8 @@
 #!/bin/sh
 
+cmd() { printf '%s\n' "$*"; eval "$@" || exit; }
 if test -n "$1"; then
-	echo git checkout -f "$1" || exit
+	cmd git checkout -f "$1"
 fi
-git reset --hard $1 || exit
-git clean -xd -ff || exit
+cmd git reset --hard $1
+cmd git clean -xd -ff
