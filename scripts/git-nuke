@@ -5,4 +5,4 @@ if test -n "$1"; then
 	cmd git checkout -f "$1"
 fi
 cmd git reset --hard $1
-cmd git clean -xd -ff
+cmd git clean -xqdff
