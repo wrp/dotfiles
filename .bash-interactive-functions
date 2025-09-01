@@ -8,8 +8,8 @@ get_previous_command() {
 show_history_in_reverse() {
 	# Helper function for b()
 	local count=${1-20}
-	{ fc -nl -${count}; printf '\t %s\n' "${FUNCNAME[0]}"; } | tac |
-	awk '/\t/{v++; a=1} {printf "%6s %s\n", a ? v : "", $0; a=0}' | tac
+	{ fc -l -${count}; printf '\t %s\n' "${FUNCNAME[0]}"; } | tac |
+	awk '/\t/{v++; a=1} {printf "%6s\t%s\n", a ? -v : "", $0; a=0}' | tac
 }
 b() {
 	: "back": run the command $1 back in history
