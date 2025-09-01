@@ -132,6 +132,10 @@ report_cmd_status() {
 	test -f "$1" && tac "$1" | STATUS="$2" perl -MPOSIX -pe '
 		if( /^#[0-9]{10}$/ ) { # abort after adding the timestamp.
 			$ts = substr($_, 1, 10);
+			foreach $cmd (
+				"b", "cal", "cat", "cd", "date", "echo", "exec bash",
+				"head", "less", "ls", "more", "pwd", "tail", "man"
+			) { exit 0 if /^$cmd( |$)/ }
 			s@([0-9]{10})@sprintf "%s (%s pid:%d %s:%s) %s",
 				$ts,
 				POSIX::strftime("%FT%T%z", localtime $ts),
