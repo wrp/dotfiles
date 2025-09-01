@@ -83,15 +83,6 @@ GET() {
 		&& ACCESS_TOKEN="$(gcloud auth application-default print-access-token)"
 	curl -H "Authorization: Bearer $ACCESS_TOKEN" "$@"
 }
-gpu() {
-	local set_upstream
-	if test "$1" = -u; then set_upstream=-u; shift; fi
-	remote=${1:-$(g remote | sed -n -e '/^w[^e]/{p; q; }' | grep .)} || {
-		echo "No remote to use as default. Specify remote as 1st arg" >&2; return 1; }
-	remote_branch=${2:-$(git rev-parse --abbrev-ref HEAD)}
-	{ git push $set_upstream "$remote" HEAD:"$remote_branch" 2>&1 >&3 \
-		| sed -e '/^remote:/d' >&2; } 3>&1
-}
 grep() {
 	local count=0
 	for arg; do test "${arg#-}" = "$arg" && : $((count += 1)); done
