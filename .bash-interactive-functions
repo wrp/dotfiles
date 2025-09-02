@@ -7,8 +7,9 @@ get_previous_command() {
 }
 show_history_in_reverse() {
 	# Helper function for b()
-	fc -l -${1-20} | tac |
-	awk '/\t/{v++; a=1} $2 != "b" {printf "%6s\t%s\n", a ? -v : "", $0; a=0}' | tac
+	fc -l -${1-20} |
+	awk '/\t/{v--; a=1} $2 != "b" {printf "%6s\t%s\n", a ? -v-1 : "", $0; a=0}' \
+		v=${1-20}
 }
 b() {
 	: "back": run the command $1 back in history
