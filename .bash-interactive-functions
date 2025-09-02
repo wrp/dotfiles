@@ -8,7 +8,7 @@ get_previous_command() {
 show_history_in_reverse() {
 	# Helper function for b()
 	local count=${1-20}
-	{ fc -l -${count}; printf '\t %s\n' "${FUNCNAME[0]}"; } | tac |
+	fc -l -${count} | tac |
 	awk '/\t/{v++; a=1} $2 != "b" {printf "%6s\t%s\n", a ? -v : "", $0; a=0}' | tac
 }
 b() {
@@ -22,6 +22,7 @@ b() {
 	: fewer keystrokes.
 	if test -z "$1"; then
 		show_history_in_reverse
+		history -d -1
 		return
 	fi
 	test "$1" -gt 0 || return 1;
