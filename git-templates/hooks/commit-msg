@@ -11,8 +11,24 @@ main() {
 	: ${MAX_GIT_WIDTH:=$(git config commit.max-message-width)}
 	: ${MAX_GIT_SUMMARY:=$(git config commit.max-summary-width)}
 	check_message "$@" || die
+	check_words "$1" || die
 	validate_trailers "$@"
 	run_local_hooks "$@"
+}
+
+check_words() {
+	# Ensure that each word in $1 appears in /usr/share/dict/words
+	if ! < "$1" tr -c '[:alpha:]' ' ' | tr ' [:upper:]' '\n[:lower:]' | awk '
+		NR == FNR {w[$0] = 1; next}
+		$0 && !w[$0] { print $0 " is not a word"; fail=1 }
+		END { exit fail }
+	' /usr/share/dict/words -
+	then
+		if test -z "$BAD_WORDS"; then
+			warn "Set BAD_WORDS to allow"
+			return 1
+		fi
+	fi >&2
 }
 
 check_message() {
