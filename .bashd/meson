@@ -1,0 +1,5 @@
+
+meson() {
+	local arg="--native-file=${HOME?}/.config/${USER?}/meson.ini"
+	( set -x; command meson "$arg" "$@"; )
+}
