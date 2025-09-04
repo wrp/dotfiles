@@ -59,10 +59,10 @@ init() {
 	setup_git
 	targets=$(ls -a "$base" | awk 'NR==FNR {a[$0] = 1; next} ! ($0 in a)' "$base/denylist" -)
 	validate_md5_sums
-	mkdir -p "$HOME"/.bash-history-dir
-	mkdir -p "$HOME"/.config/git
-	mkdir -p "$HOME"/.config/vim
-	mkdir -p "$HOME"/.config/ctags
+	mkdir -p "$HOME"/.bash-history-dir || die
+	mkdir -p "$HOME"/.config/git || die
+	mkdir -p "$HOME"/.config/vim || die
+	mkdir -p "$HOME"/.config/ctags || die
 	ln -fs "$base"/.gitignore_global "$HOME"/.config/git/ignore || die
 	ln -fs "$HOME"/.ctags "$HOME"/.config/ctags/base.ctags || die
 }
