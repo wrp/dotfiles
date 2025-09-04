@@ -17,12 +17,19 @@ main() {
 }
 
 check_words() {
-	# Ensure that each word in $1 appears in /usr/share/dict/words
+	# Ensure that each word in $1 appears in the dictionary
+	local f=/usr/local/share/dict/words
+
+	if ! test -f "$f"; then
+		warn "$f does not exist; not checking words"
+		return 0
+	fi
+
 	if ! < "$1" tr -c '[:alpha:]' ' ' | tr ' [:upper:]' '\n[:lower:]' | awk '
 		NR == FNR {w[$0] = 1; next}
-		$0 && !w[$0] { print $0 " is not a word"; fail=1 }
+		$0 && !w[$0] { print $0 " is not a word in " path; fail=1 }
 		END { exit fail }
-	' /usr/share/dict/words -
+	' path="$f" "$f" -
 	then
 		if test -z "$BAD_WORDS"; then
 			warn "Set BAD_WORDS to allow"
