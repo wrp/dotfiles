@@ -25,12 +25,21 @@ check_words() {
 		return 0
 	fi
 
-	if ! < "$1" tr -c '[:alpha:]' ' ' | tr ' [:upper:]' '\n[:lower:]' | awk '
-		NR == FNR {w[$0] = 1; next}
-		$0 && !w[$0] { print $0 " is not a word in " path; fail=1 }
-		END { exit fail }
-	' path="$f" "$f" -
-	then
+	if ! sort -c "$f"; then
+		warn "$f is not sorted; not checking words"
+		return 0
+	fi
+
+	if ! < "$1" tr -c '[:alpha:]' ' ' | tr -s ' ' \\n | sort -u | {
+		status=0
+		while read word; do
+			if ! look -f "$word" "$f" > /dev/null; then
+				warn "$word is not a word in $f"
+				status=1
+			fi
+		done
+		test "$status" = 0
+	}; then
 		if test -z "$BAD_WORDS"; then
 			warn "Set BAD_WORDS to allow"
 			return 1
