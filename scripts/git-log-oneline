@@ -19,11 +19,12 @@
 # Configs:
 #  log.oid-width           number of characters used for oid
 #  log.author-width        number of characters used for author
-#  log.trailer-width (1)   number of characters to use for trailer
+#  log.trailer-width (1)   comma-separated list of display width of trailers
 #  log.default-trailer     comma-separated list of trailers to display
 #  commit.required-trailer multi-value list of trailers to display
 #
-#  Note: (1) the length of default-trailer and trailer-width should match
+#  Note: (1) If trailer-width is shorter than default-trailer, the last
+#            value will be used.  If longer, excess values are ignored.
 
 # TODO: after clone, configure log.trailer-width and maybe others
 
