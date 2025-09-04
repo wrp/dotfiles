@@ -50,7 +50,7 @@ initialize() {
 	trailer_fmt=$(build_trailer_fmt)
 
 	_cfg_author_width="$(git config log.author-width)"
-	author_width=${GITLOG_AUTHOR_WIDTH:-${_cfg_author_width:-12}}
+	author_width=${GITLOG_AUTHOR_WIDTH:-${_cfg_author_width:-20}}
 
 	# Current versions of less with --header do not behave well with
 	# -F, and I get a screen full of ~ when the input is short.  As
