@@ -18,7 +18,7 @@ main() {
 
 check_words() {
 	# Ensure that each word in $1 appears in the dictionary
-	local f=/usr/local/share/dict/words
+	local f=${WORD_FILE-/usr/share/dict/words}
 
 	if ! test -f "$f"; then
 		warn "$f does not exist; not checking words"
