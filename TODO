@@ -1,3 +1,8 @@
 
+Make the ciam alias smarter.  If there are staged changes,
+then invoking ciam is probably a mistake and the user
+intended to just do ci.   I think the correct behavior
+will be to run commit without -a and emit a warning.
+
 
 Make tab-expansion for vi ignore files that are ignored by git.
