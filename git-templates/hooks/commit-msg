@@ -11,7 +11,7 @@ main() {
 	: ${MAX_GIT_WIDTH:=$(git config commit.max-message-width)}
 	: ${MAX_GIT_SUMMARY:=$(git config commit.max-summary-width)}
 	check_message "$@" || die
-	check_words "$1" || die
+	test -n "$SKIP_SPELLCHECK" || check_words "$1" || die
 	validate_trailers "$@"
 	run_local_hooks "$@"
 }
@@ -41,7 +41,7 @@ check_words() {
 		test "$status" = 0
 	}; then
 		if test -z "$BAD_WORDS"; then
-			warn "Set BAD_WORDS to allow"
+			warn "Set BAD_WORDS to allow, SKIP_SPELLCHECK to skip"
 			return 1
 		fi
 	fi >&2
