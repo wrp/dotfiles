@@ -71,6 +71,7 @@ set modeline
 set modelines=10
 set noerrorbells
 set visualbell
+set nowildignorecase
 set nowrap
 set nowrapscan
 set scrolloff=0
