@@ -11,14 +11,17 @@ main() {
 	: ${MAX_GIT_WIDTH:=$(git config commit.max-message-width)}
 	: ${MAX_GIT_SUMMARY:=$(git config commit.max-summary-width)}
 	check_message "$@" || die
-	test -n "$SKIP_SPELLCHECK" || check_words "$1" || die
+	check_words "$1" || die
 	validate_trailers "$@"
 	run_local_hooks "$@"
 }
 
-check_words() {
-	# Ensure that each word in $1 appears in the dictionary
-	local f=${WORD_FILE-/usr/share/dict/words}
+check_words_should_be_skipped() {
+	local f=$1
+	if test -n "$SKIP_SPELLCHECK"; then
+		warn 'Skipping spell check (SKIP_SPELLCHECK is set)'
+		return 0
+	fi
 
 	if ! test -f "$f"; then
 		warn "$f does not exist; not checking words"
@@ -29,7 +32,13 @@ check_words() {
 		warn "$f is not sorted; not checking words"
 		return 0
 	fi
+	return 1
+}
 
+check_words() {
+	# Ensure that each word in $1 appears in the dictionary
+	local f=${WORD_FILE-/usr/share/dict/words}
+	if check_words_should_be_skipped "$f"; then return 0; fi
 	if ! < "$1" tr -c '[:alpha:]' ' ' | tr -s ' ' \\n | sort -u | {
 		status=0
 		while read word; do
