@@ -7,8 +7,7 @@ noremap , ;
 noremap ' `
 noremap ` '
 noremap bd! :bd<cr>:bn<cr>
-" TODO: Add linebreak when applying wrap
-noremap gw :Windo set wrap!
+noremap gw :Windo set linebreak wrap!
 com! Nt :NERDTree
 
 function! Get_option(name, default)
