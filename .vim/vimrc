@@ -60,6 +60,7 @@ let b:match_words = '<<<<<<<:=======:>>>>>>>'
 " set virtualedit=all
 let loaded_matchparen=1
 set autoindent
+set noerrorbells
 set exrc    " Enable loading .vimrc from $CWD
 set foldopen-=search
 set hlsearch
@@ -69,7 +70,6 @@ set listchars=extends:%,precedes:%,eol:$,tab:>-,trail:$
 set matchpairs+=<:>
 set modeline
 set modelines=10
-set noerrorbells
 set visualbell
 set nowildignorecase
 set nowrap
