@@ -6,3 +6,9 @@ will be to run commit without -a and emit a warning.
 
 
 Make tab-expansion for vi ignore files that are ignored by git.
+
+
+Split up .vimrc so it just looks something like:
+for f in split(glob('~/.config/vim/plugin/*.vim'), '\n')
+	execute 'source' f
+endfor
