@@ -43,8 +43,9 @@ set_prompt() {
 		insert_text '[\W'
 		insert_text '$(
 			printf "%s]" \
-				"$( command git rev-parse --abbrev-ref HEAD 2> /dev/null \
-					| sed -E -e "s/^/@/" -e "s@^:heads/@:@" )" \
+				"$( { git symbolic-ref HEAD ||
+					git rev-parse --short HEAD; } 2> /dev/null \
+					| sed -E -e "s@^refs/heads/@@" -e "s/^/@/" )" \
 			| tr \  .
 		)'
 		else
