@@ -1,5 +1,8 @@
 #!/bin/sh
 
+MAX_WIDTH=20
+MIN_WIDTH=5
+
 # Set the title of the tmux or terminal window
 
 # The expectation is that we're running in TMUX or docker.  For the moment,
@@ -23,15 +26,24 @@ test -z "$*" && {
 	set -- "$(basename "$d")"
 } 2> /dev/null
 
+
+window_count=$(tmux list-windows | wc -l)
+width=$(( ($COLUMNS - 30) / $window_count ))
+if test "$width" -gt $MAX_WIDTH; then width=$MAX_WDITH; fi
+if test "$width" -lt $MIN_WIDTH; then width=$MIN_WDITH; fi
+width_minus_1=$(( $width - 1 ))
+
 if test -n "$truncate_left"; then
-	patt='.*\(.\{19\}\)'
+	patt='.*\(.\{'"$width_minus_1"'\}\)'
 	repl='<\1'
 else
-	patt='\(.\{19\}\).*'
+	patt='\(.\{'"$width_minus_1"'\}\).*'
 	repl='\1>'
 fi
 
-title="${DOCKER+$DOCKER:}${VIRTUAL_ENV+!}$( echo "$*" | sed '/.\{20\}/s/^'$patt'$/'$repl/)"
+title="${DOCKER+$DOCKER:}${VIRTUAL_ENV+!}$( echo "$*" |
+	sed '/.\{'"$width"'\}/s/^'$patt'$/'$repl/ )"
+
 
 
 # Instead of renaming the window,  we will change the title of the current pane and

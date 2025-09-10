@@ -120,7 +120,7 @@ debug_trap() {
 		NO_RESET_TITLE=1
 		;;
 	*)
-		window-title "${BASH_COMMAND::15}"
+		window-title "${BASH_COMMAND}"
 		;;
 	esac
 } >&2
