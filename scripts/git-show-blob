@@ -1,0 +1,24 @@
+#!/bin/sh
+
+usage() {
+	cat <<- EOF
+	usage: $(basename $0): treeish [path ...]
+
+	Given a treeish, show the blob for each specified path
+	EOF
+	exit
+}
+
+die() { echo "$*"; exit 1; } >&2
+
+case $1 in
+-h|--help) usage;;
+'') die 'argument missing: treeish (-h for usage)';;
+*) tree=$1;;
+esac
+
+shift
+for path; do
+	blob=$(git rev-parse $tree:$path) || exit
+	printf '%s %s\n' "$blob" "$path"
+done
