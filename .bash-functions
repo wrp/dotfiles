@@ -115,7 +115,7 @@ debug_trap() {
 	write_hist_file
 
 	case ${BASH_COMMAND%% *} in
-	after_cmd|debug_trap|window-title)
+	after_cmd|debug_trap|window-title|set-title)
 		# Do not reset window title after these commands
 		NO_RESET_TITLE=1
 		;;
