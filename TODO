@@ -3,6 +3,12 @@ the commits and only display the ones that match all.  This is better
 functionality and should be far more efficient since we can restrict
 the git-log --find-object to previously found treeish
 
+Stash COMMIT_EDITMSG.  Probably in die() in common-hook functions.  The
+problem is, if you do a commit --amend and the hook rejects it, you
+have usually made edits.  But when you do commit --amend again, that
+overwrite COMMIT_EDITMSG and the changes are lost.  If the hook
+script stashes a copy somehwere, you can re-use  the previous edits.
+
 Make the ciam alias smarter.  If there are staged changes,
 then invoking ciam is probably a mistake and the user
 intended to just do ci.   I think the correct behavior
