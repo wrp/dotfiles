@@ -1,3 +1,7 @@
+Make find-commit be a boolean and. If we have multiple blobs, filter
+the commits and only display the ones that match all.  This is better
+functionality and should be far more efficient since we can restrict
+the git-log --find-object to previously found treeish
 
 Make the ciam alias smarter.  If there are staged changes,
 then invoking ciam is probably a mistake and the user
