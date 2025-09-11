@@ -15,14 +15,10 @@ http*)
 esac
 
 
-if ! echo "$*" | grep -q -e ' --origin'; then
-	# Parse the url to specify a name for origin
-	case $url in
-	*github*) origin=github;;
-	esac
-
-	test -n "$origin" && echo "Setting origin=$origin" >&2
-fi
+# Parse the url to specify a name for origin
+case $url in
+*github*) origin=github;;
+esac
 
 set -- clone --depth 3 ${origin:+--origin="$origin"} "$url" "$@";
 printf 'git %s\n' "$*" >&2
