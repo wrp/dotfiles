@@ -48,6 +48,8 @@ this_shell_is_running_in_current_pane() {
 	test "$(tmux display -p "#{pane_id}")" = "$TMUX_PANE"
 }
 
+_get_marker() { test "${1-1}" = 0 && echo '*' || echo '!'; }
+
 after_cmd() {
 	# Run after a command, and before a prompt is displayed
 	# In  3.2.57(1)-release (arm64-apple-darwin23), PIPESTATUS
@@ -60,10 +62,8 @@ after_cmd() {
 	if test -z "$NO_RESET_TITLE"; then
 		if this_shell_is_running_in_current_pane; then
 			window-title
-		elif test $_status = 0; then
-			window-title "** $WRP_TITLE **"
 		else
-			window-title "!! $WRP_TITLE !!"
+			marker=$(_get_marker $_status) window-title "$WRP_TITLE"
 		fi
 	fi
 	unset NO_RESET_TITLE
