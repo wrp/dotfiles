@@ -157,10 +157,6 @@ warn() {
 
 window-title() {
 	test -t 1 || return;
-	local t
-	if type deactivate 2> /dev/null >&2; then
-		t=1
-	fi
 	WRP_TITLE="$@"
-	deactivate_is_defined=$t set-title "$@";
+	set-title "$@";
 }
