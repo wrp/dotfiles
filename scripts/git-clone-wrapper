@@ -24,5 +24,6 @@ if ! echo "$*" | grep -q -e ' --origin'; then
 	test -n "$origin" && echo "Setting origin=$origin" >&2
 fi
 
-set -- clone ${origin:+--origin="$origin"} "$url" "$@";
-git "$@"
+set -- clone --depth 3 ${origin:+--origin="$origin"} "$url" "$@";
+git "$@" || exit
+echo 'cloned to a depth of 3; to make full, run git fetch --unshallow'
