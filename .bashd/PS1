@@ -42,12 +42,11 @@ set_prompt() {
 		if test "$width" -gt 100; then
 		insert_text '[\W'
 		insert_text '$(
-			printf "@%s]" \
+			printf "%s]" \
 				"$( {
 					git symbolic-ref --short HEAD ||
-					git rev-parse --short HEAD ||
-					echo NO-GIT
-				} 2> /dev/null )" \
+					git rev-parse --short HEAD
+				} 2> /dev/null | sed -e "s/^/@/" )" \
 			| tr \  .
 		)'
 		else
