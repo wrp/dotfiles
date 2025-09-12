@@ -51,7 +51,7 @@ this_shell_is_running_in_current_pane() {
 _get_marker() { test "${1-1}" = 0 && echo '*' || echo '!'; }
 
 after_cmd() {
-	# Run after a command, and before a prompt is displayed
+	: Run after a command, and before a prompt is displayed
 	# In  3.2.57(1)-release (arm64-apple-darwin23), PIPESTATUS
 	# seems to be completely broken and is always 0.
 	local _status=$? ps="${PIPESTATUS[@]}"
