@@ -26,7 +26,6 @@ git() {
 		case $arg in
 		(main  ) arg=$(git-base-branch) || return 1;;
 		(mb    ) arg=--merge-base;;
-		(no    ) arg=--name-only;;
 		(bb    ) arg=$(git-base-branch) || return 1;;
 		([0-9]*) # replace numeric args with branch name
 			if test "$prev" != -n &&
