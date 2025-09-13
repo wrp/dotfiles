@@ -123,6 +123,11 @@ setup_local_files() {
 		export EMAIL UNAME GIT_REMOTE_IDENTITY
 	EOF
 
+	SDKROOT=$(xcrun --sdk macosx --show-sdk-path 2> /dev/null)
+	if test -n "$SDKROOT"; then
+		echo "export SDKROOT=$SDKROOT" >> $HOME/.bash-local
+	fi
+
 	create_file "$HOME/.config/$USER/CONFIG_SITE" <<- 'EOF'
 		if test "${prefix}" = NONE; then
 			prefix="$HOME/$(uname -m)/$(uname -s)"
