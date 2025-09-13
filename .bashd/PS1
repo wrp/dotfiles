@@ -25,10 +25,10 @@ set_prompt() {
 	check_previous
 	insert_text '\D{%T%z}'  # Text in {} is passed to strftime for time
 	insert_text "$__RESET"
-	insert_text '${HISTFILE_UNCHANGED+${__RED}|!!!|}'
-	insert_text '${VIRTUAL_ENV+${__YELLOW}|venv|}'
+	insert_text '${HISTFILE_UNCHANGED+${__RED}|!!!}'
+	insert_text '${VIRTUAL_ENV+${__YELLOW}|venv}'
 	insert_text '${PS1_PREFIX+${__YELLOW}[$PS1_PREFIX]}'
-	test -z "$TMUX" && insert_text "${__RED}|NO_TMUX|"
+	test -z "$TMUX" && insert_text "${__RED}|NO_TMUX"
 	tput cols > /dev/null
 	local width=$(tput cols)
 
