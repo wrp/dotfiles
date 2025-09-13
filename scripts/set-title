@@ -40,7 +40,7 @@ else
 	repl='\1>'
 fi
 
-title="${DOCKER+$DOCKER:}${VIRTUAL_ENV+!}$(
+title="${DOCKER+$DOCKER:}$(
 	echo "${marker+$marker$marker }$*${marker+ $marker$marker}" |
 	sed '/.\{'"$width"'\}/s/^'$patt'$/'$repl/ )"
 
