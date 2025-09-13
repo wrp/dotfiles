@@ -68,7 +68,6 @@ after_cmd() {
 	fi
 	unset NO_RESET_TITLE
 	type -t local_post_cmd_hook > /dev/null && local_post_cmd_hook
-	unset running_in_debug_trap
 
 	return $_status
 }
@@ -108,10 +107,7 @@ write_hist_file() {
 debug_trap() {
 	: Runs before a command in an interactive shell
 
-	if test -n "$running_in_debug_trap"; then
-		return
-	fi
-	running_in_debug_trap=1 # Unset via PROMPT_COMMAND
+	test "$BASH_COMMAND" = after_cmd && return
 	write_hist_file
 
 	case ${BASH_COMMAND%% *} in
