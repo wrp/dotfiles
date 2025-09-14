@@ -28,8 +28,8 @@ test -z "$*" && {
 
 window_count=$(tmux list-windows | wc -l)
 width=$(( ($COLUMNS - 30) / $window_count ))
-if test "$width" -gt $MAX_WIDTH; then width=$MAX_WDITH; fi
-if test "$width" -lt $MIN_WIDTH; then width=$MIN_WDITH; fi
+test "$width" -gt $MAX_WIDTH && width=$MAX_WDITH
+test "$width" -lt $MIN_WIDTH && width=$MIN_WDITH
 width_minus_1=$(( $width - 1 ))
 
 if test -n "$truncate_left"; then
