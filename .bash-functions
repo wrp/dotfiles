@@ -64,6 +64,7 @@ after_cmd() {
 	: Run after a command, and before a prompt is displayed
 
 	_check_elapsed_time "$wrp_start_time" $EPOCHREALTIME
+	wrp_start_time=9999999999
 	if test -s "$HISTFILE"; then
 		report_cmd_status "$HISTFILE" "$ps" >> "$HOME"/.bash-history
 	fi
