@@ -35,6 +35,9 @@ die() {
 		header=$(color red $header)
 	fi
 	STFU= header=$header warn "$@"
+	if test -n "$backup_name"; then
+		cp -v "$backup_name" "$backup_name".bak
+	fi
 	exit 1
 } >&2
 
