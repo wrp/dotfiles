@@ -4,5 +4,5 @@ cd() {
 		return 1
 	fi
 	local _dir=${1-$(tmux display-message -p '#{session_path}')}
-	pushd "${_dir:-$HOME}" > /dev/null
+	command cd "${_dir:-$HOME}"
 }
