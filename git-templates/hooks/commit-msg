@@ -3,6 +3,12 @@
 # This script is invoked after GIT_EDITOR and takes the name
 # of a file containing the proposed commit message as $1.
 # It may change the content of the file.
+#
+# The script runs in the root level of the repository.  In the
+# typical case, $1 is relative path beginning ".git/", but if
+# .git is a gitdir: regular file, $1 may be a full path.  I don't
+# know the full scope of the possibilities, but don't make
+# assumptions about the format of $1.
 
 . "$(dirname $0)"/common-hook-functions
 
