@@ -59,7 +59,7 @@ _check_elapsed_time() {
 }
 
 after_cmd() {
-	local _status=$? ps="${PIPESTATUS[@]}"
+	local _status=$? ps="${PIPESTATUS[@]}" old_title
 
 	: Run after a command, and before a prompt is displayed
 
@@ -73,7 +73,8 @@ after_cmd() {
 		if this_shell_is_running_in_current_pane; then
 			window-title
 		else
-			marker=$(_get_marker $_status) window-title "$WRP_TITLE"
+			old_title=$(tmux display-message -p -t "$TMUX_PANE" '#{pane_title}')
+			marker=$(_get_marker $_status) window-title "$old_title"
 		fi
 	fi
 	unset NO_RESET_TITLE
@@ -165,6 +166,5 @@ warn() {
 
 window-title() {
 	test -t 1 || return;
-	WRP_TITLE="$@"
 	set-title "$@";
 }
