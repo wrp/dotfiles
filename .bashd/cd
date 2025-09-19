@@ -1,8 +1,17 @@
 cd() {
+	local status path
 	if test $# -gt 1; then
 		echo 'cd takes at most one argument' >&2
 		return 1
 	fi
 	local _dir=${1-$(tmux display-message -p '#{session_path}')}
-	command cd "${_dir:-$HOME}"
+
+	command cd "${_dir:-$HOME}" || return
+	path=$(pwd -P) || return
+	if
+		test -n "$VIRTUAL_ENV" \
+		&& test "${path#${VIRTUAL_ENV%/.venv}}" = "$path"
+	then
+		echo 'You have left the current scope of venv' >&2
+	fi
 }
