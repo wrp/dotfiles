@@ -133,6 +133,10 @@ setup_local_files() {
 			prefix="$HOME/$(uname -m)/$(uname -s)"
 			CPPFLAGS="-I${prefix}/include"
 			LDFLAGS="-L${prefix}/lib"
+			if test -n "$SDKROOT"; then
+				CFLAGS="-isysroot $SDKROOT $CFLAGS"
+				LDFLAGS="-Wl,-syslibroot,$SDKROOT $LDFLAGS"
+			fi
 		fi
 	EOF
 
