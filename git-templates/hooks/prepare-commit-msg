@@ -11,6 +11,7 @@
 main() {
 	check_t_for_trailers "$@" || return 1
 	run_local_hooks "$@"
+	append_saved_message "$1".bak >> "$1"
 }
 
 
@@ -25,6 +26,15 @@ check_t_for_trailers() {
 		git-interpret-trailers --in-place --if-exists addIfDifferent \
 			--trailer "$k=$v" "$1" || return 1
 	done
+}
+
+append_saved_message() {
+	if ! test -f "${1}"; then return; fi
+	cat <<- EOF
+
+	# Previously edited commit message:
+	EOF
+	sed -e 's/^/# /' "${1}"
 }
 
 main "$@"
