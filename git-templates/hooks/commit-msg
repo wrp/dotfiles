@@ -45,7 +45,9 @@ check_words() {
 	# Ensure that each word in $1 appears in the dictionary
 	local f=${WORD_FILE-/usr/share/dict/words}
 	if check_words_should_be_skipped "$f"; then return 0; fi
-	if ! < "$1" tr -c '[:alpha:]' ' ' | tr -s ' ' \\n | sort -u | {
+	if ! < "$1" \
+		sed -e '/^#/d' |
+		tr -c '[:alpha:]' ' ' | tr -s ' ' \\n | sort -u | {
 		status=0
 		while read word; do
 			if ! look -f "$word" "$f" > /dev/null; then
