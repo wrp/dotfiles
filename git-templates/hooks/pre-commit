@@ -56,7 +56,7 @@ indentation_is_okay() {
 	# core.whitespace = indent-with-non-tab,tabwidth=4
 	local tab=$(printf '\t')
 	local pattern
-	git status --porcelain | grep '^M\|A' | while read m path; do
+	git status --porcelain | grep -E '^(M|A)' | while read m path; do
 		bad_character=$(unwanted "$path")
 		case $bad_character in
 		space) pattern="^[+]${tab}*[ ][^*]";;
