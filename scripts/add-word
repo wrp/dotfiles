@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# Insert words into /usr/local/share/dict/words
+
+word_path=/usr/local/share/dict/words
+
+trap 'rm -f "$tmp" "$tmp2"' 0
+
+# Grrr mktemp seems broken on this box. Stupid Apple
+mktemp() { echo "/tmp/wrp/$1"; }
+tmp=$(mktemp insert_word1.$$)
+tmp2=$(mktemp insert_word2.$$)
+
+for x; do
+	printf '%s\n' "$x" | tr '[:upper:]' '[:lower:]'
+done > "$tmp" || exit
+cat "$word_path" >> "$tmp" || exit
+
+sort -u "$tmp" > "$tmp2" || exit
+
+size() { stat -f %z "$1"; }
+
+if test "$(size "$tmp2")" -ge "$(size "$word_path")"; then
+	cat "$tmp2" > "$word_path"
+else
+	echo "New files is not bigger" >&2
+fi
