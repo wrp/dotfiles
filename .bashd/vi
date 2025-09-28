@@ -8,9 +8,9 @@ _check_if_ignored_by_git() {
 		fi
 	done
 	if test "$pause" = yes; then
-		echo "Press enter to continue, q<enter> to abort" >&2
-		read k
-		if test "$k" = q; then
+		echo "Press enter to continue, q to abort" >&2
+		read -n 1
+		if test "$REPLY" = q; then
 			return 1
 		fi
 	fi
