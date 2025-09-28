@@ -50,6 +50,7 @@
 	r = recurse
 	s = status --short
 	sa = status -uall --ignored
+	sap = !bash -c 'git stash apply stash@{$1}' _
 	sk = !bash -c 'git stash push --keep-index ${1:+-m \"${*}\"}' _
 	sl = stash list
 	sp = stash pop --quiet
