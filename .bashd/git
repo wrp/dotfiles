@@ -1,7 +1,6 @@
 # Git related interactive functions
 
-g() { git "$@"; }
-git() {
+g() {
 	local arg cwd orig prev version verbose=$V top
 
 	version=$(command git --version) || return
