@@ -1,8 +1,11 @@
 #!/bin/sh
 
-# Insert words into /usr/local/share/dict/words
+# Insert words into $WORD_FILE
 
-word_path=/usr/local/share/dict/words
+# TODO Make a local option.  There should be some mechanism
+# by which words are defined per git repository.
+
+word_path=${WORD_FILE:-/usr/share/dict/words}
 
 trap 'rm -f "$tmp" "$tmp2"' 0
 
@@ -23,5 +26,6 @@ size() { stat -f %z "$1"; }
 if test "$(size "$tmp2")" -ge "$(size "$word_path")"; then
 	cat "$tmp2" > "$word_path"
 else
-	echo "New files is not bigger" >&2
+	echo "New file is not bigger.  No words added." >&2
+	exit 1
 fi
