@@ -7,13 +7,15 @@ then
 fi
 branch="$(git rev-parse --abbrev-ref HEAD)"
 summary=$(git for-each-ref --format="(%(objectname:short)) %(push:track)" refs/heads/"$branch")
+version=$(git describe --tags --dirty 2> /dev/null)
 
 sed -e 's/ *$//' <<- EOF
 	branch:   ${branch} $summary
 	upstream: ${remote:-none}$remote_oid
 	top:      $top
 	cwd:      $(pwd)
-	describe: $(git describe --tags --dirty 2>&1)
+	version:  ${description:-unversioned}
 EOF
+
 
 git status --short
