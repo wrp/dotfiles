@@ -69,7 +69,7 @@ after_cmd() {
 		report_cmd_status "$HISTFILE" "$ps" >> "$HOME"/.bash-history
 	fi
 	check_environment
-	if test -z "$NO_RESET_TITLE"; then
+	if test -z "$NO_RESET_TITLE" && test -n "$TMUX"; then
 		if this_shell_is_running_in_current_pane; then
 			window-title
 		else
