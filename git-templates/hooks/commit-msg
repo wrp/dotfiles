@@ -19,8 +19,8 @@ main() {
 	check_message "$@" || die
 	remove_comments "$@" || die
 	check_words "$1" || die
-	validate_trailers "$@"
-	run_local_hooks "$@"
+	validate_trailers "$@" || die
+	run_local_hooks "$@" || die
 }
 
 remove_comments() { perl -i -ne 'print unless m/^#/' "$1"; }
