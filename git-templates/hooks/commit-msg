@@ -59,6 +59,9 @@ check_words() {
 		done
 		test "$status" = 0
 	}; then
+		# TODO: instead of just rejecting a string, maybe scan the current
+		# repo to see if the string appears (eg, strcmp should be valid in a
+		# mostly C code-base).
 		if test -z "$BAD_WORDS"; then
 			warn "Set BAD_WORDS to allow, SKIP_SPELLCHECK to skip"
 			return 1
