@@ -20,10 +20,18 @@ main() {
 	remove_comments "$@" || die
 	check_words "$1" || die
 	validate_trailers "$@" || die
+	check_previous "$@" || die
 	run_local_hooks "$@" || die
 }
 
 remove_comments() { perl -i -ne 'print unless m/^#/' "$1"; }
+
+check_previous() {
+	if grep -q 'Previously edited commit message:' "$1"; then
+		fail 'Commit message retains previous messages'
+	fi
+}
+
 
 check_words_should_be_skipped() {
 	local f=$1
