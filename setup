@@ -88,7 +88,7 @@ setup_git() {
 	local verbose
 	if test -z "$UNAME"; then
 		verbose=1
-		UNAME=$(id -F "$USER")
+		UNAME=$(id -F "$USER" 2> /dev/null)
 	fi
 	for n in EMAIL UNAME; do
 		eval v=\$$n;
