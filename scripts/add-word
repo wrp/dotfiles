@@ -10,7 +10,8 @@ word_path=${WORD_FILE:-/usr/share/dict/words}
 trap 'rm -f "$tmp" "$tmp2"' 0
 
 # Grrr mktemp seems broken on this box. Stupid Apple
-mktemp() { echo "/tmp/wrp/$1"; }
+mkdir -p "/tmp/$USER" || exit
+mktemp() { echo "/tmp/${USER}/$1"; }
 tmp=$(mktemp insert_word1.$$)
 tmp2=$(mktemp insert_word2.$$)
 
