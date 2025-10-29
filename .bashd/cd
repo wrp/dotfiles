@@ -13,5 +13,6 @@ cd() {
 		&& test "${path#${VIRTUAL_ENV%/.venv}}" = "$path"
 	then
 		echo 'You have left the current scope of venv' >&2
+		deactivate
 	fi
 }
