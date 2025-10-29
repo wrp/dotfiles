@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Sanitize a clipboard.  In this case, I use "sanitize" to mean
+# "make sane".  This is replacing instances of "<text>" with
+# "${text}" so that the output can be pasted into a shell for
+# immediate execution.
+
+perl -lape 's/<([^>]*)>/\${$1}/g'
