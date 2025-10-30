@@ -26,6 +26,9 @@
 #  Note: (1) If trailer-width is shorter than default-trailer, the last
 #            value will be used.  If longer, excess values are ignored.
 #
+# By default, we attempt to pass the --header option to less.  This can
+# be disabled with -n or by setting NO_LESS_HEADERS
+#
 # Environment:
 #    NO_HEADERS               if unset, prepend a header line
 #    NO_LESS_HEADERS          if unset, do not attempt to pass --headers
