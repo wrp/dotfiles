@@ -1,0 +1,14 @@
+
+find() {
+	# Canonicalize the path.  My current
+	# implementation writes out duplicated / if
+	# the directory argument ends in /, which I
+	# find annoying.  Remove trailing / from the
+	# first argument.  This is not robust, but
+	# captures the use case I currently care about.
+	# If we try to remove / from all arguments, we
+	# need to think.
+	local arg=${1%%/}
+	shift
+	command find "$arg" "$@"
+}
