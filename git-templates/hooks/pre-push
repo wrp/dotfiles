@@ -9,6 +9,10 @@ while read local_ref local_obj remote_ref remote_obj; do
 			"Branch names must match BRANCH_ERE_MATCH:'$BRANCH_ERE_MATCH'"
 	fi
 
+	if test -n "$ALLOW_WIP"; then
+		exit 0
+	fi
+
 	if git show --pretty=format:%s --no-patch "$local_ref" | grep -w wip; then
 		die "$ref contains 'wip'"
 	fi
