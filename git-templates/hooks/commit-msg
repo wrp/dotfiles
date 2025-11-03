@@ -1,7 +1,5 @@
 #!/bin/sh
 
-echo "COMMIT-MSG Hook is executing" >&2
-
 # This script is invoked after GIT_EDITOR and takes the name
 # of a file containing the proposed commit message as $1.
 # It may change the content of the file.
