@@ -13,12 +13,12 @@ while read local_ref local_obj remote_ref remote_obj; do
 		git show --pretty=format:%s --no-patch "$local_ref" |
 			grep -w wip
 	then
-		die "$ref contains 'wip'"
+		die "$local_ref contains 'wip'"
 	fi
 
 	if git show "$local_ref" | grep 'Previously edited commit message:'
 	then
-		die "$ref contains log message with previously edited commit"
+		die "$local_ref contains log message with previously edited commit"
 	fi
 
 	git rev-list ${remote_obj}..${local_obj} | while read oid; do
