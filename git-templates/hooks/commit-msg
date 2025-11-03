@@ -1,5 +1,7 @@
 #!/bin/sh
 
+echo "COMMIT-MSG Hook is executing" >&2
+
 # This script is invoked after GIT_EDITOR and takes the name
 # of a file containing the proposed commit message as $1.
 # It may change the content of the file.
@@ -24,7 +26,7 @@ main() {
 	run_local_hooks "$@" || die
 }
 
-remove_comments() { perl -i -ne 'print unless m/^#/' "$1"; }
+remove_comments() { perl -i -ne 'print unless m/^\s*#/' "$1"; }
 
 check_previous() {
 	if grep -q 'Previously edited commit message:' "$1"; then
