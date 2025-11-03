@@ -1,6 +1,8 @@
 
 I was able to push wip.  Track down why pre-push did not fail.
 
+Also track down why previously edited commit messages are making it
+into the log.
 
 Make find-commit be a boolean "and". If we have multiple blobs, filter
 the commits and only display the ones that match all.  This is better
