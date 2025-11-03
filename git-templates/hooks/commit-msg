@@ -28,7 +28,7 @@ remove_comments() { perl -i -ne 'print unless m/^#/' "$1"; }
 
 check_previous() {
 	if grep -q 'Previously edited commit message:' "$1"; then
-		fail 'Commit message retains previous messages'
+		die 'Commit message retains previous messages'
 	fi
 }
 
