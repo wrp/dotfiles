@@ -16,7 +16,9 @@ while read local_ref local_obj remote_ref remote_obj; do
 		die "$local_ref contains 'wip'"
 	fi
 
-	if git show "$local_ref" | grep -q 'Previously edited commit message:'
+	if \
+		git show --pretty=format:%B --no-patch "$local_ref" |
+			grep -q 'Previously edited commit message:'
 	then
 		die "$local_ref contains log message with previously edited commit"
 	fi

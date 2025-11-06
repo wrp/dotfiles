@@ -6,3 +6,5 @@
 *.jar
 *.o
 default.profraw
+
+**/.claude/settings.local.json
