@@ -2,8 +2,8 @@
 
 {
 dir=${1-$PWD}
-dir=$(realpath "$dir" || readlink -f "$dir" ||
-	cd "$(dirname "$dir")" && pwd -P ) || exit
+dir=$( { realpath "$dir" || readlink -f "$dir" ||
+	cd "$(dirname "$dir")" && pwd -P; } | sed -e 1q ) || exit
 } 2> /dev/null
 name=$(basename "$dir" | sed -e 's@$HOME@home@' | tr '[:upper:].' '[:lower:]-')
 
