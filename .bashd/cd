@@ -4,7 +4,7 @@ cd() {
 		echo 'cd takes at most one argument' >&2
 		return 1
 	fi
-	local _dir=${1-$(tmux display-message -p '#{session_path}')}
+	local _dir=${1-$(tmux display-message -p '#{session_path}' | sed 1q)}
 
 	command cd "${_dir:-$HOME}" || return
 	path=$(pwd -P) || return
