@@ -1,6 +1,7 @@
 #!/bin/sh
 
 # Create a new commit which squashes HEAD into $1.
+# Define "edit_msg" in the environment if you want to edit the commit message.
 
 usage() { sed -nE -e 1,2d -e '/^$/q' -e 's/#.?//p' "$0";}
 cleanup() {
@@ -36,6 +37,6 @@ trap cleanup 0
 
 # Grrr.  Even with --quiet, git merge is spewing messages
 git merge --quiet --squash "$current" > /dev/null || exit
-git commit --quiet --amend -m "$msg" -e || exit
+git commit --quiet --amend -m "$msg" ${edit_msg+-e} || exit
 
 trap : 0
