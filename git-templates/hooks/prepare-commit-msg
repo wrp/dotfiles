@@ -11,9 +11,10 @@
 main() {
 	check_t_for_trailers "$@" || return 1
 	run_local_hooks "$@"
-	if test -z "$GIT_REBASE"; then
-	append_saved_message "$1".bak >> "$1"
-	fi
+	case "$2" in
+	merge|squash|rebase) ;;
+	*) append_saved_message "$1".bak >> "$1";;
+	esac
 }
 
 
