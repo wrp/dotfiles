@@ -11,10 +11,33 @@
 main() {
 	check_t_for_trailers "$@" || return 1
 	run_local_hooks "$@"
+
+	# Only append saved message for normal commits
+	if want_to_append_previous; then
+		append_saved_message "$1".bak >> "$1"
+	fi
+}
+
+want_to_append_previous() {
+	# Append saved message except during merge, squash, rebase, or amend
 	case "$2" in
-	merge|squash|rebase) ;;
-	*) append_saved_message "$1".bak >> "$1";;
+	merge|squash|rebase|amend) return 1;;
 	esac
+
+	# Do not append if we're in the middle of a rebase (interactive or not)
+	if
+		test -d "$(git rev-parse --git-dir)/rebase-merge" ||
+		test -d "$(git rev-parse --git-dir)/rebase-apply"
+	then
+		return 1
+	fi
+
+	# Do not append if GIT_REFLOG_ACTION indicates we're rebasing
+	case "${GIT_REFLOG_ACTION-}" in
+	*rebase*) return 1;;
+	esac
+
+	return 0
 }
 
 
