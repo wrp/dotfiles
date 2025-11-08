@@ -1,4 +1,5 @@
 
+if test -z "$SCRIPT"; then
 __RESET=$(printf '\x01%s\x02' "$RESET")
 __RED=$(printf '\x01%s\x02' "$RED")
 __GREEN=$(printf '\x01%s\x02' "$GREEN")
@@ -7,6 +8,9 @@ __BOLD_YELLOW=$(printf '\x01%s%s\x02' "$BOLD" "$YELLOW")
 __BLUE=$(printf '\x01%s\x02' "$BLUE")
 __MAGENTA=$(printf '\x01%s\x02' "$MAGENTA")
 __CYAN=$(printf '\x01%s\x02' "$CYAN")
+else
+	function tput() { : ; }
+fi
 
 check_previous() {
 	PS1='$( {
@@ -32,7 +36,7 @@ set_prompt() {
 	tput cols > /dev/null
 	local width=$(tput cols)
 
-	if test "$width" -le 80; then
+	if test "${width:-80}" -le 80; then
 		insert_text \|
 	else
 		insert_text '$__MAGENTA'
