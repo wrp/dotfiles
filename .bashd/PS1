@@ -58,6 +58,7 @@ set_prompt() {
 			insert_text :
 		fi
 	fi
+	insert_text "$__YELLOW"'$trailer'
 	insert_text "$__GREEN"
 	add_pid
 	add_prompt_char
