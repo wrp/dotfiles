@@ -22,7 +22,7 @@
 	csa = cs -a
 	cw = cwip -m 'Whitespace'
 	cwa = cw -a
-	cwip = !bash -c 'IGNORE_GIT_TRAILERS=1 git ci --trailer type:wip \"${@}\"' _
+	cwip = !bash -c 'SKIP_SPELLCHECK=1 IGNORE_GIT_TRAILERS=1 git ci --trailer type:wip \"${@}\"' _
 	d = diff
 	dc = diff --cached
 	dcno = diff --cached --name-only
