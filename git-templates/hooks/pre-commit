@@ -18,7 +18,7 @@ validate_pathnames() {
 modeline_suggests_tabs() { grep -q 'vim:.* noet' "$1"; }
 modeline_suggests_variable() { grep -q 'vim:.* vartabstop' "$1"; }
 file_is_python() { file - < "$1" | grep -qi python; }
-file_is_makefile() { file - < "$1" | grep -qi makefile; }
+file_is_makefile() { printf '%s\n' "$1" | grep -qi makefile; }
 check_taint() {
 	if git diff --cached | grep --color=always -C 3 'DO NOT COMMIT'; then
 		die 'The commit is tainted!!  Stubbornly refusing to commit';
