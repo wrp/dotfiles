@@ -19,3 +19,16 @@ EOF
 
 
 git status --short
+
+gitdir=$(git rev-parse --git-dir 2>/dev/null) || exit 1
+if test -d "${gitdir}/rebase-apply" || test -d "${gitdir}/rebase-merge"; then
+	echo "rebase or am in progress"
+elif test -f "${gitdir}/MERGE_HEAD"; then
+	echo "merge in progress"
+elif test -f "${gitdir}/CHERRY_PICK_HEAD"; then
+	echo "cherry-pick in progress"
+elif test -f "${gitdir}/REVERT_HEAD"; then
+	echo "revert in progress"
+elif test -d "${gitdir}/sequencer"; then
+	echo "sequencer operation in progress (revert/cherry-pick)"
+fi
