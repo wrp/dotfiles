@@ -65,6 +65,7 @@ init() {
 	mkdir -p "$HOME"/.config/vim || die
 	mkdir -p "$HOME"/.config/ctags || die
 	ln -fs "$base"/.gitignore_global "$HOME"/.config/git/ignore || die
+	ln -fs "$base"/.gitattributes_global "$HOME"/.config/git/attributes || die
 	ln -fs "$HOME"/.ctags "$HOME"/.config/ctags/base.ctags || die
 }
 
