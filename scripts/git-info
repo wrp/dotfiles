@@ -8,6 +8,11 @@ fi
 branch="$(git rev-parse --abbrev-ref HEAD)"
 summary=$(git for-each-ref --format="(%(objectname:short)) %(push:track)" refs/heads/"$branch")
 version=$(git describe --tags --dirty 2> /dev/null)
+main=$(git base-branch) || exit
+
+if ! git merge-base --is-ancestor "$main" HEAD; then
+	summary="$summary(can rebase to $main)"
+fi
 
 sed -e 's/ *$//' <<- EOF
 	branch:   ${branch} $summary
