@@ -1,2 +1,2 @@
 
-*.py whitespace=-indent-with-non-tab,-space-before-tab,tab-in-indent
+*.py whitespace=-indent-with-non-tab,space-before-tab,tab-in-indent,tabwidth:2
