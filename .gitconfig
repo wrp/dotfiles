@@ -25,11 +25,11 @@
 	cwip = !bash -c 'SKIP_SPELLCHECK=1 IGNORE_GIT_TRAILERS=1 git ci --trailer type:wip \"${@}\"' _
 	d = diff
 	dc = diff --cached
-	dcno = diff --cached --name-only
+	dcno = diff --cached --name-status
 	dm = !git diff --merge-base "$(git-base-branch)"
-	dmno = dm --name-only
+	dmno = dm --name-status
 	dn = diff --numstat
-	dno = diff --name-only
+	dno = diff --name-status
 	dw = diff --word-diff
 	dwa = diff --word-diff-regex=.
 	exec = "!exec "  # execute a shell command in the top level
@@ -46,7 +46,7 @@
 	ld = l1 --date=format:'%FT%T%z'
 	ldh = ld -n 10
 	ls = l1 --show-signature
-	no = show --name-only --pretty=format:
+	no = show --name-status --pretty=format:
 	r = recurse
 	s = status --short
 	sa = status -uall --ignored
