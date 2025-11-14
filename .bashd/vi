@@ -36,13 +36,12 @@ vi() {
 	fi
 	if test -t 0 && test $# = 0; then
 		: input is from a tty
-		local default=HEAD main_or_master
+		local default=HEAD
 
 		# If no arguments are given, try to find most recently changed files from git
 		# TODO: figure out how much of this logic belongs in the get-modified-files script
-		if test -z "$h" && ! git diff --name-only --ignore-submodules | grep -q .; then
-			main_or_master=$(git base-branch)
-			default=$(git merge-base HEAD "$main_or_master")
+		if test -z "$h" && git diff-index --quiet HEAD; then
+			default=$(git merge-base HEAD "$(git base-branch)")
 			# If the current HEAD is no different than the merge base,
 			# set default to 1 so we edit the files changed in the last commit
 			if test "$default" = "$(git rev-parse HEAD)"; then
