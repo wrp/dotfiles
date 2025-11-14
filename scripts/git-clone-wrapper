@@ -20,7 +20,7 @@ case $url in
 *github*) origin=github;;
 esac
 
-set -- clone --depth 3 ${origin:+--origin="$origin"} "$url" "$@";
+set -- clone --depth 3 --no-single-branch ${origin:+--origin="$origin"} "$url" "$@";
 printf 'git %s\n' "$*" >&2
 git "$@" || exit
 echo 'cloned to a depth of 3; to make full, run git fetch --unshallow'
