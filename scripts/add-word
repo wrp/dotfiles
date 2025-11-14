@@ -24,7 +24,7 @@ sort -u "$tmp" > "$tmp2" || exit
 
 size() { stat -f %z "$1"; }
 
-if test "$(size "$tmp2")" -ge "$(size "$word_path")"; then
+if test "$(size "$tmp2")" -gt "$(size "$word_path")"; then
 	cat "$tmp2" > "$word_path"
 else
 	echo "New file is not bigger.  No words added." >&2
