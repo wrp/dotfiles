@@ -15,79 +15,54 @@ validate_pathnames() {
 	fi
 }
 
-modeline_suggests_tabs() { grep -q 'vim:.* noet' "$1"; }
-modeline_suggests_variable() { grep -q 'vim:.* vartabstop' "$1"; }
-file_is_python() { file - < "$1" | grep -qi python; }
-file_is_makefile() { printf '%s\n' "$1" | grep -qi makefile; }
 check_taint() {
-	if git diff --cached | grep --color=always -C 3 'DO NOT COMMIT'; then
+	test -n "$GIT_IGNORE_TAINT" && return 0
+	if git diff --cached | grep --color=always -C 3 '^+.*DO NOT COMMIT'; then
 		die 'The commit is tainted!!  Stubbornly refusing to commit';
 	fi
 }
 
-unwanted() {
-	# Write "tab", "space", or "none"; whichever is unwanted for the file in $1
-	if modeline_suggests_tabs "$1"; then
-		echo space
-	elif modeline_suggests_variable "$1"; then
-		echo none
-	elif file_is_python "$1"; then
-		echo tab
-	elif file_is_makefile "$1"; then
-		echo space
-	else
-		case $(git config core.whitespace) in
-		tab-in-indent) echo tab;;
-		*) echo space;;
-		esac
-	fi
-}
-
-indentation_is_okay() {
-	# Sigh.  With core.whitespace set to 'indent-with-no-tab' and
-	# apply.whitepace set to 'error', git diff-index does not treat
-	# a leading tab follwed by space as an error.  So we need to
-	# explicitly check for any spaces in the indentation.
-
-	# git-diff-index also does not treat space at the start of the line as an
-	# error if the amount of space at the start of a line is less
-	# than core.whitespace.tabwidth.
-	# core.whitespace can be a comma-separated list; eg
-	# core.whitespace = indent-with-non-tab,tabwidth=4
+check_mixed_indentation() {
+	# Always flag mixed indentation as an error:
+	# - A tab followed by a space (in the indentation area)
+	# - A space followed by a tab (in the indentation area)
+	# This catches the problematic cases that git diff-index doesn't handle well
 	local tab=$(printf '\t')
-	local pattern
-	git status --porcelain | grep -E '^(M|A)' | while read m path; do
-		bad_character=$(unwanted "$path")
-		case $bad_character in
-		space) pattern="^[+]${tab}*[ ][^*]";;
-		tab) pattern="^[+][ ]*${tab}";;
-		none) return 0;;
-		*) die "Cannot recognize file type $path";;
-		esac
-		if git diff --cached $path | grep -E "$pattern"; then
-			echo "unwanted $bad_character in indent in $path" >&2
-			return 1
-		fi
-		if git diff --cached $path | grep -E "^[+][^{$tab}]+${tab}"; then
-			echo "tab character found after indent in $path"
-			return 1
-		fi
-	done
+	local mixed_tab_space="^[+]${tab}${tab}* "
+	local mixed_space_tab="^[+]  *${tab}"
+
+	if git diff --cached | grep -E "${mixed_tab_space}|${mixed_space_tab}"; then
+		echo "Mixed indentation error: found both tabs and spaces in indentation" >&2
+		return 1
+	fi
+	return 0
 }
 
-trailing_whitespace_ok() {
-	# git diff index --check is completely useless for check indentation.
-	# We want python to always be idented with spaces, and go and Makefiles
-	# to always be indented with tabs, but core.whitespace does not give
-	# the necessary granularity.  But we do occasionally want to use
-	# core.whitespace with indent-with-non-tab or tab-in-indent
-	# to get highlighting in git diff.  So we either need to set the
-	# config to a reasonable value (race condition :( ) or just stop
-	# using git diff-index completely.
-	local v=$(git config core.whitespace)
-	test "$v" = trailing-space || git config core.whitespace trailing-space
+check_unwanted_leading_whitespace() {
+	# git diff-index --check doesn't catch leading spaces less than tabwidth
+	# when core.whitespace includes indent-with-non-tab
+	# Check if core.whitespace contains indent-with-non-tab
+	local whitespace_config=$(git config core.whitespace)
+	if echo "$whitespace_config" | grep -q "indent-with-non-tab"; then
+		# Flag any leading spaces in added lines
+		if git diff --cached | grep -E "^[+] "; then
+			echo "Leading space found with indent-with-non-tab setting" >&2
+			return 1
+		fi
+	fi
+	return 0
+}
+
+standard_whitespace_ok() {
+	# Use git diff-index --check to catch standard whitespace errors
+	# This honors the settings in ~/.config/git/attributes
 	git diff-index --check --cached $against --
-	test "$v" = trailing-space || git config core.whitespace "$v";
+}
+
+all_whitespace_checks() {
+	check_mixed_indentation && \
+	check_unwanted_leading_whitespace && \
+	standard_whitespace_ok
 }
 
 validate_whitespace() {
@@ -101,7 +76,7 @@ validate_whitespace() {
 		return 0
 	fi
 
-	if ! { indentation_is_okay && trailing_whitespace_ok; } ; then
+	if ! all_whitespace_checks; then
 		if git config apply.whitespace | grep -q error; then
 			func=die
 		else
