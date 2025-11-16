@@ -1,10 +1,8 @@
 
 
-Re-architect the git hooks.  Git now allows the configuration
-git config --global core.hooksPath "$CONFIG_DIR/hooks"
-to specify a hook path.  We should use that, and then our
-hooks should call the project specific hooks after
-executing.
+Stop using multivar for trailer configs.  Git makes it impossible
+for a repo to completely override the global config, so we should
+instead use a single value, perhaps comma separated.
 
 
 Make find-commit be a boolean "and". If we have multiple blobs, filter
