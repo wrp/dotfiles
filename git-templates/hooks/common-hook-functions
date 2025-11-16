@@ -71,13 +71,12 @@ run_local_hooks() {
 	# script, but have not looked into whether our scripts have
 	# already consumed any.
 
-	# Ensure that $0 is not recursively calling itself.  Ideally
-	# we would have a better mechanism, but I don't trust the stability
-	# and/or portability of stat, so let's just check the content.
-
 	local hook_file=$(git rev-parse --absolute-git-dir)/hooks/$(basename $0)
 
-	if test -x "$hook_file" && test "$(md5sum < $hook_file)" != "$(md5sum < $0)"; then
+	# Ensure that $0 is not recursively calling itself.
+	if test -x "$hook_file" && \
+		ls -Lid "$hook_file" "$0" | awk 'NR==1{a=$1} NR==2{exit($1==a)}'
+	then
 		$hook_file "$@" || exit
 	fi
 }
