@@ -107,12 +107,12 @@ check_message() {
 
 # Ensure that all required trailers are present
 validate_trailers() {
-	if test -n "$IGNORE_GIT_TRAILERS"; then
+	if test -z "$(git config commit.required-trailer)"; then
 		return
 	fi
 	local fail
 	local present_trailers=$(git interpret-trailers --parse "$1")
-	for value in $(git config --get-all commit.required-trailer); do
+	for value in $(git config commit.required-trailer | tr , ' '); do
 		if ! echo "$present_trailers" |
 			awk '$1 == "'"$value"'" {print $2}' FS=': ' |
 			grep -q .
@@ -123,7 +123,7 @@ validate_trailers() {
 	if test -n "$fail"; then
 		die "Missing required trailers: $fail" \
 			"You can add trailers to \$t, a comma separated list of k:v pairs" \
-			"Disable check with: git config --unset-all commit.required-trailer" \
+			"Disable check with: git config commit.required-trailer ''" \
 			;
 	fi
 }

@@ -21,7 +21,7 @@
 #  log.author-width        number of characters used for author
 #  log.trailer-width (1)   comma-separated list of display width of trailers
 #  log.default-trailer     comma-separated list of trailers to display
-#  commit.required-trailer multi-value list of trailers to display
+#  commit.required-trailer comma-separated list of trailers to display
 #
 #  Note: (1) If trailer-width is shorter than default-trailer, the last
 #            value will be used.  If longer, excess values are ignored.
@@ -49,9 +49,10 @@ initialize() {
 	oid_width=$(git config log.oid-width || echo 8)
 
 	trailers=${t-"$( {
-		git config --get-all log.default-trailer
-		git config --get-all commit.required-trailer
-		} | tr , \\n | sort -u | tr \\n , | sed -e 's/,$//')"}
+		git config log.default-trailer
+		git config commit.required-trailer
+		} | tr , \\n | sort -u | sed -e '/^ *$/d' | tr \\n , | sed -e 's/,$//')"}
+
 	_cfg_trailer_width="$(git config log.trailer-width)"
 	trailer_width=${w-${_cfg_trailer_width:-11}}
 	check_csl "$trailer_width" || die "log.trailer-width: $trailer_width"

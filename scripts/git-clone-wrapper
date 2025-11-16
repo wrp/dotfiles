@@ -25,5 +25,4 @@ printf 'git %s\n' "$*" >&2
 git "$@" || exit
 cat <<- \EOF
 	cloned to a depth of 3; to make full, run git fetch --unshallow
-	commit.required-trailer is unset in new repo
 EOF
