@@ -65,16 +65,21 @@ _run_file() {
 }
 
 run_local_hooks() {
-	# If $GIT_DIR/local-hooks/ exists, execute scripts there.
-	# Note that this does not attempt to duplicate stdin to the
-	# script, as that functionality has not yet been necessary.
-	local hook_file="$(dirname $(dirname $0))/local-hooks/$(basename $0)"
-	local hook_dir="${hook_file}.d"
-	local hook
+	# If $GIT_DIR/hooks/ exists, execute scripts there.
 
-	for hook in "$hook_file" "$hook_dir"/*; do
-		_run_file "$hook" "$@"
-	done
+	# Note that we make a half-hearted attempt to duplicate stdin to the
+	# script, but have not looked into whether our scripts have
+	# already consumed any.
+
+	# Ensure that $0 is not recursively calling itself.  Ideally
+	# we would have a better mechanism, but I don't trust the stability
+	# and/or portability of stat, so let's just check the content.
+
+	local hook_file=$(git rev-parse --absolute-git-dir)/hooks/$(basename $0)
+
+	if test -x "$hook_file" && test "$(md5sum < $hook_file)" != "$(md5sum < $0)"; then
+		$hook_file "$@" || exit
+	fi
 }
 
 is_subproject() {

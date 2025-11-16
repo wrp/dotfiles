@@ -64,6 +64,7 @@
 	# whitespace = tab-in-indent
 	whitespace = indent-with-non-tab
 	editor = vim
+	hooksPath = ~/.config/git/hooks
 [push]
 	default = upstream
 	autoSetupRemote = true
