@@ -3,9 +3,17 @@
 # run git recursively and prepend path to output
 
 delim=': '
-if test "$1" = grep; then delim=''; fi
+if test "$1" = grep; then
+	# We want to make sure the prefix of each line
+	# is a valid path so we can pipe directly to vi
+	delim='';
+	if test -t 1; then
+		shift
+		set -- grep --color=always "$@"
+	fi
+fi
 find . -type d -name .git | while read git_dir; do
 	dir="${git_dir%.git}"
 	git -C "$dir" "$@" |
-		sed -e "s@^@${dir}${delim}@"
+		sed -e "s@^@${dir}${delim}@" -e 's@\./@@'
 done | ${GIT_PAGER-${PAGER-more}}
