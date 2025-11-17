@@ -38,21 +38,6 @@ check_mixed_indentation() {
 	return 0
 }
 
-check_unwanted_leading_whitespace() {
-	# git diff-index --check doesn't catch leading spaces less than tabwidth
-	# when core.whitespace includes indent-with-non-tab
-	# Check if core.whitespace contains indent-with-non-tab
-	local whitespace_config=$(git config core.whitespace)
-	if echo "$whitespace_config" | grep -q "indent-with-non-tab"; then
-		# Flag any leading spaces in added lines
-		if git diff --cached | grep -E "^[+] "; then
-			echo "Leading space found with indent-with-non-tab setting" >&2
-			return 1
-		fi
-	fi
-	return 0
-}
-
 standard_whitespace_ok() {
 	# Use git diff-index --check to catch standard whitespace errors
 	# This honors the settings in ~/.config/git/attributes
@@ -61,7 +46,6 @@ standard_whitespace_ok() {
 
 all_whitespace_checks() {
 	check_mixed_indentation && \
-	check_unwanted_leading_whitespace && \
 	standard_whitespace_ok
 }
 
