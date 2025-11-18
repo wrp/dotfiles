@@ -22,7 +22,7 @@
 	csa = cs -a
 	cw = cwip -m 'Whitespace'
 	cwa = cw -a
-	cwip = !bash -c 'SKIP_COMMIT_CHECKS=silent git ci --trailer type:wip \"${@}\"' _
+	cwip = !bash -c 'SKIP_COMMIT_CHECKS=silent git ci --trailer Type:wip \"${@}\"' _
 	d = diff
 	dc = diff --cached
 	dcno = diff --cached --name-status
@@ -106,7 +106,7 @@
 	whitespace = red reverse
 [log]
 	follow = true
-	default-trailer = type
+	default-trailer = Type
 	trailer-width = 3
 [help]
 	autocorrect = never
