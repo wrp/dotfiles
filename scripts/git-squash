@@ -10,7 +10,7 @@ cleanup() {
 }
 generate_log_msg() {
 	local format='# ---- %h -- %ai%n%B%n%N'
-	printf 'squash commits from %s to %s\n\n' "$current" "$base"
+	printf 'Squash commits from %s to %s\n\n' "$current" "$base"
 	git log -n 1 --format="$format" "$1" || return 1
 	git log --reverse --format="$format" "$1".. || return 1
 }
