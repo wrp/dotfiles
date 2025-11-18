@@ -36,6 +36,6 @@ trap cleanup 0
 
 # Grrr.  Even with --quiet, git merge is spewing messages
 git merge --quiet --squash "$current" > /dev/null || exit
-git commit --quiet --amend -m "$msg" ${edit_msg+-e} || exit
+SKIP_COMMIT_CHECKS=1 git commit --quiet --amend -m "$msg" ${edit_msg+-e} || exit
 
 trap : 0
