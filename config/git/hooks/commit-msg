@@ -14,10 +14,14 @@
 backup_name="$1"
 
 main() {
+	remove_comments "$@" || die
+	if test -n "$SKIP_COMMIT_CHECKS"; then
+		warn 'Skipping all commit checks.  (SKIP_COMMIT_CHECKS is set)'
+		return 0
+	fi
 	: ${MAX_GIT_WIDTH:=$(git config commit.max-message-width)}
 	: ${MAX_GIT_SUMMARY:=$(git config commit.max-summary-width)}
 	check_message "$@" || die
-	remove_comments "$@" || die
 	check_words "$1" || die
 	validate_trailers "$@" || die
 	check_previous "$@" || die
