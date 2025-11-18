@@ -16,6 +16,7 @@ backup_name="$1"
 main() {
 	remove_comments "$@" || die
 	if test -n "$SKIP_COMMIT_CHECKS"; then
+		test "$SKIP_COMMIT_CHECKS" = silent ||
 		warn 'Skipping all commit checks.  (SKIP_COMMIT_CHECKS is set)'
 		return 0
 	fi
