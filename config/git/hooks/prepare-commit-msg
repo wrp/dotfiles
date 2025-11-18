@@ -13,7 +13,7 @@ main() {
 	run_local_hooks "$@"
 
 	# Only append saved message for normal commits
-	if want_to_append_previous; then
+	if want_to_append_previous "$@"; then
 		append_saved_message "$1".bak >> "$1"
 	fi
 }
