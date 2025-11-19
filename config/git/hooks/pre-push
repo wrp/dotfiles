@@ -11,9 +11,9 @@ while read local_ref local_obj remote_ref remote_obj; do
 
 	if test -z "$ALLOW_WIP" &&
 		git show --pretty=format:%s --no-patch "$local_ref" |
-			grep -w wip
+			grep -w WIP
 	then
-		die "$local_ref contains 'wip'"
+		die "$local_ref contains 'WIP'"
 	fi
 
 	if \
@@ -26,10 +26,10 @@ while read local_ref local_obj remote_ref remote_obj; do
 	git rev-list ${remote_obj}..${local_obj} | while read oid; do
 		if git show -s --format=%B "$oid" \
 			| git interpret-trailers --only-trailers \
-			| grep -q '^type: wip'
+			| grep -q '^Type: WIP'
 		then
 			short=$(echo "$oid" | cut -b 1-9)
-			die "$short is wip"
+			die "$short is work in progress"
 		fi
 	done
 done >&2
