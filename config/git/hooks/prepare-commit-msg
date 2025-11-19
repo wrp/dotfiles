@@ -48,7 +48,7 @@ check_t_for_trailers() {
 	test -z "${t-$trailer}" && return
 	printf '%s\n' "${t-$trailer}" | tr , \\n |
 	while IFS=: read k v; do
-		if test -z "$v"; then v=$k; k=type; fi
+		if test -z "$v"; then v=$k; k=Type; fi
 		git-interpret-trailers --in-place --if-exists addIfDifferent \
 			--trailer "$k=$v" "$1" || return 1
 	done
