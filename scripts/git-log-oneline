@@ -162,7 +162,7 @@ main() {
 }
 
 build_trailer_fmt() {
-	awk -v fmt=" [%%<(%s)%%(trailers:key=%s,separator=%%x2C,valueonly)]" '
+	awk -v fmt=" [%%<(%s,ltrunc)%%(trailers:key=%s,separator=%%x2C,valueonly)]" '
 		BEGIN {
 			split(ARGV[1], f, ",");
 			n=split(ARGV[2], g, ",");
