@@ -1,3 +1,5 @@
+Perhaps add an option to git-log-oneline to allow control of the
+trailer truncation.
 
 
 Stop using multivar for trailer configs.  Git makes it impossible
