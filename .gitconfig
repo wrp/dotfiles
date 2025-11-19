@@ -4,7 +4,7 @@
 	ab = archive-branch
 	ap = add --patch
 	b = interactive-branch
-	caa = commit --amend -a -C HEAD --cleanup=strip
+	caa = !bash -c 'SKIP_COMMIT_CHECKS=silent git commit --amend -a -C HEAD --cleanup=strip \"${@}\"' _
 	caan = caa -n
 	cf = cwip -m 'Trivial reformat'
 	cfa = cf -a
