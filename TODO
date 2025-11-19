@@ -2,11 +2,6 @@ Perhaps add an option to git-log-oneline to allow control of the
 trailer truncation.
 
 
-Stop using multivar for trailer configs.  Git makes it impossible
-for a repo to completely override the global config, so we should
-instead use a single value, perhaps comma separated.
-
-
 Make find-commit be a boolean "and". If we have multiple blobs, filter
 the commits and only display the ones that match all.  This is better
 functionality and should be far more efficient since we can restrict
