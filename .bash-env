@@ -21,7 +21,7 @@ export GIT_CEILING_DIRECTORIES=$HOME
 export GIT_PAGER=less
 export GPG_TTY=$(tty)
 export HISTAPPEND=1
-export HISTCONTROL=ignorespace
+unset HISTCONTROL
 export HISTFILE=$HOME/.bash-history-dir/$$
 export HISTFILESIZE=9999999999
 export HISTSIZE=1000
