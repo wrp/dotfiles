@@ -19,7 +19,8 @@ if test $# = 0 && test -t 1 && ! test -t 0; then
 		sort -u) > $TMP
 
 	test -s $TMP || die "${ERRMSG-No processes from which to select}"
-	if test "$(wc -l < $TMP)" = 1; then
+
+	if test "$(wc -l < $TMP)" -eq 1; then
 		response=1
 	else
 		PS3="${PROMPT-Select process to jump to}: "
