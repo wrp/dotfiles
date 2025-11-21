@@ -8,18 +8,15 @@ die() { echo "$@" >&2; exit 1; }
 nl='
 '
 
-die "This script is broken on macos, as it is no longer possible to
-get environment envariables from another process."
-
-# reading from a pipe, outputting to tty, no argument given.  Try
-# to scrape pids from stdin.
 if test $# = 0 && test -t 1 && ! test -t 0; then
+	# reading from a pipe, outputting to tty, no argument given.  Try
+	# to scrape pids from stdin.
 	trap 'rm -f $TMP' 0
 	TMP=$(mktemp)
 	IFS="$nl"
-	grep -woE '[0-9]{5,}' |
+	ps -o pid=,comm= $(grep -i process | grep -woE '[0-9]+' |
 		grep -v ^$PPID\$ | # Skip the shell used to invoke this script
-		sort -u | xargs get-environ TMUX_PANE  > $TMP
+		sort -u) > $TMP
 
 	test -s $TMP || die "${ERRMSG-No processes from which to select}"
 	if test "$(wc -l < $TMP)" = 1; then
@@ -31,19 +28,22 @@ if test $# = 0 && test -t 1 && ! test -t 0; then
 	fi
 	if test -n "$response"; then
 		pid=$( awk "NR == ${response}{print \$1}"  $TMP )
-		echo Jumping to pid $pid
 		set -- $pid
 	else
 		die timeout
 	fi
 fi
 
-TPANE=$(get-environ TMUX_PANE ${1?No pid given})
-test "${TPANE#%}" -ge 0 2> /dev/null && {
-	if test -n "$TMUX_PANE"; then # We are running in tmux
-		tmux switch-client -t $TPANE
-		tmux select-window -t $TPANE
-	else
-		tmux attach-session -t $TPANE
-	fi
-}
+ppid=$(ps -o ppid= ${1?No pid specified})
+target_window=$(tmux list-panes -a -F "#{session_name}:#{window_index}.#{pane_index} #{pane_pid}" |
+	awk '$2 == ppid{ print $1 }' ppid="$ppid")
+
+echo "Moving to $target_window. Use <prefix>p  to return here."
+read -p 'Hit enter to proceed' < /dev/tty
+
+if test -n "$TMUX_PANE"; then # We are running in tmux
+	tmux switch-client -t $target_window
+	tmux select-window -t $target_window
+else
+	tmux attach-session -t $target_window
+fi
