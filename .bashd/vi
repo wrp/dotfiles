@@ -19,7 +19,10 @@ _check_if_ignored_by_git() {
 vg() {
 	if test "$1" = grep; then shift; fi
 	local pat="+/$1"; if test "$1" = -w; then pat="+/\<$2\>"; fi
-	g grep "$@" | vi "$pat"; }
+	g grep "$@" | vi "$pat";
+}
+
+vf() { scrape | find-pane-by-pid; }
 
 vi() {
 	: If no arguments are given and input is from a tty and we are
