@@ -50,7 +50,7 @@ all_whitespace_checks() {
 }
 
 validate_whitespace() {
-	local msg='allowing all whitespace errors'
+	local msg='allowing all whitespace and merge conflict marker errors'
 	if test -n "$ALLOW_WHITESPACE_ERRORS"; then
 		warn "$msg (ALLOW_WHITESPACE_ERRORS is set)"
 		return 0
@@ -66,7 +66,7 @@ validate_whitespace() {
 		else
 			func=warn
 		fi
-		$func 'invalid whitespace' \
+		$func \
 			'To ignore: ALLOW_WHITESPACE_ERRORS=1' \
 			'To allow: git config apply.whitespace warn'
 	fi
