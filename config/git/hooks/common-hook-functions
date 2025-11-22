@@ -45,7 +45,10 @@ unset header
 warn() {
 	local name=$(basename "${0}")
 	test -n "$STFU" && return
-	local prefix=$(printf '[%s] %s%s' "${header-WARNING}" "$name" "${*:+: }")
+	local prefix=$(printf '[%s] %s%s' \
+		"${header-$(color yellow WARNING)}" \
+		"$name" "${*:+: }" \
+	)
 	printf "${prefix}%s\n" "$@"
 } >&2
 
