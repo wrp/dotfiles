@@ -8,6 +8,8 @@ die() { echo "$@" >&2; exit 1; }
 nl='
 '
 
+if test $# = 0 && test -t 0; then scrape | exec "$0" "$@"; fi
+
 if test $# = 0 && test -t 1 && ! test -t 0; then
 	# reading from a pipe, outputting to tty, no argument given.  Try
 	# to scrape pids from stdin.
@@ -39,10 +41,10 @@ ppid=$(ps -o ppid= ${1?No pid specified})
 target_window=$(tmux list-panes -a -F "#{session_name}:#{window_index}.#{pane_index} #{pane_pid}" |
 	awk '$2 == ppid{ print $1 }' ppid="$ppid")
 
-echo "Moving to $target_window. Use <prefix>p  to return here."
-read -p 'Hit enter to proceed' < /dev/tty
-
 if test -n "$TMUX_PANE"; then # We are running in tmux
+	prompt="Hit enter to move to $target_window."
+	prompt="$prompt  Use <prefix>p or 'tmux select-window -t $TMUX_PANE' to return here."
+	read -p "$prompt" < /dev/tty
 	tmux switch-client -t $target_window
 	tmux select-window -t $target_window
 else
