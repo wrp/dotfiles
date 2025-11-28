@@ -26,12 +26,8 @@
 #  Note: (1) If trailer-width is shorter than default-trailer, the last
 #            value will be used.  If longer, excess values are ignored.
 #
-# By default, we attempt to pass the --header option to less.  This can
-# be disabled with -n or by setting NO_LESS_HEADERS
-#
 # Environment:
 #    NO_HEADERS               if unset, prepend a header line
-#    NO_LESS_HEADERS          if unset, do not attempt to pass --headers
 #    GITLOG_AUTHOR_WIDTH      override log.author-width
 
 # TODO: after clone, configure log.trailer-width and maybe others
@@ -67,7 +63,6 @@ initialize() {
 	for x; do
 		case $x in
 		-h) usage; exit 0;;
-		-n) NO_LESS_HEADERS=1;;
 		--date=format:%FT%T%z) date_width=24;;
 		--date=iso) date_width=25;;
 		--date=rfc) date_width=38; tab=%x09;;
@@ -100,20 +95,10 @@ use_color() {
 
 check_pager() {
 	if test "${GIT_PAGER%% *}" = less; then
-		if test "$(echo "$LESS" | tr -dc R)" = R ||
+		if echo "$LESS" | grep -q R ||
 			echo "$GIT_PAGER" | grep -q RAW-CONTROL-CHARS
 		then
 			use_color
-		fi
-
-		if \
-			test -z "$NO_LESS_HEADERS" &&
-			# Check if this version of less supports --header
-			# Grrr.  less does not return a reasonable status for a bad argument
-			test "$(echo foo | command less --header 1 2> /dev/null)" = foo
-		then
-			LESS="$LESS --header 1,$((oid_width+1)) --no-number-headers"
-			export LESS
 		fi
 	else
 		truncate="%<($(($(tput cols) / 3)),trunc)"
