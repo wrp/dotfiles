@@ -114,6 +114,7 @@ check_pager() {
 				printf '%%an'; else printf author; fi)
 			echo "$trailers" | tr , '\n' \
 			| while read t; do
+				test -z "$t" && continue
 				width=${trailer_width%%,*}
 				if test "$width" -gt 0; then
 					width=$((${width} + 2))
