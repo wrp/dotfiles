@@ -7,7 +7,7 @@ noremap , ;
 noremap ' `
 noremap ` '
 noremap bd! :bd<cr>:bn<cr>
-noremap gw :Windo set linebreak wrap!
+noremap gw :Windo set wrap!
 com! Nt :NERDTree
 
 function! Get_option(name, default)
@@ -67,6 +67,7 @@ set foldopen-=search
 set hlsearch
 set iskeyword=@,48-57,_,192-255,-
 set laststatus=2   " Always show status line
+set linebreak  " Do not split words when wrapping
 set listchars=extends:%,precedes:%,eol:$,tab:>-,trail:$
 set matchpairs+=<:>
 set modeline
