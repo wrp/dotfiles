@@ -131,4 +131,3 @@ endif
 "   call go#guru#ClearSameIds()
 "   return "nohlsearch"
 " endfunction
-
