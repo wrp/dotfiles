@@ -45,7 +45,7 @@ if test -n "$TMUX_PANE"; then # We are running in tmux
 	prompt="Hit enter to move to $target_window."
 	prompt="$prompt  Use <prefix>p or 'tmux select-window -t $TMUX_PANE' to return here."
 	read -p "$prompt" < /dev/tty
-	tmux display-message -p '#{session_name}:#{window_index}' > ~/.config/wrp/tmux_prev_window
+	tmux display-message -p '#{session_name}:#{window_index}' >> ~/.config/wrp/tmux_prev_window
 	tmux switch-client -t $target_window
 	tmux select-window -t $target_window
 else

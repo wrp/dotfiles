@@ -1,0 +1,5 @@
+#!/bin/sh
+
+target=$(sed -n '$p' $HOME/.config/wrp/tmux_prev_window)
+tmux switch-client -t "$target"
+tmux select-window -t "$target"
