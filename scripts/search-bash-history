@@ -30,10 +30,12 @@ do_search() {
 		awk '
 			/^#/ {
 				time = substr($1, 2)
+				sub("pid:", "sh:")
+				pid = $3
 				status = match($0,"FAILED$") ? "!" : match($0,"ok$") ? "" : "?"
 			}
 			!/^#/ && ( printfailed || status != "!") {
-				printf "%s %2s| %s\n", time, status, $0
+				printf "%s %2s| %8s %s\n", time, status, pid, $0
 			}
 		' status='?' printfailed=${V+1} \
 	> $tmp1
