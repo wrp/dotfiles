@@ -39,7 +39,7 @@ fi
 
 ppid=$(ps -o ppid= ${1?No pid specified})
 target_window=$(tmux list-panes -a -F "#{session_name}:#{window_index}.#{pane_index} #{pane_pid}" |
-	awk '$2 == ppid{ print $1 }' ppid="$ppid")
+	awk '$2 == ppid || $2 == pid{ print $1 }' ppid="$ppid" pid="$1")
 
 if test -n "$TMUX_PANE"; then # We are running in tmux
 	prompt="Hit enter to move to $target_window."
