@@ -1,6 +1,9 @@
 #!/bin/sh
 
-# run git recursively and prepend path to output
+if test "$1" = -h; then
+	echo 'run git recursively and prepend path to output'
+	exit 0
+fi
 
 delim=': '
 if test "$1" = grep; then
