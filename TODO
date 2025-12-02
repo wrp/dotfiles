@@ -1,3 +1,9 @@
+
+Fix git-completions so that "git -C /p/a<tab>" works.  Currently,
+if not in a git repo, that will through error messages.  As an
+optional feature, make "git -C /p/a/t/h cmd /fil<tab>" expand in
+the proper directory.
+
 Perhaps add an option to git-log-oneline to allow control of the
 trailer truncation.
 
