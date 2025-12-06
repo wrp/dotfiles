@@ -27,6 +27,7 @@ else
 _git_complete() {
 	local cur_word="${COMP_WORDS[ COMP_CWORD ]}"
 	local dir=$(dirname $cur_word 2> /dev/null)
+	local workdir
 	local repl
 	case "$dir" in
 	(.) ;;
@@ -36,13 +37,19 @@ _git_complete() {
 
 	if test "$COMP_CWORD" = 1; then
 		list=$( git help -a | awk '/^   /{print $1}' )
-	else
-		list=$( git for-each-ref refs --format '%(refname:short)'
-			command ls -F -1 "$dir" 2> /dev/null  \
-			| sed -e "s@^@$repl@"
-			git rev-list --all | sed ${GIT_COMPLETE_REVLIST_MAX}q
-		)
+	elif test "${COMP_WORDS[1]}" == -C; then
+		if test "$COMP_CWORD" == 2; then
+			COMPREPLY=($(compgen -f -- "${COMP_WORDS[COMP_CWORD]}"))
+			return
+		fi
+		workdir="${COMP_WORDS[2]}"
 	fi
+
+	list=$( git ${workdir+-C "$workdir"} for-each-ref refs --format '%(refname:short)'
+		command ls -F -1 "$dir" 2> /dev/null  \
+		| sed -e "s@^@$repl@"
+		git ${workdir+-C "$workdir"} rev-list --all | sed ${GIT_COMPLETE_REVLIST_MAX}q
+	)
 
 	COMPREPLY=( $(compgen -W "${list}" -- ${cur_word}) )
 }
