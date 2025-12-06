@@ -17,7 +17,7 @@ g() {
 	# It is common to set integer values, and those should not
 	# be aliased to branch names.  And I see no reason to ever
 	# want any of these other aliases for config.
-	if test $1 != config; then
+	if test $1 != config && test $1 != clone; then
 	for arg; do
 		shift
 		orig=$arg

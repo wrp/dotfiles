@@ -1,7 +1,14 @@
 #!/bin/sh
 
+depth=
 url=$1
 shift
+
+if test "$url" -gt 0 2> /dev/null; then
+	depth=$url
+	url=$1
+	shift
+fi
 
 case $url in
 http*)
@@ -20,6 +27,11 @@ case $url in
 *github*) origin=github;;
 esac
 
-set -- clone --depth 3 --no-single-branch ${origin:+--origin="$origin"} "$url" "$@";
+set -- clone ${depth:+--depth $depth} --no-single-branch ${origin:+--origin="$origin"} "$url" "$@";
 printf 'git %s\n' "$*" >&2
-git "$@" && echo 'cloned to a depth of 3; to make full, run: git fetch --unshallow'
+git "$@" || exit
+
+if test -n "$depth"; then
+	echo "cloned to a depth of $depth.  To make full, run:"
+	echo 'git fetch --unshallow'
+fi
