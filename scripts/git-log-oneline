@@ -41,6 +41,13 @@ initialize() {
 
 	local _cfg_author_width _cfg_trailer_width
 
+	# Terminal capabilities for highlighting refs (only when output is a tty)
+	if test -t 1; then
+		rev_on=$(tput setab 3)
+		rev_off=$(tput op)
+		color_flag="--color=always"
+	fi
+
 	# *_width is the number of characters used in the display
 	oid_width=$(git config log.oid-width || echo 8)
 
@@ -130,12 +137,26 @@ check_pager() {
 	fi
 }
 
+build_ref_pattern() {
+	# Build sed pattern to highlight specified refs in reverse video
+	local pattern=""
+	for arg; do
+		case "$arg" in
+		-*) ;;
+		*) pattern="${pattern}s@(^|[^a-zA-Z0-9_/-])${arg}([^a-zA-Z0-9_/-]|\$)@\\1${rev_on}${arg}${rev_off}\\2@g;";;
+		esac
+	done
+	printf '%s\n' "${pattern}n"
+}
+
 main() {
 	initialize "$@"
 	check_pager
-	git log \
+	ref_pattern=$(build_ref_pattern "$@")
+	git --no-pager log \
 		--date=format:"" \
 		${tab+--expand-tabs} \
+		${color_flag} \
 		--abbrev=${oid_width} \
 		--format=tformat:"$(printf '%s' "$(:
 			)${green}%h$(:
@@ -144,7 +165,13 @@ main() {
 			)${reset}${trailer_fmt}$(:
 			)${truncate}% s$( :
 			)${blue}% D$(:
-			)${reset}" | sed -E 's/  +//g' )" "$@"
+			)${reset}" | sed -E 's/  +//g' )" "$@" |
+	sed -E -e "$ref_pattern" -e "$ref_pattern" |
+	if test -t 1; then
+		${GIT_PAGER:-${PAGER:-less}}
+	else
+		cat
+	fi
 }
 
 build_trailer_fmt() {
