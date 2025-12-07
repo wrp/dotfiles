@@ -42,7 +42,7 @@ _git_complete() {
 			COMPREPLY=($(compgen -f -- "${COMP_WORDS[COMP_CWORD]}"))
 			return
 		fi
-		workdir="${COMP_WORDS[2]}"
+		workdir=$(eval cd "${COMP_WORDS[2]}" && pwd -P) # expand ~ and variables
 	fi
 
 	list=$( git ${workdir+-C "$workdir"} for-each-ref refs --format '%(refname:short)'
