@@ -143,10 +143,21 @@ check_pager() {
 
 build_ref_pattern() {
 	# Build sed pattern to highlight specified refs in reverse video
-	local pattern=""
+	# Default to current branch if no refs specified
+	local has_refs=""
 	for arg; do
 		case "$arg" in
 		-*) ;;
+		*) has_refs=1; break;;
+		esac
+	done
+	if test -z "$has_refs"; then
+		set -- "$@" "$(git symbolic-ref --short HEAD 2>/dev/null)"
+	fi
+	local pattern=""
+	for arg; do
+		case "$arg" in
+		-*|"") ;;
 		*) pattern="${pattern}s@(^|[^a-zA-Z0-9_/-])${arg}([^a-zA-Z0-9_/-]|\$)@\\1${rev_on}${arg}${rev_off}\\2@g;";;
 		esac
 	done
