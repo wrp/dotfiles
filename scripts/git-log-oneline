@@ -100,7 +100,11 @@ use_color() {
 	reset="%C(reset)"
 }
 
+# TODO: clean up this function; it is mostly obsolete
 check_pager() {
+	# Save pager before modifying GIT_PAGER below
+	pager=$(git var GIT_PAGER)
+
 	if test "${GIT_PAGER%% *}" = less; then
 		if echo "$LESS" | grep -q R ||
 			echo "$GIT_PAGER" | grep -q RAW-CONTROL-CHARS
@@ -168,7 +172,7 @@ main() {
 			)${reset}" | sed -E 's/  +//g' )" "$@" |
 	sed -E -e "$ref_pattern" -e "$ref_pattern" |
 	if test -t 1; then
-		${GIT_PAGER:-${PAGER:-less}}
+		$pager
 	else
 		cat
 	fi
