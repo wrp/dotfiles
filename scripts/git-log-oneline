@@ -136,8 +136,6 @@ check_pager() {
 			done
 			printf summary
 		)
-		GIT_PAGER="sh -c 'printf \"%s\\\n\" \"$header\"; cat -u' |
-			${GIT_PAGER:-more}"
 	fi
 }
 
@@ -168,6 +166,8 @@ main() {
 	initialize "$@"
 	check_pager
 	ref_pattern=$(build_ref_pattern "$@")
+	{
+	test -z "$NO_HEADERS" && printf '%s\n' "$header"
 	git --no-pager log \
 		--date=format:"" \
 		${tab+--expand-tabs} \
@@ -180,7 +180,8 @@ main() {
 			)${reset}${trailer_fmt}$(:
 			)${truncate}% s$( :
 			)${blue}% D$(:
-			)${reset}" | sed -E 's/  +//g' )" "$@" |
+			)${reset}" | sed -E 's/  +//g' )" "$@"
+	} |
 	sed -E -e "$ref_pattern" -e "$ref_pattern" |
 	if test -t 1; then
 		$pager
