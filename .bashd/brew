@@ -1,0 +1,8 @@
+
+# Brew is completely broken.  Attempt to fix it:
+brew() { CONFIG_SITE= GIT_CONFIG_GLOBAL=/dev/null command brew "$@"; }
+
+# In particular, allowing core.hooksPath to be set causes all
+# sorts of potential breakage.  brew regularly clones repos
+# and attempts to run a configure script, and most packages are
+# not robust
