@@ -37,15 +37,14 @@ die() { echo "$*" >&2; exit 1; }
 
 initialize() {
 	cd ${GIT_PREFIX:-.} || exit
-	: ${GIT_PAGER=$PAGER}
 
 	local _cfg_author_width _cfg_trailer_width
 
 	# Terminal capabilities for highlighting refs (only when output is a tty)
 	if test -t 1; then
-		rev_on=$(tput setab 3)
-		rev_off=$(tput op)
-		color_flag="--color=always"
+		use_color
+	else
+		truncate="%<($(($(tput cols) / 3)),trunc)"
 	fi
 
 	# *_width is the number of characters used in the display
@@ -98,23 +97,13 @@ use_color() {
 	red="%C(red)"
 	blue="%C(blue)"
 	reset="%C(reset)"
+	rev_on=$(tput setab 3)
+	rev_off=$(tput op)
+	color_flag="--color=always"
 }
 
 # TODO: clean up this function; it is mostly obsolete
 check_pager() {
-	# Save pager before modifying GIT_PAGER below
-	pager=$(git var GIT_PAGER)
-
-	if test "${GIT_PAGER%% *}" = less; then
-		if echo "$LESS" | grep -q R ||
-			echo "$GIT_PAGER" | grep -q RAW-CONTROL-CHARS
-		then
-			use_color
-		fi
-	else
-		truncate="%<($(($(tput cols) / 3)),trunc)"
-	fi
-
 	if test -z "$NO_HEADERS"; then
 		header=$(
 			printf "%-$((oid_width+1))s" oid
@@ -184,7 +173,7 @@ main() {
 	} |
 	sed -E -e "$ref_pattern" -e "$ref_pattern" |
 	if test -t 1; then
-		$pager
+		$(git var GIT_PAGER)
 	else
 		cat
 	fi
