@@ -98,7 +98,7 @@ use_color() {
 	blue="%C(blue)"
 	reset="%C(reset)"
 	rev_on=$(tput setab 3)
-	rev_off=$(tput op)
+	rev_off=$(tput op; tput setaf 4)
 	color_flag="--color=always"
 	ref_marker=$(printf '\002')  # STX character marks start of ref decoration
 }
