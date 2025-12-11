@@ -100,6 +100,7 @@ use_color() {
 	rev_on=$(tput setab 3)
 	rev_off=$(tput op)
 	color_flag="--color=always"
+	ref_marker=$(printf '\002')  # STX character marks start of ref decoration
 }
 
 # TODO: clean up this function; it is mostly obsolete
@@ -145,7 +146,7 @@ build_ref_pattern() {
 	for arg; do
 		case "$arg" in
 		-*|"") ;;
-		*) pattern="${pattern}s@(^|[^a-zA-Z0-9_/-])${arg}([^a-zA-Z0-9_/-]|\$)@\\1${rev_on}${arg}${rev_off}\\2@g;";;
+		*) pattern="${pattern}s@(${ref_marker}.*)${arg}@\\1${rev_on}${arg}${rev_off}@;";;
 		esac
 	done
 	printf '%s\n' "${pattern}n"
@@ -168,11 +169,12 @@ main() {
 			)${red}%<(${author_width},trunc)% an$(:
 			)${reset}${trailer_fmt}$(:
 			)${truncate}% s$( :
-			)${blue}% D$(:
+			)${blue}${ref_marker}% D$(:
 			)${reset}" | sed -E 's/  +//g' )" "$@"
 	} |
-	sed -E -e "$ref_pattern" -e "$ref_pattern" |
 	if test -t 1; then
+		sed -E -e "$ref_pattern" -e "$ref_pattern" -e "$ref_pattern"|
+		tr -d '\002' |
 		$(git var GIT_PAGER)
 	else
 		cat
