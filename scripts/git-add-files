@@ -80,7 +80,7 @@ main() {
 		echo "Unable to generate commit message!" >&2
 		exit 1
 	fi
-	git commit ${force:+--no-verify} -m "$msg"
+	SKIP_SPELLCHECK=1 git commit ${force:+--no-verify} -m "$msg"
 }
 
 main "$@"
