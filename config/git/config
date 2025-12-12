@@ -6,23 +6,13 @@
 	b = interactive-branch
 	caa = !bash -c 'SKIP_COMMIT_CHECKS=silent git commit --amend -a -C HEAD --cleanup=strip \"${@}\"' _
 	caan = caa -n
-	cf = cwip -m 'Trivial reformat'
-	cfa = cf -a
 	ci = commit
 	ciam = ci -am
-	cl = cwip -m 'Fix lint issues'
-	cla = cl -a
 	co = checkout
 	cp = cherry-pick
 	cpx = cp -x
-	cr = cwip -m 'Trivial refactor'
-	cra = cr -a
 	credit = annotate
-	cs = cwip -m 'Sanity Check'
-	csa = cs -a
-	cw = cwip -m 'Whitespace'
-	cwa = cw -a
-	cwip = !bash -c 'SKIP_COMMIT_CHECKS=silent git ci --trailer Type:WIP \"${@}\"' _
+	cwip = !bash -c 'SKIP_COMMIT_CHECKS=silent git ci --trailer Type:WIP -m \"WIP: ${*}\"' _
 	d = diff
 	dc = diff --cached
 	dcno = diff --cached --name-status
