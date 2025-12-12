@@ -125,7 +125,7 @@ main() {
 	if test "$n" -eq 0 2> /dev/null; then
 		exit 0
 	elif test "$n" -gt 0 2> /dev/null; then
-		< "$RESULTS" sed -n -e "${n}s/[^|]*| //" -e "$n"p \
+		< "$RESULTS" sed -n -e "${n}s/[^|]*| sh:[0-9]* //" -e "$n"p \
 		| tr -d \\n | tmux loadb -b ${buffer_name?} -
 	elif test -n "$n"; then  # This is a hack to catch user error (eg, typing a command instead of making a selection)
 		printf "%s" "$n" | tmux loadb -b ${buffer_name?} -
