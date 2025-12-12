@@ -100,6 +100,14 @@ check_message() {
 			print "Summary should start with a capital letter"
 			status=1
 		}
+		/\. [^ ]/ {
+			printf "2 spaces after periods.  line %d: %s\n", NR, $0
+			status=1
+		}
+		/\.  [^A-Z]/ {
+			printf "Sentences must be capitlized.  line %d: %s\n", NR, $0
+			status=1
+		}
 		NR > 1 && length > max_width {
 			printf "Line %d (%s...) is %d chars too long (max width is ${MAX_GIT_WIDTH-%d})\n", \
 				NR - 2, substr($0, 1, 10), length - max_width, max_width
