@@ -59,10 +59,8 @@ _check_elapsed_time() {
 }
 
 after_cmd() {
-	local _status=$? ps="${PIPESTATUS[@]}" old_title
-
 	: Run after a command, and before a prompt is displayed
-
+	local _status=$? ps="${PIPESTATUS[@]}" old_title name
 	_check_elapsed_time "$wrp_start_time" $EPOCHREALTIME
 	wrp_start_time=9999999999
 	if test -s "$HISTFILE"; then
@@ -78,6 +76,13 @@ after_cmd() {
 		fi
 	fi
 	unset NO_RESET_TITLE
+	for name in $HOME/.config/$USER/secrets/*.gpg; do
+		name=$(basename "$name")
+		name=${name%.gpg}
+		if eval "test -z \"\$$name\""; then
+			warn "${name} is unset"
+		fi
+	done
 	type -t local_post_cmd_hook > /dev/null && local_post_cmd_hook
 
 	return $_status
