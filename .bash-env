@@ -30,6 +30,7 @@ export IGNOREEOF=4
 export LESS='FFiMQRSX#.95 -PM?f%f .?n?m(%T %i of %m) ..?ltlines %lt-%lb?L/%L. :byte %bB?s/%s. .?ccolumn %c. .?e(END) ?x- Next\: %x.:?pB%pB\%..%t'
 export PAGER=less
 export PYTHONSTARTUP=$HOME/.pystartup
+export SHELL=bash
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 # export CPATH=$HOME/$(uname -m)/$(uname -s)/include
 # export LDPATH=$HOME/$(uname -m)/$(uname -s)/lib
