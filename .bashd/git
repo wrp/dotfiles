@@ -1,7 +1,7 @@
 # Git related interactive functions
 
 g() {
-	local arg cwd orig prev version verbose=$V top
+	local arg cwd orig prev version verbose=$V top raw=''
 
 	version=$(command git --version) || return
 	if test -n "$EXPECTED_GIT_VERSION" &&
@@ -23,11 +23,12 @@ g() {
 		orig=$arg
 
 		case $arg in
+		(--    ) raw=1; continue;;
 		(main  ) arg=$(git-base-branch) || return 1;;
 		(mb    ) arg=--merge-base;;
 		(bb    ) arg=$(git-base-branch) || return 1;;
 		([0-9]*) # replace numeric args with branch name
-			if test "$prev" != -n &&
+			if test "$prev" != -n && test -z "$raw" &&
 				test "$arg" -ge 0 2> /dev/null &&
 				! arg=$(command git select-branch "$arg")
 			then
