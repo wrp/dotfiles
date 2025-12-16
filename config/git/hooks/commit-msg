@@ -104,8 +104,8 @@ check_message() {
 			printf "2 spaces after periods.  line %d: %s\n", NR, $0
 			status=1
 		}
-		/\.  [^A-Z]/ {
-			printf "Sentences must be capitlized.  line %d: %s\n", NR, $0
+		/\.  [a-z]/ {
+			printf "Sentences must be capitalized.  line %d: %s\n", NR, $0
 			status=1
 		}
 		NR > 1 && length > max_width {
