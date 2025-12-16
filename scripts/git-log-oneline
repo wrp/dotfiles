@@ -175,7 +175,8 @@ main() {
 	if test -t 1; then
 		sed -E -e "$ref_pattern" -e "$ref_pattern" -e "$ref_pattern"|
 		tr -d '\002' |
-		$(git var GIT_PAGER)
+		diff-highlight |
+		less
 	else
 		cat
 	fi
