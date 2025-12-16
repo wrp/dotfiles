@@ -18,7 +18,7 @@ export CONFIG_SITE=$HOME/.config/$USER/CONFIG_SITE
 export EDITOR=vim
 export FIGNORE='.pyc:.a:.o:~'
 export GIT_CEILING_DIRECTORIES=$HOME
-export GIT_PAGER=less
+export GIT_PAGER='diff-highlight | less'
 export GPG_TTY=$(tty)
 export HISTAPPEND=1
 unset HISTCONTROL

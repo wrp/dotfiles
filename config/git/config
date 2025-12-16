@@ -61,6 +61,17 @@
 	autoSetupRemote = true
 [pager]
 	status = true
+        log = diff-highlight | less
+        show = diff-highlight | less
+        diff = diff-highlight | less
+
+[color "diff-highlight"]
+	# foreground, background
+	oldNormal = "white #1a1a1a"
+	oldHighlight = "white red"
+	newNormal = "white #1a1a1a"
+	newHighlight = "black green"
+
 
 [init]
 	defaultBranch = main
