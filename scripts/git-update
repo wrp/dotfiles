@@ -30,6 +30,8 @@ if ! test "$V" -ge 0 2> /dev/null; then
 	quiet=--quiet
 fi
 
+git fetch $quiet --all --tags || exit 1
+
 if test "$current" = "$branch"; then
 	git pull $quiet
 else
@@ -41,7 +43,7 @@ else
 			exit 1
 		fi
 	done
-	git fetch $quiet "$remote" || exit 1
+	# git fetch $quiet "$remote" || exit 1
 	git update-ref refs/heads/$branch $upstream || exit 1
 fi
 
