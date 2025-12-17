@@ -144,6 +144,7 @@ build_ref_pattern() {
 	fi
 	local pattern=""
 	for arg; do
+		arg=$(git rev-parse --abbrev-ref "$arg")
 		case "$arg" in
 		-*|"") ;;
 		*) pattern="${pattern}s|(${ref_marker}.*[ ,])${arg}|\\1${rev_on}${arg}${rev_off}|;";;
