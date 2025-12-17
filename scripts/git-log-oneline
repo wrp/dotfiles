@@ -146,7 +146,7 @@ build_ref_pattern() {
 	for arg; do
 		case "$arg" in
 		-*|"") ;;
-		*) pattern="${pattern}s|(${ref_marker}.*)${arg}|\\1${rev_on}${arg}${rev_off}|;";;
+		*) pattern="${pattern}s|(${ref_marker}.*[ ,])${arg}|\\1${rev_on}${arg}${rev_off}|;";;
 		esac
 	done
 	printf '%s\n' "${pattern}n"
