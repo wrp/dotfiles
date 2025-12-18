@@ -72,7 +72,7 @@ initialize() {
 		--date=format:%FT%T%z) date_width=24;;
 		--date=iso) date_width=25;;
 		--date=rfc) date_width=38; tab=%x09;;
-		--graph) NO_HEADERS=1;;
+		--graph) NO_HEADERS=1; with_graph=;;
 		esac
 	done
 }
@@ -161,6 +161,7 @@ main() {
 	test -z "$NO_HEADERS" && printf '%s\n' "$header"
 	git --no-pager log \
 		--date=format:"" \
+		${with_graph- --show-linear-break} \
 		${tab+--expand-tabs} \
 		${color_flag} \
 		--abbrev=${oid_width} \
