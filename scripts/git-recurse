@@ -19,4 +19,4 @@ find . -type d -name .git | while read git_dir; do
 	dir="${git_dir%.git}"
 	git -C "$dir" "$@" |
 		sed -e "s@^@${dir}${delim}@" -e 's@\./@@'
-done | ${GIT_PAGER-${PAGER-more}}
+done | ${PAGER-more}
