@@ -37,6 +37,13 @@ _git_complete() {
 
 	if test "$COMP_CWORD" = 1; then
 		list=$( git help -a | awk '/^   /{print $1}' )
+		# TODO: cleanup; we should have a single return,
+		# but the logic below for -C needs to be adjusted
+		COMPREPLY=( $(compgen -W "${list}" -- ${cur_word}) )
+		return
+	elif test "${COMP_WORDS[1]}" == clone; then
+		COMPREPLY=($(compgen -f -- "${COMP_WORDS[COMP_CWORD]}"))
+		return
 	elif test "${COMP_WORDS[1]}" == -C; then
 		if test "$COMP_CWORD" == 2; then
 			COMPREPLY=($(compgen -f -- "${COMP_WORDS[COMP_CWORD]}"))
