@@ -16,7 +16,11 @@
 # But this should only be used in interactive shells, so make it explicit.
 case "$-" in *i*) : ;; *) return 0 ;; esac
 
-if test -n "$V"; then date | tr -d '\n'; echo ': Re-reading .bashrc'; fi
+if test -n "$V"; then
+	perl -MPOSIX=strftime -E 'say strftime("%FT%T%z", localtime) .
+		": Re-reading .bashrc"'
+fi
+
 unalias -a   # Remove all existing aliases
 complete -r  # Remove all existing completion specs
 
