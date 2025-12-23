@@ -1,17 +1,16 @@
 
+Figure out a way to do a less naive spell check.  eg, if we
+are in a code base which defines a function, the name of that
+function should not fail a spell check.
+
 Fix git-completions so that "git -C /p/a<tab>" works.  Currently,
 if not in a git repo, that will through error messages.  As an
 optional feature, make "git -C /p/a/t/h cmd /fil<tab>" expand in
-the proper directory.
+the proper directory. (partly implemented)
 
 Perhaps add an option to git-log-oneline to allow control of the
 trailer truncation.
 
-
-Make find-commit be a boolean "and". If we have multiple blobs, filter
-the commits and only display the ones that match all.  This is better
-functionality and should be far more efficient since we can restrict
-the git-log --find-object to previously found treeish
 
 Cleanup the revocery of COMMIT_EDITMSG.  It is convenient to have previous
 message, but still occasionally pollutes the log (it doesn't handle
