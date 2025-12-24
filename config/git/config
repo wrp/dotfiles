@@ -19,6 +19,8 @@
 	dm = "!bash -c 'a=${1:-$(git-base-branch)} || exit; b=\"${2}\"; shift 2; git diff --merge-base \"$@\" \"$a\" $b' _"
 	dmm = dm '' '' --diff-filter=M
 	dmno = dm '' '' --name-status
+	dmw = dm '' '' --ignore-all-space
+	dmnw = dm '' '' --name-status --ignore-all-space
 	dn = diff --numstat
 	dno = diff --name-status
 	dw = diff --word-diff
