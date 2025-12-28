@@ -22,11 +22,11 @@ main() {
 	fi
 	: ${MAX_GIT_WIDTH:=$(git config commit.max-message-width)}
 	: ${MAX_GIT_SUMMARY:=$(git config commit.max-summary-width)}
-	check_message "$@" || die
-	check_words "$1" || die
-	validate_trailers "$@" || die
-	check_previous "$@" || die
-	run_local_hooks "$@" || die
+	check_message "$@" || die "Set SKIP_COMMIT_CHECKS=1 to skip"
+	check_words "$1" || die "Set SKIP_COMMIT_CHECKS=1 to skip"
+	validate_trailers "$@" || die "Set SKIP_COMMIT_CHECKS=1 to skip"
+	check_previous "$@" || die "Set SKIP_COMMIT_CHECKS=1 to skip"
+	run_local_hooks "$@" || die "Set SKIP_COMMIT_CHECKS=1 to skip"
 }
 
 remove_comments() { perl -i -ne 'print unless m/^\s*#/' "$1"; }
