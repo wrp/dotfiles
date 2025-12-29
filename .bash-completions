@@ -24,9 +24,31 @@ if test -r "$HOME/.config/$USER/git-completion.bash"; then
 	__git_complete g __git_main
 	__git_complete git __git_main
 else
+_git_find_repo() {
+	local path="$1"
+	path=$(eval echo "$path" 2>/dev/null) || return 1
+	test -e "$path" || return 1
+	test -d "$path" || path=$(dirname "$path")
+	git -C "$path" rev-parse --show-toplevel 2>/dev/null
+}
+
+_git_infer_workdir() {
+	local i
+	for ((i=2; i<COMP_CWORD; i++)); do
+		local arg="${COMP_WORDS[i]}"
+		[[ "$arg" == -* ]] && continue
+		local repo=$(_git_find_repo "$arg")
+		if test -n "$repo"; then
+			echo "$repo"
+			return 0
+		fi
+	done
+	return 1
+}
+
 _git_complete() {
-	local cur_word="${COMP_WORDS[ COMP_CWORD ]}"
-	local dir=$(dirname $cur_word 2> /dev/null)
+	local cur_word="${COMP_WORDS[COMP_CWORD]}"
+	local dir=$(dirname "$cur_word" 2>/dev/null)
 	local workdir
 	local repl
 	case "$dir" in
@@ -36,10 +58,8 @@ _git_complete() {
 	esac
 
 	if test "$COMP_CWORD" = 1; then
-		list=$( git help -a | awk '/^   /{print $1}' )
-		# TODO: cleanup; we should have a single return,
-		# but the logic below for -C needs to be adjusted
-		COMPREPLY=( $(compgen -W "${list}" -- ${cur_word}) )
+		list=$(git help -a | awk '/^   /{print $1}')
+		COMPREPLY=($(compgen -W "${list}" -- ${cur_word}))
 		return
 	elif test "${COMP_WORDS[1]}" == clone; then
 		COMPREPLY=($(compgen -f -- "${COMP_WORDS[COMP_CWORD]}"))
@@ -49,16 +69,30 @@ _git_complete() {
 			COMPREPLY=($(compgen -f -- "${COMP_WORDS[COMP_CWORD]}"))
 			return
 		fi
-		workdir=$(eval cd "${COMP_WORDS[2]}" && pwd -P) # expand ~ and variables
+		workdir=$(eval cd "${COMP_WORDS[2]}" && pwd -P)
 	fi
 
-	list=$( git ${workdir+-C "$workdir"} for-each-ref refs --format '%(refname:short)'
-		command ls -F -1 "$dir" 2> /dev/null  \
-		| sed -e "s@^@$repl@"
-		git ${workdir+-C "$workdir"} rev-list --all | sed ${GIT_COMPLETE_REVLIST_MAX}q
+	local inferred
+	if test -z "$workdir"; then
+		workdir=$(_git_infer_workdir)
+		test -n "$workdir" && inferred=1
+	fi
+
+	if test -z "$workdir" && test -n "$cur_word"; then
+		workdir=$(_git_find_repo "$cur_word")
+		test -n "$workdir" && inferred=1
+	fi
+
+	if test -n "$inferred"; then
+		echo "Warning: use 'git -C $workdir'" >&2
+	fi
+
+	list=$(git ${workdir:+-C "$workdir"} for-each-ref refs --format '%(refname:short)' 2>/dev/null
+		command ls -F -1 "$dir" 2>/dev/null | sed -e "s@^@$repl@"
+		git ${workdir:+-C "$workdir"} rev-list --all 2>/dev/null | sed ${GIT_COMPLETE_REVLIST_MAX}q
 	)
 
-	COMPREPLY=( $(compgen -W "${list}" -- ${cur_word}) )
+	COMPREPLY=($(compgen -W "${list}" -- ${cur_word}))
 }
 	complete -o bashdefault -o default -o nospace -F _git_complete git
 fi
