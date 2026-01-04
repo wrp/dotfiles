@@ -36,6 +36,7 @@
 	l11ah = l1ah --first-parent
 	l11h = l1h --first-parent
 	la = l1 --graph --decorate  # same as l1a
+	lad = l1a --date=rfc
 	ld = l1 --date=format:'%FT%T%z'
 	ldh = ld -n 10
 	ls = l1 --show-signature
