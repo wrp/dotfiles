@@ -3,6 +3,7 @@
 # Create a new commit which squashes HEAD into $1.
 # Define "edit_msg" in the environment if you want to edit the commit message.
 
+die() { printf 'FATAL: %s\n' "$*" >&2; exit 1; }
 usage() { sed -nE -e 1,2d -e '/^$/q' -e 's/#.?//p' "$0";}
 cleanup() {
 	echo >&2 Aborting and resetting to "$current"
@@ -17,13 +18,11 @@ generate_log_msg() {
 test "$1" = -h && usage && exit 0
 
 if ! git rev-parse --verify HEAD >/dev/null 2>&1; then
-	echo FATAL: There is no current HEAD >&2
-	exit 1
+	die There is no current HEAD
 fi
 
 if ! git diff-index --quiet HEAD; then
-	echo 'FATAL: Repo is dirty' >&2
-	exit 1
+	die Repo is dirty
 fi
 
 current=$(git rev-parse --short HEAD) || exit
