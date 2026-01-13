@@ -56,7 +56,7 @@ shopt -s direxpand 2> /dev/null # prevent tab expand from expanding $D to \$D
 
 trap archive-bash-history 0
 trap debug_trap DEBUG # Run before a command in an interactive shell
-trap 'V=1 . "$HOME"/.bashrc' SIGUSR1
+trap 'V=1 SKIP_SECRETS=1 . "$HOME"/.bashrc' SIGUSR1
 trap '. "$HOME"/.bashd/PS1; window-title' SIGWINCH
 check_directory_existence $HOME/.config git vim
 check_directory_existence $HOME/.run vim/{swap,backup,undo}
