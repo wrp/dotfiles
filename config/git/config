@@ -92,6 +92,7 @@
 [advice]
 	detachedHead = false
 	addEmptyPathspec = false
+	forceDeleteBranch = false
 [tag]
 	gpgSign = true
 [commit]
