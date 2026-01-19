@@ -51,24 +51,20 @@ all_whitespace_checks() {
 
 validate_whitespace() {
 	local msg='allowing all whitespace and merge conflict marker errors'
-	if test -n "$ALLOW_WHITESPACE_ERRORS"; then
-		warn "$msg (ALLOW_WHITESPACE_ERRORS is set)"
-		return 0
-	fi
-	if test "$(git config apply.whitespace)" = nowarn; then
-		warn "$msg (config apply.whitespace is nowarn)"
+	if test "$(git config commit.whitespace)" = nowarn; then
+		warn "$msg (config commit.whitespace is nowarn)"
 		return 0
 	fi
 
 	if ! all_whitespace_checks; then
-		if git config apply.whitespace | grep -q error; then
+		if git config commit.whitespace | grep -q error; then
 			func=die
 		else
 			func=warn
 		fi
 		$func \
-			'To ignore: ALLOW_WHITESPACE_ERRORS=1' \
-			'To allow: git config apply.whitespace warn'
+			'To ignore: git config commit.whitespace nowarn' \
+			'To allow : git config commit.whitespace warn'
 	fi
 }
 

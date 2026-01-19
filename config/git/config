@@ -98,6 +98,7 @@
 [commit]
 	status = false
 	gpgSign = false
+	whitespace = error
 [include]
 	path = ~/.gitconfig-local
 [merge]
