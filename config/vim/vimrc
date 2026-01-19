@@ -1,5 +1,22 @@
 " Use 'git config vi.whitespace keep' or :let b:keep_white=1 to retain
 " trailing whitepsace
+
+function! CheckGitConfig()
+	let l:old_value = get(b:, 'keep_white', 0)
+	let l:new_value = system('git -C ' . shellescape(expand('%:p:h')) . ' config --get vi.whitespace 2>/dev/null') =~? 'keep'
+	if l:new_value
+		let b:keep_white = 1
+	elseif exists('b:keep_white')
+		unlet b:keep_white
+	endif
+	if l:new_value != l:old_value
+		echohl WarningMsg
+		echom l:new_value ? "Not auto-trimming whitespace due to vi.whitespace git config" : "Resuming auto-trim of whitespace"
+		echohl None
+	endif
+endfunction
+
+
 colorscheme wrp
 cnoreabbrev e n
 noremap v V
@@ -46,15 +63,6 @@ function! ClearWhite()
 		execute '%s/\s\+$//e'
 		call cursor(l:save_pos[1:])
 		call histdel("search", -1)
-	endif
-endfunction
-
-function! CheckGitConfig()
-	if system('git config --get vi.whitespace 2>/dev/null') =~? 'keep'
-		let b:keep_white = 1
-		echohl WarningMsg
-		echom "Not auto-trimming whitespace due to vi.whitespace git config"
-		echohl None
 	endif
 endfunction
 
