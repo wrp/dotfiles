@@ -1,3 +1,5 @@
+" Use 'git config vi.whitespace keep' or :let b:keep_white=1 to retain
+" trailing whitepsace
 colorscheme wrp
 cnoreabbrev e n
 noremap v V
@@ -46,6 +48,12 @@ function! ClearWhite()
 		call histdel("search", -1)
 	endif
 endfunction
+
+
+" =~? is a case-insensitive matche
+autocmd BufReadPost * let b:keep_white =
+    \ system('git config --get vi.whitespace 2>/dev/null') =~? 'keep'
+
 
 packadd! matchit
 let b:match_words = '<<<<<<<:=======:>>>>>>>'
