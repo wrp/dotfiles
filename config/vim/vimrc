@@ -49,10 +49,14 @@ function! ClearWhite()
 	endif
 endfunction
 
-
-" =~? is a case-insensitive matche
-autocmd BufReadPost * let b:keep_white =
-    \ system('git config --get vi.whitespace 2>/dev/null') =~? 'keep'
+function! CheckGitConfig()
+	if system('git config --get vi.whitespace 2>/dev/null') =~? 'keep'
+		let b:keep_white = 1
+		echohl WarningMsg
+		echom "Not auto-trimming whitespace due to vi.whitespace git config"
+		echohl None
+	endif
+endfunction
 
 
 packadd! matchit
@@ -156,6 +160,7 @@ autocmd BufWritePre * call ClearWhite()
 autocmd BufEnter,BufReadPost,FileReadPost,BufNewFile,DirChanged *
 	\ call system("test -z \"$NORENAMEVIM\" && truncate_left=1 set-title " .
 	\ expand("%:t"))
+autocmd BufReadPost * call CheckGitConfig()
 
 " Grrr.  I occasionally get ft set to things that change my formatoptions
 " eg, if vim sets ft=conf, it add 'r' and 'o'.  Get rid of them!
