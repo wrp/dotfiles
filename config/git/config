@@ -54,7 +54,7 @@
 	u = update
 	w = rev-parse --abbrev-ref HEAD
 [apply]
-	whitespace = error
+	whitespace = warn
 [core]
 	# whitespace = tab-in-indent
 	whitespace = indent-with-non-tab
