@@ -35,8 +35,8 @@ function! CheckTrailingWhitespace()
 	call setpos('.', l:save_pos)
 
 	if l:has_trailing
-		let l:choice = confirm("File has trailing whitespace. Keep it?", "&Yes\n&No", 2)
-		if l:choice == 1
+		let l:choice = confirm("File has trailing whitespace. Trim on write?", "&Yes\n&No", 1)
+		if l:choice == 2
 			let b:keep_white = 1
 			echohl WarningMsg
 			echom "Preserving trailing whitespace for this buffer"
