@@ -2,16 +2,17 @@
 " trailing whitepsace
 
 function! CheckGitConfig()
-	let l:old_value = get(b:, 'keep_white', 0)
+	let l:old_value = get(b:, 'keep_white', 2)
 	let l:new_value = system('git -C ' . shellescape(expand('%:p:h')) . ' config --get vi.whitespace 2>/dev/null') =~? 'keep'
+
 	if l:new_value
 		let b:keep_white = 1
 	elseif exists('b:keep_white')
-		unlet b:keep_white
+		let b:keep_white = 0
 	endif
-	if l:new_value != l:old_value
+	if l:old_value != 2 && l:new_value != l:old_value
 		echohl WarningMsg
-		echom l:new_value ? "Not auto-trimming whitespace due to vi.whitespace git config" : "Resuming auto-trim of whitespace"
+		echom l:new_value ? "Keeping trailing whitespace due to vi.whitespace git config" : "Resuming auto-trim of trailing whitespace"
 		echohl None
 	endif
 endfunction
