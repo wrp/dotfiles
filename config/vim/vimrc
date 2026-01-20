@@ -16,6 +16,34 @@ function! CheckGitConfig()
 	endif
 endfunction
 
+function! CheckTrailingWhitespace()
+	" Only check once per buffer
+	if get(b:, 'checked_whitespace', 0)
+		return
+	endif
+	let b:checked_whitespace = 1
+
+	" Skip if keep_white already set (by git config)
+	if get(b:, 'keep_white', 0)
+		return
+	endif
+
+	" Search for trailing whitespace
+	let l:save_pos = getcurpos()
+	let l:has_trailing = search('\s\+$', 'nw')
+	call setpos('.', l:save_pos)
+
+	if l:has_trailing
+		let l:choice = confirm("File has trailing whitespace. Keep it?", "&Yes\n&No", 2)
+		if l:choice == 1
+			let b:keep_white = 1
+			echohl WarningMsg
+			echom "Preserving trailing whitespace for this buffer"
+			echohl None
+		endif
+	endif
+endfunction
+
 
 colorscheme wrp
 cnoreabbrev e n
@@ -168,7 +196,7 @@ autocmd BufWritePre * call ClearWhite()
 autocmd BufEnter,BufReadPost,FileReadPost,BufNewFile,DirChanged *
 	\ call system("test -z \"$NORENAMEVIM\" && truncate_left=1 set-title " .
 	\ expand("%:t"))
-autocmd BufReadPost * call CheckGitConfig()
+autocmd BufReadPost * call CheckGitConfig() | call CheckTrailingWhitespace()
 
 " Grrr.  I occasionally get ft set to things that change my formatoptions
 " eg, if vim sets ft=conf, it add 'r' and 'o'.  Get rid of them!
