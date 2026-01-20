@@ -24,7 +24,7 @@ function! CheckTrailingWhitespace()
 	endif
 	let b:checked_whitespace = 1
 
-	" Skip if keep_white already set (by git config)
+	" Skip if keep_white already set (by git config or local .vimrc or user)
 	if get(b:, 'keep_white', 0)
 		return
 	endif
@@ -35,6 +35,7 @@ function! CheckTrailingWhitespace()
 	call setpos('.', l:save_pos)
 
 	if l:has_trailing
+		echom "'git config vi.whitespace keep' to prevent auto-trim."
 		let l:choice = confirm("File has trailing whitespace. Trim on write?", "&Yes\n&No", 1)
 		if l:choice == 2
 			let b:keep_white = 1
