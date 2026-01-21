@@ -31,6 +31,7 @@ export LESS='FFiMQRSX#.95 -PM?f%f .?n?m(%T %i of %m) ..?ltlines %lt-%lb?L/%L. :b
 export PAGER=less
 export PYTHONSTARTUP=$HOME/.pystartup
 export SHELL=bash
+export TEXINPUTS=.:$prefix/share/lib/latex2html/texinputs:
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 # export CPATH=$HOME/$(uname -m)/$(uname -s)/include
 # export LDPATH=$HOME/$(uname -m)/$(uname -s)/lib
