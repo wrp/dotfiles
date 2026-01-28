@@ -3,3 +3,5 @@
 *.md whitespace=-indent-with-non-tab,space-before-tab
 *.ts whitespace=-indent-with-non-tab,space-before-tab
 *.tsx whitespace=-indent-with-non-tab,space-before-tab
+*.yml whitespace=tab-in-indent,-indent-with-non-tab
+*.yaml whitespace=tab-in-indent,-indent-with-non-tab
