@@ -12,8 +12,8 @@ cd() {
 		test -n "$VIRTUAL_ENV" \
 		&& test "${path#${VIRTUAL_ENV%/.venv}}" = "$path"
 	then
-		echo 'You are outside the scope of current venv.  To re-enter:'
-		printf '%s\n' ". ${VIRTUAL_ENV}/bin/activate"
+		printf 'You are outside the scope of venv.  Deactivating.  To re-enter: '
+		printf 'source %s\n' "${VIRTUAL_ENV}/bin/activate"
 		deactivate
 	fi >&2
 }
