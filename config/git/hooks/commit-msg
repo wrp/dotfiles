@@ -87,6 +87,8 @@ check_message() {
 
 	< "$1" >&2 awk '
 		/^#/ { next }
+		NR==1 && match($0, "fixup!") { exit 0 }
+		NR==1 && match($0, "amend!") { exit 0 }
 		NR==1 && match($0, "[" end "]$") {
 			print "Summary should not end with any of [" end "]"
 			status=1
