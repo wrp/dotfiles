@@ -153,7 +153,8 @@ main() {
 	setup_local_files
 
 	ln -sf "$base/scripts" scripts
-	(cd "$HOME"/.config/"$USER"
+	mkdir -p "$HOME"/.config/bash
+	(cd "$HOME"/.config/bash
 	curl -s -O https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
 	)
 

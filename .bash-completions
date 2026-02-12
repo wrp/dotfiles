@@ -3,8 +3,8 @@ GIT_COMPLETE_REVLIST_MAX=1500
 # Better to use __git_complete from
 # curl -O https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
 # But let's leave this here for the times that may be unavailable
-if test -r "$HOME/.config/$USER/git-completion.bash"; then
-	source "$HOME/.config/$USER/git-completion.bash"
+if test -r "$HOME/.config/bash/git-completion.bash"; then
+	source "$HOME/.config/bash/git-completion.bash"
 	# Sigh.  git-completion from that site is broken.  Apply:
 #  diff --git a/git-completion.bash b/git-completion.bash
 #  index 4262236..7a25df6 100644
