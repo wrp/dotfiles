@@ -1,6 +1,6 @@
 
 meson() {
-	local arg="--native-file=${HOME?}/.config/${USER?}/meson.ini"
+	local arg="--native-file=${HOME?}/.config/meson.ini"
 	local first=$1
 	shift
 	( set -x; command meson "$first" "$arg" "$@"; )

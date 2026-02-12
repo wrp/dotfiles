@@ -141,7 +141,7 @@ setup_local_files() {
 		fi
 	EOF
 
-	create_file "$HOME/.config/$USER/meson.ini" <<- EOF
+	create_file "$HOME/.config/meson.ini" <<- EOF
 		[built-in options]
 		prefix = "$HOME/$(uname -m)/$(uname -s)"
 	EOF
