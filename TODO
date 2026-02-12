@@ -12,7 +12,7 @@ Perhaps add an option to git-log-oneline to allow control of the
 trailer truncation.
 
 
-Cleanup the revocery of COMMIT_EDITMSG.  It is convenient to have previous
+Cleanup the recovery of COMMIT_EDITMSG.  It is convenient to have previous
 message, but still occasionally pollutes the log (it doesn't handle
 rebase/amend/etc. very well).  Meybe just store the old file and
 get in the habit of remembering that it is in COMMIT_EDITMSG.bak
