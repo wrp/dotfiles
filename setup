@@ -129,7 +129,7 @@ setup_local_files() {
 		echo "export SDKROOT=$SDKROOT" >> $HOME/.bash-local
 	fi
 
-	create_file "$HOME/.config/$USER/CONFIG_SITE" <<- 'EOF'
+	create_file "$HOME/.config/CONFIG_SITE" <<- 'EOF'
 		if test "${prefix}" = NONE; then
 			prefix="$HOME/$(uname -m)/$(uname -s)"
 			CPPFLAGS="$CPPFLAGS -I${prefix}/include"

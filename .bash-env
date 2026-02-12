@@ -14,7 +14,7 @@ DOTFILE_VERSION=$(cd $HOME/dotfiles && git rev-parse HEAD)
 
 export BASH_SILENCE_DEPRECATION_WARNING=1
 export COLUMNS
-export CONFIG_SITE=$HOME/.config/$USER/CONFIG_SITE
+export CONFIG_SITE=$HOME/.config/CONFIG_SITE
 export EDITOR=vim
 export FIGNORE='.pyc:.a:.o:~'
 export GIT_CEILING_DIRECTORIES=$HOME
