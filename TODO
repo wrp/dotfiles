@@ -30,3 +30,7 @@ Split up .vimrc so it just looks something like:
 for f in split(glob('~/.config/vim/plugin/*.vim'), '\n')
 	execute 'source' f
 endfor
+
+Move all of the bash config files into ~/.config/bash
+
+Get rid of ~/.config/$USER; move everything currently there up one level.
