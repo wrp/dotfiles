@@ -4,7 +4,7 @@ env() {
 	if test $# = 0; then
 		command env |
 		sed -E "s/^($(
-			ls ~/.config/$USER/secrets | sed 's/\.gpg$//' | paste -sd'|' -
+			ls ~/.config/secrets | sed 's/\.gpg$//' | paste -sd'|' -
 		))=.*/\1=********/"
 	else
 		command env "$@"

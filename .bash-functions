@@ -76,7 +76,7 @@ after_cmd() {
 		fi
 	fi
 	unset NO_RESET_TITLE
-	for name in $HOME/.config/$USER/secrets/*.gpg; do
+	for name in $HOME/.config/secrets/*.gpg; do
 		name=$(basename "$name")
 		name=${name%.gpg}
 		if eval "test -z \"\$$name\""; then
