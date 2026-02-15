@@ -57,6 +57,11 @@ check_words_should_be_skipped() {
 	return 1
 }
 
+check_word() {
+	look -f "$word" "$f" | grep -qi "^$word\$" && return 0
+	readtags "$word" 2> /dev/null | grep -q . && return 0;
+}
+
 check_words() {
 	# Ensure that each word in $1 appears in the dictionary
 	local f=${WORD_FILE-/usr/share/dict/words}
@@ -65,16 +70,13 @@ check_words() {
 		tr -c '[:alpha:]' ' ' | tr -s ' ' \\n | sort -u | {
 		status=0
 		while read word; do
-			if ! look -f "$word" "$f" | grep -qi "^$word\$"; then
-				warn "$word is not a word in $f"
+			if ! check_word "$word"; then
+				warn "$word is invalid"
 				status=1
 			fi
 		done
 		test "$status" = 0
 	}; then
-		# TODO: instead of just rejecting a string, maybe scan the current
-		# repo to see if the string appears (eg, strcmp should be valid in a
-		# mostly C code-base).
 		if test -z "$BAD_WORDS"; then
 			warn "Set BAD_WORDS=1 to allow, SKIP_SPELLCHECK=1 to skip"
 			return 1
