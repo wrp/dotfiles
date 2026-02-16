@@ -67,7 +67,7 @@ check_words() {
 	local f=${WORD_FILE-/usr/share/dict/words}
 	if check_words_should_be_skipped "$f"; then return 0; fi
 	if ! < "$1" \
-		tr -cs '[:alpha:]' '\n' | sort -u | {
+		tr -cs '[:alpha:]_' '\n' | sort -u | {
 		status=0
 		while read word; do
 			if ! check_word "$word"; then
