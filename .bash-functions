@@ -52,6 +52,9 @@ _get_marker() { test "${1-1}" = 0 && echo '*' || echo '!'; }
 _check_elapsed_time() {
 	local start=$1
 	local end=$2
+	if test -z "$end" || test -z "$start"; then
+		return
+	fi
 	local elapsed=$( echo "$end" - "$start" | bc )
 	if test $(echo "$elapsed > 5" | bc) -eq 1; then
 		echo seconds elapsed: $elapsed
@@ -61,7 +64,7 @@ _check_elapsed_time() {
 after_cmd() {
 	: Run after a command, and before a prompt is displayed
 	local _status=$? ps="${PIPESTATUS[@]}" old_title name
-	_check_elapsed_time "$wrp_start_time" $EPOCHREALTIME
+	_check_elapsed_time "$wrp_start_time" "${EPOCHREALTIME}"
 	wrp_start_time=9999999999
 	if test -s "$HISTFILE"; then
 		report_cmd_status "$HISTFILE" "$ps" >> "$HOME"/.bash-history
