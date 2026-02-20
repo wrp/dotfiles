@@ -82,6 +82,7 @@ after_cmd() {
 	for name in $HOME/.config/secrets/*.gpg; do
 		name=$(basename "$name")
 		name=${name%.gpg}
+		test "$name" = '*' && continue
 		if eval "test -z \"\$$name\""; then
 			warn "${name} is unset"
 		fi
