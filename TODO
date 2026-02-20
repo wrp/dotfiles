@@ -1,7 +1,4 @@
 
-Figure out a way to do a less naive spell check.  eg, if we
-are in a code base which defines a function, the name of that
-function should not fail a spell check.
 
 Fix git-completions so that "git -C /p/a<tab>" works.  Currently,
 if not in a git repo, that will through error messages.  As an
