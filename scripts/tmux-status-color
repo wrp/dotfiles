@@ -1,0 +1,11 @@
+#!/bin/sh
+
+battery=$(tmux-status-prefix | tr -d %)
+
+if test "$battery" -gt 80; then
+	echo green
+elif test "$battery" -lt 20; then
+	echo red
+else
+	echo yellow
+fi

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+pmset -g ps | awk '$6=="charging" {printf "+";} NR==2{print $4}' FS='[ \t;]'
