@@ -5,6 +5,12 @@ MIN_WIDTH=5
 
 # Set the title of the tmux or terminal window
 
+# In an interactive shell, this script will be invoked by the debug_trap
+# for each command in a pipeline.  So far, I've seen it consistently
+# called in order (so for 'foo | bar | less', the less will be invoked
+# last.)  I do not want "less" in the title for the pipeline, so punt
+test "$1" = less && exit
+
 # The expectation is that we're running in TMUX or docker.  For the moment,
 # we can use terminal escape sequences from docker images I often
 # run.  Cannot use escape sequences from Apple terminal directly,
