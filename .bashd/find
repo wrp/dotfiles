@@ -8,7 +8,8 @@ find() {
 	# captures the use case I currently care about.
 	# If we try to remove / from all arguments, we
 	# need to think.
-	local arg=${1%%/}
+	local arg=$1
+	test "$arg" != / && arg=${arg%%/}
 	shift
 	command find "$arg" "$@"
 }
