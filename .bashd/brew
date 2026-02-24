@@ -1,6 +1,14 @@
 
 # Brew is completely broken.  Attempt to fix it:
-brew() { CONFIG_SITE= GIT_CONFIG_GLOBAL=/dev/null command brew "$@"; }
+brew() {
+	CONFIG_SITE= \
+	GIT_CONFIG_GLOBAL=/dev/null \
+	GIT_CONFIG_COUNT=1 \
+	GIT_CONFIG_KEY_0=core.hooksPath \
+	GIT_CONFIG_VALUE_0= \
+	command brew "$@"
+}
+
 
 # In particular, allowing core.hooksPath to be set causes all
 # sorts of potential breakage.  brew regularly clones repos
