@@ -1,51 +1,8 @@
-" Use 'git config vi.whitespace keep' or :let b:keep_white=1 to retain
-" trailing whitepsace
-
-function! CheckGitConfig()
-	let l:old_value = get(b:, 'keep_white', 2)
-	let l:new_value = system('git -C ' . shellescape(expand('%:p:h')) . ' config --get vi.whitespace 2>/dev/null') =~? 'keep'
-
-	if l:new_value
-		let b:keep_white = 1
-	elseif exists('b:keep_white')
-		let b:keep_white = 0
-	endif
-	if l:old_value != 2 && l:new_value != l:old_value
-		echohl WarningMsg
-		echom l:new_value ? "Keeping trailing whitespace due to vi.whitespace git config" : "Resuming auto-trim of trailing whitespace"
-		echohl None
-	endif
-endfunction
-
-function! CheckTrailingWhitespace()
-	" Only check once per buffer
-	if get(b:, 'checked_whitespace', 0)
-		return
-	endif
-	let b:checked_whitespace = 1
-
-	" Skip if keep_white already set (by git config or local .vimrc or user)
-	if get(b:, 'keep_white', 0)
-		return
-	endif
-
-	" Search for trailing whitespace
-	let l:save_pos = getcurpos()
-	let l:has_trailing = search('\s\+$', 'nw')
-	call setpos('.', l:save_pos)
-
-	if l:has_trailing
-		echom "'git config vi.whitespace keep' to prevent auto-trim."
-		let l:choice = confirm("File has trailing whitespace. Trim on write?", "&Yes\n&No", 1)
-		if l:choice == 2
-			let b:keep_white = 1
-			echohl WarningMsg
-			echom "Preserving trailing whitespace for this buffer"
-			echohl None
-		endif
-	endif
-endfunction
-
+" Load order:
+"   1. This file (vimrc)
+"   2. plugin/*.vim (whitespace, statusline, skeleton, foldtext, misc, ...)
+"   3. after/plugin/*.vim (indentation, ...)
+"   4. Filetype triggers: ftplugin/, after/ftplugin/
 
 colorscheme wrp
 cnoreabbrev e n
@@ -59,55 +16,13 @@ noremap bd! :bd<cr>:bn<cr>
 noremap gw :Windo set wrap!<cr>
 com! Nt :NERDTree
 
-function! Get_option(name, default)
-	return trim(system('guess-vim-setting ' . a:name . ' ' .
-	\ expand('%:p') . ' ' . expand(&filetype) . ' || echo ' . a:default))
-endfunction
-
-function! Guess_expandtab()
-	if Get_option('expandtab', 'noexpandtab') == 'expandtab'
-		set expandtab
-	else
-		set noexpandtab
-	endif
-endfunction
-
-
 set noexpandtab
 let &tabstop = 8
 set shiftwidth=8
 
-" Just like windo, but restore the current window when done.
-function! WinDo(command)
-  let currwin=winnr()
-  execute 'windo ' . a:command
-  execute currwin . 'wincmd w'
-endfunction
-com! -nargs=+ -complete=command Windo call WinDo(<q-args>)
-
-function! ClearWhite()
-	" A bit hacky: if you :let b:keep_white=1 before you
-	" do any writes, you can keep trailing whitespace
-	if !exists("b:keep_white") || b:keep_white != 1
-		let l:save_pos = getcurpos()
-		execute '%s/\s\+$//e'
-		call cursor(l:save_pos[1:])
-		call histdel("search", -1)
-	endif
-endfunction
-
-
 packadd! matchit
 let b:match_words = '<<<<<<<:=======:>>>>>>>'
 
-
-" inoremap jk <esc>
-" set cindent
-" set relativenumber  numberwidth=8
-" set sidescroll=1
-" set smartindent
-" set textwidth=80 " Auto-inserts newlines to preserve width
-" set virtualedit=all
 let loaded_matchparen=1
 set autoindent
 set noerrorbells
@@ -116,7 +31,6 @@ set nofileignorecase
 set foldopen-=search
 set hlsearch
 set iskeyword=@,48-57,_,192-255,-
-set laststatus=2   " Always show status line
 set linebreak  " Do not split words when wrapping
 set listchars=extends:%,precedes:%,eol:$,tab:>-,trail:$
 set matchpairs+=<:>
@@ -127,13 +41,6 @@ set nowrap
 set nowrapscan
 set scrolloff=0
 
-
-function! TruncatedStatus()
-	return virtcol('$') > winwidth(0) ?  &wrap ? "<--" : "[TRUNCATED]" : ""
-endfunction
-
-" m:modified, %r:read-only, %f:path, %y:filetype, %=:horizontal break
-set statusline=%m%r%f\ %y%=%{TruncatedStatus()}\ (%B)\ line:%l/%L(%p%%)\ column:%c%V\ buffer:%n
 set t_ti= t_te=  " Disable clear screen on exit
 set tildeop
 set viminfofile=$HOME/.config/vim/viminfo
@@ -142,30 +49,7 @@ set wildmode=longest,list,full
 highlight ColorColumn ctermbg=green
 highlight Search ctermfg=red ctermbg=blue
 highlight Folded ctermbg=black
-highlight ExtraWhitespace ctermbg=red guibg=red
-match ExtraWhitespace /\s\+$/
 syntax on
-
-" Attempt to deal with a brain-dead coding style that
-" does not put { in the first column
-"map [[ ?{<CR>w99[{<esc>:nohlsearch<Enter>:call histdel("search", -1)<ENTER>:let @/ = histget("search", -1)<ENTER>
-"map ][ /}<CR>b99]}<esc>:nohlsearch<Enter>:call histdel("search", -1)<ENTER>:let @/ = histget("search", -1)<ENTER>
-"map ]] j0[[%/{<CR><esc>:nohlsearch<Enter>:call histdel("search", -1)<ENTER>:let @/ = histget("search", -1)<ENTER>
-"map [] k$][%?}<CR><esc>:nohlsearch<Enter>:call histdel("search", -1)<ENTER>:let @/ = histget("search", -1)<ENTER>
-"map [[ ][%
-"map ]] ][][%
-
-
-if &diff
-	highlight DiffAdd ctermbg=5
-endif
-
-au BufNewFile,BufRead .bash-history setlocal path+=$HOME/.bash-history-dir
-au BufNewFile *.c r ~/.config/vim/skeleton.c
-au BufNewFile *.cc r ~/.config/vim/skeleton.cc
-au BufNewFile *.rs r ~/.config/vim/skeleton.rs
-au BufNewFile *.go r ~/.config/vim/skeleton.go
-au BufNewFile *.zig r ~/.config/vim/skeleton.zig
 
 set includeexpr=substitute(v:fname,'^//','','')
 
@@ -192,46 +76,19 @@ end
 set undofile
 set undodir^=~/.run/vim/undo//
 
+au BufNewFile,BufRead .bash-history setlocal path+=$HOME/.bash-history-dir
 
-
-autocmd BufWritePre * call ClearWhite()
 autocmd BufEnter,BufReadPost,FileReadPost,BufNewFile,DirChanged *
 	\ call system("test -z \"$NORENAMEVIM\" && truncate_left=1 set-title " .
 	\ expand("%:t"))
-autocmd BufReadPost * call CheckGitConfig() | call CheckTrailingWhitespace()
 
-" Grrr.  I occasionally get ft set to things that change my formatoptions
-" eg, if vim sets ft=conf, it add 'r' and 'o'.  Get rid of them!
 autocmd BufEnter * set formatoptions-=ro
 autocmd BufEnter * set indentexpr=
-autocmd BufNewFile postmortem-*.md 0r ~/3rd-party/postmortem-templates/templates/postmortem-template-srebook.md
 
-" See :help fold-foldtext for details
-set foldtext=MyFoldText()
-function! MyFoldText()
-    let prefix = printf("%3d: ", v:foldend - v:foldstart + 1)
-    for i in range(v:foldstart, v:foldend)
-	let line = getline(i)
-	if match(line, '^[ %#/\{}*-]*$') == -1
-	    return prefix . line
-	endif
-    endfor
-    return prefix . "Trivial fold"
-endfunction
+if &diff
+	highlight DiffAdd ctermbg=5
+endif
 
 runtime local/all.vim
 
 " vim: foldenable:sw=4 fdm=indent fdl=1
-
-function! SynStack()
-  if !exists("*synstack")
-    return
-  endif
-  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
-endfunc
-
-
-function! SynGroup()
-    let l:s = synID(line('.'), col('.'), 1)
-    echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
-endfun
