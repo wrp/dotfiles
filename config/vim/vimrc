@@ -1,8 +1,11 @@
 " Load order:
-"   1. This file (vimrc)
-"   2. plugin/*.vim (whitespace, statusline, skeleton, foldtext, misc, ...)
-"   3. after/plugin/*.vim (indentation, ...)
-"   4. Filetype triggers: ftplugin/, after/ftplugin/
+"   1. This file (vimrc), which sources lib/misc.vim early
+"   2. syntax/*.vim, triggered by 'syntax on' in this file
+"   3. plugin/*.vim (whitespace, statusline, skeleton, foldtext, ...)
+"   4. after/plugin/*.vim (indentation, ...)
+"   5. Filetype triggers: ftplugin/, after/ftplugin/, after/syntax/
+
+runtime lib/misc.vim
 
 colorscheme wrp
 cnoreabbrev e n
