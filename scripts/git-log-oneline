@@ -96,6 +96,7 @@ use_color() {
 	yellow="%C(yellow)"
 	red="%C(red)"
 	blue="%C(blue)"
+	cyan='%C(cyan)'
 	reset="%C(reset)"
 	rev_on=$(tput setab 3)
 	rev_off=$(tput op; tput setaf 4)
@@ -170,7 +171,7 @@ main() {
 		--format=tformat:"$(printf '%s' "$(:
 			)${green}%h$(:
 			)${yellow}% ad${tab}$(:
-			)${red}%<(${author_width},trunc)% an$(:
+			)${cyan}% G?${red}%<(${author_width},trunc)% an$(:
 			)${reset}${trailer_fmt}$(:
 			)${truncate}% s$( :
 			)${blue}${ref_marker}% D$(:
