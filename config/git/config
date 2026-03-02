@@ -79,6 +79,7 @@
 
 [init]
 	defaultBranch = main
+	templateDir =
 [versionsort]
 	prereleaseSuffix = .rc
 [color "branch"]
