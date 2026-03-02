@@ -119,3 +119,5 @@
 	trailer-width = 3
 [help]
 	autocorrect = never
+[gpg "ssh"]
+	allowedSignersFile = /Users/wrp/.ssh/allowed_signers
