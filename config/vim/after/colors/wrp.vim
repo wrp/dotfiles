@@ -26,3 +26,9 @@ highlight Directory  ctermfg=2
 highlight StatusLine ctermfg=3 ctermbg=0 cterm=none
 " highlight Normal
 highlight Search                ctermbg=LightBlue
+
+" cut-n-pasteable shell snippet to sample colors
+"" trap : DEBUG; for fg in $(seq 0 15); do $( : \
+"" );  for i in $(seq 0 15); do $( : \
+"" )     tput setaf $fg; tput setab $i; printf " %2d " $i; $( : \
+"" );  done; tput sgr0; echo ; done
