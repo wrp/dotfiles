@@ -23,7 +23,7 @@ highlight Special    ctermfg=12
 highlight Error                 ctermbg=9
 highlight Todo       ctermfg=4  ctermbg=3
 highlight Directory  ctermfg=2
-highlight StatusLine ctermfg=3 ctermbg=0 cterm=none
+highlight StatusLine ctermfg=lightyellow ctermbg=black cterm=none
 " highlight Normal
 highlight Search                ctermbg=LightBlue
 
