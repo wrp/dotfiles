@@ -57,7 +57,7 @@ _check_elapsed_time() {
 	fi
 	local elapsed=$( echo "$end" - "$start" | bc )
 	if test $(echo "$elapsed > 5" | bc) -eq 1; then
-		echo seconds elapsed: $elapsed
+		printf '%s\n' "${YELLOW}seconds elapsed: ${RESET}$elapsed"
 	fi
 }
 
