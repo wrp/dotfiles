@@ -44,6 +44,13 @@ initialize() {
 	if test -t 1; then
 		use_color
 	else
+		# This seems a bit wrong-headed.  If the output is to a tty,
+		# we can rely on GIT_PAGER to allow horizontal scrolling.  But
+		# if it is going to a pipe like "| head" or similar, the thinking
+		# is/was that we probably want to restrict overall width, so
+		# we truncate the subject.  We should probably just jettison
+		# the truncation and let the caller deal with it.  Or maybe
+		# add a flag.
 		truncate="%<($(($(tput cols) / 3)),trunc)"
 	fi
 
