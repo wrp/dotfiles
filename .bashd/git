@@ -25,9 +25,6 @@ g() {
 		if test -z "$raw"; then
 		case $arg in
 		(--    ) raw=1; continue;;
-		(main  ) arg=$(git-base-branch) || return 1;;
-		(mb    ) arg=--merge-base;;
-		(bb    ) arg=$(git-base-branch) || return 1;;
 		([0-9]*) # replace numeric args with branch name
 			if test "$prev" != -n &&
 				test "$arg" -ge 0 2> /dev/null &&
