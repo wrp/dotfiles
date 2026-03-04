@@ -30,8 +30,7 @@ else
 		)
 	fi
 fi
-if test -n "$branch"; then
-	printf '%s' "$branch"
-else
-	printf '%s' "$1"
+if test -z "$branch"; then
+	branch=$1
 fi
+printf '%s' "$branch"
