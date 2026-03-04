@@ -34,6 +34,7 @@ function! CheckTrailingWhitespace()
 	let l:has_trailing = search('\s\+$', 'nw')
 	call setpos('.', l:save_pos)
 
+	"TODO: do not prompt if in readonly mode; assume no trim
 	if l:has_trailing
 		echom "'git config vi.whitespace keep' to prevent auto-trim."
 		let l:choice = confirm("File has trailing whitespace. Trim on write?", "&Yes\n&No", 1)
