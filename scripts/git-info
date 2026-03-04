@@ -17,6 +17,7 @@ fi
 sed -e 's/ *$//' <<- EOF
 	branch:   ${branch} $summary
 	upstream: ${remote:-none}$remote_oid
+	main:     $main
 	top:      $top
 	cwd:      $(pwd)
 	version:  ${description:-unversioned}
