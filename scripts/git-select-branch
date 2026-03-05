@@ -6,9 +6,7 @@
 # to a branch (eg, an integer like 1024 when there are
 # only 5 branches), just emit the number.  This is
 # convenient for interactive use when numbers are
-# not intended to be used as a branch.  (Note, currently
-# the expected way to suppress substitutions is to
-# run "command git ....")
+# not intended to be used as a branch.
 
 git rev-parse > /dev/null || exit
 
