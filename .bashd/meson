@@ -2,6 +2,10 @@
 meson() {
 	local arg="--native-file=${HOME?}/.config/meson.ini"
 	local first=$1
-	shift
-	( set -x; command meson "$first" "$arg" "$@"; )
+	case $first in
+	setup) shift; set -- "$first" "$arg" "$@";;
+	esac
+	set -v
+	command meson "$@"
+	set +v
 }
