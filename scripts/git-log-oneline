@@ -119,7 +119,7 @@ check_pager() {
 			if test "${date_width:-0}" -gt 11; then
 				printf "%-$((date_width+1))s" 'author date'
 			fi
-			printf "%-$((author_width+1))s" $(if test "$author_width" -lt 6; then
+			printf "  %-$((author_width+1))s" $(if test "$author_width" -lt 6; then
 				printf '%%an'; else printf author; fi)
 			echo "$trailers" | tr , '\n' \
 			| while read t; do
