@@ -56,6 +56,13 @@ check_word() {
 		look -f "$word" "$WORD_FILE" | grep -qi "^$word\$" && return 0
 	fi
 	readtags "$word" 2> /dev/null | grep -q . && return 0;
+	if test -z "$word_list"; then
+		word_list="$WORD_LIST
+		$(git log --format='%(trailers:separator=%x2C)' | tr -d : | sort -u)
+		"
+	fi
+	printf '%s' "$word_list" | grep -qw "$word" && return 0
+	return 1
 }
 
 check_words() {
