@@ -67,7 +67,7 @@ check_words() {
 		status=0
 		while read word; do
 			if ! check_word "$word"; then
-				warn "$word is invalid"
+				warn "'$word' looks like a spelling error and/or typo"
 				status=1
 			fi
 		done
