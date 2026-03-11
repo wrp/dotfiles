@@ -39,33 +39,29 @@ check_previous() {
 
 
 check_words_should_be_skipped() {
-	local f=$1
 	if test -n "$SKIP_SPELLCHECK"; then
 		warn 'Skipping spell check (SKIP_SPELLCHECK is set)'
 		return 0
 	fi
 
-	if ! test -f "$f"; then
-		warn "$f does not exist; not checking words"
-		return 0
-	fi
-
-	if ! sort -c "$f"; then
-		warn "$f is not sorted; not checking words"
+	if test -f "$WORD_FILE" && ! sort -c "$WORD_FILE"; then
+		warn "$WORD_FILE is not sorted; not checking words"
 		return 0
 	fi
 	return 1
 }
 
 check_word() {
-	look -f "$word" "$f" | grep -qi "^$word\$" && return 0
+	if test -f "$WORD_FILE"; then
+		look -f "$word" "$WORD_FILE" | grep -qi "^$word\$" && return 0
+	fi
 	readtags "$word" 2> /dev/null | grep -q . && return 0;
 }
 
 check_words() {
 	# Ensure that each word in $1 appears in the dictionary
-	local f=${WORD_FILE-/usr/share/dict/words}
-	if check_words_should_be_skipped "$f"; then return 0; fi
+	: ${WORD_FILE:=/usr/share/dict/words}
+	if check_words_should_be_skipped; then return 0; fi
 	if ! < "$1" \
 		tr -cs '[:alpha:]_' '\n' | sort -u | {
 		status=0
