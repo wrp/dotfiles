@@ -41,7 +41,7 @@ do_search() {
 		' status='?' printfailed=${V+1} \
 	> $tmp1
 
-	# Find length of timestamp and status in above output
+	# Filter the commands which match a pattern
 	prelen=$(awk '{print match($0, "\\|"); exit}' $tmp1)
 	for pattern; do
 		unset not
