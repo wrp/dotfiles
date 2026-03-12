@@ -17,6 +17,7 @@ if test "$1" = grep; then
 fi
 find . -type d -name .git | while read git_dir; do
 	dir="${git_dir%.git}"
-	git -C "$dir" "$@" |
-		sed -e "s@^@${dir}${delim}@" -e 's@\./@@'
+	{ { git -C "$dir" "$@" 2>&3 |
+		sed -e "s@^@${dir}${delim}@" -e 's@\./@@' >&4;
+	} 3>&1 | sed -e "s@^@${dir}${delim}@" -e 's@\./@@' >&2; } 4>&1
 done | ${PAGER-more}
