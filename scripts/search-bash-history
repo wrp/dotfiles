@@ -49,7 +49,7 @@ do_search() {
 			not='!'
 			pattern="${pattern:1}"
 		fi
-		awk "$not match(tolower(substr(\$0, ${prelen-14})),
+		awk "$not match(tolower(substr(\$0, ${prelen})),
 			tolower(\"$pattern\"))" $tmp1 > $tmp2
 		mv $tmp2 $tmp1
 	done
