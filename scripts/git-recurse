@@ -9,14 +9,14 @@ delim=': '
 if test "$1" = grep; then
 	# We want to make sure the prefix of each line
 	# is a valid path so we can pipe directly to vi
-	delim='';
+	delim='/';
 	if test -t 1; then
 		shift
 		set -- grep --color=always "$@"
 	fi
 fi
 find . -type d -name .git | while read git_dir; do
-	dir="${git_dir%.git}"
+	dir="${git_dir%/.git}"
 	{ { git -C "$dir" "$@" 2>&3 |
 		sed -e "s@^@${dir}${delim}@" -e 's@\./@@' >&4;
 	} 3>&1 | sed -e "s@^@${dir}${delim}@" -e 's@\./@@' >&2; } 4>&1
