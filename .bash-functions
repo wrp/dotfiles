@@ -129,8 +129,10 @@ write_hist_file() {
 
 debug_trap() {
 	: Runs before a command in an interactive shell
+	: also runs before $PROMPT_COMMAND
 
-	test "$BASH_COMMAND" = after_cmd && return
+	local _status=$?
+	test "$BASH_COMMAND" = after_cmd && return $_status
 	wrp_start_time=$EPOCHREALTIME
 	write_hist_file
 
@@ -144,6 +146,7 @@ debug_trap() {
 		;;
 	esac
 	test -t 1 && tput setaf 7
+	return $_status
 } >&2
 
 #1698377918 (YYYY-MM-DDTHH:MM:SS+0 pid:1121 /Users/wrp/3rd-party/tmux) ok
