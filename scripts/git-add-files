@@ -71,8 +71,15 @@ main() {
 	fi
 	git add "$@" || exit
 	msg=$(printf 'Add '
-		perl -E 'my $w = $ENV{"MAX_GIT_SUMMARY"} // 50;
-			say substr join(", ", @ARGV), 0, $w - 4' "${@##*/}"
+		perl -E '
+			my $w = $ENV{"MAX_GIT_SUMMARY"} // 50;
+			my $m = join(", ", @ARGV);
+			if (length $m > $w - 4) {
+				use File::Basename;
+				@ARGV = map { basename($_) } @ARGV;
+				$m = join(", ", @ARGV);
+			}
+			say substr $m, 0,$w - 4' "${@}"
 		printf '\n'
 		git diff --name-only --cached
 	)
