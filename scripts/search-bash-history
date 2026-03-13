@@ -38,7 +38,7 @@ do_search() {
 				sub(/^[[:space:]]+/, "")
 				printf "%s %-8s%2s| %-s\n", time, pid, status, $0
 			}
-		' status='?' printfailed=${V+1} \
+		' status='?' printfailed=${V-1} \
 	> $tmp1
 
 	# Filter the commands which match a pattern
