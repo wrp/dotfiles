@@ -36,7 +36,7 @@ do_search() {
 			}
 			!/^#/ && ( printfailed || status != "!") {
 				sub(/^[[:space:]]+/, "")
-				printf "%s %2s %-8s | %-s\n", time, status, pid, $0
+				printf "%s %-8s%2s| %-s\n", time, pid, status, $0
 			}
 		' status='?' printfailed=${V+1} \
 	> $tmp1
