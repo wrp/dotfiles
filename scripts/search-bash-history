@@ -32,7 +32,7 @@ do_search() {
 				time = substr($1, 2)
 				sub("pid:", "sh:")
 				pid = $3
-				status = match($0,"FAILED$") ? "!" : match($0,"ok$") ? "" : "?"
+				status = match($0,"FAILED") ? "!" : match($0,"ok$") ? "" : "?"
 			}
 			!/^#/ && ( printfailed || status != "!") {
 				sub(/^[[:space:]]+/, "")
