@@ -62,8 +62,10 @@ _check_elapsed_time() {
 }
 
 after_cmd() {
-	: Run after a command, and before a prompt is displayed
 	local _status=$? ps="${PIPESTATUS[@]}" old_title name
+
+	: Run after a command, and before a prompt is displayed
+
 	_check_elapsed_time "$wrp_start_time" "${EPOCHREALTIME}"
 	wrp_start_time=9999999999
 	if test -s "$HISTFILE"; then
@@ -128,10 +130,11 @@ write_hist_file() {
 }
 
 debug_trap() {
+	local _status=$?
+
 	: Runs before a command in an interactive shell
 	: also runs before $PROMPT_COMMAND
 
-	local _status=$?
 	test "$BASH_COMMAND" = after_cmd && return $_status
 	wrp_start_time=$EPOCHREALTIME
 	write_hist_file
