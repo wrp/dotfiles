@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# TODO: upgrade to use aunpack from the atool package
+
 if test $# = 0; then
 	echo 'Expected tarball arg' >&2
 	exit 1;
