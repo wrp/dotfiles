@@ -5,6 +5,7 @@
 *.dSYM
 *.jar
 *.o
+*.a
 default.profraw
 
 **/.claude/settings.local.json
