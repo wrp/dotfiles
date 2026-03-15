@@ -29,14 +29,23 @@ do_search() {
 	< ~/.bash-history \
 		awk '
 			/^#/ {
-				time = substr($1, 2)
-				sub("pid:", "sh:")
-				pid = $3
-				status = match($0,"FAILED") ? "!" : match($0,"ok$") ? "" : "?"
+				time = substr($1, 2)  # epoch time expanded by perl below
+				pid = ""
+				pane = ""
+				for (i=2; i <= NF; i += 1) {
+					if (match($i, "^pid:")) {
+						pid = substr($i, 5)  # Remove leading "pid:"
+					}
+					if (match($i, "^pane:")) {
+						pane = substr($i, 6)  # Remove leading "pane:"
+					}
+				}
+				id = pid (pane ? ":" : "" ) pane
+				status = match($0,"FAILED") ? "!" : match($0,"ok$") ? " " : "?"
 			}
 			!/^#/ && ( printfailed || status != "!") {
 				sub(/^[[:space:]]+/, "")
-				printf "%s %-8s%2s| %-s\n", time, pid, status, $0
+				printf "%s %-9s %s| %-s\n", time, id, status, $0
 			}
 		' status='?' printfailed=${V-1} \
 	> $tmp1
