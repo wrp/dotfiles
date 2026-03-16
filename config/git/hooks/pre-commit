@@ -53,6 +53,10 @@ validate_whitespace() {
 	local msg='allowing all whitespace and merge conflict marker errors'
 	local func=warn
 
+	if test -n "$SKIP_WHITESPACE"; then
+		warn 'Skipping whitespace check (SKIP_WHITESPACE is set)'
+		return 0
+	fi
 	case $(git config commit.whitespace) in
 	error) func=die ;;
 	nowarn)
@@ -63,6 +67,7 @@ validate_whitespace() {
 	if ! all_whitespace_checks; then
 		$func \
 			'To ignore: git config commit.whitespace nowarn' \
+			'  -or-   : SKIP_WHITESPACE=1' \
 			'To allow : git config commit.whitespace warn'
 	fi
 }
