@@ -51,16 +51,22 @@ check_words_should_be_skipped() {
 	return 1
 }
 
+get_words_from_git_log() {
+	# only run git log once
+	if test -z "$checked_git_log"; then
+		checked_git_log=1
+		word_list="$word_list
+		$(git log --format='%(trailers:separator=%x2C)' | tr -d : | sort -u)
+		"
+	fi
+}
+
 check_word() {
 	if test -f "$WORD_FILE"; then
 		look -f "$word" "$WORD_FILE" | grep -qi "^$word\$" && return 0
 	fi
 	readtags "$word" 2> /dev/null | grep -q . && return 0;
-	if test -z "$word_list"; then
-		word_list="$WORD_LIST
-		$(git log --format='%(trailers:separator=%x2C)' | tr -d : | sort -u)
-		"
-	fi
+	get_words_from_git_log
 	printf '%s' "$word_list" | grep -qw "$word" && return 0
 	return 1
 }
