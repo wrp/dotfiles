@@ -85,6 +85,13 @@ autocmd BufEnter,BufReadPost,FileReadPost,BufNewFile,DirChanged *
 	\ call system("test -z \"$NORENAMEVIM\" && truncate_left=1 set-title " .
 	\ expand("%:t"))
 
+" When editing a file, always jump to the last known cursor position.
+autocmd BufReadPost *
+	\ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+	\ | exe "normal! g`\""
+	\ | endif
+
+
 autocmd BufEnter * set formatoptions-=ro
 autocmd BufEnter * set indentexpr=
 
