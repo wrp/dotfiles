@@ -81,7 +81,7 @@ main() {
 			}
 			say substr $m, 0,$w - 4' "${@}"
 		printf '\n'
-		git diff --name-only --cached
+		git diff --name-status --cached
 	)
 	if test -z "$msg"; then
 		echo "Unable to generate commit message!" >&2
