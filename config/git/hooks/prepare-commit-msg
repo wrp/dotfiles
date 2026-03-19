@@ -60,7 +60,7 @@ append_saved_message() {
 
 	# Previously edited commit message:
 	EOF
-	sed -e 's/^/# /' "${1}"
+	sed -e 's/^/# /' -e 's/ *$//' "${1}"
 }
 
 main "$@"
