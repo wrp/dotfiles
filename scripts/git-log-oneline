@@ -178,7 +178,7 @@ main() {
 		--format=tformat:"$(printf '%s' "$(:
 			)${green}%h$(:
 			)${yellow}% ad${tab}$(:
-			)${cyan}% G?${red}%<(${author_width},trunc)% an$(:
+			)%C(auto)% G?${red}%<(${author_width},trunc)% an$(:
 			)${reset}${trailer_fmt}$(:
 			)${truncate}% s$( :
 			)${blue}${ref_marker}% D$(:
