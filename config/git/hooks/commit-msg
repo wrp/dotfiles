@@ -24,7 +24,7 @@ main() {
 	fi
 	: ${MAX_GIT_WIDTH:=$(git config commit.max-message-width)}
 	: ${MAX_GIT_SUMMARY:=$(git config commit.max-summary-width)}
-	check_message "$@" || die "Set SKIP_COMMIT_CHECKS=1 to skip"
+	check_message "$@" || die "Set SKIP_MESSAGE_CHECK=1 to skip"
 	check_words "$1" || die "Set SKIP_COMMIT_CHECKS=1 to skip"
 	validate_trailers "$@" || die "Set SKIP_COMMIT_CHECKS=1 to skip"
 	check_previous "$@" || die "Set SKIP_COMMIT_CHECKS=1 to skip"
@@ -97,6 +97,8 @@ check_words() {
 }
 
 check_message() {
+	if test -n "$SKIP_MESSAGE_CHECK"; then return 0; fi
+
 	bad_end="!?."  # Characters not allowed as final char of summary
 
 	< "$1" >&2 awk '
