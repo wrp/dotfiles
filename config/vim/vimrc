@@ -97,10 +97,10 @@ augroup local_bracket_motion
 	autocmd!
 	autocmd FileType *
 		\ if index(['c', 'cpp', 'go'], &filetype) < 0 |
-		\ nnoremap <buffer> <silent> [[ 0?^\S\@=.*{$<CR>$:nohlsearch<CR>|
-		\ xnoremap <buffer> <silent> [[ ?^\S\@=.*{$<CR>$:nohlsearch<CR>|
-		\ onoremap <buffer> <silent> [[ ?^\S\@=.*{$<CR>$:nohlsearch<CR>|
-		\ noremap <buffer> <silent> ]] /^\S\@=.*{$<CR>$:nohlsearch<CR>|
+		\ nnoremap <buffer> <silent> [[ :let b:saved_search=@/<CR>0?^\S\@=.*{$<CR>$:let @/=b:saved_search<CR>|
+		\ xnoremap <buffer> <silent> [[ :let b:saved_search=@/<CR>?^\S\@=.*{$<CR>$:let @/=b:saved_search<CR>|
+		\ onoremap <buffer> <silent> [[ :let b:saved_search=@/<CR>?^\S\@=.*{$<CR>$:let @/=b:saved_search<CR>|
+		\ noremap <buffer> <silent> ]] :let b:saved_search=@/<CR>/^\S\@=.*{$<CR>$:let @/=b:saved_search<CR>|
 		\ endif
 augroup END
 
