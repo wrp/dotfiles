@@ -92,6 +92,14 @@ autocmd BufReadPost *
 	\ | exe "normal! g`\""
 	\ | endif
 
+" [[: search for a line that ends with { and does not start with whitespace
+augroup local_bracket_motion
+	autocmd!
+	autocmd FileType *
+		\ if index(['c', 'cpp', 'go'], &filetype) < 0 |
+		\ noremap <buffer> <silent> [[ ?^\S\@=.*{$<CR>$:nohlsearch<CR>|
+		\ endif
+augroup END
 
 autocmd BufEnter * set formatoptions-=ro
 autocmd BufEnter * set indentexpr=
