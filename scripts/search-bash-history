@@ -13,7 +13,7 @@ set_global_vars() {
 	tac=$(which tac || which gtac)
 	test -n "$tac" || die 'No valid tac in path'
 	buffer_name=history_search
-	: ${max_lines=15}
+	: ${max_lines=${m-15}}
 }
 
 do_search() {
