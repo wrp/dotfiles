@@ -21,7 +21,7 @@ check_previous() {
 		fi
 	} )';
 }
-add_pid() { PS1+="$(printf "%05d" "$$" )"; }
+add_pid() { PS1+="$(printf "%05d%s" "$$" "$(tmux display-message -p '#{pane_id}')")"; }
 add_prompt_char() { PS1+='\$ '; }
 insert_text() { test -n "$*" && PS1+=$(printf '\\\n%s' "$*"); }
 
