@@ -26,10 +26,9 @@
 	dw = diff --word-diff
 	dwa = diff --word-diff-regex=.
 	exec = "!exec "  # execute a shell command in the top level
-	l = log-oneline
+	l = log-oneline --graph --decorate
 	l1 = l --first-parent
-	la = l --graph --decorate
-	lah = l -n 10 --graph --decorate
+	la = l
 	lh = l -n 10
 	ld = l --date=format:'%FT%T%z'
 	ls = l --show-signature
