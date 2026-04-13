@@ -42,7 +42,9 @@ check_previous() {
 
 check_words_should_be_skipped() {
 	if test -n "$SKIP_SPELLCHECK"; then
-		warn 'Skipping spell check (SKIP_SPELLCHECK is set)'
+		if test "$SKIP_SPELLCHECK" != silent; then
+			warn 'Skipping spell check (SKIP_SPELLCHECK is set)'
+		fi
 		return 0
 	fi
 
@@ -90,7 +92,7 @@ check_words() {
 		test "$status" = 0
 	}; then
 		if test -z "$BAD_WORDS"; then
-			warn "Set BAD_WORDS=1 (or BW) to allow, SKIP_SPELLCHECK=1 to skip"
+			warn "Set BAD_WORDS (or BW) to allow, SKIP_SPELLCHECK to skip"
 			return 1
 		fi
 	fi >&2

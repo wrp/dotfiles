@@ -87,7 +87,7 @@ main() {
 		echo "Unable to generate commit message!" >&2
 		exit 1
 	fi
-	SKIP_SPELLCHECK=1 git commit ${force:+--no-verify} -m "$msg"
+	SKIP_SPELLCHECK=silent git commit ${force:+--no-verify} -m "$msg"
 }
 
 main "$@"
