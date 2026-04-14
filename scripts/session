@@ -1,5 +1,11 @@
 #!/bin/sh
 
+unset change
+if test "$1" = -c; then
+	shift
+	change=1   # Change the name and base of current session
+fi
+
 {
 dir=${1-$PWD}
 dir=$( { realpath "$dir" || readlink -f "$dir" ||
@@ -13,17 +19,16 @@ if test -z "$TMUX"; then
 	exit
 fi
 
-if test "$1" = .; then
-	# Reset session_path of current session to $PWD
-	TMUX= </dev/null tmux -C attach -c $PWD -t $(
+if test "$change" = 1; then
+	# Reset session_path of current session
+	TMUX= </dev/null tmux -C attach -c "$dir" -t $(
 		tmux display-message -p '#{session_name}'
 	) >/dev/null || exit
-	tmux rename-session "$(basename ${PWD})" || exit
+	tmux rename-session "$name" || exit
 	printf 'New session path: '
 	tmux display-message -p '#{session_path}'
 	exit
 fi
-
 if ! tmux has-session -t "${name}" 2> /dev/null; then
 	tmux new-session -c "$dir" -s "$name" -d
 fi
