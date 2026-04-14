@@ -27,9 +27,9 @@ if test "$change" = 1; then
 	tmux rename-session "$name" || exit
 	printf 'New session path: '
 	tmux display-message -p '#{session_path}'
-	exit
+elif
+	if ! tmux has-session -t "${name}" 2> /dev/null; then
+		tmux new-session -c "$dir" -s "$name" -d
+	fi
+	tmux switch-client -t "$name"
 fi
-if ! tmux has-session -t "${name}" 2> /dev/null; then
-	tmux new-session -c "$dir" -s "$name" -d
-fi
-tmux switch-client -t "$name"
