@@ -17,7 +17,7 @@ esac
 
 branch=${1-$(git base-branch)} || exit
 branch=${branch#refs/heads/}
-old=$(git show-ref --abbrev --hash refs/heads/$branch)
+old=$(git show-ref --verify --abbrev --hash refs/heads/$branch)
 
 if test -z "$old"; then
 	echo >&2 "Invalid branch: $branch.  Use 'git show-ref --heads' to see valid refs"
@@ -44,7 +44,7 @@ else
 	git update-ref refs/heads/$branch $upstream || exit 1
 fi
 
-new=$(git show-ref --abbrev --hash refs/heads/$branch)
+new=$(git show-ref --verify --abbrev --hash refs/heads/$branch)
 if test "${old}" = "${new}"; then
 	echo No changes to "$branch ($new)"
 else
