@@ -20,5 +20,7 @@ header() { sed -e "s@^@${dir}${delim}@" -e 's@\./@@'; }
 
 find . -type d -name .git | while read git_dir; do
 	dir="${git_dir%/.git}"
-	{ { git -C "$dir" "$@" 2>&3 | header >&4; } 3>&1 | header >&2; } 4>&1
+	{ { git -C "$dir" "$@" 2>&3 | header >&4; } 3>&1 | header >&2; } 4>&1 &
+	wait
+
 done | ${PAGER-more}
