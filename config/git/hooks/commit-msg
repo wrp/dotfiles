@@ -16,6 +16,7 @@ backup_name="$1"
 : ${BAD_WORDS:=$BW}
 
 main() {
+	unset checked_ancillary_sources
 	remove_comments "$@" || die
 	if test -n "$SKIP_COMMIT_CHECKS"; then
 		test "$SKIP_COMMIT_CHECKS" = silent ||
@@ -56,21 +57,28 @@ check_words_should_be_skipped() {
 }
 
 get_words_from_git_log() {
-	# only run git log once
-	if test -z "$checked_git_log"; then
-		checked_git_log=1
-		word_list="$word_list
-		$(git log --format='%(trailers:separator=%x2C)' | tr -d : | sort -u)
-		"
-	fi
+	word_list="$word_list
+	$(git log --format='%(trailers:separator=%x2C)' | tr -d : | sort -u)
+	"
 }
+get_names_from_filesystem() {
+	word_list="$word_list
+	$(find . -type f -exec basename {} \; | tr . \\n | awk '!a[$0]++')
+	"
+}
+
 
 check_word() {
 	if test -f "$WORD_FILE"; then
 		look -f "$word" "$WORD_FILE" | grep -qi "^$word\$" && return 0
 	fi
 	readtags "$word" 2> /dev/null | grep -q . && return 0;
-	get_words_from_git_log
+
+	if test -z "$checked_ancillary_sources"; then
+		checked_ancillary_sources=1
+		get_words_from_git_log
+		get_names_from_filesystem
+	fi
 	printf '%s' "$word_list" | grep -qw "$word" && return 0
 	if ! test "$BAD_WORDS" -gt 1 2> /dev/null; then
 		warn "'$word' looks like a spelling error and/or typo"
