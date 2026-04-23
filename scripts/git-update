@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# usage: @NAME@ [--|-h|--help|-?] [branch]
+# usage: @NAME@ [--|-hqv|--help|-?] [branch]
 #
 # Fetch from the remote associated with the specified branch
 # (or diff.base-branch or main or master) and update the local ref.
@@ -13,10 +13,11 @@ usage() {
 }
 
 parse_args() {
-	FLAG_Q=0
-	while getopts ":hq" opt; do
+	: ${VERBOSITY=1}
+	while getopts ":hqv" opt; do
 		case $opt in
-		q) : $((FLAG_Q += 1 ));;
+		q) : $((VERBOSITY -= 1 ));;
+		v) : $((VERBOSITY += 1 ));;
 		h) usage;;
 		:) die "option -$OPTARG requires a value";;
 		?) die "illegal option -$OPTARG (-h for usage)";;
@@ -57,13 +58,13 @@ else
 fi
 
 print_summary() {
-	if test "$1" -gt 1; then
+	if test "$VERBOSITY" -lt 1; then
 		return 0
 	fi
 	new=$(git show-ref --verify --abbrev --hash refs/heads/$branch)
 
 	if test "${old}" = "${new}"; then
-		if test "$1" = 0; then
+		if test "$VERBOSITY" -gt 1; then
 			echo No changes to "$branch ($new)"
 		fi
 	else
@@ -76,4 +77,4 @@ print_summary() {
 	fi
 }
 
-print_summary "${FLAG_Q-0}"
+print_summary
