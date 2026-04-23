@@ -7,6 +7,8 @@
 # If the branch is already checked out, this is
 # just git-pull --quiet followed by a summary of the update.
 
+err() { printf "%s${1:+\n}" "$@"; } >&2
+die() { err "$@"; exit 1; } >&2
 usage() {
 	sed -E -e 1d -e "/^#/!q; s/# ?//; s|@NAME@|$(basename $0)|" "$0"
 	exit
