@@ -152,7 +152,6 @@ debug_trap() {
 	return $_status
 } >&2
 
-#1698377918 (YYYY-MM-DDTHH:MM:SS+0 pid:1121 /Users/wrp/3rd-party/tmux) ok
 report_cmd_status() {
 	# Clean up the most recent command in $1 and write it to stdout
 	# Note that the FAILED string is used in scripts/search-bash-history
