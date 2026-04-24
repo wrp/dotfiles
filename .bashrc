@@ -61,6 +61,19 @@ trap '. "$HOME"/.bashd/PS1; window-title' SIGWINCH
 check_directory_existence $HOME/.config git vim
 check_directory_existence $HOME/.run vim/{swap,backup,undo}
 PROMPT_COMMAND=after_cmd # Run after a command, before a prompt is displayed
+
+# The DEBUG trap runs at least twice per command cycle — once for PROMPT_COMMAND
+# and once for the actual command.  If PROMPT_COMMAND is an array of multiple
+# commands, the DEBUG trap fires before each one.
+#
+# 1. DEBUG trap fires (for the upcoming PROMPT_COMMAND)
+# 2. PROMPT_COMMAND executes
+# 3. Prompt is displayed
+# 4. User types a command
+# 5. DEBUG trap fires (for the user's command)
+# 6. User's command executes
+# 7. Back to step 1
+
 window-title
 
 if test "${BASH_VERSINFO[0]}" -lt 5; then
