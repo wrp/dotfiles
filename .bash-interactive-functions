@@ -291,7 +291,7 @@ up() {
 		local _dir
 		_dir=$(go env GOMOD 2> /dev/null)
 		_dir=${_dir%/go.mod}
-		if test -z "$_dir"; then
+		if test -z "$_dir" || test "$_dir" = '/dev/null'; then
 			_dir=$(git root) || return 1
 		fi
 		test -d "$_dir" && cd "$_dir"
