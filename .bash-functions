@@ -158,10 +158,12 @@ report_cmd_status() {
 	PANE=$(tmux display-message -p '#{pane_id}' 2> /dev/null)
 	test -f "$1" && tac "$1" | STATUS="$2" PANE=$PANE \
 	perl -MPOSIX -pe '
-		foreach $cmd (
-			"b", "cal", "cat", "cd", "date", "echo", "exec bash",
-			"head", "less", "ls", "more", "pwd", "tail", "man"
-		) { exit 0 if /^$cmd( |$)/ && ! /\|/ }
+		unless (/\|/) {
+			foreach $cmd (
+				"b", "cal", "cat", "cd", "date", "echo", "exec bash",
+				"head", "less", "ls", "more", "pwd", "tail", "man"
+			) { exit 0 if /^$cmd( |$)/ }
+		}
 		s/\s+$/\n/;
 		if( /^#[0-9]{10}$/ ) { # abort after adding the timestamp.
 			$ts = substr($_, 1, 10);
