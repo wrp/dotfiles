@@ -1,3 +1,5 @@
+Make push conditional: when you source dotfiles, store the git
+oid of dotfiles and do not re-read unless different.
 
 
 Fix git-completions so that "git -C /p/a<tab>" works.  Currently,
