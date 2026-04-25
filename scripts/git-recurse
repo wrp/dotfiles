@@ -18,6 +18,11 @@ fi
 
 header() { sed -e "s@^@${dir}${delim}@" -e 's@\./@@'; }
 
+# TODO (?) probably not worth the effort, but assuming that a directory is
+# the top-level of a repo merely because of the existence of .git is fragile.
+# This will almost certainly not behave well with submodules (which is a
+# tautology, as submodules are a scourge) and will completely miss many
+# edge cases.  But this script does not need to be particularly robust.
 find . -type d -name .git | while read git_dir; do
 	dir="${git_dir%/.git}"
 	{ { git -C "$dir" "$@" 2>&3 | header >&4; } 3>&1 | header >&2; } 4>&1 &
