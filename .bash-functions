@@ -129,18 +129,6 @@ write_hist_file() {
 	test -f "$HISTFILE" || warn HISTFILE does not exist
 }
 
-_recover_from_orphaned_dir() {
-	# Walk up the stale path string until a directory exists
-	local target="$PWD"
-	while test "$target" != "/" && ! test -d "$target"; do
-		target="${target%/*}"
-	done
-	test -z "$target" && target=/
-
-	echo "CWD unlinked. Moving from $PWD to $target" >&2
-	builtin cd "$target"
-}
-
 debug_trap() {
 	local _status=$?
 
@@ -148,14 +136,6 @@ debug_trap() {
 	: also runs before $PROMPT_COMMAND
 
 	test "$BASH_COMMAND" = after_cmd && return $_status
-
-	if ! command pwd >/dev/null 2>&1; then
-		if shopt -q extdebug; then
-			_recover_from_orphaned_dir
-			return 1
-		fi
-	fi
-
 	wrp_start_time=$EPOCHREALTIME
 	write_hist_file
 
