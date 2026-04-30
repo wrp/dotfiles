@@ -72,7 +72,7 @@ after_cmd() {
 		report_cmd_status "$HISTFILE" "$ps" >> "$HOME"/.bash-history
 	fi
 	check_environment
-	if test -z "$NO_RESET_TITLE" && test -n "$TMUX"; then
+	if test -z "$DO_NOT_RESET_TITLE" && test -n "$TMUX"; then
 		if this_shell_is_running_in_current_pane; then
 			window-title
 		else
@@ -80,7 +80,7 @@ after_cmd() {
 			marker=$(_get_marker $_status) window-title "$old_title"
 		fi
 	fi
-	unset NO_RESET_TITLE
+	unset DO_NOT_RESET_TITLE
 	for name in $HOME/.config/secrets/*.gpg; do
 		name=$(basename "$name")
 		name=${name%.gpg}
@@ -141,8 +141,7 @@ debug_trap() {
 
 	case ${BASH_COMMAND%% *} in
 	after_cmd|debug_trap|window-title|set-title)
-		# Do not reset window title after these commands
-		NO_RESET_TITLE=1
+		DO_NOT_RESET_TITLE=1
 		;;
 	*)
 		window-title "${BASH_COMMAND}"
