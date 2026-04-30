@@ -1,6 +1,9 @@
 Make push conditional: when you source dotfiles, store the git
 oid of dotfiles and do not re-read unless different.
 
+Debug the auto-recover from orphaned CWD started in
+519c16ff7688e7cb8e71782a398d431e4356baf1
+
 
 Fix git-completions so that "git -C /p/a<tab>" works.  Currently,
 if not in a git repo, that will through error messages.  As an
