@@ -27,7 +27,7 @@ vg() {
 	*) false;
 	esac; do :; done
 
-	local pat="+/${case}${open}$1${close}";
+	local pat="+1;/${case}${open}$1${close}";
 	g grep "$@" | vi "$pat";
 }
 
