@@ -17,17 +17,17 @@ _check_if_ignored_by_git() {
 }
 
 vg() {
-	local nocase='\C'
+	local case='\C'
 	local open
 	local close
 	if test "$1" = grep; then shift; fi
 	while case $1 in
-	-i) nocase='\c'; shift;;
+	-i) case='\c'; shift;;
 	-w) open='\<'; close='\>'; shift;;
 	*) false;
 	esac; do :; done
 
-	local pat="+/${nocase}${open}$1${close}";
+	local pat="+/${case}${open}$1${close}";
 	g grep "$@" | vi "$pat";
 }
 
