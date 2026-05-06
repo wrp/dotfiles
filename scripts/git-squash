@@ -16,6 +16,8 @@ generate_log_msg() {
 	git log --reverse --format="$format" "$1".. || return 1
 }
 test "$1" = -h && usage && exit 0
+main=$(git base-branch) || exit 1
+test $# = 0 && set -- $(git merge-base HEAD $main)
 
 if ! git rev-parse --verify HEAD >/dev/null 2>&1; then
 	die There is no current HEAD
