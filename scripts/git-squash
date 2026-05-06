@@ -27,12 +27,11 @@ if ! git diff-index --quiet HEAD; then
 fi
 
 current=$(git rev-parse --short HEAD) || exit
+trap cleanup 0
 base=$(git rev-parse --short "$1") || exit
 msg=$(generate_log_msg "$1") || exit
 
 git reset --quiet --hard "$1" || exit
-
-trap cleanup 0
 
 # Grrr.  Even with --quiet, git merge is spewing messages
 git merge --quiet --squash "$current" > /dev/null || exit
