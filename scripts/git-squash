@@ -35,6 +35,6 @@ git reset --quiet --hard "$1" || exit
 
 # Grrr.  Even with --quiet, git merge is spewing messages
 git merge --quiet --squash "$current" > /dev/null || exit
-SKIP_COMMIT_CHECKS=silent git commit --quiet -m "$msg" ${edit_msg+-e} || exit
+git commit --quiet -n -m "$msg" ${edit_msg+-e} || exit
 
 trap : 0
