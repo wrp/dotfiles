@@ -10,8 +10,8 @@ cleanup() {
 	git reset --hard "$current"
 }
 generate_log_msg() {
-	local format='# ---- %h -- %ai%n%B%n%N'
-	printf 'Squash commits from %s to %s\n\n' "$current" "$base"
+	local format='---- %h -- %ai%n%B%n%N'
+	printf 'Squash commits %s..%s\n\n' "$base" "$current"
 	git log --reverse --format="$format" "$1".. || return 1
 }
 test "$1" = -h && usage && exit 0
