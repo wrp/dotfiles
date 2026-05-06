@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Create a new commit which squashes HEAD into $1.
+# Create a new commit which squashes $1..HEAD into a new child of $1
 # Define "edit_msg" in the environment if you want to edit the commit message.
 
 die() { printf 'FATAL: %s\n' "$*" >&2; exit 1; }
