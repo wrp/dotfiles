@@ -68,6 +68,7 @@ main() {
 		git update-ref refs/heads/$branch $upstream || exit 1
 	fi
 	print_summary
+	git fetch $quiet --prune "$remote"
 }
 
 print_summary() {
