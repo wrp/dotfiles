@@ -63,7 +63,7 @@ initialize() {
 		} | tr , \\n | sort -u | sed -e '/^ *$/d' | tr \\n , | sed -e 's/,$//')"}
 
 	_cfg_trailer_width="$(git config log.trailer-width)"
-	trailer_width=${w-${_cfg_trailer_width:-11}}
+	trailer_width=${w-${_cfg_trailer_width:-1}}
 	check_csl "$trailer_width" || die "log.trailer-width: $trailer_width"
 	trailer_fmt=$(build_trailer_fmt)
 
