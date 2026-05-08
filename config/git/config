@@ -108,7 +108,6 @@
 [log]
 	follow = true
 	default-trailer = Type
-	trailer-width = 3
 [help]
 	autocorrect = never
 [gpg "ssh"]
