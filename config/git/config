@@ -114,3 +114,5 @@
 	allowedSignersFile = /Users/wrp/.ssh/allowed_signers
 [url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
+[credential "https://gitlab.com"]
+	helper = !/opt/homebrew/bin/glab auth git-credential
