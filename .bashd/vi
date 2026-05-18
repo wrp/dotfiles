@@ -31,7 +31,7 @@ vg() {
 	g grep "$@" | vi "$pat";
 }
 
-vf() { scrape | find-pane-by-pid; }
+vf() { find-vim-session; }
 
 vi() {
 	: If no arguments are given and input is from a tty and we are
