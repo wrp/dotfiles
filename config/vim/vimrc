@@ -26,6 +26,8 @@ set shiftwidth=8
 
 packadd! matchit
 let b:match_words = '<<<<<<<:=======:>>>>>>>'
+let g:sh_fold_enabled=7  " value is bitmask: 1=functions, 2=heredocs, 4=if/do/for blocks  (7 folds everything)
+
 
 let loaded_matchparen=1
 set autoindent
