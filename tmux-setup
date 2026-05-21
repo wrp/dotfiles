@@ -200,7 +200,7 @@ set -g window-status-current-style fg=yellow,bold,bg=black
 set -g window-status-current-format '#{?automatic-rename,#{pane_title},#{window_name}}'
 set -g window-status-format '#{?client_prefix,#[reverse],}#F#{?automatic-rename,#{window_index}:#{pane_title},#{window_name}}'
 set -g status-left-length 25
-set -g status-right '%H:%M %e-%b'
+set -g status-right '#(hostname | cut -c1-17) %b-%d #{?client_prefix,#[reverse],}%H:%M%z'
 set -g status-style bg=red
 set-option -g update-environment "SSH_AUTH_SOCK"
 set -g history-limit 25000
