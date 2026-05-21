@@ -12,10 +12,6 @@ cleanup_docker_corruption() {
 }
 
 validate_args() {
-	if test $# = 0; then
-		echo No paths specified >&2
-		exit 1
-	fi
 	reset_trailer_args "$@"
 }
 
@@ -69,18 +65,20 @@ main() {
 		# asked to force, do not attempt to clean up.
 		trap 'command git reset' 0
 	fi
-	git add "$@" || exit
-	msg=$(printf 'Add '
-		perl -E '
-			my $w = $ENV{"MAX_GIT_SUMMARY"} // 50;
-			my $m = join(", ", @ARGV);
-			if (length $m > $w - 4) {
-				use File::Basename;
-				@ARGV = map { basename($_) } @ARGV;
-				$m = join(", ", @ARGV);
-			}
-			say substr $m, 0,$w - 4' "${@}"
-		printf '\n'
+	if test -n "$1"; then
+		git add "$@" || exit
+		count=$#
+	else
+		count=0
+		while read line; do
+			git add "$line" || exit
+			count=$((count + 1))
+		done
+	fi
+	msg=$(
+		s=s
+		test "$count" = 1 && s=''
+		printf "Add $count file$s\n\n"
 		git diff --name-status --cached
 	)
 	if test -z "$msg"; then
