@@ -35,9 +35,16 @@ prepend_path() { local x; for x; do clear_path "$x"; PATH="$x${PATH:+:}$PATH"; d
 # that variables that I intend for use interactively in
 # helper functions are not inadvertenly set
 check_environment() {
+	local msg
 	local x
 	for x in f h t; do
-		eval "test -n \"\$$x\"" && warn "shell variable $x is set"
+		eval "test -n \"\$$x\"" && {
+			case $x in
+			f|h) msg="($x is used in the vi function)";;
+			t) msg="($x is used by git hooks)";;
+			esac
+			warn "shell variable $x is set $msg"
+		}
 	done
 	if test "$IFS" != $' \t\n'; then
 		echo "WARNING: IFS contains unexpected characters"
