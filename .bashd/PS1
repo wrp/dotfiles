@@ -21,7 +21,8 @@ check_previous() {
 		fi
 	} )';
 }
-add_pid() { PS1+="$(printf "%05d%s" "$$" "$(tmux display-message -p '#{pane_id}')")"; }
+_add_pid() { PS1+="$(printf "%05d" "$$")"; }
+_add_pane_id() { test -n "$TMUX" && PS1+="$(tmux display-message -p '#{pane_id}')"; }
 add_prompt_char() { PS1+='\$ '; }
 insert_text() { test -n "$*" && PS1+=$(printf '\\\n%s' "$*"); }
 
@@ -62,13 +63,15 @@ set_prompt() {
 	fi
 	insert_text "$__YELLOW"'$trailer'
 	insert_text "$__GREEN"
-	add_pid
+	_add_pid
+	_add_pane_id
 	add_prompt_char
 	insert_text "$__BOLD_YELLOW"
 }
 set_prompt
 unset set_prompt
 unset set_color
-unset add_pid
+unset _add_pid
+unset _add_pane_id
 unset add_prompt_char
 unset insert_text
