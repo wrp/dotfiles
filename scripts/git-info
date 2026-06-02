@@ -20,7 +20,7 @@ sed -e 's/ *$//' <<- EOF
 	main:     $main
 	top:      $top
 	cwd:      $(pwd)
-	version:  ${description:-unversioned}
+	version:  ${version:-unversioned}
 EOF
 
 
