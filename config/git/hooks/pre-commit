@@ -78,7 +78,17 @@ validate_whitespace() {
 	fi
 }
 
+validate_gpg() {
+	# In some situations (eg, when Claude tries to commit), the attempt to
+	# open a new window to query the user for a password just messes everything up.
+	# To avoid that, abort early if the signature for gpg needs to be refreshed.
+	if ! echo test | gpg --batch --pinentry-mode error -s -o /dev/null 2>/dev/null; then
+		die 'Your gpg password has expired.  Aborting!'
+	fi
+}
+
 main() {
+	validate_gpg
 	validate_pathnames "$@"
 	validate_whitespace "$@"
 	run_local_hooks "$@"
