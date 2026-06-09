@@ -85,6 +85,11 @@ validate_gpg() {
 	if ! echo test | gpg --batch --pinentry-mode error -s -o /dev/null 2>/dev/null; then
 		die 'Your gpg password has expired.  Aborting!'
 	fi
+	# This is completely unreliable!
+	# On Macos, I am repeatedly seeing the gpg --batch --pinentry-mode
+	# succeed, but a subsequent operation still requests interactive input
+	# from the alternate tty.  This is frustrating; if I get the request for
+	# input from an interactive Claude session, it breaks the interface.
 }
 
 main() {
