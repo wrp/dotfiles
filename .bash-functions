@@ -37,10 +37,11 @@ prepend_path() { local x; for x; do clear_path "$x"; PATH="$x${PATH:+:}$PATH"; d
 check_environment() {
 	local msg
 	local x
-	for x in f h t; do
+	for x in f h m t; do
 		eval "test -n \"\$$x\"" && {
 			case $x in
 			f|h) msg="($x is used in the vi function)";;
+			m) msg="($x is used by search-bash-history)";;
 			t) msg="($x is used by git hooks)";;
 			esac
 			warn "shell variable $x is set $msg"
