@@ -1,11 +1,14 @@
 
 # Mask the value of all secrets
 env() {
+	echo "s/^($(
+		ls ~/.config/secrets/*.gpg | sed 's/\.gpg$//' | paste -sd'|' -
+	))=.*/\1=********/"
 	if test $# = 0; then
 		command env |
-		sed -E "s/^($(
-			ls ~/.config/secrets | sed 's/\.gpg$//' | paste -sd'|' -
-		))=.*/\1=********/"
+		sed -E "s@^($(
+			cd ~/.config/secrets; ls *.gpg | sed 's/\.gpg$//' | paste -sd'|' -
+		))=.*@\1=********@"
 	else
 		command env "$@"
 	fi
