@@ -1,0 +1,15 @@
+#!/bin/sh
+
+for branch in \
+	$(git symbolic-ref --short HEAD) \
+	$(git base-branch) \
+; do
+	remote=$(git config branch.$branch.remote)
+	test -n "$remote" && break
+done
+
+if test -z "$remote"; then
+	exit 1
+else
+	printf '%s\n' "$remote"
+fi
