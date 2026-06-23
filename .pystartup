@@ -12,7 +12,8 @@ if sys.version_info >= (3, 13):
     default_path = os.path.expanduser("~/.python_history")
     historyPath = os.environ.get("PYTHON_HISTORY", default_path)
     print(f'Reading history from {historyPath}')
-    os.environ['PAGER'] = f'less {os.environ.get("LESS","-X")}'  # The new python repl seems to ignore LESS
+    os.environ['_LESS'] = os.environ.get('LESS', '')
+    os.environ['PAGER'] = 'LESS="$_LESS" less'
 else:
 
     import atexit
