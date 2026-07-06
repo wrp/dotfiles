@@ -1,4 +1,5 @@
 
+*.json whitespace=-indent-with-non-tab,space-before-tab,tab-in-indent
 *.py whitespace=-indent-with-non-tab,space-before-tab,tab-in-indent
 *.md whitespace=-indent-with-non-tab,space-before-tab
 *.ts whitespace=-indent-with-non-tab,space-before-tab
