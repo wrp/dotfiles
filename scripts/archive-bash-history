@@ -16,3 +16,25 @@ for pid in *; do
 	cat "$pid" >> ".old/$pid" \
 	&& rm ${V:+-v} "$pid" | tr \\140 "'"
 done
+
+hist="$HOME/.bash-history"
+test -f "$hist" || exit 0
+
+threshold=$(( $(date +%s) - 30 * 86400 ))
+
+awk -v threshold="$threshold" -v home="$HOME" '
+/^#[0-9]/ {
+	epoch = substr($1, 2) + 0
+	old = (epoch < threshold)
+	if (old) {
+		i = index($0, "(")
+		if (i > 0) ym = substr($0, i + 1, 7)
+		else ym = "unknown"
+		f = home "/.bash-history-" ym
+	}
+}
+{
+	if (old) print >> f
+	else print
+}
+' "$hist" > "$hist.tmp" && mv "$hist.tmp" "$hist"
