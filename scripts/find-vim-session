@@ -23,8 +23,15 @@ fi
 
 vim_pid=$(tmux capture-pane -p | awk '/^ *process ID: [0-9]{4,}/ {print $3}')
 vim_ppid=$(ps -oppid= $vim_pid | tr -d ' ')
-tmux_pane=$(tmux list-panes -a \
-		-F "#{pane_id} #{pane_current_command} #{pane_pid}" |
-	awk '$3 == p && $2 == "vim" {print $1}' p=$vim_ppid)
+target_pid=$vim_ppid
+tmux_pane=""
+while test -n "$target_pid" && test "$target_pid" != "1"; do
+	tmux_pane=$(tmux list-panes -a \
+		-F "#{pane_id} #{pane_pid}" |
+		awk '$2 == p {print $1}' p=$target_pid)
+	test -n "$tmux_pane" && break
+	target_pid=$(ps -o ppid= -p "$target_pid" | tr -d ' ')
+done
 
+test -n "$tmux_pane" || die "No tmux pane found for vim pid $vim_pid"
 tmux switch-client -t "$tmux_pane"
