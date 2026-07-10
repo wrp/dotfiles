@@ -28,7 +28,7 @@
 	exec = "!exec "  # execute a shell command in the top level
 	l = log-oneline --graph --decorate
 	l1 = l --first-parent
-	la = l --all
+	la = l --branches --remotes --tags
 	lh = l -n 10
 	ld = l --date=format:'%FT%T%z'
 	ls = l --show-signature
