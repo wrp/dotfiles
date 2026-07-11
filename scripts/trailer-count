@@ -1,10 +1,13 @@
 #!/bin/sh
 # Show a count of git trailers used in the history
 #
-# Usage: $0 [revision-range]
-#   Default revision-range is HEAD (all reachable commits).
+# Usage: $0 [key ...]
+#   If no keys are given, output the count of each key.  If keys
+#   are given, show the counts for the values of each specified key.
+#
+# The history can be limited by specifing 'range' in the environment.
 
-range="${1:-HEAD}"
+: ${range:=HEAD}
 
 tmp=$(mktemp)
 trap 'rm -f "$tmp"' EXIT
@@ -16,14 +19,15 @@ if test ! -s "$tmp"; then
 	exit 0
 fi
 
-awk -F': ' '{
-	k=$1
-	v=substr( $0, length(k) + 3)
-	a[k] += 1
-	b[k,v] += 1
-	}
-	END {
-		for(k in a) {
-			print a[k], k
-		}
-	}' OFS=\\t "$tmp" | sort -rn
+if test $# = 0; then
+	awk -F': ' '{ a[$1] += 1 }
+		END { for(k in a) print a[k], k }
+	' OFS=\\t "$tmp" | sort -rn
+else
+	for key; do
+		echo "*** $key ****"
+		awk -F': ' '$1 == k{ a[substr($0, length($1) + 3)] += 1 }
+			END { for(v in a) print a[v], v }
+		' k="$key" OFS=\\t "$tmp" | sort -rn
+	done
+fi
