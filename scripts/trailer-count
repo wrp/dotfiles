@@ -1,0 +1,29 @@
+#!/bin/sh
+# Show a count of git trailers used in the history
+#
+# Usage: $0 [revision-range]
+#   Default revision-range is HEAD (all reachable commits).
+
+range="${1:-HEAD}"
+
+tmp=$(mktemp)
+trap 'rm -f "$tmp"' EXIT
+
+git log "$range" --format='%(trailers:unfold)' | sed -e '/^$/d' > "$tmp"
+
+if test ! -s "$tmp"; then
+	echo "No trailers found."
+	exit 0
+fi
+
+awk -F': ' '{
+	k=$1
+	v=substr( $0, length(k) + 3)
+	a[k] += 1
+	b[k,v] += 1
+	}
+	END {
+		for(k in a) {
+			print a[k], k
+		}
+	}' OFS=\\t "$tmp" | sort -rn
