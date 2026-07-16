@@ -100,7 +100,7 @@ after_cmd() {
 	type -t local_post_cmd_hook > /dev/null && local_post_cmd_hook
 	unset DOTFILES_CHANGED BAD_VENV
 	( command cd ~/dotfiles && ! command git diff-index --quiet HEAD) && DOTFILES_CHANGED=1
-	test -n "$VIRTUAL_ENV" && ! type -q deactivate && BAD_VENV=1
+	test -n "$VIRTUAL_ENV" && ! type 2> /dev/null >&2 deactivate && BAD_VENV=1
 
 	return $_status
 }
