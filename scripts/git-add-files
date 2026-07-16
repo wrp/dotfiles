@@ -78,14 +78,17 @@ main() {
 	msg=$(
 		s=s
 		test "$count" = 1 && s=''
-		printf "Add $count file$s\n\n"
+		git diff --name-only --cached | perl -0777 -nE 'chomp; my $msg = "Add " . join(", ", split(/\n/));
+			my $max = '"${MAX_GIT_SUMMARY-50}"';
+			if (length $msg > $max) { substr($msg, $max - 3) = "..." }
+			say substr($msg, 0, '"${MAX_GIT_SUMMARY-50}"') . "\n"'
 		git diff --name-status --cached
 	)
 	if test -z "$msg"; then
 		echo "Unable to generate commit message!" >&2
 		exit 1
 	fi
-	SKIP_SPELLCHECK=silent git commit ${force:+--no-verify} -m "$msg"
+	SKIP_MESSAGE_CHECK=1 SKIP_SPELLCHECK=silent git commit ${force:+--no-verify} -m "$msg"
 }
 
 main "$@"
