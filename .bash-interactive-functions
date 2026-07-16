@@ -196,6 +196,13 @@ pytest() {
 	fi
 	command pytest "$@"
 }
+python() {
+	if test $# = 0 && test -t 1; then
+		rlwrap --always-readline python
+	else
+		command python "$@"
+	fi
+}
 POST() {
 	# ACCESS_TOKEN will need be refreshed periodically.  Just unset it.
 	test -z "$ACCESS_TOKEN" \
