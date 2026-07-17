@@ -33,3 +33,5 @@ while read local_ref local_obj remote_ref remote_obj; do
 		fi
 	done
 done >&2
+
+run_local_hooks "$@"
