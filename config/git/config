@@ -108,6 +108,7 @@
 [log]
 	follow = true
 	default-trailer = Type
+	initialDecorationSet = all
 [help]
 	autocorrect = never
 [gpg "ssh"]
