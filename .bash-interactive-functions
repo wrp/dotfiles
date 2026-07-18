@@ -296,8 +296,7 @@ up() {
 		while((c--)); do cd ..; done
 	else
 		local _dir
-		_dir=$(go env GOMOD 2> /dev/null)
-		_dir=${_dir%/go.mod}
+		_dir=$(go env GOMOD 2> /dev/null | sed -e 's@/go\.mod$@@')
 		if test -z "$_dir" || test "$_dir" = '/dev/null'; then
 			_dir=$(git root) || return 1
 		fi
