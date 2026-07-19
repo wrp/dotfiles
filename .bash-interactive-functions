@@ -141,6 +141,7 @@ get_current_gcp_project() {
 		return 1
 	fi
 }
+gs() { echo "Surely you don't really want ghostscript! (if you do: 'command gs')" >&2; }
 p() {
 	local line
 	local file
