@@ -86,8 +86,6 @@ print_summary() {
 		count="$(git rev-list "$old".."$new" | wc -l)"
 		test "$count" -gt 1 && s="s"
 		printf "Updated $branch by %d commit$s: %s\n" "$count" "${old}..${new}"
-		printf "  from: %s\n" "$(git log -n 1 --format='%H    %s' "$old")"
-		printf "    to: %s\n" "$(git log -n 1 --format='%H    %s' "$new")"
 		git diff --shortstat "$old" "$new"
 	fi
 }
