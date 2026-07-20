@@ -1,5 +1,6 @@
-set foldlevelstart=0
-set foldmethod=manual
+setlocal foldlevelstart=0
+setlocal foldmethod=manual
+
 " syn match comment "\v(^\s*//.*\n)+" fold
 
 if line('$') >= 29 && match(getline(30), '^// \**$') != -1
