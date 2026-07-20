@@ -53,6 +53,7 @@ function! ClearWhite()
 	if !exists("b:keep_white") || b:keep_white != 1
 		let l:save_pos = getcurpos()
 		execute '%s/\s\+$//e'
+		execute '%s/\r$//e'
 		call cursor(l:save_pos[1:])
 		call histdel("search", -1)
 	endif
