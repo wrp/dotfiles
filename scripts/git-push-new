@@ -1,0 +1,7 @@
+#!/bin/sh
+# Create new branch on remote
+
+remote=${1-$(git remote-name)}
+branch=${2-$(git rev-parse --abbrev-ref HEAD)}
+
+git push -u "$remote" "$branch"
