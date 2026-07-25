@@ -1,12 +1,16 @@
 #!/bin/sh
 # Show a count of git trailers used in the history
 #
-# Usage: $0 [key ...]
+# usage: $0 [-h|--help] [key ...]
 #   If no keys are given, output the count of each key.  If keys
 #   are given, show the counts for the values of each specified key.
 #
-# The history can be limited by specifing 'range' in the environment.
+# The history can be limited by specifying 'range' in the environment.
 
+if printf '%s\n' "$*" | grep -wqE -- '-h|--help'; then
+	sed -nE '2,/^$/{s/# ?//; s|\$0|'"$(basename $0)|"'; p;}' "$0"
+	exit
+fi
 : ${range:=HEAD}
 
 tmp=$(mktemp)
