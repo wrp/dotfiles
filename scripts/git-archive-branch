@@ -10,8 +10,10 @@
 #     -l/--list     list previously archived branches
 
 archive=${a:-archive}
-
 current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+die() { printf "%s${1:+\n}" "$@"; exit 1; } >&2
+
 if test $# = 0 || printf '%s\n' "$*" | grep -wqE -- '-h|--help'; then
 	sed -nE '3,/^$/{/^$/q; s/# ?//; s|@NAME@|'"${0##*/}|"'; p;}' "$0"
 	exit
@@ -33,7 +35,7 @@ for branch; do
 	fi
 
 	extant_ref=$(git show-ref -s "refs/$archive/$branch" || true)
-	this=$(git show-ref -s "refs/heads/${branch}") || exit
+	this=$(git show-ref -s "refs/heads/${branch}") || die "Branch $branch does not exist"
 
 	git update-ref "refs/$archive/${branch}" "refs/heads/${branch}" || exit
 	git show-ref "refs/$archive/${branch}" || exit
