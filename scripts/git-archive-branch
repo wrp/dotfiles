@@ -1,13 +1,13 @@
 #!/bin/sh
 
-# usage: @NAME@ [-l] [-h|--help] branch [branch...]
+# usage: @NAME@ [-l|--list] [-h|--help] branch [branch...]
 #
 # Archive branches by creating a ref in refs/${a-archive}
 # and deleting the branch.
 #
 # Options:
 #     -h/--help     print usage statement
-#     -l            list previously archived branches
+#     -l/--list     list previously archived branches
 
 archive=${a:-archive}
 
@@ -17,8 +17,8 @@ if test $# = 0 || printf '%s\n' "$*" | grep -wqE -- '-h|--help'; then
 	exit
 fi
 
-if test "$1" = -l; then
-	git for-each-ref refs/"${2-archive}"
+if printf '%s\n' "$*" | grep -wqE -- '-l|--list'; then
+	git for-each-ref refs/"${2-"$archive"}"
 	exit
 fi
 
