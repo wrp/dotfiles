@@ -1,17 +1,19 @@
 #!/bin/sh
 
-# usage: @NAME@ branch [branch...]
+# usage: @NAME@ [-l] [-h|--help] branch [branch...]
 #
 # Archive branches by creating a ref in refs/${a-archive}
 # and deleting the branch.
 #
-##
+# Options:
+#     -h/--help     print usage statement
+#     -l            list previously archived branches
 
 archive=${a:-archive}
 
 current_branch=$(git rev-parse --abbrev-ref HEAD)
-if test $# = 0; then
-	sed -nE "/^##/q; s|@NAME@|$(basename $0)|; 1!s/# ?//p;" "$0"
+if test $# = 0 || printf '%s\n' "$*" | grep -wqE -- '-h|--help'; then
+	sed -nE '3,/^$/{/^$/q; s/# ?//; s|@NAME@|'"${0##*/}|"'; p;}' "$0"
 	exit
 fi
 
