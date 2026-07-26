@@ -39,7 +39,7 @@ for branch; do
 
 	git update-ref "refs/$archive/${branch}" "refs/heads/${branch}" || exit
 	git show-ref "refs/$archive/${branch}" || exit
-	git branch -D "${branch}" || exit
+	git branch --quiet -D "${branch}" || exit
 
 	if test -n "$extant_ref" && test "$extant_ref" != "$this"; then
 		printf 'WARNING: re-writing archive.  '
