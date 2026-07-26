@@ -42,7 +42,7 @@ for branch; do
 	git branch --quiet -D "${branch}" || exit
 
 	if test -n "$extant_ref" && test "$extant_ref" != "$this"; then
-		printf 'WARNING: re-writing archive.  '
+		printf "WARNING: re-writing $branch.  "
 		echo For details: git reflog refs/$archive/$branch
 	fi >&2
 done
