@@ -25,6 +25,7 @@ g() {
 		if test -z "$raw"; then
 		case $arg in
 		(--    ) raw=1; continue;;
+		# TODO: match {N} as well, so we can do {2}..{3}
 		([0-9]*) # replace numeric args with branch name
 			if test "$prev" != -n &&
 				test "$arg" -ge 0 2> /dev/null &&
