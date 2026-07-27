@@ -67,7 +67,7 @@ get_words_from_git_log() {
 
 check_word() {
 	if test -f "$WORD_FILE"; then
-		look -f "$word" "$WORD_FILE" | grep -qi "^$word\$" && return 0
+		look -f "$word" "$WORD_FILE" 2>/dev/null | grep -qi "^$word\$" && return 0
 	fi
 	readtags "$word" 2> /dev/null | grep -q . && return 0;
 	get_words_from_git_log
