@@ -35,6 +35,7 @@ max() { test "$1" -gt "$2" && printf '%d' "$1" || printf '%d' "$2"; }
 min() { test "$1" -lt "$2" && printf '%d' "$1" || printf '%d' "$2"; }
 
 window_count=$(tmux list-windows | wc -l)
+test "$window_count" -gt 0 || exit  # protect against tmux not being in PATH
 width=$(min "$(( (${COLUMNS:-80} - 30) / $window_count ))" "$MAX_WIDTH")
 
 width=$(max "$width" "$MIN_WIDTH")
