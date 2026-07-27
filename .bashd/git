@@ -23,13 +23,13 @@ g() {
 		orig=$arg
 
 		if test -z "$raw"; then
+		# replace numeric args with branch name
 		case $arg in
 		(--    ) raw=1; continue;;
-		# TODO: match {N} as well, so we can do {2}..{3}
-		([0-9]*) # replace numeric args with branch name
+		(*)
 			if test "$prev" != -n &&
-				test "$arg" -ge 0 2> /dev/null &&
-				! arg=$(command git select-branch "$arg")
+				! arg=$(echo "$arg" | perl -pe 's/(\b\d+\b)|\{(\d+)\}/my $r=qx{git select-branch "$1$2"};
+					die "Cannot find branch" if $?; chomp $r; $r/ge')
 			then
 				return 1
 			fi
