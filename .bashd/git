@@ -28,8 +28,11 @@ g() {
 		(--    ) raw=1; continue;;
 		(*)
 			if test "$prev" != -n &&
-				! arg=$(echo "$arg" | perl -pe 's/(\b\d+\b)|\{(\d+)\}/my $r=qx{git select-branch "$1$2"};
-					die "Cannot find branch" if $?; chomp $r; $r/ge')
+				! arg=$(
+					echo "$arg" | perl -pe 's/(?<![~\w])(\d+)(?![~\w])|\{(\d+)\}/
+					my $r=qx{git select-branch "$1$2"};
+					die "Cannot find branch" if $?; chomp $r; $r/ge'
+				)
 			then
 				return 1
 			fi
