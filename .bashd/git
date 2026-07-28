@@ -29,9 +29,12 @@ g() {
 		(*)
 			if test "$prev" != -n &&
 				! arg=$(
-					echo "$arg" | perl -pe 's/(?<![~\w])(\d+)(?![~\w])|\{(\d+)\}/
-					my $r=qx{git select-branch "$1$2"};
-					die "Cannot find branch" if $?; chomp $r; $r/ge'
+					perl -e '
+						($s=shift) =~ s{(?<![~\w])(\d+)(?![~\w])|\{(\d+)\}}
+						{my $r=qx{git select-branch "$1$2"};
+						die "Cannot find branch" if $?; chomp $r; $r}ge;
+						print $s
+					' -- "$arg"
 				)
 			then
 				return 1
