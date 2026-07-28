@@ -3,7 +3,7 @@
 
 export prefix=$HOME/$(uname -m)/$(uname -s)
 export CARGO_INSTALL_ROOT=$HOME/$(uname -m)/$(uname -s)
-export CARGO_TARGET_DIR=$HOME/$(uname -m)/$(uname -s)/.cargo-target
+# export CARGO_TARGET_DIR=$HOME/$(uname -m)/$(uname -s)/.cargo-target
 
 # It only makes sense to define ACLOCAL_PATH if we have
 # installed libtool in $HOME, so this really belongs in
