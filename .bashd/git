@@ -23,25 +23,17 @@ g() {
 		orig=$arg
 
 		if test -z "$raw"; then
-		# replace numeric args with branch name
-		case $arg in
-		(--    ) raw=1; continue;;
-		(*)
-			if test "$prev" != -n &&
-				! arg=$(
-					perl -e '
-						($s=shift) =~ s{(?<![~\w])(\d+)(?![~\w])|\{(\d+)\}}
-						{my $r=qx{git select-branch "$1$2"};
-						die "Cannot find branch" if $?; chomp $r; $r}ge;
-						print $s
-					' -- "$arg"
-				)
-			then
-				return 1
+			# replace numeric args with branch name
+			if test "$arg" = --; then raw=1; continue; fi
+			if test "$prev" != -n; then
+				arg=$(perl -e '
+					($s=shift) =~ s{(?<![~\w])(\d+)(?![~\w])|\{(\d+)\}}
+					{my $r=qx{git select-branch "$1$2"};
+					die "Cannot find branch" if $?; chomp $r; $r}ge;
+					print $s
+				' -- "$arg")
 			fi
-		esac
 		fi
-
 		test "$arg" != "$orig" && verbose=1
 		set -- "$@" "$arg"
 		prev=$orig
