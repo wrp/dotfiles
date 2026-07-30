@@ -11,3 +11,7 @@ syn region pythonString
       \ start=+[uU]\=\z('''\|"""\)+ end="\z1" keepend transparent fold
 syn region pythonRawString
       \ start=+[uU]\=[rR]\z('''\|"""\)+ end="\z1" keepend transparent fold
+
+
+nnoremap <buffer> <silent> [[ :let b:saved_search=@/<CR>?^\(class\<bar>def\) <CR>:let @/=b:saved_search<CR>
+nnoremap <buffer> <silent> ]] :let b:saved_search=@/<CR>/^\(class\<bar>def\) <CR>:let @/=b:saved_search<CR>
