@@ -48,6 +48,7 @@ set nowrapscan
 set scrolloff=0
 
 set t_ti= t_te=  " Disable clear screen on exit
+set tags=./tags;  " Trigger ascending search
 set tildeop
 set viminfofile=$HOME/.config/vim/viminfo
 set wildmenu
