@@ -113,6 +113,7 @@ k() { kubectl "$@"; }
 kx() { kubectx "$@"; }
 lb() { tr \\n ${1:-\ } | perl -pe 's/\s*$//' | tmux loadb - ; }
 less() { if test -t 1; then command less "$@"; else cat "$@"; fi; }
+lg() { lazygit "$@"; }
 ls() { command ls -GF "$@"; }
 
 if ! which md5sum > /dev/null 2>&1; then
