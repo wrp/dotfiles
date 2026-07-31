@@ -6,3 +6,4 @@
 *.tsx whitespace=-indent-with-non-tab,space-before-tab
 *.yml whitespace=tab-in-indent,-indent-with-non-tab
 *.yaml whitespace=tab-in-indent,-indent-with-non-tab
+Makefile whitespace=-indent-with-non-tab,-tab-in-indent,space-before-tab
