@@ -33,6 +33,7 @@
 
 usage() { sed -E -e 1,2d -e '/^$/q' -e 's/#.?//' "$0";}
 die() { echo "$*" >&2; exit 1; }
+isatty() { test -t 1 && test -z "$FUGITIVE"; }
 
 initialize() {
 	cd ${GIT_PREFIX:-.} || exit
@@ -40,7 +41,7 @@ initialize() {
 	local _cfg_author_width _cfg_trailer_width
 
 	# Terminal capabilities for highlighting refs (only when output is a tty)
-	if test -t 1; then
+	if isatty; then
 		use_color
 	else
 		# This seems a bit wrong-headed.  If the output is to a tty,
@@ -154,7 +155,7 @@ main() {
 			)${blue}${ref_marker}% D$(:
 			)${reset}" | sed -E 's/  +//g' )" "$@"
 	} |
-	if test -t 1; then
+	if isatty; then
 		sed -E -e "$ref_pattern" -e "$ref_pattern" -e "$ref_pattern"|
 		tr -d '\002' |
 		diff-highlight |
