@@ -34,6 +34,7 @@ export PYTHONSTARTUP=$HOME/.pystartup
 export SHELL=bash
 export TEXINPUTS=.:$prefix/share/lib/latex2html/texinputs:
 export VIRTUAL_ENV_DISABLE_PROMPT=1
+export XDG_CONFIG_HOME=$HOME/.config
 # export CPATH=$HOME/$(uname -m)/$(uname -s)/include
 # export LDPATH=$HOME/$(uname -m)/$(uname -s)/lib
 
