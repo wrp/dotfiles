@@ -1,0 +1,8 @@
+#!/bin/sh +x
+
+current=$(git config status.showUntrackedFiles)
+
+case ${current:-normal} in
+normal) git config status.showUntrackedFiles no;;
+*) git config status.showUntrackedFiles normal;;
+esac
