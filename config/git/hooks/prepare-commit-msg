@@ -19,9 +19,11 @@ main() {
 }
 
 want_to_append_previous() {
-	# Append saved message except during merge, squash, rebase, or amend
+	# Append saved message only when an editor will run (so git
+	# strips the # comment lines).  Skip when a message was already
+	# provided (-m/-F), or during merge, squash, rebase, or amend.
 	case "$2" in
-	merge|squash|rebase|amend) return 1;;
+	message|merge|squash|rebase|amend|commit) return 1;;
 	esac
 
 	# Do not append if we're in the middle of a rebase (interactive or not)
