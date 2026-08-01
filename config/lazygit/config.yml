@@ -1,0 +1,22 @@
+customCommands:
+  - key: 'O' # Shift + O
+    context: 'global'
+    description: 'Open an untracked repository directory'
+    prompts:
+      - type: 'input'
+        title: 'Absolute directory path:'
+        key: 'RepoPath'
+    command: 'lazygit -p {{.FormValues.RepoPath}}'
+    output: terminal
+  - key: 'U'
+    context: 'files'
+    description: 'Toggle display of untracked files'
+    command: 'git toggle-untracked-config'
+git:
+  log:
+    showGraph: always # always, never, or when-maximised
+    showWholeGraph: false
+  statusAllStagedFiles: true
+  overrideCommandLog: false
+  allBranchesLogCmds:
+    - git log-oneline
