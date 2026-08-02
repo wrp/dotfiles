@@ -84,12 +84,9 @@ main() {
 		if test "$count" -ne 1; then
 			generate_subject
 		fi
-		git diff --name-status --cached | sed -e 's/^A/Add/; s/M/Modify/' \
-			| if test "$count" -eq 1; then
-				tr '\t' ' '
-			else
-				expand -t 10
-			fi
+		git diff --name-status --cached \
+			| sed -e 's/^A/Add/; s/M/Modify/' \
+			| column -t
 	)
 	if test -z "$msg"; then
 		echo "Unable to generate commit message!" >&2
