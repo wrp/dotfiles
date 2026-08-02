@@ -62,7 +62,7 @@ main() {
 		# Initial commit: diff against an empty tree object
 		against=$(git hash-object -t tree /dev/null)
 	fi
-	if test -z "$force" && ! git diff-index --quiet "$against"; then
+	if test -z "$force" && ! git diff-files --quiet "$@"; then
 		echo 'Repo is dirty.  -f to force (will also skip pre-commit check)' >&2
 		exit 1
 	fi
