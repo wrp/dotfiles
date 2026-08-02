@@ -53,7 +53,6 @@ main() {
 	validate_args "$@"
 	cleanup_docker_corruption
 
-	local msg
 	if test -n "$1"; then
 		git add "$@" || exit
 	else
@@ -62,7 +61,7 @@ main() {
 		done
 	fi
 	count=$(git diff-index --cached --name-only HEAD "$@" | wc -l)
-	msg=$(
+	{
 		if test "$count" -ne 1; then
 			generate_subject
 		fi
@@ -70,13 +69,7 @@ main() {
 			| sed -e 's/^A/Add/; s/M/Modify/' \
 			| column -t
 		git diff --stat --cached
-
-	)
-	if test -z "$msg"; then
-		echo "Unable to generate commit message!" >&2
-		exit 1
-	fi
-	SKIP_MESSAGE_CHECK=1 SKIP_SPELLCHECK=silent git commit -m "$msg"
+	} | SKIP_MESSAGE_CHECK=1 SKIP_SPELLCHECK=silent git commit -F -
 }
 
 main "$@"
