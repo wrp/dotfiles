@@ -13,7 +13,10 @@ export CARGO_INSTALL_ROOT=$HOME/$(uname -m)/$(uname -s)
 unset command_not_found_handle
 DOTFILE_VERSION=$(cd $HOME/dotfiles && git rev-parse HEAD)
 
+export XDG_CONFIG_HOME=$HOME/.config
+
 export BASH_SILENCE_DEPRECATION_WARNING=1
+export CLAUDE_CONFIG_DIR=$XDG_CONFIG_HOME/claude
 export COLUMNS
 export CONFIG_SITE=$HOME/.config/CONFIG_SITE
 export EDITOR=vim
@@ -34,7 +37,6 @@ export PYTHONSTARTUP=$HOME/.pystartup
 export SHELL=bash
 export TEXINPUTS=.:$prefix/share/lib/latex2html/texinputs:
 export VIRTUAL_ENV_DISABLE_PROMPT=1
-export XDG_CONFIG_HOME=$HOME/.config
 # export CPATH=$HOME/$(uname -m)/$(uname -s)/include
 # export LDPATH=$HOME/$(uname -m)/$(uname -s)/lib
 
