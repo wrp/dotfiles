@@ -53,25 +53,7 @@ main() {
 	validate_args "$@"
 	cleanup_docker_corruption
 
-	local msg force against=HEAD preamble
-	if test "$1" = "-f"; then
-		force=1
-		shift
-	fi
-	if ! git rev-parse --verify HEAD >/dev/null 2>&1; then
-		# Initial commit: diff against an empty tree object
-		against=$(git hash-object -t tree /dev/null)
-	fi
-	if test -z "$force" && ! git diff-files --quiet "$@"; then
-		echo 'Repo is dirty.  -f to force (will also skip pre-commit check)' >&2
-		exit 1
-	fi
-	if test -z "$force"; then
-		# If we abort, or git commit fails, we want to return to a clean state.
-		# If commit succeeds, doing reset should be a no-op.  But, if user
-		# asked to force, do not attempt to clean up.
-		trap 'command git reset' 0
-	fi
+	local msg
 	if test -n "$1"; then
 		git add "$@" || exit
 	else
@@ -79,7 +61,7 @@ main() {
 			git add "$line" || exit
 		done
 	fi
-	count=$(git diff-index --cached --name-only HEAD | wc -l)
+	count=$(git diff-index --cached --name-only HEAD "$@" | wc -l)
 	msg=$(
 		if test "$count" -ne 1; then
 			generate_subject
@@ -92,7 +74,7 @@ main() {
 		echo "Unable to generate commit message!" >&2
 		exit 1
 	fi
-	SKIP_MESSAGE_CHECK=1 SKIP_SPELLCHECK=silent git commit ${force:+--no-verify} -m "$msg"
+	SKIP_MESSAGE_CHECK=1 SKIP_SPELLCHECK=silent git commit -m "$msg"
 }
 
 main "$@"
