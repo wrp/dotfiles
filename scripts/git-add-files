@@ -42,6 +42,13 @@ reset_trailer_args() {
 	fi
 }
 
+generate_subject() {
+	git diff --name-only --cached | perl -0777 -nE 'chomp; my $msg = "Add " . join(", ", split(/\n/));
+		my $max = '"${MAX_GIT_SUMMARY-50}"';
+		if (length $msg > $max) { substr($msg, $max - 3) = "..." }
+		say substr($msg, 0, '"${MAX_GIT_SUMMARY-50}"') . "\n"'
+}
+
 main() {
 	validate_args "$@"
 	cleanup_docker_corruption
@@ -67,22 +74,17 @@ main() {
 	fi
 	if test -n "$1"; then
 		git add "$@" || exit
-		count=$#
 	else
-		count=0
 		while read line; do
 			git add "$line" || exit
-			count=$((count + 1))
 		done
 	fi
+	count=$(git diff-index --cached --name-only HEAD | wc -l)
 	msg=$(
-		s=s
-		test "$count" = 1 && s=''
-		git diff --name-only --cached | perl -0777 -nE 'chomp; my $msg = "Add " . join(", ", split(/\n/));
-			my $max = '"${MAX_GIT_SUMMARY-50}"';
-			if (length $msg > $max) { substr($msg, $max - 3) = "..." }
-			say substr($msg, 0, '"${MAX_GIT_SUMMARY-50}"') . "\n"'
-		git diff --name-status --cached
+		if test "$count" -ne 1; then
+			generate_subject
+		fi
+		git diff --name-status --cached | sed -e 's/^A/Add/; s/M/Modify/' | expand -t 10
 	)
 	if test -z "$msg"; then
 		echo "Unable to generate commit message!" >&2
