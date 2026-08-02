@@ -69,6 +69,8 @@ main() {
 		git diff --name-status --cached \
 			| sed -e 's/^A/Add/; s/M/Modify/' \
 			| column -t
+		git diff --stat --cached
+
 	)
 	if test -z "$msg"; then
 		echo "Unable to generate commit message!" >&2
