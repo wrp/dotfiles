@@ -61,7 +61,8 @@ set_prompt() {
 			insert_text :
 		fi
 	fi
-	insert_text "$__YELLOW"'$trailer'
+	insert_text "$__CYAN"'{$(kubectl config current-context)}'
+	insert_text "$__YELLOW"'${trailer+[$trailer]}'
 	insert_text "$__GREEN"
 	_add_pid
 	_add_pane_id
