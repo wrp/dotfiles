@@ -35,17 +35,13 @@ main() {
 	branch=${branch#refs/heads/}
 
 	if ! git rev-parse --abbrev-ref $branch@{upstream} >/dev/null 2>&1; then
-		if test "$VERBOSITY" -gt 1; then
-			echo "No upstream info for $branch"
-		fi
-		exit 0
+		die "No upstream info for $branch"
 	fi
 
 	old=$(git show-ref --verify --abbrev --hash refs/heads/$branch)
 
 	if test -z "$old"; then
-		echo >&2 "Invalid branch: $branch.  Use 'git show-ref --heads' to see valid refs"
-		exit 1
+		die "Invalid branch: $branch.  Use 'git show-ref --heads' to see valid refs"
 	fi
 
 	if ! test "$V" -ge 0 2> /dev/null; then
@@ -60,8 +56,7 @@ main() {
 		upstream=$(git rev-parse --abbrev-ref --symbolic-full-name ${branch}@{u})
 		for name in remote upstream; do
 			if eval "test -z \"\$$name\""; then
-				echo "Can't find $name for $branch" >&2
-				exit 1
+				die "Can't find $name for $branch" >&2
 			fi
 		done
 		git fetch $quiet "$remote" || exit 1
