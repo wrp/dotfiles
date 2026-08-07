@@ -68,6 +68,7 @@ main() {
 		git diff --name-status --cached \
 			| sed -e 's/^A/Add/; s/^M/Modify/' \
 			| column -t
+		echo
 		git diff --stat --cached
 	} | SKIP_MESSAGE_CHECK=1 SKIP_SPELLCHECK=silent git commit -F -
 }
