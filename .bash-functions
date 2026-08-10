@@ -102,6 +102,7 @@ after_cmd() {
 	( command cd ~/dotfiles && ! command git diff-index --quiet HEAD) && DOTFILES_CHANGED=1
 	test -n "$VIRTUAL_ENV" && ! type 2> /dev/null >&2 deactivate && BAD_VENV=1
 	tput cnorm
+	printf "\e[2 q"  # Make cursor solid block
 
 	return $_status
 }
