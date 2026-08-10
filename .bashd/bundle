@@ -1,19 +1,18 @@
 bundle() {
 	local file name revs gitdir
 
-	if test "$1" = -t; then
-		shift
-		BUNDLE_TAGS=1
-	fi
-
-	if test $# = 1 && test $1 -gt 0 2> /dev/null; then
-		set -- HEAD~$1..HEAD
-	fi
-	gitdir=$(command git rev-parse --git-dir) || return 1
 	if ! command git diff-index --quiet HEAD; then
 		echo "Repo is dirty.  Stubbornly refusing to create bundle" >&2
 		return 1
 	fi
+	if test "$1" = -t; then
+		shift
+		BUNDLE_TAGS=1
+	fi
+	if test $# = 1 && test $1 -gt 0 2> /dev/null; then
+		set -- HEAD~$1..HEAD
+	fi
+	gitdir=$(command git rev-parse --git-dir) || return 1
 	name=$(command git config core.name ||
 		awk 'NR==1 && $1 != "Unnamed" {print $1}' \
 			"$gitdir/description" 2> /dev/null | grep . ||
