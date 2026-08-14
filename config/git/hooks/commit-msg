@@ -108,20 +108,20 @@ check_message() {
 		NR==1 && match($0, "fixup!") { exit 0 }
 		NR==1 && match($0, "amend!") { exit 0 }
 		NR==1 && match($0, "[" end "]$") {
-			print "Summary should not end with any of [" end "]"
+			print "Subject should not end with any of [" end "]"
 			status=1
 		}
 		NR==1 && length > max_summary {
-			printf "Summary is %d chars too long" \
+			printf "Subject is %d chars too long" \
 				" (max width is ${MAX_GIT_SUMMARY-%d})\n", length - max_summary, max_summary
 			status=1
 		}
 		NR==1 && match($0, "^[a-zA-Z()]*: ") {
-			print "Summary appears to contain metadata (eg, a conventional commits tag)"
+			print "Subject appears to contain metadata (eg, a conventional commits tag)"
 			status=1
 		}
 		NR==1 && ! match($0, "^[A-Z]") {
-			print "Summary should start with a capital letter"
+			print "Subject should start with a capital letter"
 			status=1
 		}
 		/[^$][.!?] [^ ]/ {
