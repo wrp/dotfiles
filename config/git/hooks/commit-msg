@@ -116,6 +116,10 @@ check_message() {
 				" (max width is ${MAX_GIT_SUMMARY-%d})\n", length - max_summary, max_summary
 			status=1
 		}
+		NR==1 && match($0, "^[a-zA-Z()]*: ") {
+			print "Summary appears to contain metadata (eg, a conventional commits tag)"
+			status=1
+		}
 		NR==1 && ! match($0, "^[A-Z]") {
 			print "Summary should start with a capital letter"
 			status=1
