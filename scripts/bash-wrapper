@@ -1,0 +1,12 @@
+#!/bin/sh
+
+
+if test $# = 2; then
+	s=$2
+else
+	s=$(printf '$shell'; printf ' %q' "$@")
+fi
+
+printf "[$(date -Iseconds)] $s\n" >> $HOME/.command-history.log
+
+exec /bin/bash "$@"
