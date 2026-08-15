@@ -1,5 +1,10 @@
 #!/bin/sh
 
+# Simple wrapper that logs commands to a file
+# This does not log the output of the command, but the command
+# itself.  This is basically producing a history file.
+bash_wrapper_output=${bash_wrapper_output-$HOME/.command-history.log}
+
 if test "$RECURSION_GUARD" = $$; then
 	echo "$0 is recursing; aborting" >&2
 	exit 1
@@ -15,6 +20,6 @@ else
 	s=$(printf "$SHELL"; printf ' %q' "$@")
 fi
 
-printf "[$(date -Iseconds)] $s\n" >> $HOME/.command-history.log
+printf "[$(date -Iseconds)] $s\n" >> $bash_wrapper_output
 
 RECURSION_GUARD=$$ exec "$SHELL" "$@"
