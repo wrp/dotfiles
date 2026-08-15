@@ -20,6 +20,12 @@ else
 	s=$(printf "$SHELL"; printf ' %q' "$@")
 fi
 
-printf "# $(date +%s)  pwd:$(pwd -P)\n$s\n" >> $bash_wrapper_output
+hdr=$(tr \\n ' ' << EOF | sed -e 's/ $//'
+$(date +%s 2>&1)
+pwd:$(pwd -P 2>&1)
+ver:$(git describe --always --dirty 2>&1)
+EOF
+)
+printf '# %s\n%s\n' "$hdr" "$s" >> $bash_wrapper_output
 
 RECURSION_GUARD=$$ exec "$SHELL" "$@"
