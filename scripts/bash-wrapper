@@ -1,12 +1,20 @@
 #!/bin/sh
 
+if test "$RECURSION_GUARD" = $$; then
+	echo "$0 is recursing; aborting" >&2
+	exit 1
+fi
+
+if test -z "$SHELL" || test "${SHELL##*/}" = "${0##*/}";
+	then SHELL=/bin/bash
+fi
 
 if test $# = 2; then
 	s=$2
 else
-	s=$(printf '$shell'; printf ' %q' "$@")
+	s=$(printf "$SHELL"; printf ' %q' "$@")
 fi
 
 printf "[$(date -Iseconds)] $s\n" >> $HOME/.command-history.log
 
-exec /bin/bash "$@"
+RECURSION_GUARD=$$ exec "$SHELL" "$@"
