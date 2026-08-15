@@ -20,6 +20,6 @@ else
 	s=$(printf "$SHELL"; printf ' %q' "$@")
 fi
 
-printf "[$(date -Iseconds)] $s\n" >> $bash_wrapper_output
+printf "# $(date +%s)\n$s\n" >> $bash_wrapper_output
 
 RECURSION_GUARD=$$ exec "$SHELL" "$@"
