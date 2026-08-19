@@ -66,7 +66,7 @@ if test -n "$TMUX"; then
 		tmux select-pane -t ${TMUX_PANE} -T "$title"
 	fi
 else
-	printf '\033k%s\033\' "$title"
+	printf '\e]0;%s\a' "$title"
 fi
 
 exit
