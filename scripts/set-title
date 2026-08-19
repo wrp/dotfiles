@@ -68,3 +68,20 @@ if test -n "$TMUX"; then
 else
 	printf '\033k%s\033\' "$title"
 fi
+
+exit
+
+# Some additional context from opencode (ollama qwen3.8:27b), explaining how the osc sequence that sets
+# the terminal title gets to the display:
+#
+#      Two different things in tmux: the window name and the pane title. Here's what's happening:
+#
+#      1. opencode sets the pane title, not the window name. TUIs like opencode emit a standard xterm title escape sequence (ESC ] 2; <title> BEL) on the pane's tty. tmux intercepts that (any app's)
+#         and stores it as the pane's title, which appears as #{pane_title} in formats. This happens unconditionally — it's just how tmux handles OSC titles on a pane.
+#
+#      2. Your config is what makes it visible. Your status bar format is doing the display (~/.tmux.conf:17):
+#         #F#{?automatic-rename,#{window_index}:#{pane_title},#{window_name}}
+#         With automatic-rename on (:63), tmux deliberately renders #{pane_title}. So the title you see as "the window title" is actually the pane title.
+#
+#      3. allow-rename off (:62) means opencode is NOT touching your window name — that option specifically controls whether an app's title sequence propagates to the window name (and disables your
+#         automatic-rename). In your case the window name is protected; only the pane title is being set, which is what your format intentionally shows.
