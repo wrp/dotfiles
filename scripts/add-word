@@ -30,3 +30,10 @@ else
 	echo "New file is not bigger.  No words added." >&2
 	exit 1
 fi
+
+
+
+if git -C "${WORD_FILE%/*}" rev-parse HEAD > /dev/null; then
+	git -C "${WORD_FILE%/*}" add "${WORD_FILE##*/}"
+	git -C "${WORD_FILE%/*}" commit -m "Add words $*"
+fi
