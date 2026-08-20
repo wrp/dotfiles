@@ -1,8 +1,5 @@
 #!/bin/sh
 
-MAX_WIDTH=20
-MIN_WIDTH=5
-
 # Set the title of the tmux or terminal window
 
 # In an interactive shell, this script will be invoked by the debug_trap
@@ -31,27 +28,9 @@ test -z "$*" && {
 	set -- "$(basename "$d")"
 } 2> /dev/null
 
-max() { test "$1" -gt "$2" && printf '%d' "$1" || printf '%d' "$2"; }
-min() { test "$1" -lt "$2" && printf '%d' "$1" || printf '%d' "$2"; }
-
-window_count=$(tmux list-windows | wc -l)
-test "$window_count" -gt 0 || exit  # protect against tmux not being in PATH
-width=$(min "$(( (${COLUMNS:-80} - 30) / $window_count ))" "$MAX_WIDTH")
-
-width=$(max "$width" "$MIN_WIDTH")
-width_minus_1=$(( $width - 1 ))
-
-if test -n "$truncate_left"; then
-	patt='.*\(.\{'"$width_minus_1"'\}\)'
-	repl='<\1'
-else
-	patt='\(.\{'"$width_minus_1"'\}\).*'
-	repl='\1>'
-fi
-
-title="${DOCKER+$DOCKER:}$(
-	echo "${marker+$marker$marker }$*${marker+ $marker$marker}" |
-	sed '/.\{'"$width"'\}/s/^'$patt'$/'$repl/ )"
+# No truncation here: in tmux the status-line format (#{=N:...}, set by
+# set-tmux-width) handles it; in docker the terminal does.
+title="${DOCKER+$DOCKER:}${marker+$marker$marker }$*${marker+ $marker$marker}"
 
 
 

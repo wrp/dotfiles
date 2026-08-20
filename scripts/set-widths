@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# Recompute the status-line truncation width for every session, based on
+# the number of windows in that session and the window width.  Called from
+# tmux hooks on window-create/close and from the shell on SIGWINCH.
+
+MAX_WIDTH=20
+MIN_WIDTH=5
+
+max() { test "$1" -gt "$2" && printf '%d' "$1" || printf '%d' "$2"; }
+min() { test "$1" -lt "$2" && printf '%d' "$1" || printf '%d' "$2"; }
+
+for session in $(tmux list-sessions -F '#{session_name}'); do
+    n_windows=$(tmux list-windows -t "$session" | wc -l)
+    test "$n_windows" -gt 0 || continue
+
+    win_width=$(tmux display-message -t "$session:$" -p '#{window_width}' 2>/dev/null)
+
+    width=$(( (${win_width:-80} - 30) / n_windows ))
+    width=$(min "$width" "$MAX_WIDTH")
+    width=$(max "$width" "$MIN_WIDTH")
+
+    body="#{?automatic-rename,#{window_index}:#{=$width:#{pane_title}},#{=$width:#{window_name}}"
+    tmux set-option -s -t "$session" window-status-current-format "#F$body"
+    tmux set-option -s -t "$session" window-status-format "#{?client_prefix,#[reverse],}#F$body"
+done
