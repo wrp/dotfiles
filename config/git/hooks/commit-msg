@@ -117,7 +117,8 @@ check_message() {
 			status=1
 		}
 		NR==1 && match($0, "^[a-zA-Z()]*: ") {
-			print "Subject appears to contain metadata (eg, a conventional commits tag)"
+			printf "Subject appears to contain metadata (eg, a conventional commits tag)."
+			print "  Use trailers instead."
 			status=1
 		}
 		NR==1 && ! match($0, "^[A-Z]") {
