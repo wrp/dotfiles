@@ -6,6 +6,8 @@
 *.jar
 *.o
 *.a
+*.bundle
+*.pyc
 default.profraw
 
 .claude/
