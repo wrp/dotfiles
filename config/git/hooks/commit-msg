@@ -116,7 +116,7 @@ check_message() {
 				" (max width is ${MAX_GIT_SUMMARY-%d})\n", length - max_summary, max_summary
 			status=1
 		}
-		NR==1 && match($0, "^[a-zA-Z()]*: ") {
+		NR==1 && match($0, "^[-a-zA-Z()]*: ") {
 			printf "Subject appears to contain metadata (eg, a conventional commits tag)."
 			print "  Use trailers instead."
 			status=1
