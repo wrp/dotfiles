@@ -3,7 +3,7 @@
 # Simple wrapper that logs commands to a file
 # This does not log the output of the command, but the command
 # itself.  This is basically producing a history file.
-bash_wrapper_output=${bash_wrapper_output-$HOME/.command-history.log}
+: ${bash_wrapper_output:=$HOME/.command-history.log}
 
 if test "$RECURSION_GUARD" = $$; then
 	echo "$0 is recursing; aborting" >&2
