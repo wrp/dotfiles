@@ -8,6 +8,7 @@
 *.a
 *.bundle
 *.pyc
+__pycache__
 default.profraw
 
 .claude/
