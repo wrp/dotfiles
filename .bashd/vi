@@ -8,11 +8,13 @@ _check_if_ignored_by_git() {
 		fi
 	done
 	if test "$pause" = yes; then
-		echo "Press enter to continue, q to abort" >&2
+		echo "Press enter to continue, s to skip ignored files, q to abort" >&2
 		read -n 1
-		if test "$REPLY" = q; then
-			return 1
-		fi
+		case $REPLY in
+		q) return 1;;
+		s) return 2;;
+		*) return 0;;
+		esac
 	fi
 }
 
@@ -83,7 +85,16 @@ vi() {
 		exec < /dev/tty
 	fi
 	if git rev-parse --git-dir > /dev/null 2>&1; then
-		_check_if_ignored_by_git "$@" || return 1
+		_check_if_ignored_by_git "$@"
+		case $? in
+		1) return 1;;
+		2) for x; do  # User elected not to edit ignored files
+			shift;
+			if ! git check-ignore -q -- "$x"; then
+				set -- "$@" "$x"
+			fi
+		done;;
+		esac
 	fi
 	vim "$@"    # .vimrc sets tmux titles
 }
