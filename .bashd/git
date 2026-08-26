@@ -19,14 +19,17 @@ g() {
 		orig=$arg
 
 		if test -n "$raw" || test "$arg" = --; then raw=1; continue; fi
-		if test "$prev" != -n; then
+		case "$prev" in
+		-*[mn]|ciam) ;;
+		*)
 			arg=$(perl -e '
 				($s=shift) =~ s{(?<![~\w])(\d+)(?![~\w])|\{(\d+)\}}
 				{my $r=qx{git select-branch "$1$2"};
 				die "Cannot find branch" if $?; chomp $r; $r}ge;
 				print $s
 			' -- "$arg")
-		fi
+			;;
+		esac
 		test "$arg" != "$orig" && verbose=1
 		set -- "$@" "$arg"
 		prev=$orig
