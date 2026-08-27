@@ -61,8 +61,8 @@ set_prompt() {
 			insert_text :
 		fi
 	fi
-	insert_text "$__CYAN"'{$(kubectl config current-context):$(
-		kubectl config view --minify --output 'jsonpath={..namespace}')}'
+	insert_text "$__CYAN"'{$(kubectl config current-context 2> /dev/null):$(
+		kubectl config view --minify --output 'jsonpath={..namespace}' 2> /dev/null)}'
 	insert_text "$__YELLOW"'${trailer+[$trailer]}'
 	insert_text "$__GREEN"
 	_add_pid
