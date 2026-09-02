@@ -28,7 +28,7 @@ do_search() {
 	# This relies on the formatting given in the PROMPT_COMMAND in .bashrc
 	< ~/.bash-history \
 		awk '
-			/^#/ {
+			/^#[0-9]{10}/ {
 				time = substr($1, 2)  # epoch time expanded by perl below
 				pid = ""
 				pane = ""
@@ -42,8 +42,9 @@ do_search() {
 				}
 				id = pid (pane ? ":" : "" ) pane
 				status = match($0,"FAILED") ? "!" : match($0,"ok$") ? " " : "?"
+				next
 			}
-			!/^#/ && ( printfailed || status != "!") {
+			printfailed || status != "!" {
 				sub(/^[[:space:]]+/, "")
 				printf "%s %-9s %s| %-s\n", time, id, status, $0
 			}
