@@ -3,6 +3,9 @@
 # Search for commands in .bash-history and provide an interface
 # to store one in a tmux buffer
 
+# If dir is set in the environment, only pick commands that ran
+# in a directory that matches the 'dir' regex (awk "match" function)
+
 die() { test -n "*" && echo "$@"; exit 1; }
 
 set_global_vars() {
@@ -23,6 +26,10 @@ do_search() {
 	tmp1=$(mktemp)
 	tmp2=$(mktemp)
 
+	if test -n "$dir"; then
+		echo "Commands filtered to those run from a directory matching '$dir'"
+	fi
+
 	# Format the timestamp and commands one per line
 	# Prepend "?" to every command with unknown status
 	# This relies on the formatting given in the PROMPT_COMMAND in .bashrc
@@ -39,16 +46,21 @@ do_search() {
 					if (match($i, "^pane:")) {
 						pane = substr($i, 6)  # Remove leading "pane:"
 					}
+					if (match($i, "^dir:")) {
+						dir = substr($i, 5)  # Remove leading "dir:"
+					}
 				}
+				skip = wantdir && ! match(dir, wantdir)
 				id = pid (pane ? ":" : "" ) pane
 				status = match($0,"FAILED") ? "!" : match($0,"ok$") ? " " : "?"
 				next
 			}
+			skip { next }
 			printfailed || status != "!" {
 				sub(/^[[:space:]]+/, "")
 				printf "%s %-9s %s| %-s\n", time, id, status, $0
 			}
-		' status='?' printfailed=${V-1} \
+		' status='?' wantdir="$dir" printfailed=${V-1} \
 	> $tmp1
 
 	# Filter the commands which match a pattern
