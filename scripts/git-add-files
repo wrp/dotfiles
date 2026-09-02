@@ -70,7 +70,7 @@ main() {
 			| if test "$count" -eq 1; then tr '\t' ' '; else expand -t 7; fi
 		echo
 		git diff --stat --cached \
-		| perl -nE "chomp; say substr \$_, 0, ${MAX_GIT_WIDTH-72} - 1"
+		| perl -nE "chomp; s/^\s+//; say substr \$_, 0, ${MAX_GIT_WIDTH-72} - 1"
 	} | SKIP_MESSAGE_CHECK=1 SKIP_SPELLCHECK=silent git commit -F -
 }
 
