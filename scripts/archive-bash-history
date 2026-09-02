@@ -22,7 +22,7 @@ test -f "$hist" || exit 0
 
 threshold=$(( $(date +%s) - 30 * 86400 ))
 
-awk -v threshold="$threshold" -v home="$HOME" '
+awk -v threshold="$threshold" '
 /^#[0-9]/ {
 	epoch = substr($1, 2) + 0
 	old = (epoch < threshold)
@@ -30,7 +30,7 @@ awk -v threshold="$threshold" -v home="$HOME" '
 		i = index($0, "(")
 		if (i > 0) ym = substr($0, i + 1, 7)
 		else ym = "unknown"
-		f = home "/.bash-history-" ym
+		f = ".old/.bash-history-" ym
 	}
 }
 {
