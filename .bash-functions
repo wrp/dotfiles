@@ -176,7 +176,7 @@ report_cmd_status() {
 		s/\s+$/\n/;
 		if( /^#[0-9]{10}$/ ) { # abort after adding the timestamp.
 			$ts = substr($_, 1, 10);
-			s@([0-9]{10})@sprintf "%s (%s pid:%d pane:%s %s:%s) %s",
+			s@([0-9]{10})@sprintf "%s (%s pid:%d pane:%s host:%s dir:%s) %s",
 				$ts,
 				POSIX::strftime("%FT%T%z", localtime $ts),
 				'"$$"',
