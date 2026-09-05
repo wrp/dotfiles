@@ -117,3 +117,5 @@
 	insteadOf = https://github.com/
 [credential "https://gitlab.com"]
 	helper = !/opt/homebrew/bin/glab auth git-credential
+[git-bug "new"]
+	template = "$HOME/scripts/bug-template"
