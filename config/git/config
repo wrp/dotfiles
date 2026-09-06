@@ -118,4 +118,6 @@
 [credential "https://gitlab.com"]
 	helper = !/opt/homebrew/bin/glab auth git-credential
 [git-bug "new"]
-	template = "$HOME/scripts/bug-template"
+	template = "$HOME/scripts/bug-new-template"
+[git-bug "comment"]
+	template = "$HOME/scripts/bug-comment-template"
