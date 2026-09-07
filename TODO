@@ -1,3 +1,8 @@
+Create an opencode alias so that when you execute opencode
+with no arguments you are presented with a selection of
+existing sessions.  The entire session management scheme
+of opencode is insane, and needs better ux.
+
 Make push conditional: when you source dotfiles, store the git
 oid of dotfiles and do not re-read unless different.
 
