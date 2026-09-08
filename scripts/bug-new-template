@@ -8,4 +8,4 @@ git describe --tags --dirty --always
 git status
 
 git log -n 5 --pretty=oneline
-} | sed -e 's/^/# /'
+} | sed -e 's/^/# /' -e 's/ *$//'
