@@ -1,0 +1,11 @@
+#!/bin/sh
+
+{
+printf "You are creating a new bug in "
+pwd
+printf 'version: '
+git describe --tags --dirty --always
+git status
+
+git log -n 5 --pretty=oneline
+} | sed -e 's/^/# /'

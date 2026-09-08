@@ -1,0 +1,67 @@
+#!/bin/sh
+# Print the final (compiled) text of a git-bug comment.
+# Usage: $0 COMMENT_ID
+#
+# Unlike reading raw op blobs from git, this reuses git-bug's own
+# snapshot compile, so edits are applied in the correct (Lamport-clock)
+# order and you always get the winning version of the text.
+
+oid=${1:?Missing comment id}
+
+# A comment id is a combined id: the bug id (primary) and the operation id
+# (secondary) are interleaved. Secondary positions (0-indexed) are 1,3,5,9
+# and every i>=10 with i%5==4 (see entity/id_interleaved.go). Recover as
+# many primary (bug) chars as we can to find the owning bug.
+bugpref=$(printf '%s' "$oid" | awk '{
+	out=""; n=length($0)
+	for (i=1; i<=n; i++) {
+		p=i-1
+		if (p==1||p==3||p==5||p==9||(p>=10 && p%5==4))
+			continue
+		out = out substr($0, i, 1)
+		if (length(out) >= 5)
+			break
+	}
+	print out
+}')
+
+bug=$(git for-each-ref --format='%(refname:strip=2)' refs/bugs \
+	| grep -E "^${bugpref}" | head -1)
+if test -z "$bug"; then
+	echo "no bug with id prefix '$bugpref'" >&2
+	exit 1
+fi
+
+# git bug bug comment <bug> prints "Id: <id>" then the indented message for
+# each comment. Select the one matching our id.
+git bug bug comment "$bug" \
+	| awk -v id="$oid" '
+		/^Id: /        { w = (substr($0, 5) == id); next }
+		/^Author:/     { w = 0 }
+		w && /^    /   { sub(/^    /, ""); print }
+	'
+
+exit
+
+     The trick: the raw op blobs in .git/refs/bugs/… are not the rendered text — a comment's final text is a compile over its whole history, ordered by the Lamport
+     clock (so an edit can land "after" a later comment). git bug bug comment <bugid> gives you that compiled result, and it's script-friendly (Id: <id> line followed
+     by the indented message).
+
+     Two things now in ~/scripts:
+
+     bug-comment-text COMMENT_ID — prints just the final text of one comment (by comment id only). It recovers the bug id from the comment via the combined-id
+     interleaving (entity/id_interleaved.go:113), finds the owning refs/bugs/* ref, then pulls the matching comment out of the compiled output.
+
+     bug-comment-template — now just delegates to the above.
+
+     Verified against all three comments on 7a8c191. You can also drop the helper and inline this one-liner:
+
+     git bug bug comment <bugid> 2>/dev/null | awk -v id='<commentid>' '
+       /^Id: /{w=(substr($0,5)==id);next} /^Author:/{w=0} w&&/^    /{sub(/^    /,"");print}'
+
+     Caveats: git bug must be the git-bug build you have (/Users/wrp/go/bin/git-bug); and the bug id must be determinable from the comment id (true within a single repo/
+     namespace).
+
+
+
+  Continue  opencode -s ses_f8370116cffeP6HG4E92lBXLDL
