@@ -6,9 +6,18 @@
 # snapshot compile (Lamport-clock-ordered), so it always returns the winning
 # version of the text rather than raw op blobs from git.
 
-if test "$1" != edit; then
-	exit 1
-fi
-oid=$2
+# $1=edit|new  $2=comment id  $3=bug id  $4=bug title
 
-/Users/wrp/scripts/bug-comment-text "$oid"
+case $1 in
+new)  m="Adding a comment to";;
+edit) m="Editing comment $2 in";;
+esac
+
+echo "$m bug $3"
+
+if test "$1" = edit; then
+	oid=$2
+	echo
+	echo
+	/Users/wrp/scripts/bug-comment-text "$oid"
+fi
