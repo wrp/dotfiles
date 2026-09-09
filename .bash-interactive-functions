@@ -143,6 +143,26 @@ get_current_gcp_project() {
 	fi
 }
 gs() { echo "Surely you don't really want ghostscript! (if you do: 'command gs')" >&2; }
+opencode() {
+	local session
+	if test $# = 0; then
+		command opencode session list | awk '{printf "%3s  %s\n", (NR>2) ? ++d : "", $0}'
+		printf 'Select a session (0 for a new session): '
+		read N
+		if test "$N" = 0; then
+			command opencode
+			return
+		elif test "$N" -gt 0; then
+			session=$(command opencode session list | awk NR==$((N + 2))'{print $1}')
+		fi
+		if test -z "$session"; then
+			echo "Invalid entry: $N" >&2;
+			return 1
+		fi
+		set -- -s "$session"
+	fi
+	command opencode "$@"
+}
 p() {
 	local line
 	local file
