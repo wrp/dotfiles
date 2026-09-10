@@ -1,0 +1,8 @@
+#!/bin/bash
+
+GIT_BUG=$(type -a git-bug | awk 'NR==2 {print $NF}')
+if test $# = 0; then
+	set -- bug status:open
+fi
+
+"$GIT_BUG" "$@"
