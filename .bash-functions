@@ -56,7 +56,6 @@ this_shell_is_running_in_current_pane() {
 	test "$(tmux display -p "#{pane_id}")" = "$TMUX_PANE"
 }
 
-_get_marker() { test "${1-1}" = 0 && echo '*' || echo '!'; }
 _check_elapsed_time() {
 	local start=$1
 	local end=$2
@@ -84,8 +83,7 @@ after_cmd() {
 		if this_shell_is_running_in_current_pane; then
 			window-title
 		else
-			old_title=$(tmux display-message -p -t "$TMUX_PANE" '#{pane_title}')
-			marker=$(_get_marker $_status) window-title "$old_title"
+			printf '\a'
 		fi
 	fi
 	unset DO_NOT_RESET_TITLE

@@ -30,7 +30,7 @@ test -z "$*" && {
 
 # No truncation here: in tmux the status-line format (#{=N:...}, set by
 # set-tmux-width) handles it; in docker the terminal does.
-title="${DOCKER+$DOCKER:}${marker+$marker$marker }$*${marker+ $marker$marker}"
+title="${DOCKER+$DOCKER:}$*"
 
 
 
