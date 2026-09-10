@@ -13,9 +13,9 @@ new)  m="Adding a comment to";;
 edit) m="Editing comment $2 in";;
 esac
 
+echo "# $m bug $3: $4"
+
 if test "$1" = edit; then
 	echo
 	echo "$5"
 fi
-
-echo "# $m bug $3"
