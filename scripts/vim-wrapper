@@ -1,0 +1,3 @@
+#!/bin/sh
+
+NORENAMEVIM=1 vim "$@"

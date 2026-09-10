@@ -19,7 +19,7 @@ export BASH_SILENCE_DEPRECATION_WARNING=1
 export CLAUDE_CONFIG_DIR=$XDG_CONFIG_HOME/claude
 export COLUMNS
 export CONFIG_SITE=$HOME/.config/CONFIG_SITE
-export EDITOR=vim
+export EDITOR=vim-wrapper
 export FIGNORE='.pyc:.a:.o:~'
 export GIT_CEILING_DIRECTORIES=$HOME
 export GIT_PAGER='diff-highlight | less'
