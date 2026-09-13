@@ -69,9 +69,9 @@ _check_elapsed_time() {
 }
 
 after_cmd() {
-	local _status=$? ps="${PIPESTATUS[@]}" old_title name
+	local _status=$? ps="${PIPESTATUS[@]}" name
 
-	: Run after a command, and before a prompt is displayed
+	: precmd: run after a command, and before a prompt is displayed
 
 	_check_elapsed_time "$wrp_start_time" "${EPOCHREALTIME}"
 	wrp_start_time=9999999999
@@ -79,14 +79,13 @@ after_cmd() {
 		report_cmd_status "$HISTFILE" "$ps" >> "$HOME"/.bash-history
 	fi
 	check_environment
-	if test -z "$DO_NOT_RESET_TITLE" && test -n "$TMUX"; then
+	if test -n "$TMUX"; then
 		if this_shell_is_running_in_current_pane; then
 			window-title
 		else
 			printf '\a'
 		fi
 	fi
-	unset DO_NOT_RESET_TITLE
 	for name in $HOME/.config/secrets/*.gpg; do
 		name=$(basename "$name")
 		name=${name%.gpg}
@@ -116,8 +115,14 @@ if ! type get_mtime > /dev/null 2>&1; then
 	get_mtime() { echo 0; }
 fi
 
+preexec_window_title() {
+	: runs before each interactive command
+	if test -t 1; then
+		window-title "$1"
+	fi
+}
+
 write_hist_file() {
-	test "$BASH_COMMAND" = after_cmd && return
 	local now updated delta
 	test -z "$HISTFILE" && { warn HISTFILE unset; return 1; }
 	now=$(date +%s) || return 1
@@ -140,21 +145,12 @@ write_hist_file() {
 debug_trap() {
 	local _status=$?
 
-	: Runs before a command in an interactive shell
-	: also runs before $PROMPT_COMMAND
+	: Runs before a command in an interactive shell. bash-preexec
+	: preserves this DEBUG trap as one of the preexec functions
 
-	test "$BASH_COMMAND" = after_cmd && return $_status
 	wrp_start_time=$EPOCHREALTIME
 	write_hist_file
 
-	case ${BASH_COMMAND%% *} in
-	after_cmd|debug_trap|window-title|set-title)
-		DO_NOT_RESET_TITLE=1
-		;;
-	*)
-		window-title "${BASH_COMMAND}"
-		;;
-	esac
 	test -t 1 && tput setaf 7
 	return $_status
 } >&2

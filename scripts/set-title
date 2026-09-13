@@ -2,10 +2,10 @@
 
 # Set the title of the tmux or terminal window
 
-# In an interactive shell, this script will be invoked by the debug_trap
-# for each command in a pipeline.  So far, I've seen it consistently
-# called in order (so for 'foo | bar | less', the less will be invoked
-# last.)  I do not want "less" in the title for the pipeline, so punt
+# In an interactive shell, this script is invoked once per command from
+# the preexec hook (preexec_window_title in .bash-functions).  If the
+# command ends in "less" (e.g. 'foo | less'), we do not want "less" in
+# the title, so punt.
 test "$1" = less && exit
 
 # The expectation is that we're running in TMUX or docker.  For the moment,

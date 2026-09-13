@@ -86,7 +86,7 @@ set undodir^=~/.run/vim/undo//
 au BufNewFile,BufRead .bash-history setlocal path+=$HOME/.bash-history-dir
 
 autocmd BufEnter,BufReadPost,FileReadPost,BufNewFile,DirChanged *
-	\ call system("test -z \"$NORENAMEVIM\" && truncate_left=1 set-title " .
+	\ call system("test -z \"$NORENAMEVIM\" && set-title " .
 	\ expand("%:t"))
 
 " When editing a file, always jump to the last known cursor position.
