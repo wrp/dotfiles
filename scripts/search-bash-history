@@ -112,6 +112,8 @@ get_current_selection() {
 	if test -z "$choice"; then
 		if test "$status" != 0; then
 			if test -z "$V"; then
+				# If we ran without V, then we only searched for commands
+				# which succeeded.  Expand the search to find failures.
 				V=1 exec "$0" "$@"
 			fi
 			printf "No results found for search terms: %s\n" "$*">&2
