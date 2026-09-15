@@ -55,7 +55,6 @@ shopt -s direxpand 2> /dev/null # prevent tab expand from expanding $D to \$D
 # set +H      # disable history expansion
 
 trap archive-bash-history 0
-trap debug_trap DEBUG # Run before a command in an interactive shell
 trap 'V=1 SKIP_SECRETS=1 . "$HOME"/.bashrc' SIGUSR1
 trap '. "$HOME"/.bashd/PS1; window-title; "$HOME"/scripts/set-tmux-width' SIGWINCH
 check_directory_existence $HOME/.config git vim
@@ -68,6 +67,7 @@ check_directory_existence $HOME/.run vim/{swap,backup,undo}
 # On bash >= 5.3 preexec hooks in via PS0 instead of the DEBUG trap.
 read_file "$HOME"/dotfiles/lib/bash-preexec.sh
 preexec_functions+=(preexec_window_title after_cmd)
+precmd_functions+=(before_cmd)
 
 window-title
 

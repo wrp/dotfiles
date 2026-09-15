@@ -142,7 +142,7 @@ write_hist_file() {
 	test -f "$HISTFILE" || warn HISTFILE does not exist
 }
 
-debug_trap() {
+before_cmd() {
 	local _status=$?
 
 	: Runs before a command in an interactive shell. bash-preexec
