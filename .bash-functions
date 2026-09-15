@@ -62,10 +62,7 @@ _check_elapsed_time() {
 	if test -z "$end" || test -z "$start"; then
 		return
 	fi
-	local elapsed=$( echo "$end" - "$start" | bc )
-	if test $(echo "$elapsed > 5" | bc) -eq 1; then
-		printf "%sseconds elapsed: %s%.1f\n" "${YELLOW}" "${RESET}" "$elapsed"
-	fi
+	wrp_elapsed="$(printf "%0.2f" "$( echo "$end" - "$start" | bc )")"
 }
 
 after_cmd() {

@@ -29,6 +29,7 @@ insert_text() { test -n "$*" && PS1+=$(printf '\\\n%s' "$*"); }
 set_prompt() {
 	check_previous
 	insert_text '\D{%T%z}'  # Text in {} is passed to strftime for time
+	insert_text '{$wrp_elapsed}'
 	insert_text "$__RESET"
 	insert_text '${HISTFILE_UNCHANGED+${__RED}|histfile-not-updating}'
 	insert_text '${DOTFILES_CHANGED+${__RED}|dotfiles-are-modified}'
