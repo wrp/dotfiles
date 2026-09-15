@@ -32,7 +32,7 @@ do_search() {
 
 	# Format the timestamp and commands one per line
 	# Prepend "?" to every command with unknown status
-	# This relies on the formatting given in the PROMPT_COMMAND in .bashrc
+	# This relies on the formatting given in after_cmd
 	< ~/.bash-history \
 		awk '
 			/^#[0-9]{10}/ {

@@ -60,7 +60,6 @@ trap 'V=1 SKIP_SECRETS=1 . "$HOME"/.bashrc' SIGUSR1
 trap '. "$HOME"/.bashd/PS1; window-title; "$HOME"/scripts/set-tmux-width' SIGWINCH
 check_directory_existence $HOME/.config git vim
 check_directory_existence $HOME/.run vim/{swap,backup,undo}
-PROMPT_COMMAND=after_cmd # Run after a command, before a prompt is displayed
 
 # bash-preexec provides zsh-like 'preexec' (before each interactive command,
 # once for the whole command) and 'precmd' (before each prompt) hooks.
@@ -68,7 +67,7 @@ PROMPT_COMMAND=after_cmd # Run after a command, before a prompt is displayed
 # via preexec_functions/precmd_functions, not by overriding them.
 # On bash >= 5.3 preexec hooks in via PS0 instead of the DEBUG trap.
 read_file "$HOME"/dotfiles/lib/bash-preexec.sh
-preexec_functions+=(preexec_window_title)
+preexec_functions+=(preexec_window_title after_cmd)
 
 window-title
 
