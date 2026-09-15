@@ -66,8 +66,8 @@ check_directory_existence $HOME/.run vim/{swap,backup,undo}
 # via preexec_functions/precmd_functions, not by overriding them.
 # On bash >= 5.3 preexec hooks in via PS0 instead of the DEBUG trap.
 read_file "$HOME"/dotfiles/lib/bash-preexec.sh
-preexec_functions+=(preexec_window_title after_cmd)
-precmd_functions+=(before_cmd)
+preexec_functions+=(preexec_window_title before_cmd)
+precmd_functions+=(after_cmd)
 
 window-title
 
