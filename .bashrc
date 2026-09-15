@@ -16,6 +16,7 @@
 # But this should only be used in interactive shells, so make it explicit.
 case "$-" in *i*) : ;; *) return 0 ;; esac
 
+wrp_start_time=$EPOCHREALTIME
 if test -n "$V"; then
 	perl -MPOSIX=strftime -E 'say strftime("%FT%T%z", localtime) .
 		": Re-reading .bashrc"'
