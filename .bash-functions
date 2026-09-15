@@ -63,6 +63,9 @@ _check_elapsed_time() {
 		return
 	fi
 	wrp_elapsed="$(printf "%0.2f" "$( echo "$end" - "$start" | bc )")"
+	wrp_k8s_context="$(kubectl config current-context 2> /dev/null)"
+	wrp_k8s_namespace="$(kubectl config view --minify --output \
+		'jsonpath={..namespace}' 2> /dev/null)"
 }
 
 after_cmd() {
