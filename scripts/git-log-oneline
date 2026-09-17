@@ -126,7 +126,7 @@ build_ref_pattern() {
 	local pattern=""
 	for arg; do
 		case "$arg" in
-		-*|"") ;;
+		-*|""|*[*+]*) ;;
 		*)
 			arg=$(git rev-parse --abbrev-ref "$arg" 2> /dev/null)
 			pattern="${pattern}s|(${ref_marker}.*[ ,])"
@@ -139,7 +139,6 @@ build_ref_pattern() {
 
 main() {
 	initialize "$@"
-	ref_pattern=$(build_ref_pattern "$@")
 	{
 	git --no-pager log \
 		--date=format:"" \
@@ -156,6 +155,7 @@ main() {
 			)${reset}" | sed -E 's/  +//g' )" "$@"
 	} |
 	if isatty; then
+		local ref_pattern=$(build_ref_pattern "$@")
 		sed -E -e "$ref_pattern" -e "$ref_pattern" -e "$ref_pattern"|
 		tr -d '\002' |
 		diff-highlight |
