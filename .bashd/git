@@ -17,19 +17,21 @@ g() {
 	for arg; do
 		shift
 		orig=$arg
+		test "$arg" = -- && raw=1
+		if test -n "$raw"; then
+			case "$prev" in
+			-*[mn]|ciam) ;;
+			*)
+				arg=$(perl -e '
+					($s=shift) =~ s{(?<![~\w])(\d+)(?![~\w])|\{(\d+)\}}
+					{my $r=qx{git select-branch "$1$2"};
+					die "Cannot find branch" if $?; chomp $r; $r}ge;
+					print $s
+				' -- "$arg")
+				;;
+			esac
+		fi
 
-		if test -n "$raw" || test "$arg" = --; then raw=1; continue; fi
-		case "$prev" in
-		-*[mn]|ciam) ;;
-		*)
-			arg=$(perl -e '
-				($s=shift) =~ s{(?<![~\w])(\d+)(?![~\w])|\{(\d+)\}}
-				{my $r=qx{git select-branch "$1$2"};
-				die "Cannot find branch" if $?; chomp $r; $r}ge;
-				print $s
-			' -- "$arg")
-			;;
-		esac
 		test "$arg" != "$orig" && verbose=1
 		set -- "$@" "$arg"
 		prev=$orig
