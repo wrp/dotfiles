@@ -60,7 +60,12 @@ main() {
 			git add "$line" || exit
 		done
 	fi
-	count=$(git diff-index --cached --name-only HEAD "$@" | wc -l)
+	if git rev-parse --quiet --verify HEAD; then
+		against=HEAD
+	else
+		against=$(git hash-object -t tree /dev/null)
+	fi
+	count=$(git diff-index --cached --name-only "$against" "$@" | wc -l | tr -d ' ')
 	{
 		if test "$count" -ne 1; then
 			generate_subject
