@@ -33,7 +33,7 @@ fi
 
 
 
-if git -C "${WORD_FILE%/*}" rev-parse HEAD > /dev/null; then
+if git -C "${WORD_FILE%/*}" rev-parse HEAD > /dev/null 2>&1; then
 	git -C "${WORD_FILE%/*}" add "${WORD_FILE##*/}"
 	subject="Add words $(echo "$*" | sed -E -e 's/  */, /g' -e 's/(.{40}).*/\1/')"
 	git -C "${WORD_FILE%/*}" commit -m "$subject"
