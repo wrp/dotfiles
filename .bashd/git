@@ -18,7 +18,7 @@ g() {
 		shift
 		orig=$arg
 		test "$arg" = -- && raw=1
-		if test -n "$raw"; then
+		if test -z "$raw"; then
 			case "$prev" in
 			-*[mn]|ciam) ;;
 			*)
