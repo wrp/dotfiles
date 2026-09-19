@@ -1,0 +1,24 @@
+
+
+crush() {
+	local session list
+	if test $# = 0; then
+		list=$(command crush session list)
+		printf '%s\n' "$list" | awk '{printf "%3s  %s\n", ++d, $0}'
+		printf 'Select a session (0 for a new session): '
+		read N
+		if test "$N" = 0; then
+			unset session
+		elif test "$N" -gt 0; then
+			session=$(printf '%s\n' "$list" | awk "NR==$N"'{print $1}')
+			if test -z "$session"; then
+				echo "Invalid entry: $N" >&2;
+				return 1
+			fi
+		else
+			session=$N
+		fi
+		set -- ${session:+-s "$session"}
+	fi
+	command crush "$@"
+}
