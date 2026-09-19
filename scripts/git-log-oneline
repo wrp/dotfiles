@@ -166,10 +166,14 @@ main() {
 }
 
 build_trailer_fmt() {
-	awk -v fmt=" [%%<(%s)%%(trailers:key=%s,separator=%%x2C,valueonly)]" '
+	awk \
+		-v fmt=" [%%<(%s)%%(trailers:key=%s,separator=%%x2C,valueonly)]" \
+		-v trailers="${trailers}" \
+		-v widths="${trailer_width}" \
+	'
 		BEGIN {
-			split(ARGV[1], f, ",");
-			n=split(ARGV[2], g, ",");
+			split(trailers, f, ",");
+			n=split(widths, g, ",");
 			for (i=1; i <= length(f); i++) {
 				width = i < n ? g[i] : g[n]
 				if (width) {
@@ -177,7 +181,7 @@ build_trailer_fmt() {
 				}
 			}
 		}
-	' "${trailers}" "${trailer_width}"
+	'
 }
 
 main "$@"
