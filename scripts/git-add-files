@@ -60,7 +60,7 @@ main() {
 			git add "$line" || exit
 		done
 	fi
-	if git rev-parse --quiet --verify HEAD; then
+	if git rev-parse --quiet --verify HEAD > /dev/null; then
 		against=HEAD
 	else
 		against=$(git hash-object -t tree /dev/null)
