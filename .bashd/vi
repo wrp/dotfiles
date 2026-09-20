@@ -1,16 +1,13 @@
 
-
-_ignored_by_git() {
-	if git check-ignore -q -- "$1"; then
-		printf "WARNING: $x is ignored by git.  Edit anyway? (y/N) " >&2
-		read yn < /dev/tty
-		case $yn in
-		y|Y|yes) return 1;;
-		*) return 0;;
-		esac
-	fi
-	return 1
+_vi_confirm() {
+	printf "WARNING %-15s\t%s  Edit anyway? (y/N) " "$1" "$2" >&2
+	read yn < /dev/tty
+	case $yn in
+	y|Y|yes) return 0;;
+	*) return 1;;
+	esac
 }
+
 
 vg() {
 	local case='\C'
@@ -79,13 +76,15 @@ vi() {
 		fi
 		exec < /dev/tty
 	fi
-	if git rev-parse --git-dir > /dev/null 2>&1; then
-		for x; do
-			shift
-			if ! _ignored_by_git "$x"; then
-				set -- "$@" "$x"
-			fi
-		done
-	fi
+	for x; do
+		shift
+		if msg=$(
+			file "$x" | grep -E 'executable|data\s*$' \
+			|| git check-ignore -v -- "$x" 2> /dev/null )
+		then
+			_vi_confirm "$x" "$msg"|| continue
+		fi
+		set -- "$@" "$x"
+	done
 	vim "$@"    # .vimrc sets tmux titles
 }
