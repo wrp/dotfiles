@@ -1,21 +1,15 @@
-_check_if_ignored_by_git() {
-	local x
-	local pause=no
-	for x; do
-		if git check-ignore -q -- "$x"; then
-			pause=yes
-			echo "WARNING: $x is ignored by git" >&2
-		fi
-	done
-	if test "$pause" = yes; then
-		echo "Press enter to continue, s to skip ignored files, q to abort" >&2
-		read -n 1
-		case $REPLY in
-		q) return 1;;
-		s) return 2;;
+
+
+_ignored_by_git() {
+	if git check-ignore -q -- "$1"; then
+		printf "WARNING: $x is ignored by git.  Edit anyway? (y/N) " >&2
+		read yn < /dev/tty
+		case $yn in
+		y|Y|yes) return 1;;
 		*) return 0;;
 		esac
 	fi
+	return 1
 }
 
 vg() {
@@ -44,6 +38,7 @@ vi() {
 	: filenames followed by a colon and build a list from it.
 
 	: set h for depth, or f for filter
+	local x
 	if ! test -t 1; then
 		echo 'Output is not to a terminal.  Aborting' >&2
 		return 1
@@ -85,16 +80,12 @@ vi() {
 		exec < /dev/tty
 	fi
 	if git rev-parse --git-dir > /dev/null 2>&1; then
-		_check_if_ignored_by_git "$@"
-		case $? in
-		1) return 1;;
-		2) for x; do  # User elected not to edit ignored files
-			shift;
-			if ! git check-ignore -q -- "$x"; then
+		for x; do
+			shift
+			if ! _ignored_by_git "$x"; then
 				set -- "$@" "$x"
 			fi
-		done;;
-		esac
+		done
 	fi
 	vim "$@"    # .vimrc sets tmux titles
 }
