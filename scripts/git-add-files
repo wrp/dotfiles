@@ -3,6 +3,7 @@
 # Add each file listed on the command line with auto-generated
 # commit messages.
 
+die() { printf "%s${1:+\n}" "$@"; exit 1; } >&2
 cleanup_docker_corruption() {
 	# When running on both docker and outside, the repos seem to get corrupt
 	# in such a way that `git status` cleans it up.  (That is, git diff-index
@@ -11,8 +12,26 @@ cleanup_docker_corruption() {
 	git status > /dev/null
 }
 
+confirm() {
+	name=$1
+	type=$2
+	if file "$name" | grep -q "$type"; then
+		printf "$name looks like it is $type.  Abort (Y|n)? "
+		read yn < /dev/tty
+		case $yn in
+		n|N|no|NO) ;;
+		*) die aborting;;
+		esac
+	fi
+}
+
 validate_args() {
 	reset_trailer_args "$@"
+	for x; do
+		for type in executable; do
+			confirm "$x" "$type"
+		done
+	done
 }
 
 reset_trailer_args() {
