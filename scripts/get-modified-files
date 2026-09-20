@@ -6,7 +6,7 @@
 
 if ! top=$(git rev-parse --path-format=relative --show-toplevel 2> /dev/null)
 then
-	echo "Not in a git repo: can't find modified files" >&2
+	echo "Not in a git repo: can't find recently modified files" >&2
 	exit 1
 fi
 
