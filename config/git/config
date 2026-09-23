@@ -12,7 +12,7 @@
 	cp = cherry-pick
 	cpx = cp -x
 	credit = annotate
-	cwip = !bash -c 'SKIP_COMMIT_CHECKS=silent git ci --trailer Type:WIP -m \"WIP: ${*}\"' _
+	cwip = !bash -c 'SKIP_COMMIT_CHECKS=silent git commit -a --trailer Type:WIP -m \"WIP: ${*}\"' _
 	d = diff
 	dc = diff --cached
 	dcno = diff --cached --name-status
