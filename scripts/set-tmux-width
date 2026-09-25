@@ -9,6 +9,8 @@
 # A session's current window can change between iterations without issue,
 # since nothing here depends on the "current" target.
 
+test -z "$TMUX" && exit 0
+
 MAX_WIDTH=20
 MIN_WIDTH=5
 
