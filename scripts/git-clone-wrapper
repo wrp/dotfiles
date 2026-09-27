@@ -29,10 +29,31 @@ esac
 
 set -- clone ${depth:+--depth $depth --no-single-branch} ${origin:+--origin="$origin"} "$url" "$@";
 
-printf 'git %s\n' "$*" >&2
-git "$@" || exit
+# On a bad network, fetching with depth 1 first and then recursively deepening
+# prevents starting over from scratch on a network failure.
+git_repeat_deepen() {
+	local output repo_dir
 
-if test -n "$depth"; then
-	echo "cloned to a depth of $depth.  To make full, run:"
-	echo 'git fetch --unshallow'
+	printf '%s\n' "git clone --depth 1 $*" >&2
+	output=$(git clone --depth 1 "$@" 2>&1) || return 1
+	printf '%s\n' "$output"
+	repo_dir=$(echo "$output" | awk -F "'" '{print $2}')
+	echo "Cloned to depth 1 in $repo_dir.  Attempting to unshallow...."
+	set -x
+
+	until git -C "$repo_dir" fetch --unshallow; do
+		echo "Network interrupted or repo not yet full.  Deepen by 50..." >&2
+		git -C "$repo_dir" fetch --deepen=50
+		sleep 2
+	done
+	set +x
+}
+
+if test -z "$depth"; then
+	test "$1" = clone || { echo "Unexpected argument: $1" >&2; exit 1; }
+	shift
+	git_repeat_deepen "$@" || exit
+else
+	printf 'git %s\n' "$*" >&2
+	git "$@" || exit
 fi
