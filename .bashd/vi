@@ -91,5 +91,6 @@ vi() {
 _vi_file_should_be_confirmed() {
 	name="$1"
 	git check-ignore -v -- "$name" 2> /dev/null && return 0
-	file "$name" | grep -E 'executable|data\s*$'
+	file "$name" | awk '/script/ { exit 1 } /executable|data$ {exit 0}' && return 0
+	return 1
 }
