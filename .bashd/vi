@@ -78,13 +78,18 @@ vi() {
 	fi
 	for x; do
 		shift
-		if msg=$(
-			file "$x" | grep -E 'executable|data\s*$' \
-			|| git check-ignore -v -- "$x" 2> /dev/null )
-		then
+		if msg=$(_vi_file_should_be_confirmed "$x"); then
 			_vi_confirm "$x" "$msg"|| continue
 		fi
 		set -- "$@" "$x"
 	done
 	vim "$@"    # .vimrc sets tmux titles
+}
+
+# Use various heuristics to determine if the user should
+# manually confirm before editing a file
+_vi_file_should_be_confirmed() {
+	name="$1"
+	git check-ignore -v -- "$name" 2> /dev/null && return 0
+	file "$name" | grep -E 'executable|data\s*$'
 }
