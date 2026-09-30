@@ -28,13 +28,13 @@ title="${DOCKER+$DOCKER:}$*"
 
 
 
-# Instead of renaming the window,  we will change the title of the current pane and
+# Instead of renaming the window, we will change the title of the pane and
 # rely on the tmux configuration to set the string shown in the status bar via
 # the automatic-rename-format
 if test -n "$TMUX"; then
 	if test -n "$FORCE"; then
 		echo 'WARNING: window renamed.  Auto-rename is now disabled' >&2
-		tmux rename-window -- "$title"
+		tmux rename-window -t ${TMUX_PANE} -- "$title"
 	else
 		tmux select-pane -t ${TMUX_PANE} -T "$title"
 	fi
