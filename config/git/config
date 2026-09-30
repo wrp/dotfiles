@@ -121,3 +121,7 @@
 	template = "$HOME/scripts/bug-new-template"
 [git-bug "comment"]
 	template = "$HOME/scripts/bug-comment-template"
+[notes "rewrite"]
+	rebase = true
+[notes]
+	rewriteRef = refs/notes/*
