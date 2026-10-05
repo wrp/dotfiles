@@ -20,7 +20,6 @@ check_directory_existence() {
 		fi
 	done
 }
-
 clear_path() {
 	# Ensure that $1 is not in PATH
 	PATH=$(echo "$PATH" | sed \
@@ -67,6 +66,15 @@ _check_elapsed_time() {
 	wrp_k8s_namespace="$(kubectl config view --minify --output \
 		'jsonpath={..namespace}' 2> /dev/null)"
 }
+
+# Given 2 paths, return 0 if each exists and they are on different devices
+_on_different_devices() {
+	local dev1 dev2
+	dev1=$(stat -f %d "$1") || return 1
+	dev2=$(stat -f %d "$2") || return 1
+	test "$dev1" != "$dev2"
+}
+
 
 after_cmd() {
 	local _status=$? ps="${PIPESTATUS[@]}" name
