@@ -1,0 +1,20 @@
+
+
+uv() {
+	if test -z "$UV_CACHE_DIR"; then
+		echo "Stubbornly refusing to run unless you specify UV_CACHE_DIR" >&2
+		return 1
+	fi
+	if test -z "$UV_ALLOW_CACHE_ON_ROOT"; then
+		local root_device cache_device
+
+		root_device=$(stat -f %d /)
+		cache_device=$(stat -f %d "$UV_CACHE_DIR")
+		if test "$root_device" = "$cache_device"; then
+			echo "Stubbornly refusing to run with cache on root partition" >&2
+			return 1
+		fi
+	fi
+
+	command uv "$@"
+}
