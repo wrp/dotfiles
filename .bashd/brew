@@ -1,6 +1,16 @@
 
 # Brew is completely broken.  Attempt to fix it:
 brew() {
+	if test -z "$HOMEBREW_CACHE"; then
+		echo "Stubbornly refusing to run unless you specify HOMEBREW_CACHE" >&2
+		return 1
+	fi
+	if test -z "$BREW_ALLOW_CACHE_ON_ROOT" &&
+			! _on_different_devices "$HOMEBREW_CACHE" /; then
+		echo "Stubbornly refusing to run with cache on root partition" >&2
+		return 1
+	fi
+
 	CONFIG_SITE= \
 	GIT_CONFIG_GLOBAL=/dev/null \
 	GIT_CONFIG_COUNT=1 \
