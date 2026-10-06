@@ -25,15 +25,16 @@ fi
 unalias -a   # Remove all existing aliases
 complete -r  # Remove all existing completion specs
 
-unset_all_functions() {
+unset_functions() {
 	while read func; do
+		test "${func#__bp}" = "$func" || continue
 		unset -f "$func"
 	done <<- EOF
 	$(compgen -A function)
 	EOF
 }
 
-unset_all_functions
+unset_functions
 unset PS1    # Set PS1 from ~.bashd/PS1
 read_file() { local f; for f; do if test -f "$f"; then . "$f"; fi; done; }
 read_file "$HOME"/.bashd/colors
