@@ -16,4 +16,8 @@ cd() {
 		printf 'source %s\n' "${VIRTUAL_ENV}/bin/activate"
 		deactivate
 	fi >&2
+
+	if test -f .node-version || test -f .nvmrc || test -f package.json; then
+		fnm use --silent-if-unchanged 2> /dev/null
+	fi
 }
