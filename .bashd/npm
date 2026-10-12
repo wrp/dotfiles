@@ -1,0 +1,14 @@
+
+
+npm() {
+	if test -z "$NPM_CONFIG_CACHE"; then
+		echo "Stubbornly refusing to run unless you specify NPM_CONFIG_CACHE" >&2
+		return 1
+	fi
+	if test -z "$NPM_ALLOW_CACHE_ON_ROOT" &&
+			! _on_different_devices "$NPM_CONFIG_CACHE" /; then
+		echo "Stubbornly refusing to run with cache on root partition" >&2
+		return 1
+	fi
+	command npm "$@"
+}
