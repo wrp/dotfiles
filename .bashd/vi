@@ -1,6 +1,6 @@
 
 _vi_confirm() {
-	printf "WARNING %-15s\t%s  Edit anyway? (y/N) " "$1" "$2" >&2
+	printf "WARNING %s  Edit anyway? (y/N) " "$1" >&2
 	read yn < /dev/tty
 	case $yn in
 	y|Y|yes) return 0;;
@@ -79,7 +79,7 @@ vi() {
 	for x; do
 		shift
 		if msg=$(_vi_file_should_be_confirmed "$x"); then
-			_vi_confirm "$x" "$msg"|| continue
+			_vi_confirm "$msg"|| continue
 		fi
 		set -- "$@" "$x"
 	done
@@ -90,14 +90,16 @@ vi() {
 # manually confirm before editing a file
 _vi_file_should_be_confirmed() {
 	name="$1"
-	git check-ignore -v -- "$name" 2> /dev/null && return 0
+	git check-ignore -q -- "$name" 2> /dev/null && {
+		echo "$name: ignored by git"
+		return 0; }
 	file "$name" | awk '
 		/script/ { exit 0 }
 		/JSON/ { exit 0 }
-		/character special/ { exit 1}
-		/universal binary/ { exit 1}
-		/executable/ {exit 1}
-		/: data$/ {exit 1}
+		/character special/ { print; exit 1}
+		/universal binary/ { print; exit 1}
+		/executable/ { print; exit 1}
+		/: data$/ { print; exit 1}
 	' || return 0
 	return 1
 }
