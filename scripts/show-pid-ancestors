@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Given a pid, list all of the ancestors
+p=${1?}
+while test "$p" -gt 1; do
+	p=$(ps -o ppid= $p)
+	echo $p
+done
