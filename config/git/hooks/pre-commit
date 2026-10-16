@@ -2,7 +2,7 @@
 
 . "$(dirname $0)"/common-hook-functions
 
-valid_chars='+:a-zA-Z0-9_./-'  # Characters that are acceptable in path names
+valid_chars='+:a-zA-Z0-9_./'"$EXTRA_CHARS"'-'  # Characters that are acceptable in path names
 against=$(git rev-parse --verify HEAD 2>/dev/null || git hash-object -t tree /dev/null)
 
 
@@ -11,7 +11,7 @@ validate_pathnames() {
 	if invalid=$(git diff --cached --name-only --diff-filter=A -z $against |
 		LC_ALL=C tr -d "\000${valid_chars}" | xxd | cut -d: -f 2- | tr -s ' ' | grep .)
 	then
-		die "Invalid characters in filename: $invalid"
+		die "Invalid characters in filename: '$invalid'  Assign EXTRA_CHARS if needed"
 	fi
 }
 
