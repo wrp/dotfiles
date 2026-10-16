@@ -1,6 +1,7 @@
 
 
 npm() {
+	echo "NOOO!!  Do not use npm.  Use pnpm instead" >&2; return 1
 	if test -z "$NPM_CONFIG_CACHE"; then
 		echo "Stubbornly refusing to run unless you specify NPM_CONFIG_CACHE" >&2
 		return 1
