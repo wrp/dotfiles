@@ -13,3 +13,20 @@ npm() {
 	fi
 	command npm "$@"
 }
+
+
+pnpm() {
+	for n in PNPM_CONFIG_STORE_DIR PNPM_CONFIG_CACHE_DIR; do
+		if eval "test -z \"\$$n\""; then
+			echo "Stubbornly refusing to run since $n is not set" >&2
+			return 1
+		fi
+		if ! eval "_on_different_devices \"\$$n\" /"; then
+			echo "Stubbornly refusing to run with $n on root partition" >&2
+			return 1
+		fi
+	done
+	command pnpm "$@"
+
+
+}
