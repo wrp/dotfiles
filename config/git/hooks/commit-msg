@@ -72,7 +72,7 @@ check_word() {
 	readtags "$word" 2> /dev/null | grep -q . && return 0;
 	get_words_from_git_log
 	printf '%s' "$word_list" | grep -qw "$word" && return 0
-	if ! test "$BAD_WORDS" -gt 1 2> /dev/null; then
+	if ! test "$BAD_WORDS" = quiet 2> /dev/null; then
 		warn "'$word' looks like a spelling error and/or typo"
 	fi
 	return 1
