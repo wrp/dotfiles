@@ -1,4 +1,10 @@
 
+Clean up the cache checks.  We probably want a preexec hook
+that checks for commands like npm, go, brew, etc. and verifies
+that the appropriate cache is set.  (eg, for go, we should
+ensure that GOCACHE and GOMODCACHE are set outside of $HOME)
+
+
 symlink ~/Library/Caches to the external device
 
 
