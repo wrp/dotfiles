@@ -13,7 +13,7 @@ while read local_ref local_obj remote_ref remote_obj; do
 		git show --pretty=format:%s --no-patch "$local_ref" |
 			grep -iw WIP
 	then
-		die "$local_ref contains 'WIP'"
+		die "$local_ref appears to be WIP (set ALLOW_WIP to allow)"
 	fi
 
 	if \
@@ -23,15 +23,17 @@ while read local_ref local_obj remote_ref remote_obj; do
 		die "$local_ref contains log message with previously edited commit"
 	fi
 
-	git rev-list ${remote_obj}..${local_obj} | while read oid; do
-		if git show -s --format=%B "$oid" \
-			| git interpret-trailers --only-trailers \
-			| grep -iq '^Type: WIP'
-		then
-			short=$(echo "$oid" | cut -b 1-9)
-			die "$short is work in progress"
-		fi
-	done
+	if test -z "$ALLOW_WIP"; then
+		git rev-list ${remote_obj}..${local_obj} | while read oid; do
+			if git show -s --format=%B "$oid" \
+				| git interpret-trailers --only-trailers \
+				| grep -iq '^Type: WIP'
+			then
+				short=$(echo "$oid" | cut -b 1-9)
+				die "$short is work in progress (set ALLOW_WIP to allow)"
+			fi
+		done
+	fi
 done >&2
 
 run_local_hooks "$@"
