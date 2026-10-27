@@ -103,7 +103,11 @@ after_cmd() {
 	done
 	type -t local_post_cmd_hook > /dev/null && local_post_cmd_hook
 	unset DOTFILES_CHANGED BAD_VENV
-	( command cd ~/dotfiles && ! command git diff-index --quiet HEAD) && DOTFILES_CHANGED=1
+	if test -z "$DONOT_CHECK_DOTS" &&
+		! command git -C $HOME/dotfiles diff-index --quiet HEAD
+	then
+		DOTFILES_CHANGED=1
+	fi
 	test -n "$VIRTUAL_ENV" && ! type 2> /dev/null >&2 deactivate && BAD_VENV=1
 	tput cnorm
 	printf "\e[2 q"  # Make cursor solid block
