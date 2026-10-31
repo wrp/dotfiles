@@ -85,7 +85,6 @@ grep() {
 		command grep --color=auto "$@"
 	fi
 }
-irssi() { dtach -A /tmp/irssi.dtach irssi; }
 jq() {
 	if test -n "$EXPECTED_JQ_VERSION" &&
 		local v="$(command jq --version)"
