@@ -45,7 +45,6 @@ b() {
 c() { tput clear; }
 cdm() { cd $(FULL_PATH=1 get-modified-files | longest-common-prefix -d); }
 curl() { command curl -Ss "$@"; }
-clock() { watch -n 1 banner -C '$(date +%H:%M:%S)'; }
 gcd() {
 	local _dir
 	_dir=$(FULL_PATH=1 get-modified-files $1 | get-most-used-dir)
