@@ -64,8 +64,9 @@ init() {
 	mkdir -p "$HOME"/.bash-history-dir || die
 	mkdir -p "$HOME"/.config/ctags || die
 	ln -fs "$HOME"/.ctags "$HOME"/.config/ctags/base.ctags || die
-	ln -fs "$base"/config/vim "$HOME"/.config/vim || die
-	ln -fs "$base"/config/git "$HOME"/.config/git || die
+	for dir in vim git lazygit; do
+		ln -fs "$base"/config/$dir "$HOME"/.config/$dir || die
+	done
 }
 
 create_symlinks() {
