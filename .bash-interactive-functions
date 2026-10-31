@@ -43,19 +43,7 @@ b() {
 	fi
 }
 c() { tput clear; }
-cdm() { cd $(FULL_PATH=1 get-modified-files | longest-common-prefix -d); }
 curl() { command curl -Ss "$@"; }
-gcd() {
-	local _dir
-	_dir=$(FULL_PATH=1 get-modified-files $1 | get-most-used-dir)
-	test -d "$_dir" || _dir=$(dirname "$_dir")
-	if test -d "$_dir"; then
-		cd "$_dir"
-		pwd
-	else
-		echo "$_dir is not a directory" >&2
-	fi
-}
 gcloud() {
 	local quiet=-q
 	if test "$1" = -v && test $# != 1; then
