@@ -112,7 +112,7 @@
 [help]
 	autocorrect = never
 [gpg "ssh"]
-	allowedSignersFile = /Users/wrp/.ssh/allowed_signers
+	allowedSignersFile = "$HOME/.ssh/allowed_signers"
 [url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
 [credential "https://gitlab.com"]

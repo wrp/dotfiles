@@ -59,7 +59,7 @@ exit
      git bug bug comment <bugid> 2>/dev/null | awk -v id='<commentid>' '
        /^Id: /{w=(substr($0,5)==id);next} /^Author:/{w=0} w&&/^    /{sub(/^    /,"");print}'
 
-     Caveats: git bug must be the git-bug build you have (/Users/wrp/go/bin/git-bug); and the bug id must be determinable from the comment id (true within a single repo/
+     Caveats: git bug must be the git-bug build you have and the bug id must be determinable from the comment id (true within a single repo/
      namespace).
 
 
