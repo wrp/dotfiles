@@ -240,33 +240,6 @@ PUT() {
 rh() { history -r $HOME/.bash-history; }
 ru () { tac | awk '!a[$0]++' | tac; } ## reverse-unique
 
-if ! which run > /dev/null 2>&1 && test -n "$TMUX"; then
-run() { # Create two new panes, run a command with stderr in one, stdout in the other
-	# For some reason, bash is spawning too many panes, so run this through dash
-	echo 'CAUTION: this is the shell wrapper, not the version from wrp-utils' >&2
-	mkdir -p "$HOME"/.bash-run-output
-	pid=$$ dash -s "$@" << \EOF
-		st_split() {  # "stamp-tee split"
-			perl -pe '$|=1; print localtime . ": "' \
-			| tee -a "$1" \
-			| tmux split-window -l 10 -dI
-		}
-		stdout="$HOME/.bash-run-output/$pid-stdout"
-		stderr="$HOME/.bash-run-output/$pid-stderr"
-		hdr="************************************"
-		{
-			printf "\n%s\n%s\n$" "$hdr" "$(date)"
-			printf " '%s'" "$@"
-			printf "\n"
-		} \
-		| tee -a "$stdout" "$stderr" > /dev/null
-		{
-			"$@" 2>&3 | st_split "$stdout"
-		} 3>&1 \
-		| st_split "$stderr"
-EOF
-}
-fi
 rsync() { command rsync -e 'ssh -o LogLevel=error' "$@"; }
 s() { search-bash-history "$@"; }
 ssh() { command ssh -o LogLevel=error "$@"; }
