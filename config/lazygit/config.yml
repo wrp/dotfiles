@@ -20,3 +20,5 @@ git:
   overrideCommandLog: false
   allBranchesLogCmds:
     - git log-oneline
+
+  branchLogCmd: "git log --graph --color=always --abbrev-commit --decorate --date=relative --pretty=format:'%C(bold blue)%h%Creset - %C(cyan)%ad%Creset %s %C(green)(%cr)%Creset %C(magenta)%an%Creset'"
