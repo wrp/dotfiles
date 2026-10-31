@@ -45,12 +45,12 @@ b() {
 c() { tput clear; }
 curl() { command curl -Ss "$@"; }
 gcloud() {
-	local quiet=-q
+	local stfu=1
 	if test "$1" = -v && test $# != 1; then
 		shift
-		quiet=
+		unset stfu
 	fi
-	command gcloud $quiet "$@"
+	echo command gcloud ${stfu+-q} "$@"
 }
 gcurl() {
 	curl \
