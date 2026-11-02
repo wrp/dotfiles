@@ -30,7 +30,7 @@ set_prompt() {
 	check_previous
 	insert_text '\D{%T%z}'  # Text in {} is passed to strftime for time
 	insert_text '[${wrp_elapsed-0}s]'
-	insert_text "$__RESET"
+	insert_text '$__RESET'
 	insert_text '${HISTFILE_UNCHANGED+${__RED}|histfile-not-updating}'
 	insert_text '${DOTFILES_CHANGED+${__RED}|dotfiles-are-modified}'
 	insert_text '${VIRTUAL_ENV+${__YELLOW}|venv}'
