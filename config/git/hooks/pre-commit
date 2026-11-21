@@ -53,7 +53,7 @@ validate_whitespace() {
 	local msg='allowing all whitespace and merge conflict marker errors'
 	local func=warn
 
-	: ${SKIP_WHITESPACE:=$SW}
+	: ${SKIP_WHITESPACE:=${SW-$SKIP_COMMIT_CHECKS}}
 
 	if test -n "$SKIP_WHITESPACE"; then
 		if test "$SKIP_WHITESPACE" != stfu; then
