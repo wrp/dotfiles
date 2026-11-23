@@ -1,5 +1,14 @@
 
 meson() {
+	if test -z "$MESON_PACKAGE_CACHE_DIR"; then
+		echo "Stubbornly refusing to run since cache dir is not set" >&2
+		return 1
+	fi
+	if ! _on_different_devices "$MESON_PACKAGE_CACHE_DIR" /; then
+		echo "Stubbornly refusing to run with cache dir on root partition" >&2
+		return 1
+	fi
+
 	local arg="--native-file=${HOME?}/.config/meson.ini"
 	local first=$1
 	case $first in
